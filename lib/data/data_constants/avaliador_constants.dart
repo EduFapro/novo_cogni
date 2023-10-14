@@ -1,0 +1,24 @@
+import 'constantes_gerais.dart';
+
+const ID_AVALIADOR = "avaliador_id";
+const NOME_AVALIADOR = "nome";
+const SOBRENOME_AVALIADOR = "sobrenome";
+const DATA_NASCIMENTO_AVALIADOR = "data_nascimento";
+const SEXO_AVALIADOR = "sexo";
+const ESPECIALIDADE_AVALIADOR = "especialidade";
+const CPF_OU_NIF_AVALIADOR = "cpf_ou_nif";
+const EMAIL_AVALIADOR = "email";
+
+const SCRIPT_CREATE_TABELA_AVALIADORES = '''
+  CREATE TABLE $TABELA_AVALIADORES
+  (
+    $ID_AVALIADOR INTEGER PRIMARY KEY,
+    $NOME_AVALIADOR TEXT,
+    $SOBRENOME_AVALIADOR TEXT,
+    $DATA_NASCIMENTO_AVALIADOR DATE,
+    $SEXO_AVALIADOR TEXT CHECK($SEXO_AVALIADOR IN ('Homem', 'Mulher')),
+    $ESPECIALIDADE_AVALIADOR TEXT,
+    $CPF_OU_NIF_AVALIADOR TEXT,
+    $EMAIL_AVALIADOR TEXT
+  )
+''';

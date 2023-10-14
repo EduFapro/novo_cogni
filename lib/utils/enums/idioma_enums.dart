@@ -1,0 +1,1 @@
+enum Idioma { portugues, espanhol }
