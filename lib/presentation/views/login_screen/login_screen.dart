@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../adminAuth.dart';
 import '../../../core/routes/routes.dart';
 import '../../../mixins/ValidationMixin.dart';
+import '../../controllers/login_screen_controller.dart';
 import '../../widgets/ed_input_text.dart';
 
 class LoginScreen extends StatelessWidget with ValidationMixin {
@@ -12,6 +11,8 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
   final formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  
+  final controller = Get.find<LoginScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +53,21 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
                           const EdEndText(text: "Cadastrar novo avaliador"),
                           const EdEndText(text: "Esqueceu sua senha?"),
                           const SizedBox(height: 20.0),
+
                           TextButton(
                             onPressed: () async {
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
                                 print("Email: $email, Password: $password");
-                                var successfulLogin = await logAdmin(email, password);
+                                var successfulLogin = await controller.logAdmin(email, password);
 
                                 if (successfulLogin) {
                                   Get.toNamed(AppRoutes.home);
                                 }
                               }
                             },
+
+
                             style: TextButton.styleFrom(
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.all(20),
