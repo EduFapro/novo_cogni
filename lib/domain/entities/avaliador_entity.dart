@@ -11,6 +11,7 @@ class AvaliadorEntity extends Equatable {
   final String especialidade;
   final String cpfOuNif;
   final String email;
+  final String password;
 
   AvaliadorEntity({
     this.avaliadorID,
@@ -21,6 +22,7 @@ class AvaliadorEntity extends Equatable {
     required this.especialidade,
     required this.cpfOuNif,
     required this.email,
+    required this.password,
   });
 
   AvaliadorEntity.fromMap(Map<String, dynamic> map)
@@ -33,7 +35,8 @@ class AvaliadorEntity extends Equatable {
         sexo = (map[SEXO_AVALIADOR] == 'Homem') ? Sexo.homem : Sexo.mulher,
         especialidade = map[ESPECIALIDADE_AVALIADOR] ?? '',
         cpfOuNif = map[CPF_OU_NIF_AVALIADOR] ?? '',
-        email = map[EMAIL_AVALIADOR] ?? '';
+        email = map[EMAIL_AVALIADOR] ?? '',
+        password = map[PASSWORD_AVALIADOR] ?? '0000';
 
   Map<String, Object?> toMap() {
     return {
@@ -44,6 +47,7 @@ class AvaliadorEntity extends Equatable {
       SEXO_AVALIADOR: sexo == Sexo.homem ? 'Homem' : 'Mulher',
       CPF_OU_NIF_AVALIADOR: cpfOuNif,
       EMAIL_AVALIADOR: email,
+      PASSWORD_AVALIADOR: password,
     };
   }
 

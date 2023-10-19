@@ -21,6 +21,7 @@ class AvaliadorLocalDataSource {
   Future<Database> initDb() async {
     final databasePath = await getDatabasesPath();
     final path = join(await getDatabasesPath(), DATABASE_NAME);
+    print(path);
 
     return await openDatabase(path, version: VERSAO_DATABASE,
         onCreate: (Database db, int newestVersion) async {
@@ -28,6 +29,7 @@ class AvaliadorLocalDataSource {
         });
   }
 
+// avaliador_local_datasource.dart
   Future<int?> create(AvaliadorEntity avaliador) async {
     try {
       final Database? database = await db;
@@ -42,7 +44,8 @@ class AvaliadorLocalDataSource {
           DATA_NASCIMENTO_AVALIADOR: avaliador.dataNascimento.toIso8601String(),
           SEXO_AVALIADOR: sexoValue,
           CPF_OU_NIF_AVALIADOR: avaliador.cpfOuNif,
-          EMAIL_AVALIADOR: avaliador.email
+          EMAIL_AVALIADOR: avaliador.email,
+          PASSWORD_AVALIADOR: '0000'  // Add this line
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -51,6 +54,7 @@ class AvaliadorLocalDataSource {
       return null;
     }
   }
+
 
   Future<AvaliadorEntity?> getAvaliador(int id) async {
     try {
@@ -128,4 +132,26 @@ class AvaliadorLocalDataSource {
     final Database? database = await db;
     return database!.close();
   }
+
+  Future<AvaliadorEntity?> getAvaliadorByEmail(String email) async {
+    try {
+      final Database? database = await db;
+
+      final List<Map<String, dynamic>> maps = await database!.query(
+        TABELA_AVALIADORES,
+        where: '$EMAIL_AVALIADOR = ?',
+        whereArgs: [email],
+      );
+
+      if (maps.isNotEmpty) {
+        return AvaliadorEntity.fromMap(maps.first);
+      }
+
+      return null;
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
+  }
+
 }

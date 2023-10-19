@@ -25,6 +25,7 @@ class DatabaseHelper {
   initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, DATABASE_NAME);
+    print("Database path: $path");
 
     return await openDatabase(path, version: VERSAO_DATABASE, onCreate: _onCreate);
   }

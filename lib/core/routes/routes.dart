@@ -8,6 +8,7 @@ import '../bindings/avaliadores_binding.dart';
 import '../bindings/cadastro_avaliador_binding.dart';
 import '../bindings/cadastro_participante_binding.dart';
 import '../bindings/home_binding.dart';
+import '../bindings/login_screen_binding.dart';
 
 class AppRoutes {
   static const login = '/login';
@@ -38,5 +39,10 @@ final routes = [
     page: () => CadastroParticipanteScreen(),
     binding: CadastroParticipanteBinding(),
   ),
-  GetPage(name: AppRoutes.login, page: () => LoginScreen(),),
+  GetPage(
+    name: AppRoutes.login,
+    page: () => LoginScreen(),
+    binding: LoginScreenBinding(),
+  ),
+
 ];

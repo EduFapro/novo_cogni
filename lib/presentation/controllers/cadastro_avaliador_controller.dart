@@ -60,7 +60,7 @@ class CadastroAvaliadorController extends GetxController {
         sexo: selectedSexo.value!,
         especialidade: especialidadeController.text,
         cpfOuNif: CPF_NIFController.text,
-        email: emailController.text
+        email: emailController.text, password: '0000'
     );
 
     _repository.createAvaliador(novoAvaliador);
