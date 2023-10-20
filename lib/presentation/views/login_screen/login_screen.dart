@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
   final formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
-  
+
   final controller = Get.find<LoginScreenController>();
 
   @override

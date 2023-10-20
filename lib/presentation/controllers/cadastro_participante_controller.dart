@@ -45,22 +45,21 @@ class CadastroParticipanteController extends GetxController {
     var sobrenome = parts.skip(1).join(' ');
 
     DateTime? parsedDate =
-        DateFormat('yyyy-MM-dd').parse(dataNascimentoController.text);
+    DateFormat('yyyy-MM-dd').parse(dataNascimentoController.text);
 
     ParticipanteEntity novoParticipante = ParticipanteEntity(
       nome: nome,
       sobrenome: sobrenome,
       dataNascimento: parsedDate!,
       sexo: selectedSexo.value!,
-      escolaridade: escolaridadeController.text == ''
-          ? Escolaridade.fundamental_completo
-          : Escolaridade.fundamental_incompleto,
-      atividades: [],
+      escolaridade: selectedEscolaridade.value!, // Updated this line to capture the selected value
+      atividades: [], // TODO: Capture the selected activities
     );
 
     _repository.createParticipante(novoParticipante);
     // Possibly give some user feedback after creation.
   }
+
 
   Future<ParticipanteEntity?> getParticipant(int id) async {
     return _repository.getParticipante(id);

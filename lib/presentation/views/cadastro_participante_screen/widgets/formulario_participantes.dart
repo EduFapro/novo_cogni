@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../../../utils/enums/idioma_enums.dart';
 import '../../../../utils/enums/pessoa_enums.dart';
 import '../../../controllers/cadastro_participante_controller.dart';
 
 class FormularioParticipante extends StatefulWidget {
+  final CadastroParticipanteController controller;
+
+  FormularioParticipante({required this.controller});
+
   @override
   State<FormularioParticipante> createState() => _FormularioParticipanteState();
 }
@@ -18,10 +20,9 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
     'Item 4': false,
   };
 
-  final controller = Get.find<CadastroParticipanteController>();
-
   @override
   Widget build(BuildContext context) {
+    var controller = widget.controller;
     double screenWidth = MediaQuery.of(context).size.width;
     double formWidth = screenWidth * 0.8;
     const double spacingWidth = 16.0;
@@ -56,6 +57,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                         SizedBox(
                           width: fieldWidthRow1,
                           child: TextFormField(
+                            controller: controller.nomeCompletoController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
@@ -83,7 +85,13 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                                 lastDate: DateTime.now(),
                               );
                               if (pickedDate != null) {
-                                controller.dataNascimentoController.text = pickedDate.toLocal().toString().split(' ')[0];
+                                controller.dataNascimentoController.text =
+                                    pickedDate
+                                        .toLocal()
+                                        .toString()
+                                        .split(' ')[0];
+                                controller.selectedDate.value =
+                                    pickedDate; // Update the selectedDate value
                               }
                             },
                           ),
@@ -104,14 +112,14 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                             items: Sexo.values.map((sexo) {
                               return DropdownMenuItem<Sexo>(
                                 value: sexo,
-                                child: Text(sexo == Sexo.homem ? 'Homem' : 'Mulher'),
+                                child: Text(
+                                    sexo == Sexo.homem ? 'Homem' : 'Mulher'),
                               );
                             }).toList(),
                             onChanged: (Sexo? value) {
                               controller.selectedSexo.value = value;
                             },
                             value: controller.selectedSexo.value,
-
                           ),
                         ),
                         SizedBox(width: spacingWidth),
@@ -130,9 +138,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                               );
                             }).toList(),
                             onChanged: (Escolaridade? value) {
-
-                                controller.selectedEscolaridade.value = value;
-
+                              controller.selectedEscolaridade.value = value;
                             },
                             value: controller.selectedEscolaridade.value,
                           ),
@@ -153,9 +159,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                               );
                             }).toList(),
                             onChanged: (Lateralidade? value) {
-
-                                controller.selectedLateralidade.value = value;
-
+                              controller.selectedLateralidade.value = value;
                             },
                             value: controller.selectedLateralidade.value,
                           ),
@@ -199,7 +203,8 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                               lastDate: DateTime.now(),
                             );
                             if (pickedDate != null) {
-                              controller.dataAvaliacaoController.text = pickedDate.toLocal().toString().split(' ')[0];
+                              controller.dataAvaliacaoController.text =
+                                  pickedDate.toLocal().toString().split(' ')[0];
                             }
                           },
                         ),
@@ -216,13 +221,13 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                           items: Idioma.values.map((idioma) {
                             return DropdownMenuItem<Idioma>(
                               value: idioma,
-                              child: Text(idioma == Idioma.portugues ? 'Português' : 'Espanhol'),
+                              child: Text(idioma == Idioma.portugues
+                                  ? 'Português'
+                                  : 'Espanhol'),
                             );
                           }).toList(),
                           onChanged: (Idioma? value) {
-
-                              controller.selectedIdioma.value = value;
-
+                            controller.selectedIdioma.value = value;
                           },
                           value: controller.selectedIdioma.value,
                         ),
@@ -241,7 +246,8 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                         children: [
                           Text(
                             "Selecione as atividades",
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           ...items.keys.map((String key) {
                             return CheckboxListTile(
@@ -278,7 +284,8 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text("Cancelar", style: TextStyle(color: Color(0xff000000))),
+                    child: const Text("Cancelar",
+                        style: TextStyle(color: Color(0xff000000))),
                   ),
                   SizedBox(width: 20),
                   TextButton(
