@@ -14,8 +14,6 @@ class CadastroParticipanteController extends GetxController {
 
   final nomeCompletoController = TextEditingController();
   final dataNascimentoController = TextEditingController();
-  final escolaridadeController = TextEditingController();
-  final dataAvaliacaoController = TextEditingController();
 
   final selectedSexo = Rx<Sexo?>(null);
   final selectedEscolaridade = Rx<Escolaridade?>(null);
@@ -52,14 +50,12 @@ class CadastroParticipanteController extends GetxController {
       sobrenome: sobrenome,
       dataNascimento: parsedDate!,
       sexo: selectedSexo.value!,
-      escolaridade: selectedEscolaridade.value!, // Updated this line to capture the selected value
-      atividades: [], // TODO: Capture the selected activities
+      escolaridade: selectedEscolaridade.value!,
     );
 
     _repository.createParticipante(novoParticipante);
     // Possibly give some user feedback after creation.
   }
-
 
   Future<ParticipanteEntity?> getParticipant(int id) async {
     return _repository.getParticipante(id);
@@ -73,8 +69,6 @@ class CadastroParticipanteController extends GetxController {
   void onClose() {
     nomeCompletoController.dispose();
     dataNascimentoController.dispose();
-    escolaridadeController.dispose();
-    dataAvaliacaoController.dispose();
     super.onClose();
   }
 
@@ -87,5 +81,4 @@ class CadastroParticipanteController extends GetxController {
     print('Lateralidade: ${selectedLateralidade.value?.toString().split('.').last ?? 'Not Selected'}');
     print('Idioma: ${selectedIdioma.value?.toString().split('.').last ?? 'Not Selected'}');
   }
-
 }

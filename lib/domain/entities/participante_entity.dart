@@ -10,7 +10,6 @@ class ParticipanteEntity extends Equatable {
   final DateTime dataNascimento;
   final Sexo sexo;
   final Escolaridade escolaridade;
-  final List<String> atividades;
 
   ParticipanteEntity({
     this.participanteID,
@@ -19,7 +18,6 @@ class ParticipanteEntity extends Equatable {
     required this.dataNascimento,
     required this.sexo,
     required this.escolaridade,
-    required this.atividades,
   });
 
   ParticipanteEntity.fromMap(Map<String, dynamic> map) :
@@ -28,9 +26,7 @@ class ParticipanteEntity extends Equatable {
         sobrenome = map[SOBRENOME_PARTICIPANTE] ?? '',
         dataNascimento = (map[DATA_NASCIMENTO_PARTICIPANTE] != null) ? DateTime.parse(map[DATA_NASCIMENTO_PARTICIPANTE]) : DateTime.now(),
         sexo = (map[SEXO_PARTICIPANTE] == 'Homem') ? Sexo.homem : Sexo.mulher,
-        escolaridade = (map[ESCOLARIDADE_PARTICIPANTE] != null) ? Escolaridade.values.firstWhere((e) => e.toString().split('.').last == map[ESCOLARIDADE_PARTICIPANTE]) : Escolaridade.outros,
-        atividades = List<String>.from(jsonDecode(map[ATIVIDADES_PARTICIPANTE] as String));
-
+        escolaridade = (map[ESCOLARIDADE_PARTICIPANTE] != null) ? Escolaridade.values.firstWhere((e) => e.toString().split('.').last == map[ESCOLARIDADE_PARTICIPANTE]) : Escolaridade.outros;
 
   Map<String, Object?> toMap() {
     return {
@@ -40,10 +36,8 @@ class ParticipanteEntity extends Equatable {
       DATA_NASCIMENTO_PARTICIPANTE: dataNascimento.toIso8601String(),
       SEXO_PARTICIPANTE: sexo == Sexo.homem ? 'Homem' : 'Mulher',
       ESCOLARIDADE_PARTICIPANTE: escolaridade.toString().split('.').last,
-      ATIVIDADES_PARTICIPANTE: jsonEncode(atividades),
     };
   }
-
 
   @override
   String toString() {

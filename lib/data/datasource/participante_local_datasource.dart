@@ -12,7 +12,6 @@ class ParticipanteLocalDataSource {
   factory ParticipanteLocalDataSource() => _instance;
   ParticipanteLocalDataSource._internal();
 
-
   final dbHelper = DatabaseHelper();
 
   Future<Database?> get db async => dbHelper.db;
@@ -31,7 +30,7 @@ class ParticipanteLocalDataSource {
           DATA_NASCIMENTO_PARTICIPANTE: participante.dataNascimento.toIso8601String(),
           SEXO_PARTICIPANTE: sexoValue,
           ESCOLARIDADE_PARTICIPANTE: participante.escolaridade.toString().split('.').last,
-          ATIVIDADES_PARTICIPANTE: jsonEncode(participante.atividades),
+          // Removed the ATIVIDADES_PARTICIPANTE line
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -41,7 +40,12 @@ class ParticipanteLocalDataSource {
     }
   }
 
-  Future<ParticipanteEntity?> getParticipante(int id) async {
+
+
+
+
+
+Future<ParticipanteEntity?> getParticipante(int id) async {
     try {
       final Database? database = await db;
 

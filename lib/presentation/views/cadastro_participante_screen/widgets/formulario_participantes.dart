@@ -184,31 +184,31 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                 children: [
                   Row(
                     children: [
-                      SizedBox(width: spacingWidth),
-                      SizedBox(
-                        width: fieldWidthRow1,
-                        child: TextFormField(
-                          controller: controller.dataAvaliacaoController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color(0xffededed),
-                            labelText: 'Data da Avaliação',
-                          ),
-                          readOnly: true,
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now(),
-                            );
-                            if (pickedDate != null) {
-                              controller.dataAvaliacaoController.text =
-                                  pickedDate.toLocal().toString().split(' ')[0];
-                            }
-                          },
-                        ),
-                      ),
+                      // SizedBox(width: spacingWidth),
+                      // SizedBox(
+                      //   width: fieldWidthRow1,
+                      //   child: TextFormField(
+                      //     controller: controller.dataAvaliacaoController,
+                      //     decoration: InputDecoration(
+                      //       filled: true,
+                      //       fillColor: Color(0xffededed),
+                      //       labelText: 'Data da Avaliação',
+                      //     ),
+                      //     readOnly: true,
+                      //     onTap: () async {
+                      //       DateTime? pickedDate = await showDatePicker(
+                      //         context: context,
+                      //         initialDate: DateTime.now(),
+                      //         firstDate: DateTime(1900),
+                      //         lastDate: DateTime.now(),
+                      //       );
+                      //       if (pickedDate != null) {
+                      //         controller.dataAvaliacaoController.text =
+                      //             pickedDate.toLocal().toString().split(' ')[0];
+                      //       }
+                      //     },
+                      //   ),
+                      // ),
                       SizedBox(width: spacingWidth),
                       SizedBox(
                         width: fieldWidthRow1,
