@@ -1,36 +1,38 @@
-
+import 'dart:convert';
 import 'atividade_entity.dart';
 
 class AvaliacaoEntity {
   final int? avaliacaoID;
   final int avaliadorID;
   final int participanteID;
-  final List<AtividadeEntity> activities;
+  final List<AtividadeEntity> atividades;
 
   AvaliacaoEntity({
     this.avaliacaoID,
     required this.avaliadorID,
     required this.participanteID,
-    required this.activities,
+    required this.atividades,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'evaluationID': avaliacaoID,
-      'avaliadorID': avaliadorID,
-      'participanteID': participanteID,
-      // Activities conversion might be handled differently based on your needs
-      // If you need to store activities as a JSON string in the DB, you can serialize them here.
-      'activities': activities.map((activity) => activity.toMap()).toList(),
+      'avaliacao_id': avaliacaoID,  // Updated this line
+      'avaliador_id': avaliadorID,
+      'participante_id': participanteID,
+      'atividades': jsonEncode(atividades.map((activity) => activity.toMap()).toList()),
     };
   }
 
+
+
   static AvaliacaoEntity fromMap(Map<String, dynamic> map) {
     return AvaliacaoEntity(
-      avaliacaoID: map['evaluationID'] as int?,
-      avaliadorID: map['avaliadorID'] as int,
-      participanteID: map['participanteID'] as int,
-      activities: (map['activities'] as List).map((activityMap) => AtividadeEntity.fromMap(activityMap)).toList(),
+      avaliacaoID: map['avaliacao_id'] as int?,  // Updated this line
+      avaliadorID: map['avaliador_id'] as int,
+      participanteID: map['participante_id'] as int,
+      atividades: (jsonDecode(map['atividades']) as List).map((activityMap) => AtividadeEntity.fromMap(activityMap)).toList(),
     );
   }
+
+
 }

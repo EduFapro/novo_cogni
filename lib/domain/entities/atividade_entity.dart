@@ -1,20 +1,20 @@
 class AtividadeEntity {
   int? atividadeID;
-  final DateTime date;
-  final int score;
-  final int evaluationID;
+  DateTime? date;
+  int? score;
+  int? evaluationID;
 
   AtividadeEntity({
     this.atividadeID,
-    required this.date,
-    required this.score,
-    required this.evaluationID,
+    this.date,
+    this.score,
+    this.evaluationID,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'activityID': atividadeID,
-      'date': date.toIso8601String(),
+      'date': date?.toIso8601String(),
       'score': score,
       'evaluationID': evaluationID,
     };
@@ -23,9 +23,9 @@ class AtividadeEntity {
   static AtividadeEntity fromMap(Map<String, dynamic> map) {
     return AtividadeEntity(
       atividadeID: map['activityID'] as int?,
-      date: DateTime.parse(map['date'] as String),
-      score: map['score'] as int,
-      evaluationID: map['evaluationID'] as int,
+      date: map['date'] != null ? DateTime.parse(map['date'] as String) : null,
+      score: map['score'] as int?,
+      evaluationID: map['evaluationID'] as int?,
     );
   }
 }
