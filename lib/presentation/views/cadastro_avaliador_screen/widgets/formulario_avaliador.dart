@@ -152,7 +152,7 @@ class FormularioAvaliador extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                      AppRoutes.home;
+                      Get.back();
                     },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Color(0xff000000), width: 2.0),
@@ -172,6 +172,7 @@ class FormularioAvaliador extends StatelessWidget {
                     onPressed: () async {
                       controller.printFormData();
                       controller.createAvaliador();
+                      Get.back();
                     },
 
                     style: TextButton.styleFrom(

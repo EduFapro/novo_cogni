@@ -11,6 +11,7 @@ class LoginScreenController extends GetxController {
   final AvaliadorLocalDataSource avaliadorDataSource;
   var isLoading = false.obs;
   var loginError = RxString('');
+  var currentAvaliadorID = RxInt(0);
 
   LoginScreenController(this.avaliadorDataSource);
 
@@ -44,6 +45,7 @@ class LoginScreenController extends GetxController {
     try {
       AvaliadorEntity? user = await avaliadorDataSource.getAvaliadorByEmail(email);
       if (user != null && user.password == password) {
+        currentAvaliadorID.value = user.avaliadorID!;
         isLoading.value = false;
         return true;
       } else {

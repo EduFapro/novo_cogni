@@ -54,6 +54,24 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
                           const EdEndText(text: "Esqueceu sua senha?"),
                           const SizedBox(height: 20.0),
 
+                          // Display login error
+                          Obx(() {
+                            if (controller.loginError.value.isNotEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: Text(
+                                  controller.loginError.value,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return SizedBox.shrink(); // Return an empty widget if there's no error
+                            }
+                          }),
+
                           TextButton(
                             onPressed: () async {
                               if (formKey.currentState!.validate()) {
@@ -66,8 +84,6 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
                                 }
                               }
                             },
-
-
                             style: TextButton.styleFrom(
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.all(20),

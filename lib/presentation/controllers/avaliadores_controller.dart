@@ -1,14 +1,23 @@
 import 'package:get/get.dart';
 
+import '../../data/datasource/avaliador_local_datasource.dart';
+import '../../domain/entities/avaliador_entity.dart';
+import '../../domain/repositories/avaliador_repository.dart';
+
 class AvaliadoresController extends GetxController {
-  // Reactive variables or streams for your controller, for example:
-  var someData = ''.obs;
+
+  var avaliadoresList = <AvaliadorEntity>[].obs;
+
 
   @override
   void onInit() {
     super.onInit();
-    // Initialization logic here, maybe fetch some data, etc.
+    fetchAvaliadores();
   }
 
-// Other methods or logic associated with the AvaliadoresScreen
+  void fetchAvaliadores() async {
+    var avaliadores = await AvaliadorRepository(localDataSource: AvaliadorLocalDataSource()).getAllAvaliadores();
+    avaliadoresList.value = avaliadores;
+  }
+
 }

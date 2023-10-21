@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../../../utils/enums/idioma_enums.dart';
 import '../../../../utils/enums/pessoa_enums.dart';
 import '../../../controllers/cadastro_participante_controller.dart';
+import '../../../controllers/login_screen_controller.dart';
 
 class FormularioParticipante extends StatefulWidget {
   final CadastroParticipanteController controller;
@@ -13,6 +16,7 @@ class FormularioParticipante extends StatefulWidget {
 }
 
 class _FormularioParticipanteState extends State<FormularioParticipante> {
+
   Map<String, bool> items = {
     'Item 1': false,
     'Item 2': false,
@@ -23,6 +27,8 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
   @override
   Widget build(BuildContext context) {
     var controller = widget.controller;
+    final loginController = Get.find<LoginScreenController>();
+    int? avaliadorID = loginController.currentAvaliadorID.value;
     double screenWidth = MediaQuery.of(context).size.width;
     double formWidth = screenWidth * 0.8;
     const double spacingWidth = 16.0;
@@ -274,7 +280,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                      // Handle cancel button press
+                      Get.back();
                     },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Color(0xff000000), width: 2.0),
@@ -291,7 +297,8 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                   TextButton(
                     onPressed: () {
                       controller.printFormData();
-                      controller.createParticipante();
+                      controller.createParticipante(avaliadorID);
+                      Get.back();
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
