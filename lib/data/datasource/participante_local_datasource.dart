@@ -30,7 +30,7 @@ class ParticipanteLocalDataSource {
           DATA_NASCIMENTO_PARTICIPANTE: participante.dataNascimento.toIso8601String(),
           SEXO_PARTICIPANTE: sexoValue,
           ESCOLARIDADE_PARTICIPANTE: participante.escolaridade.toString().split('.').last,
-          // Removed the ATIVIDADES_PARTICIPANTE line
+          // Removed the MODULOS_PARTICIPANTE line
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );

@@ -4,6 +4,6 @@ const VERSAO_DATABASE = 1;
 const TABELA_AVALIADORES = "avaliadores";
 const TABELA_PARTICIPANTES = "participantes";
 const TABELA_AVALIACOES = "avaliacoes";
-const TABELA_ATIVIDADES = "atividades";
+const TABELA_MODULOS = "modulos";
 
 

@@ -1,14 +1,14 @@
-import '../../utils/enums/atividade_enums.dart';
+import '../../utils/enums/modulo_enums.dart';
 
-class AtividadeEntity {
-  int? atividadeID;
+class ModuloEntity {
+  int? moduloID;
   DateTime? date;
   int? score;
   int? evaluationID;
   Status status;
 
-  AtividadeEntity({
-    this.atividadeID,
+  ModuloEntity({
+    this.moduloID,
     this.date,
     this.score,
     this.evaluationID,
@@ -17,17 +17,17 @@ class AtividadeEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'atividade_id': atividadeID,
-      'data_atividade': date?.toIso8601String(),
+      'modulo_id': moduloID,
+      'data_modulo': date?.toIso8601String(),
       'pontuacao': score,
       'status': status.description,
       'avaliacao_id': evaluationID,
     };
   }
 
-  static AtividadeEntity fromMap(Map<String, dynamic> map) {
-    return AtividadeEntity(
-      atividadeID: map['activityID'] as int?,
+  static ModuloEntity fromMap(Map<String, dynamic> map) {
+    return ModuloEntity(
+      moduloID: map['activityID'] as int?,
       date: map['date'] != null ? DateTime.parse(map['date'] as String) : null,
       score: map['score'] as int?,
       evaluationID: map['evaluationID'] as int?,

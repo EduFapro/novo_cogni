@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import '../../../../domain/entities/atividade_entity.dart';
+import '../../../../domain/entities/modulo_entity.dart';
 import '../../../../utils/enums/idioma_enums.dart';
 import '../../../../utils/enums/pessoa_enums.dart';
 import '../../../controllers/cadastro_participante_controller.dart';
@@ -250,7 +250,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "Selecione as atividades",
+                            "Selecione as modulos",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -316,7 +316,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                             .toList();
 
                         // Create AtividadeEntity objects
-                        List<AtividadeEntity> atividades =
+                        List<ModuloEntity> modulos =
                             controller.createAtividadesEntities(
                                 selectedActivities, evaluationID);
 

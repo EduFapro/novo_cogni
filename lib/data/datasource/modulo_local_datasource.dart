@@ -1,6 +1,6 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../domain/entities/atividade_entity.dart';
-import '../data_constants/atividade_constants.dart';
+import '../../domain/entities/modulo_entity.dart';
+import '../data_constants/modulo_constants.dart';
 import '../data_constants/constantes_gerais.dart';
 import 'database_helper.dart';
 
@@ -16,13 +16,13 @@ class AtividadeLocalDataSource {
 
   Future<Database?> get db async => dbHelper.db;
 
-  Future<int?> create(AtividadeEntity atividade) async {
+  Future<int?> create(ModuloEntity modulo) async {
     try {
       final Database? database = await db;
 
       return await database!.insert(
-        TABELA_ATIVIDADES,
-        atividade.toMap(),
+        TABELA_MODULOS,
+        modulo.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (ex) {
@@ -31,18 +31,18 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<AtividadeEntity?> getAtividade(int id) async {
+  Future<ModuloEntity?> getAtividade(int id) async {
     try {
       final Database? database = await db;
 
       final List<Map<String, dynamic>> maps = await database!.query(
-        TABELA_ATIVIDADES,
-        where: '$ID_ATIVIDADE = ?',
+        TABELA_MODULOS,
+        where: '$ID_MODULO = ?',
         whereArgs: [id],
       );
 
       if (maps.isNotEmpty) {
-        return AtividadeEntity.fromMap(maps.first);
+        return ModuloEntity.fromMap(maps.first);
       }
 
       return null;
@@ -57,8 +57,8 @@ class AtividadeLocalDataSource {
       final Database? database = await db;
 
       return await database!.delete(
-        TABELA_ATIVIDADES,
-        where: "$ID_ATIVIDADE = ?",
+        TABELA_MODULOS,
+        where: "$ID_MODULO = ?",
         whereArgs: [id],
       );
     } catch (ex) {
@@ -67,15 +67,15 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<int> updateAtividade(AtividadeEntity atividade) async {
+  Future<int> updateAtividade(ModuloEntity modulo) async {
     try {
       final Database? database = await db;
 
       return await database!.update(
-        TABELA_ATIVIDADES,
-        atividade.toMap(),
-        where: "$ID_ATIVIDADE = ?",
-        whereArgs: [atividade.atividadeID],
+        TABELA_MODULOS,
+        modulo.toMap(),
+        where: "$ID_MODULO = ?",
+        whereArgs: [modulo.moduloID],
       );
     } catch (ex) {
       print(ex);
@@ -83,13 +83,13 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<List<AtividadeEntity>> getAllAtividades() async {
+  Future<List<ModuloEntity>> getAllAtividades() async {
     try {
       final Database? database = await db;
-      final List<Map<String, dynamic>> maps = await database!.query(TABELA_ATIVIDADES);
+      final List<Map<String, dynamic>> maps = await database!.query(TABELA_MODULOS);
 
       return List.generate(maps.length, (i) {
-        return AtividadeEntity.fromMap(maps[i]);
+        return ModuloEntity.fromMap(maps[i]);
       });
     } catch (ex) {
       print(ex);
@@ -99,7 +99,7 @@ class AtividadeLocalDataSource {
 
   Future<int?> getNumeroAtividades() async {
     final Database? database = await db;
-    final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABELA_ATIVIDADES");
+    final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABELA_MODULOS");
     return result.first["count"] as int?;
   }
 

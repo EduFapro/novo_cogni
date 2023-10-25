@@ -1,6 +1,6 @@
 
-import '../../data/datasource/atividade_local_datasource.dart';
-import '../../domain/entities/atividade_entity.dart';
+import '../../data/datasource/modulo_local_datasource.dart';
+import '../../domain/entities/modulo_entity.dart';
 
 class AtividadeRepository {
   final AtividadeLocalDataSource localDataSource;
@@ -8,12 +8,12 @@ class AtividadeRepository {
   AtividadeRepository({required this.localDataSource});
 
   // Create an Atividade
-  Future<int?> createAtividade(AtividadeEntity atividade) async {
-    return await localDataSource.create(atividade);
+  Future<int?> createAtividade(ModuloEntity modulo) async {
+    return await localDataSource.create(modulo);
   }
 
   // Get an Atividade by ID
-  Future<AtividadeEntity?> getAtividade(int id) async {
+  Future<ModuloEntity?> getAtividade(int id) async {
     return await localDataSource.getAtividade(id);
   }
 
@@ -23,12 +23,12 @@ class AtividadeRepository {
   }
 
   // Update an Atividade
-  Future<int> updateAtividade(AtividadeEntity atividade) async {
-    return await localDataSource.updateAtividade(atividade);
+  Future<int> updateAtividade(ModuloEntity modulo) async {
+    return await localDataSource.updateAtividade(modulo);
   }
 
   // Get all Atividades
-  Future<List<AtividadeEntity>> getAllAtividades() async {
+  Future<List<ModuloEntity>> getAllAtividades() async {
     return await localDataSource.getAllAtividades();
   }
 
