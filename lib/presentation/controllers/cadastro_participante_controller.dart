@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../data/datasource/atividade_local_datasource.dart';
 import '../../data/datasource/avaliacao_local_datasource.dart';
+import '../../domain/entities/atividade_entity.dart';
 import '../../domain/entities/participante_entity.dart';
 import '../../domain/repositories/participante_repository.dart';
+import '../../utils/enums/atividade_enums.dart';
 import '../../utils/enums/idioma_enums.dart';
 import '../../utils/enums/pessoa_enums.dart';
 import '../../domain/entities/avaliacao_entity.dart';
@@ -39,7 +42,7 @@ class CadastroParticipanteController extends GetxController {
     }
   }
 
-  void createParticipante(int avaliadorID) async {
+  Future<int?> createParticipante(int avaliadorID, List<String> selectedAtividades) async {
     var nomeCompleto = nomeCompletoController.text;
     List<String> parts = nomeCompleto.split(' ');
 
@@ -72,13 +75,28 @@ class CadastroParticipanteController extends GetxController {
       // Create an instance of AvaliacaoLocalDataSource
       AvaliacaoLocalDataSource avaliacaoDataSource = AvaliacaoLocalDataSource();
 
-      // Save the avaliacao entity to the database
-      await avaliacaoDataSource.create(novaAvaliacao);
+      // Save the avaliacao entity to the database and get the ID
+      int? newAvaliacaoId = await avaliacaoDataSource.create(novaAvaliacao);
+
+      if (newAvaliacaoId != null) {
+        // Create the AtividadeEntity objects
+        List<AtividadeEntity> atividades = createAtividadesEntities(selectedAtividades, newAvaliacaoId);
+
+        // Save the AtividadeEntity objects to the database
+        AtividadeLocalDataSource atividadeDataSource = AtividadeLocalDataSource();
+        for (AtividadeEntity atividade in atividades) {
+          await atividadeDataSource.create(atividade);
+        }
+
+        // Return the newAvaliacaoId for further use if needed.
+        return newAvaliacaoId;
+      }
+
     }
 
-    // Possibly give some user feedback after creation.
+    // Return null if the Participante or Avaliacao creation failed.
+    return null;
   }
-
 
 
   Future<ParticipanteEntity?> getParticipant(int id) async {
@@ -88,6 +106,18 @@ class CadastroParticipanteController extends GetxController {
   Future<List<ParticipanteEntity>?> getAllParticipantes() async {
     return _repository.getAllParticipantes();
   }
+
+  List<AtividadeEntity> createAtividadesEntities(List<String> selectedActivities, int evaluationID) {
+    return selectedActivities.map((activity) {
+      return AtividadeEntity(
+        date: DateTime.now(),
+        score: 0,
+        evaluationID: evaluationID,
+        status: Status.a_iniciar,
+      );
+    }).toList();
+  }
+
 
   @override
   void onClose() {

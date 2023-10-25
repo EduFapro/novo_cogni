@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import '../../../../domain/entities/atividade_entity.dart';
 import '../../../../utils/enums/idioma_enums.dart';
 import '../../../../utils/enums/pessoa_enums.dart';
 import '../../../controllers/cadastro_participante_controller.dart';
@@ -16,12 +17,10 @@ class FormularioParticipante extends StatefulWidget {
 }
 
 class _FormularioParticipanteState extends State<FormularioParticipante> {
-
   Map<String, bool> items = {
-    'Item 1': false,
-    'Item 2': false,
-    'Item 3': false,
-    'Item 4': false,
+    'Contar História': false,
+    'Contar até 50': false,
+    'Roubo de biscoitos': false,
   };
 
   @override
@@ -295,10 +294,36 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                   ),
                   SizedBox(width: 20),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       controller.printFormData();
-                      controller.createParticipante(avaliadorID);
-                      Get.back();
+
+                      // Capture selected activities
+                      List<String> selectedActivities = items.entries
+                          .where((entry) => entry.value)
+                          .map((entry) => entry.key)
+                          .toList();
+
+                      // Use 'await' to wait for the asynchronous method to complete
+                      int? evaluationID = await controller.createParticipante(
+                          avaliadorID, selectedActivities);
+
+                      if (evaluationID != null) {
+                        // Check if evaluationID is not null
+                        // Capture selected activities
+                        List<String> selectedActivities = items.entries
+                            .where((entry) => entry.value)
+                            .map((entry) => entry.key)
+                            .toList();
+
+                        // Create AtividadeEntity objects
+                        List<AtividadeEntity> atividades =
+                            controller.createAtividadesEntities(
+                                selectedActivities, evaluationID);
+
+                        Get.back();
+                      } else {
+                        // Handle the case where evaluationID is null, e.g., show an error message to the user
+                      }
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,

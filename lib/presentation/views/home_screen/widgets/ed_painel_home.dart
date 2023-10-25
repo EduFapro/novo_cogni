@@ -69,7 +69,6 @@ class EdPainelHome extends StatelessWidget {
           ),
         )
 
-
       ],
     );
   }

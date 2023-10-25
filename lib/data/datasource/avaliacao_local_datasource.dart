@@ -14,15 +14,21 @@ class AvaliacaoLocalDataSource {
 
   Future<Database?> get db async => dbHelper.db;
 
-  Future<int> create(AvaliacaoEntity avaliacao) async {
-    final Database? database = await db;
+  Future<int?> create(AvaliacaoEntity avaliacao) async {
+    try {
+      final Database? database = await db;
 
-    return await database!.insert(
-      TABELA_AVALIACOES,
-      avaliacao.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+      return await database!.insert(
+        TABELA_AVALIACOES, // Make sure you have the correct table name here.
+        avaliacao.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
   }
+
 
   Future<AvaliacaoEntity?> getAvaliacao(int id) async {
     final Database? database = await db;

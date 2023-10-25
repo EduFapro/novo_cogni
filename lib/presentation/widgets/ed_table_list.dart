@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
-import '../../domain/entities/avaliador_entity.dart';
 import '../../utils/enums/pessoa_enums.dart';
 import '../controllers/avaliadores_controller.dart';
 
@@ -14,57 +13,30 @@ class EdTableList extends StatelessWidget {
     final avaliadoresController = Get.find<AvaliadoresController>();
 
     return Obx(() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Headers using Row widget
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: [
-                Expanded(child: Text('Nome', style: TextStyle(fontWeight: FontWeight.bold))),
-                Expanded(child: Text('Sobrenome', style: TextStyle(fontWeight: FontWeight.bold))),
-                Expanded(child: Text('Email', style: TextStyle(fontWeight: FontWeight.bold))),
-                Expanded(child: Text('Data de Nascimento', style: TextStyle(fontWeight: FontWeight.bold))),
-                Expanded(child: Text('Sexo', style: TextStyle(fontWeight: FontWeight.bold))),
-                // Add more headers as needed
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          columnSpacing: 16, // Adjust as needed
+          columns: const [
+            DataColumn(label: Text('Nome')),
+            DataColumn(label: Text('Email')),
+            DataColumn(label: Text('Data de Nascimento')),
+            DataColumn(label: Text('Sexo')),
+            // Add more columns as needed
+          ],
+          rows: avaliadoresController.avaliadoresList.map((avaliador) {
+            return DataRow(
+              cells: [
+                DataCell(Text('${avaliador.nome} ${avaliador.sobrenome}')), // Concatenated name and surname
+                DataCell(Text(avaliador.email)),
+                DataCell(Text(DateFormat('dd/MM/yyyy').format(avaliador.dataNascimento))),
+                DataCell(Text(avaliador.sexo == Sexo.homem ? 'Homem' : 'Mulher')),
+                // Add more cells for additional columns
               ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: avaliadoresController.avaliadoresList.length,
-              itemBuilder: (context, index) {
-                final avaliador = avaliadoresController.avaliadoresList[index];
-                return DataRowWidget(avaliador: avaliador); // Custom widget for each row
-              },
-            ),
-          ),
-        ],
+            );
+          }).toList(),
+        ),
       );
     });
-  }
-}
-
-class DataRowWidget extends StatelessWidget {
-  final AvaliadorEntity avaliador;
-
-  DataRowWidget({required this.avaliador});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Expanded(child: Text(avaliador.nome)),
-          Expanded(child: Text(avaliador.sobrenome)),
-          Expanded(child: Text(avaliador.email)),
-          Expanded(child: Text(DateFormat('dd/MM/yyyy').format(avaliador.dataNascimento))),
-          Expanded(child: Text(avaliador.sexo == Sexo.homem ? 'Homem' : 'Mulher')),
-          // Add more cells for additional columns
-        ],
-      ),
-    );
   }
 }
