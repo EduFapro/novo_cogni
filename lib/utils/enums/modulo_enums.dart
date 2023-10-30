@@ -1,5 +1,12 @@
 enum Status { a_iniciar, em_progresso, terminado }
 
+List items = [
+  'Contar História',
+  'Contar até 50',
+  'Roubo de biscoitos'
+];
+
+
 extension StatusExtension on Status {
   String get description {
     switch (this) {

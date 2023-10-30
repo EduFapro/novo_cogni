@@ -4,13 +4,13 @@ import '../data_constants/modulo_constants.dart';
 import '../data_constants/constantes_gerais.dart';
 import 'database_helper.dart';
 
-class AtividadeLocalDataSource {
+class ModuloLocalDataSource {
 
-  static final AtividadeLocalDataSource _instance = AtividadeLocalDataSource.internal();
+  static final ModuloLocalDataSource _instance = ModuloLocalDataSource.internal();
 
-  factory AtividadeLocalDataSource() => _instance;
+  factory ModuloLocalDataSource() => _instance;
 
-  AtividadeLocalDataSource.internal();
+  ModuloLocalDataSource.internal();
 
   final dbHelper = DatabaseHelper();
 
@@ -31,7 +31,7 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<ModuloEntity?> getAtividade(int id) async {
+  Future<ModuloEntity?> getModulo(int id) async {
     try {
       final Database? database = await db;
 
@@ -52,7 +52,7 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<int> deleteAtividade(int id) async {
+  Future<int> deleteModulo(int id) async {
     try {
       final Database? database = await db;
 
@@ -67,7 +67,7 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<int> updateAtividade(ModuloEntity modulo) async {
+  Future<int> updateModulo(ModuloEntity modulo) async {
     try {
       final Database? database = await db;
 
@@ -83,7 +83,7 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<List<ModuloEntity>> getAllAtividades() async {
+  Future<List<ModuloEntity>> getAllModulos() async {
     try {
       final Database? database = await db;
       final List<Map<String, dynamic>> maps = await database!.query(TABELA_MODULOS);
@@ -97,7 +97,7 @@ class AtividadeLocalDataSource {
     }
   }
 
-  Future<int?> getNumeroAtividades() async {
+  Future<int?> getNumeroModulos() async {
     final Database? database = await db;
     final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABELA_MODULOS");
     return result.first["count"] as int?;

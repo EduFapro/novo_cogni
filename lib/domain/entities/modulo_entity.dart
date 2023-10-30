@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../utils/enums/modulo_enums.dart';
 
 class ModuloEntity {
@@ -6,6 +8,7 @@ class ModuloEntity {
   int? score;
   int? evaluationID;
   Status status;
+  List<String> modulos;
 
   ModuloEntity({
     this.moduloID,
@@ -13,6 +16,7 @@ class ModuloEntity {
     this.score,
     this.evaluationID,
     this.status = Status.a_iniciar,
+    required this.modulos,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +26,7 @@ class ModuloEntity {
       'pontuacao': score,
       'status': status.description,
       'avaliacao_id': evaluationID,
+      'modulos': jsonEncode(modulos),
     };
   }
 
@@ -32,6 +37,7 @@ class ModuloEntity {
       score: map['score'] as int?,
       evaluationID: map['evaluationID'] as int?,
       status: map['status'],
+      modulos: (jsonDecode(map['modulos']) as List).map((activity) => activity.toString()).toList(),  // Convert each item in the list to a String
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../../../../domain/entities/modulo_entity.dart';
 import '../../../../utils/enums/idioma_enums.dart';
+import '../../../../utils/enums/modulo_enums.dart';
 import '../../../../utils/enums/pessoa_enums.dart';
 import '../../../controllers/cadastro_participante_controller.dart';
 import '../../../controllers/login_screen_controller.dart';
@@ -17,11 +18,8 @@ class FormularioParticipante extends StatefulWidget {
 }
 
 class _FormularioParticipanteState extends State<FormularioParticipante> {
-  Map<String, bool> items = {
-    'Contar História': false,
-    'Contar até 50': false,
-    'Roubo de biscoitos': false,
-  };
+  Map<String, bool> itemsMap = Map.fromIterable(items, key: (v) => v, value: (v) => false);
+
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +174,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
               ),
             ),
             Text(
-              'Atividades',
+              'Modulos',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -254,17 +252,18 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          ...items.keys.map((String key) {
+                          ...itemsMap.keys.map((String key) {
                             return CheckboxListTile(
                               title: Text(key),
-                              value: items[key],
+                              value: itemsMap[key],
                               onChanged: (bool? value) {
                                 setState(() {
-                                  items[key] = value!;
+                                  itemsMap[key] = value!;
                                 });
                               },
                             );
                           }).toList(),
+
                         ],
                       ),
                     ),
@@ -298,10 +297,11 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                       controller.printFormData();
 
                       // Capture selected activities
-                      List<String> selectedActivities = items.entries
+                      List<String> selectedActivities = itemsMap.entries
                           .where((entry) => entry.value)
                           .map((entry) => entry.key)
                           .toList();
+
 
                       // Use 'await' to wait for the asynchronous method to complete
                       int? evaluationID = await controller.createParticipante(
@@ -310,14 +310,15 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                       if (evaluationID != null) {
                         // Check if evaluationID is not null
                         // Capture selected activities
-                        List<String> selectedActivities = items.entries
+                        List<String> selectedActivities = itemsMap.entries
                             .where((entry) => entry.value)
                             .map((entry) => entry.key)
                             .toList();
 
-                        // Create AtividadeEntity objects
+
+                        // Create ModuloEntity objects
                         List<ModuloEntity> modulos =
-                            controller.createAtividadesEntities(
+                            controller.createModulosEntities(
                                 selectedActivities, evaluationID);
 
                         Get.back();

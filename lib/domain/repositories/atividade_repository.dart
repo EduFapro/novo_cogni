@@ -2,38 +2,38 @@
 import '../../data/datasource/modulo_local_datasource.dart';
 import '../../domain/entities/modulo_entity.dart';
 
-class AtividadeRepository {
-  final AtividadeLocalDataSource localDataSource;
+class ModuloRepository {
+  final ModuloLocalDataSource localDataSource;
 
-  AtividadeRepository({required this.localDataSource});
+  ModuloRepository({required this.localDataSource});
 
-  // Create an Atividade
-  Future<int?> createAtividade(ModuloEntity modulo) async {
+  // Create an Modulo
+  Future<int?> createModulo(ModuloEntity modulo) async {
     return await localDataSource.create(modulo);
   }
 
-  // Get an Atividade by ID
-  Future<ModuloEntity?> getAtividade(int id) async {
-    return await localDataSource.getAtividade(id);
+  // Get an Modulo by ID
+  Future<ModuloEntity?> getModulo(int id) async {
+    return await localDataSource.getModulo(id);
   }
 
-  // Delete an Atividade by ID
-  Future<int> deleteAtividade(int id) async {
-    return await localDataSource.deleteAtividade(id);
+  // Delete an Modulo by ID
+  Future<int> deleteModulo(int id) async {
+    return await localDataSource.deleteModulo(id);
   }
 
-  // Update an Atividade
-  Future<int> updateAtividade(ModuloEntity modulo) async {
-    return await localDataSource.updateAtividade(modulo);
+  // Update an Modulo
+  Future<int> updateModulo(ModuloEntity modulo) async {
+    return await localDataSource.updateModulo(modulo);
   }
 
-  // Get all Atividades
-  Future<List<ModuloEntity>> getAllAtividades() async {
-    return await localDataSource.getAllAtividades();
+  // Get all Modulos
+  Future<List<ModuloEntity>> getAllModulos() async {
+    return await localDataSource.getAllModulos();
   }
 
-  // Get the number of Atividades
-  Future<int?> getNumeroAtividades() async {
-    return await localDataSource.getNumeroAtividades();
+  // Get the number of Modulos
+  Future<int?> getNumeroModulos() async {
+    return await localDataSource.getNumeroModulos();
   }
 }
