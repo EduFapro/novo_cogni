@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HomeController>(); // Getting the controller instance
+    final controller = Get.find<HomeController>();
 
     double screenWidth = MediaQuery.of(context).size.width;
     double oneSeventhWidth = screenWidth / 7;
@@ -33,10 +33,14 @@ class HomeScreen extends StatelessWidget {
             color: Color(0xff000000),
             child: EdBarraLateral(),
           ),
-          Container(
-            width: sixSeventhWidth,
-            color: Color(0xfff3f2f2),
-            child: EdPainelHome(),
+          Expanded(
+            child: Center(
+              child: Container(
+                width: sixSeventhWidth,
+                color: Color(0xfff3f2f2),
+                child: EdPainelHome(),
+              ),
+            ),
           ),
         ],
       ),

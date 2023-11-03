@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'EdHistoricoAvaliacoesTable.dart';
 import 'ed_folder_card.dart';
 import 'ed_historico_avaliacoes.dart';
 import 'ed_novo_participante_button.dart';
@@ -67,7 +68,15 @@ class EdPainelHome extends StatelessWidget {
               placeholder: "Pesquisar...",
             ),
           ),
-        )
+        ),
+        // Flexible(
+        //   fit: FlexFit.loose,
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(40.0),
+        //     child: EdHistoricoAvaliacoesTable(placeholder: 'hohoho',),
+        //   ),
+        // ),
+
 
       ],
     );
