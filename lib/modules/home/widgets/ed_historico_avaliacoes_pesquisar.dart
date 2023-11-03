@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 
 import '../../widgets/ed_input_text.dart';
 
-class EdHistoricoAvaliacoes extends StatelessWidget {
+class EdHistoricoAvaliacoesPesquisar extends StatelessWidget {
   final String placeholder;
   final bool obscureText;
 
-  const EdHistoricoAvaliacoes({
+  const EdHistoricoAvaliacoesPesquisar({
     super.key,
     required this.placeholder,
     this.obscureText = false,
@@ -14,8 +14,6 @@ class EdHistoricoAvaliacoes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -25,17 +23,14 @@ class EdHistoricoAvaliacoes extends StatelessWidget {
             "Histórico de Avaliações",
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
-            child: EdInputText(
-              placeholder: placeholder,
-              obscureText: obscureText,
-            ),
+          SizedBox(height: 20),
+          EdInputText(
+            placeholder: placeholder,
+            obscureText: obscureText,
           ),
         ],
       ),
     );
   }
 }
+
