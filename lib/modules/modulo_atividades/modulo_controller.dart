@@ -9,7 +9,7 @@ import '../../app/domain/repositories/avaliador_repository.dart';
 import '../../app/domain/repositories/modulo_repository.dart';
 import '../../app/domain/repositories/participante_repository.dart';
 
-class HomeController extends GetxController {
+class ModuloController extends GetxController {
   var isLoading = false.obs;
   var avaliacoes = <AvaliacaoEntity>[];
   var participantes = <ParticipanteEntity>[];
@@ -21,7 +21,7 @@ class HomeController extends GetxController {
   final ParticipanteRepository participanteRepository;
   final ModuloRepository moduloRepository;
 
-  HomeController({
+  ModuloController({
     required this.avaliadorRepository,
     required this.avaliacaoRepository,
     required this.participanteRepository,

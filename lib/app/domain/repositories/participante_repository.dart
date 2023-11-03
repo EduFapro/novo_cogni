@@ -28,7 +28,12 @@ class ParticipanteRepository {
 
   // Get all Participantes
   Future<List<ParticipanteEntity>> getAllParticipantes() async {
-    return await localDataSource.getAllParticipantes();
+    try {
+      return await localDataSource.getAllParticipantes();
+    } catch (e) {
+      print('Error fetching all avaliacoes: $e');
+      return [];
+    }
   }
 
   // Get the number of Participantes

@@ -29,7 +29,12 @@ class ModuloRepository {
 
   // Get all Modulos
   Future<List<ModuloEntity>> getAllModulos() async {
-    return await localDataSource.getAllModulos();
+    try {
+      return await localDataSource.getAllModulos();
+    } catch (e) {
+      print('Error fetching all avaliacoes: $e');
+      return [];
+    }
   }
 
   // Get the number of Modulos

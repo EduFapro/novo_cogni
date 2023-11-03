@@ -28,7 +28,12 @@ class AvaliadorRepository {
 
   // Get all Avaliadores
   Future<List<AvaliadorEntity>> getAllAvaliadores() async {
-    return await localDataSource.getAllAvaliadores();
+    try {
+      return await localDataSource.getAllAvaliadores();
+    } catch (e) {
+      print('Error fetching all avaliadores: $e');
+      return [];
+    }
   }
 
   // Get the number of Avaliadores

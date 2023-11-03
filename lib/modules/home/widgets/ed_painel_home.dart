@@ -66,11 +66,10 @@ class EdPainelHome extends StatelessWidget {
               placeholder: "Pesquisar...",
             ),
           ),
-          // You can uncomment this section and remove the Flexible widget
-          // Padding(
-          //   padding: const EdgeInsets.all(40.0),
-          //   child: EdHistoricoAvaliacoesTable(placeholder: 'hohoho',),
-          // ),
+          Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: EdHistoricoAvaliacoesTable(),
+          ),
         ],
       ),
     );

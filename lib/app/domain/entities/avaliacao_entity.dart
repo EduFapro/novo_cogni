@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../../data/data_constants/avaliacao_constants.dart';
 import 'modulo_entity.dart';
 
 class AvaliacaoEntity {
@@ -16,13 +17,15 @@ class AvaliacaoEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'avaliacao_id': avaliacaoID,
-      'avaliador_id': avaliadorID,
-      'participante_id': participanteID,
-      'modulos':
-      jsonEncode(modulos.map((activity) => activity.toMap()).toList()),
+      ID_AVALIACAO: avaliacaoID,
+      ID_AVALIADOR_FK: avaliadorID,
+      ID_PARTICIPANTE_FK: participanteID,
+      MODULOS: modulos != null
+          ? jsonEncode(modulos.map((modulo) => modulo.toMap()).toList())
+          : jsonEncode([]),
     };
   }
+
 
   static AvaliacaoEntity fromMap(Map<String, dynamic> map) {
     return AvaliacaoEntity(

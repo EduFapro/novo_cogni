@@ -20,11 +20,11 @@ class ModuloEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'modulo_id': moduloID,
-      'data_modulo': date?.toIso8601String(),
-      'pontuacao': score,
-      'status': status.description,
-      'avaliacao_id': evaluationID,
+      ID_MODULO: moduloID,
+      DATA_MODULO: date?.toIso8601String(),
+      PONTUACAO_MODULO: score,
+      STATUS: status.description,
+      ID_AVALIACAO_FK: evaluationID,
       TAREFAS: tarefas.join(','), // Convert list to a comma-separated string
     };
   }
@@ -36,7 +36,8 @@ class ModuloEntity {
       score: map['pontuacao'] as int?,
       evaluationID: map['avaliacao_id'] as int?,
       status: Status.values.firstWhere((e) => e.description == map['status'], orElse: () => Status.a_iniciar),
-      tarefas: (map[TAREFAS] as String).split(','), // Convert comma-separated string back to list
+      tarefas: map[TAREFAS] != null ? (map[TAREFAS] as String).split(',') : [],
+
     );
   }
 }
