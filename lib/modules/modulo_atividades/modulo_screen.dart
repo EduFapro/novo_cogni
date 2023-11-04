@@ -46,8 +46,8 @@ class ModuloScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final tarefa = controller.modulo.value?.tarefas[index];
                     return ListTile(
-                      title: Text(tarefa ?? 'Tarefa sem nome'), // Replace with actual property
-                      subtitle: Text(tarefa?? 'Sem descrição'), // Replace with actual property
+                      title: Text(tarefa!.nome),
+                      subtitle: Text(tarefa.nome),
                       // Add trailing and leading widgets if needed
                     );
                   },

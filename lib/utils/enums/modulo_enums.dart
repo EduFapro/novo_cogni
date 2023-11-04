@@ -1,4 +1,4 @@
-enum Status { a_iniciar, em_progresso, terminado }
+enum StatusModulo { a_iniciar, em_progresso, terminado }
 
 List items = [
   'Contar História',
@@ -7,14 +7,14 @@ List items = [
 ];
 
 
-extension StatusExtension on Status {
+extension StatusDescription on StatusModulo {
   String get description {
     switch (this) {
-      case Status.a_iniciar:
+      case StatusModulo.a_iniciar:
         return "A iniciar";
-      case Status.em_progresso:
+      case StatusModulo.em_progresso:
         return "Em progresso";
-      case Status.terminado:
+      case StatusModulo.terminado:
         return "Terminado";
       default:
         return "Unknown";

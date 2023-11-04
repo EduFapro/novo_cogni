@@ -29,10 +29,10 @@ class AvaliacaoEntity {
 
   static AvaliacaoEntity fromMap(Map<String, dynamic> map) {
     return AvaliacaoEntity(
-      avaliacaoID: map['avaliacao_id'] as int?,
-      avaliadorID: map['avaliador_id'] as int,
-      participanteID: map['participante_id'] as int,
-      modulos: (jsonDecode(map['modulos']) as List)
+      avaliacaoID: map[ID_AVALIACAO] as int?,
+      avaliadorID: map[ID_AVALIADOR_FK] as int,
+      participanteID: map[ID_PARTICIPANTE_FK] as int,
+      modulos: (jsonDecode(map[MODULOS]) as List)
           .map((activityMap) => ModuloEntity.fromMap(activityMap))
           .toList(),
     );

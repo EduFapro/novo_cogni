@@ -1,21 +1,25 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:novo_cogni/app/domain/entities/avaliador_entity.dart';
+import '../../utils/enums/pessoa_enums.dart';
+import '../avaliadores/avaliadores_controller.dart';
 import 'ed_input_text.dart';
 import 'ed_novo_avaliador_button.dart';
-import 'ed_table_list.dart';
 
 class EdListaAvaliadores extends StatelessWidget {
   final String placeholder;
   final bool obscureText;
 
-  const EdListaAvaliadores({
-    super.key,
+  EdListaAvaliadores({
+    Key? key,
     required this.placeholder,
     this.obscureText = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    final AvaliadoresController controller = Get.find<AvaliadoresController>();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -26,15 +30,37 @@ class EdListaAvaliadores extends StatelessWidget {
             "Lista de Avaliadores",
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 20),
           EdInputText(
             placeholder: placeholder,
             obscureText: obscureText,
           ),
           Expanded(
-            child: EdTableList(),
+            child: Obx(() {
+              var avaliadoresList = controller.avaliadoresList;
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columnSpacing: 16,
+                  columns: const [
+                    DataColumn(label: Text('Nome')),
+                    DataColumn(label: Text('Email')),
+                    DataColumn(label: Text('Data de Nascimento')),
+                    DataColumn(label: Text('Sexo')),
+                  ],
+                  rows: avaliadoresList.map((avaliador) {
+                    return DataRow(
+                      cells: [
+                        DataCell(Text('${avaliador.nome} ${avaliador.sobrenome}')),
+                        DataCell(Text(avaliador.email)),
+                        DataCell(Text(DateFormat('dd/MM/yyyy').format(avaliador.dataNascimento))),
+                        DataCell(Text(avaliador.sexo == Sexo.homem ? 'Homem' : 'Mulher')),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              );
+            }),
           ),
           SizedBox(
             width: 900,

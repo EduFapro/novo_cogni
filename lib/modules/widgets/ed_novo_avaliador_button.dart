@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../app/domain/entities/avaliador_entity.dart';
 import '../../routes.dart';
+import '../avaliadores/avaliadores_controller.dart';
 
 class EdNovoAvaliadorButton extends StatelessWidget {
   const EdNovoAvaliadorButton({
@@ -11,9 +13,16 @@ class EdNovoAvaliadorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        Get.toNamed(AppRoutes.cadastroAvaliador);
+      onPressed: () async {
+        // Navigate and wait for the result
+        var result = await Get.toNamed(AppRoutes.cadastroAvaliador);
+        // If the result is a new Avaliador, add it to the list
+        if (result is AvaliadorEntity) {
+          final AvaliadoresController controller = Get.find();
+          controller.addAvaliador(result);
+        }
       },
+
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,
         padding: const EdgeInsets.all(20),

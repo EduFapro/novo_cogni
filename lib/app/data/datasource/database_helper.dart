@@ -5,6 +5,7 @@ import '../data_constants/avaliacao_constants.dart';
 import '../data_constants/avaliador_constants.dart';
 import '../data_constants/constantes_gerais.dart';
 import '../data_constants/participante_constants.dart';
+import '../data_constants/tarefa_constants.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
@@ -35,6 +36,7 @@ class DatabaseHelper {
     await db.execute(SCRIPT_CREATE_TABELA_PARTICIPANTES);
     await db.execute(SCRIPT_CREATE_TABELA_AVALIACOES);
     await db.execute(SCRIPT_CREATE_TABELA_MODULOS);
+    await db.execute(SCRIPT_CREATE_TABELA_TAREFAS);
   }
 
 

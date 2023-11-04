@@ -45,6 +45,7 @@ class AvaliadorLocalDataSource {
           SEXO_AVALIADOR: sexoValue,
           CPF_OU_NIF_AVALIADOR: avaliador.cpfOuNif,
           EMAIL_AVALIADOR: avaliador.email,
+          ESPECIALIDADE_AVALIADOR: avaliador.especialidade,
           PASSWORD_AVALIADOR: '0000'  // Add this line
         },
         conflictAlgorithm: ConflictAlgorithm.replace,

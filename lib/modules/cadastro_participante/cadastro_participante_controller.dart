@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novo_cogni/app/domain/entities/tarefa_entity.dart';
 
 import '../../app/data/datasource/avaliacao_local_datasource.dart';
 import '../../app/data/datasource/modulo_local_datasource.dart';
@@ -11,6 +12,7 @@ import '../../app/domain/repositories/participante_repository.dart';
 import '../../utils/enums/idioma_enums.dart';
 import '../../utils/enums/modulo_enums.dart';
 import '../../utils/enums/pessoa_enums.dart';
+import '../../utils/enums/tarefa_enums.dart';
 
 class CadastroParticipanteController extends GetxController {
   final ParticipanteRepository _repository;
@@ -107,12 +109,14 @@ class CadastroParticipanteController extends GetxController {
 
   List<ModuloEntity> createModulosEntities(List<String> selectedActivities, int evaluationID) {
     return selectedActivities.map((activity) {
+      TarefaEntity tarefa = TarefaEntity(nome: activity,
+        status: StatusTarefa.a_realizar,);
       return ModuloEntity(
         date: DateTime.now(),
         score: 0,
         evaluationID: evaluationID,
-        status: Status.a_iniciar,
-        tarefas: [activity], // passing the activity as a list of single string
+        status: StatusModulo.a_iniciar,
+        tarefas: [tarefa],
       );
     }).toList();
   }

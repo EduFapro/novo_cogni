@@ -4,11 +4,14 @@ import 'package:intl/intl.dart';
 import '../../app/domain/entities/avaliador_entity.dart';
 import '../../app/domain/repositories/avaliador_repository.dart';
 import '../../utils/enums/pessoa_enums.dart';
+import '../avaliadores/avaliadores_controller.dart';
 
 class CadastroAvaliadorController extends GetxController {
   final AvaliadorRepository _repository;
+  final AvaliadoresController _avaliadoresController;
 
-  CadastroAvaliadorController(this._repository);
+  CadastroAvaliadorController(this._repository, this._avaliadoresController);
+
 
   final nomeCompletoController = TextEditingController();
   final dataNascimentoController = TextEditingController();
@@ -33,7 +36,7 @@ class CadastroAvaliadorController extends GetxController {
     }
   }
 
-  void createAvaliador() {
+  Future<bool> createAvaliador() async {
     var nomeCompleto = nomeCompletoController.text;
     List<String> parts = nomeCompleto.split(' ');
 
@@ -45,35 +48,34 @@ class CadastroAvaliadorController extends GetxController {
       parsedDate = DateFormat.yMd().parse(dataNascimentoController.text);
     } catch (e) {
       print('Error parsing date: $e');
-      return;  // Early return if there's an error
+      return false;
     }
 
     if (parsedDate == null || selectedSexo.value == null) {
       print('Date or Sexo is null. Aborting.');
-      return; // Ensure parsedDate and selectedSexo are not null before proceeding
+      return false;
     }
 
     AvaliadorEntity novoAvaliador = AvaliadorEntity(
-        nome: nome,
-        sobrenome: sobrenome,
-        dataNascimento: parsedDate,
-        sexo: selectedSexo.value!,
-        especialidade: especialidadeController.text,
-        cpfOuNif: CPF_NIFController.text,
-        email: emailController.text, password: '0000'
+      nome: nome,
+      sobrenome: sobrenome,
+      dataNascimento: parsedDate,
+      sexo: selectedSexo.value!,
+      especialidade: especialidadeController.text,
+      cpfOuNif: CPF_NIFController.text,
+      email: emailController.text,
+      password: '0000',
     );
 
-    _repository.createAvaliador(novoAvaliador);
-    // Possibly give some user feedback after creation.
-  }
-
-
-  Future<AvaliadorEntity?> getAvaliador(int id) async {
-    return _repository.getAvaliador(id);
-  }
-
-  Future<List<AvaliadorEntity>?> getAllAvaliadores() async {
-    return _repository.getAllAvaliadores();
+    try {
+      await _repository.createAvaliador(novoAvaliador);
+      // Add the new Avaliador to the AvaliadoresController's list
+      _avaliadoresController.addAvaliador(novoAvaliador);
+      return true;
+    } catch (e) {
+      print('Error creating avaliador: $e');
+      return false;
+    }
   }
 
   @override
@@ -89,7 +91,7 @@ class CadastroAvaliadorController extends GetxController {
   void printFormData() {
     print('Nome Completo: ${nomeCompletoController.text}');
     print('Data de Nascimento: ${dataNascimentoController.text}');
-    print('Sexo: ${selectedSexo == Sexo.homem ? 'Homem' : 'Mulher'}');
+    print('Sexo: ${selectedSexo.value == Sexo.homem ? 'Homem' : 'Mulher'}');
     print('Especialidade: ${especialidadeController.text}');
     print('CPF/NIF: ${CPF_NIFController.text}');
     print('Email: ${emailController.text}');

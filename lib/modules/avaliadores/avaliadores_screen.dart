@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../widgets/ed_lista_avaliadores.dart';
 import 'avaliadores_controller.dart';
 
@@ -10,6 +9,10 @@ class AvaliadoresScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final avaliadoresController = Get.find<AvaliadoresController>();
+
+    final avaliadoresList = avaliadoresController.avaliadoresList;
+
+
     double screenHeight = MediaQuery.of(context).size.height;
     double bodyHeight = screenHeight * 0.85;
 
@@ -22,7 +25,7 @@ class AvaliadoresScreen extends StatelessWidget {
       ),
       body: Container(
         height: bodyHeight,
-        child: EdListaAvaliadores(placeholder: 'Buscar...'),
+        child: EdListaAvaliadores(placeholder: 'Buscar...',),
       ),
     );
   }
