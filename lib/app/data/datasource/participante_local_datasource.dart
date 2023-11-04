@@ -3,7 +3,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../../../utils/enums/pessoa_enums.dart';
 import '../../domain/entities/participante_entity.dart';
 import '../data_constants/participante_constants.dart';
-import '../data_constants/constantes_gerais.dart';
+import '../data_constants/database_constants.dart';
 import 'database_helper.dart';
 
 class ParticipanteLocalDataSource {

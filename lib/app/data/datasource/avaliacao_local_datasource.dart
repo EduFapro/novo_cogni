@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../../domain/entities/avaliacao_entity.dart';
 import '../data_constants/avaliacao_constants.dart';
-import '../data_constants/constantes_gerais.dart';
+import '../data_constants/database_constants.dart';
 import 'database_helper.dart';
 
 class AvaliacaoLocalDataSource {

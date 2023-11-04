@@ -9,7 +9,6 @@ class ModuloEntity {
   int? moduloID;
   DateTime? date;
   int? score;
-  int? evaluationID;
   StatusModulo status;
   List<TarefaEntity> tarefas;
 
@@ -17,7 +16,6 @@ class ModuloEntity {
     this.moduloID,
     this.date,
     this.score,
-    this.evaluationID,
     this.status = StatusModulo.a_iniciar,
     required this.tarefas,
   });
@@ -28,7 +26,6 @@ class ModuloEntity {
       DATA_MODULO: date?.toIso8601String(),
       PONTUACAO_MODULO: score,
       STATUS: status.description,
-      ID_AVALIACAO_FK: evaluationID,
       TAREFAS: jsonEncode(tarefas.map((tarefa) => tarefa.toMap()).toList()),
     };
   }
@@ -38,7 +35,6 @@ class ModuloEntity {
       moduloID: map[ID_MODULO] as int?,
       date: map[DATA_MODULO] != null ? DateTime.parse(map['data_modulo'] as String) : null,
       score: map[PONTUACAO_MODULO] as int?,
-      evaluationID: map[ID_AVALIACAO_FK] as int?,
       status: StatusModulo.values.firstWhere((e) => e.description == map['status'], orElse: () => StatusModulo.a_iniciar),
       tarefas: map[TAREFAS] != null
           ? List<TarefaEntity>.from(jsonDecode(map[TAREFAS]).map((tarefaMap) => TarefaEntity.fromMap(tarefaMap)))

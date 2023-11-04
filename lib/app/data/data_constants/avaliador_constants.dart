@@ -1,4 +1,4 @@
-import 'constantes_gerais.dart';
+import 'database_constants.dart';
 
 const ID_AVALIADOR = "avaliador_id";
 const NOME_AVALIADOR = "nome";

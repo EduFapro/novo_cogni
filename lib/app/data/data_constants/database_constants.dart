@@ -6,5 +6,6 @@ const TABELA_PARTICIPANTES = "participantes";
 const TABELA_AVALIACOES = "avaliacoes";
 const TABELA_MODULOS = "modulos";
 const TABELA_TAREFAS = "tarefas";
+const TABELA_AVALIACAO_MODULOS = "avaliacao_modulos";
 
 
