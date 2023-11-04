@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:novo_cogni/routes.dart';
 import 'package:novo_cogni/utils/enums/modulo_enums.dart';
+import '../../modulo_atividades/modulo_screen.dart';
 import '../home_controller.dart';
 
 class EdHistoricoAvaliacoesTable extends StatelessWidget {
@@ -12,7 +13,6 @@ class EdHistoricoAvaliacoesTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
 
-    // Wrap with Obx to listen for changes
     return Obx(() {
       if (controller.isLoading.isTrue) {
         return Center(child: CircularProgressIndicator());
@@ -79,7 +79,16 @@ class EdHistoricoAvaliacoesTable extends StatelessWidget {
                                     : ''),
                               ),
                               GestureDetector(
-                                onTap: () => Get.toNamed(AppRoutes.modulo),
+
+                                onTap: () => Get.to(
+                                      () => ModuloScreen(),
+                                  arguments: {
+                                    'participante': participante,
+                                    'modulo': modulo,
+                                  },
+                                ),
+
+
                                 child: Icon(Icons.create_rounded),
                               ),
                               const Icon(Icons.delete),
