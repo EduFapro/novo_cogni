@@ -40,4 +40,10 @@ class AvaliacaoEntity {
     final data = jsonDecode(jsonString);
     return AvaliacaoEntity.fromMap(data);
   }
+
+  @override
+  String toString() {
+    return 'AvaliacaoEntity(avaliacaoID: $avaliacaoID, avaliadorID: $avaliadorID, participanteID: $participanteID)';
+  }
+
 }

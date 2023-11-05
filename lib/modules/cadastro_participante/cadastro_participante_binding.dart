@@ -8,6 +8,7 @@ import '../../app/domain/repositories/participante_repository.dart';
 import '../../app/domain/repositories/avaliacao_repository.dart';
 import '../../app/domain/repositories/modulo_repository.dart';
 import '../../app/domain/repositories/avaliacao_modulo_repository.dart';
+import '../../app/domain/repositories/tarefa_repository.dart';
 import 'cadastro_participante_controller.dart';
 
 class CadastroParticipanteBinding extends Bindings {
@@ -28,13 +29,15 @@ class CadastroParticipanteBinding extends Bindings {
           tarefaLocalDataSource: Get.find(),
         ));
     Get.lazyPut(() => AvaliacaoModuloRepository(localDataSource: Get.find()));
+    Get.lazyPut(() => TarefaLocalDataSource());
+    Get.lazyPut(() => TarefaRepository());
 
     // Register controller with all required repositories
     Get.lazyPut(() => CadastroParticipanteController(
-          Get.find<ParticipanteRepository>(),
-          Get.find<AvaliacaoRepository>(),
-          Get.find<ModuloRepository>(),
-          Get.find<AvaliacaoModuloRepository>(),
-        ));
+        participanteRepository: Get.find(),
+        avaliacaoRepository: Get.find(),
+        moduloRepository: Get.find(),
+        avaliacaoModuloRepository: Get.find(),
+        tarefaRepository: Get.find()));
   }
 }

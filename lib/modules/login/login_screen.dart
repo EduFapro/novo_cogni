@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../mixins/ValidationMixin.dart';
 import '../../routes.dart';
 import '../widgets/ed_input_text.dart';
 import 'login_screen_controller.dart';
+import 'mixins/ValidationMixin.dart';
 
 class LoginScreen extends StatelessWidget with ValidationMixin {
   LoginScreen({Key? key}) : super(key: key);

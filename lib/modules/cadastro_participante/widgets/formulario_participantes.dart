@@ -293,21 +293,32 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                   SizedBox(width: 20),
                   TextButton(
                     onPressed: () async {
+                      // This will print the form data for debugging purposes
                       controller.printFormData();
 
-                      // Capture selected activities
+                      // Capture selected activities from the form
                       List<String> selectedActivities = itemsMap.entries
                           .where((entry) => entry.value)
                           .map((entry) => entry.key)
                           .toList();
 
-                      // Call the new method to handle everything
+                      // // Assuming avaliadorID is already defined and available in the current context
+                      // int avaliadorID = avaliadorID; // Replace with actual avaliadorID retrieval logic
+
+                      // Call the method to handle participant and modules creation
                       bool success = await controller.createParticipanteAndModulos(avaliadorID, selectedActivities);
 
                       if (success) {
-                        Get.back(); // Close the form if everything was successful
+                      // Close the form if everything was successful
+                      Get.back();
                       } else {
-                        // Handle the case where the operation failed, e.g., show an error message to the user
+                      // Handle the case where the operation failed
+                      // For example, show an error message to the user
+                      Get.snackbar(
+                      'Error', // Title
+                      'Failed to create participant and modules.', // Message
+                      snackPosition: SnackPosition.BOTTOM,
+                      );
                       }
                     },
                     style: TextButton.styleFrom(
@@ -321,6 +332,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                     ),
                     child: const Text("Cadastrar"),
                   ),
+
 
                 ],
               ),
