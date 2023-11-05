@@ -1,5 +1,4 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-
 import '../../domain/entities/avaliacao_modulo_entity.dart';
 import '../data_constants/avaliacao_modulo_constants.dart';
 import '../data_constants/database_constants.dart';

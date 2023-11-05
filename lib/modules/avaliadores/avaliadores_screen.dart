@@ -9,8 +9,7 @@ class AvaliadoresScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final avaliadoresController = Get.find<AvaliadoresController>();
-
-    final avaliadoresList = avaliadoresController.avaliadoresList;
+    // final avaliadoresList = avaliadoresController.avaliadoresList;
 
 
     double screenHeight = MediaQuery.of(context).size.height;

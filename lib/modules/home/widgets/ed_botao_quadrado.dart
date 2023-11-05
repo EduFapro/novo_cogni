@@ -19,11 +19,11 @@ class EdBotaoQuadrado extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 60.0,  // You can adjust the size as needed
-        height: 60.0, // Keeping it square
+        width: 60.0,
+        height: 60.0,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(8.0), // Rounded edges
+          borderRadius: BorderRadius.circular(8.0),
         ),
         child: Icon(
           icon,

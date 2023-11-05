@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../../app/domain/entities/avaliacao_entity.dart';
 import '../../app/domain/entities/avaliador_entity.dart';
 import '../../app/domain/entities/modulo_entity.dart';

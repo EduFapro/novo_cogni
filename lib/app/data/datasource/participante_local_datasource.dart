@@ -30,7 +30,6 @@ class ParticipanteLocalDataSource {
           DATA_NASCIMENTO_PARTICIPANTE: participante.dataNascimento.toIso8601String(),
           SEXO_PARTICIPANTE: sexoValue,
           ESCOLARIDADE_PARTICIPANTE: participante.escolaridade.toString().split('.').last,
-          // Removed the MODULOS_PARTICIPANTE line
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -39,10 +38,6 @@ class ParticipanteLocalDataSource {
       return null;
     }
   }
-
-
-
-
 
 
 Future<ParticipanteEntity?> getParticipante(int id) async {

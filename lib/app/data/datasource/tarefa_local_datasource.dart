@@ -102,6 +102,19 @@ class TarefaLocalDataSource {
     return result.first["count"] as int?;
   }
 
+  Future<List<TarefaEntity>> getTarefasForModulo(int moduloId) async {
+    final Database? database = await db;
+    final List<Map<String, dynamic>> maps = await database!.query(
+      TABELA_TAREFAS,
+      where: '$MODULO_ID = ?',
+      whereArgs: [moduloId],
+    );
+    return List.generate(maps.length, (i) {
+      return TarefaEntity.fromMap(maps[i]);
+    });
+  }
+
+
   Future<void> closeDatabase() async {
     final Database? database = await db;
     return database!.close();

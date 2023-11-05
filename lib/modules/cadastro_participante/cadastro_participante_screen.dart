@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/modules/cadastro_participante/widgets/formulario_participantes.dart';
-
 import 'cadastro_participante_controller.dart';
 
 class CadastroParticipanteScreen extends StatelessWidget {
@@ -9,7 +8,7 @@ class CadastroParticipanteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure the controller is available for the child widgets
+
     return GetBuilder<CadastroParticipanteController>(
       builder: (controller) => Scaffold(
         appBar: AppBar(
@@ -23,7 +22,7 @@ class CadastroParticipanteScreen extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          child: FormularioParticipante(controller: controller), // Pass the controller to the FormularioParticipante widget
+          child: FormularioParticipante(controller: controller),
         ),
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:novo_cogni/routes.dart';
 import 'package:novo_cogni/utils/enums/modulo_enums.dart';
 import '../../modulo_atividades/modulo_screen.dart';
 import '../home_controller.dart';

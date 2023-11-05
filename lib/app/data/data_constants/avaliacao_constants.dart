@@ -1,5 +1,4 @@
 import 'package:novo_cogni/app/data/data_constants/participante_constants.dart';
-
 import 'avaliador_constants.dart';
 import 'database_constants.dart';
 

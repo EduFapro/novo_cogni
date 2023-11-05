@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import '../../widgets/ed_input_text.dart';
 
 class EdHistoricoAvaliacoesPesquisar extends StatelessWidget {

@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
             color: Color(0xff000000),
             child: EdBarraLateral(),
           ),
-          Expanded( // This will give the child proper constraints
+          Expanded(
             child: Center(
               child: Container(
                 color: Color(0xfff3f2f2),

@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../../../utils/enums/idioma_enums.dart';
 import '../../../../utils/enums/modulo_enums.dart';
 import '../../../../utils/enums/pessoa_enums.dart';
-import '../../../app/domain/entities/modulo_entity.dart';
 import '../../login/login_screen_controller.dart';
 import '../cadastro_participante_controller.dart';
 

@@ -1,44 +1,60 @@
 
+import 'package:novo_cogni/app/data/datasource/tarefa_local_datasource.dart';
+
 import '../../data/datasource/modulo_local_datasource.dart';
 import '../../domain/entities/modulo_entity.dart';
 
 class ModuloRepository {
-  final ModuloLocalDataSource localDataSource;
+  final ModuloLocalDataSource moduloLocalDataSource;
+  final TarefaLocalDataSource  tarefaLocalDataSource;
 
-  ModuloRepository({required this.localDataSource});
+  ModuloRepository({required this.moduloLocalDataSource, required this.tarefaLocalDataSource});
+
+
+
 
   // Create an Modulo
   Future<int?> createModulo(ModuloEntity modulo) async {
-    return await localDataSource.create(modulo);
+    return await moduloLocalDataSource.create(modulo);
   }
 
   // Get an Modulo by ID
   Future<ModuloEntity?> getModulo(int id) async {
-    return await localDataSource.getModulo(id);
+    return await moduloLocalDataSource.getModulo(id);
   }
 
   // Delete an Modulo by ID
   Future<int> deleteModulo(int id) async {
-    return await localDataSource.deleteModulo(id);
+    return await moduloLocalDataSource.deleteModulo(id);
   }
 
   // Update an Modulo
   Future<int> updateModulo(ModuloEntity modulo) async {
-    return await localDataSource.updateModulo(modulo);
+    return await moduloLocalDataSource.updateModulo(modulo);
   }
 
   // Get all Modulos
   Future<List<ModuloEntity>> getAllModulos() async {
     try {
-      return await localDataSource.getAllModulos();
+      return await moduloLocalDataSource.getAllModulos();
     } catch (e) {
       print('Error fetching all avaliacoes: $e');
       return [];
     }
   }
 
+  Future<ModuloEntity?> getModuloWithTarefas(int moduloId) async {
+    final modulo = await moduloLocalDataSource.getModulo(moduloId);
+    if (modulo != null) {
+      final tarefas = await tarefaLocalDataSource.getTarefasForModulo(moduloId);
+      modulo.tarefas = tarefas;
+    }
+    return modulo;
+  }
+
+
   // Get the number of Modulos
   Future<int?> getNumeroModulos() async {
-    return await localDataSource.getNumeroModulos();
+    return await moduloLocalDataSource.getNumeroModulos();
   }
 }

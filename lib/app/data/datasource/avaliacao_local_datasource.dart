@@ -19,7 +19,7 @@ class AvaliacaoLocalDataSource {
       final Database? database = await db;
 
       return await database!.insert(
-        TABELA_AVALIACOES, // Make sure you have the correct table name here.
+        TABELA_AVALIACOES,
         avaliacao.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -81,7 +81,7 @@ class AvaliacaoLocalDataSource {
     return avaliacoes;
   }
 
-  Future<int?> getNumeroAvaliacoes() async {  // Newly added function
+  Future<int?> getNumeroAvaliacoes() async {
     final Database? database = await db;
     final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABELA_AVALIACOES");
     return result.first["count"] as int?;

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import '../../data/data_constants/avaliacao_constants.dart';
-import 'modulo_entity.dart';
 
 class AvaliacaoEntity {
   final int? avaliacaoID;

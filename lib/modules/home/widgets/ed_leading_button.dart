@@ -21,7 +21,7 @@ class EdLeadingButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon),
-          SizedBox(width: 8.0), // Provide some spacing between the icon and text
+          SizedBox(width: 8.0),
           Text(text),
         ],
       ),

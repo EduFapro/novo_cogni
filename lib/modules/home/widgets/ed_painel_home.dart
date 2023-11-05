@@ -12,7 +12,7 @@ class EdPainelHome extends StatelessWidget {
     double cardWidth = MediaQuery.of(context).size.width / 4; // A quarter of the screen width
     double cardHeight = 200;
 
-    return SingleChildScrollView( // Wrap with SingleChildScrollView
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

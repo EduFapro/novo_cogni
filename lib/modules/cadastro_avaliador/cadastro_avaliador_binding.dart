@@ -9,8 +9,10 @@ class CadastroAvaliadorBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => AvaliadorLocalDataSource());
     Get.lazyPut(() => AvaliadorRepository(localDataSource: Get.find()));
+
     // Ensure AvaliadoresController is available
     Get.find<AvaliadoresController>();
+
     // Pass AvaliadoresController to CadastroAvaliadorController
     Get.lazyPut(() => CadastroAvaliadorController(Get.find(), Get.find<AvaliadoresController>()));
   }

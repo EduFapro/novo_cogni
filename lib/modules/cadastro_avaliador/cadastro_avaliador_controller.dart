@@ -69,7 +69,6 @@ class CadastroAvaliadorController extends GetxController {
 
     try {
       await _repository.createAvaliador(novoAvaliador);
-      // Add the new Avaliador to the AvaliadoresController's list
       _avaliadoresController.addAvaliador(novoAvaliador);
       return true;
     } catch (e) {
