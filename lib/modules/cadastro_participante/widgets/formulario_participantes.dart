@@ -137,7 +137,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                             items: Escolaridade.values.map((escolaridade) {
                               return DropdownMenuItem<Escolaridade>(
                                 value: escolaridade,
-                                child: Text(describeEscolaridade(escolaridade)),
+                                child: Text(escolaridade.description),
                               );
                             }).toList(),
                             onChanged: (Escolaridade? value) {
@@ -158,7 +158,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                             items: Lateralidade.values.map((lateralidade) {
                               return DropdownMenuItem<Lateralidade>(
                                 value: lateralidade,
-                                child: Text(describeLateralidade(lateralidade)),
+                                child: Text(lateralidade.description),
                               );
                             }).toList(),
                             onChanged: (Lateralidade? value) {
@@ -302,28 +302,13 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                           .map((entry) => entry.key)
                           .toList();
 
+                      // Call the new method to handle everything
+                      bool success = await controller.createParticipanteAndModulos(avaliadorID, selectedActivities);
 
-                      // Use 'await' to wait for the asynchronous method to complete
-                      int? evaluationID = await controller.createParticipante(
-                          avaliadorID, selectedActivities);
-
-                      if (evaluationID != null) {
-                        // Check if evaluationID is not null
-                        // Capture selected activities
-                        List<String> selectedActivities = itemsMap.entries
-                            .where((entry) => entry.value)
-                            .map((entry) => entry.key)
-                            .toList();
-
-
-                        // Create ModuloEntity objects
-                        List<ModuloEntity> modulos =
-                            controller.createModulosEntities(
-                                selectedActivities, evaluationID);
-
-                        Get.back();
+                      if (success) {
+                        Get.back(); // Close the form if everything was successful
                       } else {
-                        // Handle the case where evaluationID is null, e.g., show an error message to the user
+                        // Handle the case where the operation failed, e.g., show an error message to the user
                       }
                     },
                     style: TextButton.styleFrom(
@@ -337,6 +322,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                     ),
                     child: const Text("Cadastrar"),
                   ),
+
                 ],
               ),
             ),
@@ -346,35 +332,4 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
     );
   }
 
-  String describeEscolaridade(Escolaridade escolaridade) {
-    switch (escolaridade) {
-      case Escolaridade.fundamental_incompleto:
-        return 'Fundamental Incompleto';
-      case Escolaridade.fundamental_completo:
-        return 'Fundamental Completo';
-      case Escolaridade.medio_incompleto:
-        return 'Medio Incompleto';
-      case Escolaridade.medio_completo:
-        return 'Medio Completo';
-      case Escolaridade.superior_incompleto:
-        return 'Superior Incompleto';
-      case Escolaridade.superior_completo:
-        return 'Superior Completo';
-      default:
-        return 'Unknown';
-    }
-  }
-
-  String describeLateralidade(Lateralidade lateralidade) {
-    switch (lateralidade) {
-      case Lateralidade.canhoto:
-        return 'Canhoto';
-      case Lateralidade.destro:
-        return 'Destro';
-      case Lateralidade.ambidestro:
-        return 'Ambidestro';
-      default:
-        return 'Unknown';
-    }
-  }
 }

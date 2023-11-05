@@ -6,13 +6,11 @@ class AvaliacaoEntity {
   final int? avaliacaoID;
   final int avaliadorID;
   final int participanteID;
-  final List<ModuloEntity> modulos;
 
   AvaliacaoEntity({
     this.avaliacaoID,
     required this.avaliadorID,
     required this.participanteID,
-    required this.modulos,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,9 +18,6 @@ class AvaliacaoEntity {
       ID_AVALIACAO: avaliacaoID,
       ID_AVALIADOR_FK: avaliadorID,
       ID_PARTICIPANTE_FK: participanteID,
-      MODULOS: modulos != null
-          ? jsonEncode(modulos.map((modulo) => modulo.toMap()).toList())
-          : jsonEncode([]),
     };
   }
 
@@ -32,9 +27,6 @@ class AvaliacaoEntity {
       avaliacaoID: map[ID_AVALIACAO] as int?,
       avaliadorID: map[ID_AVALIADOR_FK] as int,
       participanteID: map[ID_PARTICIPANTE_FK] as int,
-      modulos: (jsonDecode(map[MODULOS]) as List)
-          .map((activityMap) => ModuloEntity.fromMap(activityMap))
-          .toList(),
     );
   }
 

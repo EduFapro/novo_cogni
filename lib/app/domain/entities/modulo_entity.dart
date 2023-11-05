@@ -33,9 +33,9 @@ class ModuloEntity {
   static ModuloEntity fromMap(Map<String, dynamic> map) {
     return ModuloEntity(
       moduloID: map[ID_MODULO] as int?,
-      date: map[DATA_MODULO] != null ? DateTime.parse(map['data_modulo'] as String) : null,
+      date: map[DATA_MODULO] != null ? DateTime.parse(map[DATA_MODULO] as String) : null,
       score: map[PONTUACAO_MODULO] as int?,
-      status: StatusModulo.values.firstWhere((e) => e.description == map['status'], orElse: () => StatusModulo.a_iniciar),
+      status: StatusModulo.values.firstWhere((e) => e.description == map[STATUS], orElse: () => StatusModulo.a_iniciar),
       tarefas: map[TAREFAS] != null
           ? List<TarefaEntity>.from(jsonDecode(map[TAREFAS]).map((tarefaMap) => TarefaEntity.fromMap(tarefaMap)))
           : [],

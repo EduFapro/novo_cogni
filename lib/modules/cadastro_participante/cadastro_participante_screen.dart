@@ -11,7 +11,6 @@ class CadastroParticipanteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Ensure the controller is available for the child widgets
     return GetBuilder<CadastroParticipanteController>(
-      init: CadastroParticipanteController(Get.find()), // Initialize the controller
       builder: (controller) => Scaffold(
         appBar: AppBar(
           elevation: 0,

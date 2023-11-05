@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import '../data_constants/avaliacao_modulo_constants.dart';
 import '../data_constants/modulo_constants.dart';
 import '../data_constants/avaliacao_constants.dart';
 import '../data_constants/avaliador_constants.dart';
@@ -37,6 +38,7 @@ class DatabaseHelper {
     await db.execute(SCRIPT_CREATE_TABELA_AVALIACOES);
     await db.execute(SCRIPT_CREATE_TABELA_MODULOS);
     await db.execute(SCRIPT_CREATE_TABELA_TAREFAS);
+    await db.execute(SCRIPT_CREATE_TABELA_AVALIACAO_MODULOS);
   }
 
 
