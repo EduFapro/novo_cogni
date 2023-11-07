@@ -4,10 +4,9 @@ import 'modulo_controller.dart';
 class ModuloBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ModuloController(
+    Get.put(() => ModuloController(
       moduloRepository: Get.find(),
       tarefaRepository: Get.find(),
-      // Add other dependencies if needed
     ));
   }
 }

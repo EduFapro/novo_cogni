@@ -53,4 +53,5 @@ final routes = [
     binding: ModuloBinding(),
   ),
 
+
 ];

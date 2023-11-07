@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novo_cogni/routes.dart';
 import 'package:novo_cogni/utils/enums/modulo_enums.dart';
 import '../../modulo_atividades/modulo_controller.dart';
 import '../../modulo_atividades/modulo_screen.dart';
@@ -80,11 +81,7 @@ class EdHistoricoAvaliacoesTable extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  // Ensure the controller is initialized before navigating to the screen
-
-                                  // Now navigate to the screen
-                                  Get.to(
-                                    () => ModuloScreen(),
+                                  Get.toNamed(AppRoutes.modulo,
                                     arguments: {
                                       'participante': participante,
                                       'modulo': modulo,
