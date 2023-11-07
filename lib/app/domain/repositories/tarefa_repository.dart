@@ -2,7 +2,9 @@ import 'package:novo_cogni/app/data/datasource/tarefa_local_datasource.dart';
 import 'package:novo_cogni/app/domain/entities/tarefa_entity.dart';
 
 class TarefaRepository {
-  final TarefaLocalDataSource localDataSource = TarefaLocalDataSource();
+  final TarefaLocalDataSource localDataSource;
+
+  TarefaRepository({required this.localDataSource});
 
   // Create a Tarefa
   Future<int?> createTarefa(TarefaEntity tarefa) async {

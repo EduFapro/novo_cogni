@@ -30,7 +30,7 @@ class CadastroParticipanteBinding extends Bindings {
         ));
     Get.lazyPut(() => AvaliacaoModuloRepository(localDataSource: Get.find()));
     Get.lazyPut(() => TarefaLocalDataSource());
-    Get.lazyPut(() => TarefaRepository());
+    Get.lazyPut(() => TarefaRepository(localDataSource: Get.find(),));
 
     // Register controller with all required repositories
     Get.lazyPut(() => CadastroParticipanteController(

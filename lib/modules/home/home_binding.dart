@@ -3,6 +3,7 @@ import 'package:novo_cogni/app/data/datasource/avaliacao_local_datasource.dart';
 import 'package:novo_cogni/app/data/datasource/avaliador_local_datasource.dart';
 import 'package:novo_cogni/app/data/datasource/modulo_local_datasource.dart';
 import 'package:novo_cogni/app/data/datasource/participante_local_datasource.dart';
+import 'package:novo_cogni/app/domain/repositories/tarefa_repository.dart';
 import '../../app/data/datasource/tarefa_local_datasource.dart';
 import '../../app/domain/repositories/avaliacao_repository.dart';
 import '../../app/domain/repositories/avaliador_repository.dart';
@@ -25,6 +26,7 @@ class HomeBinding extends Bindings {
     Get.lazyPut(() => ParticipanteRepository(localDataSource: Get.find()));
     Get.lazyPut(() => ModuloRepository(
         moduloLocalDataSource: Get.find(), tarefaLocalDataSource: Get.find()));
+    Get.lazyPut(() => TarefaRepository(localDataSource: Get.find()));
 
     // Register controller with all required repositories
     Get.lazyPut(() => HomeController(
