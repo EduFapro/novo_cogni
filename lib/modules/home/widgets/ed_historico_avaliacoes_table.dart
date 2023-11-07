@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:novo_cogni/utils/enums/modulo_enums.dart';
+import '../../modulo_atividades/modulo_controller.dart';
 import '../../modulo_atividades/modulo_screen.dart';
 import '../home_controller.dart';
 
@@ -78,16 +79,18 @@ class EdHistoricoAvaliacoesTable extends StatelessWidget {
                                     : ''),
                               ),
                               GestureDetector(
+                                onTap: () {
+                                  // Ensure the controller is initialized before navigating to the screen
 
-                                onTap: () => Get.to(
-                                      () => ModuloScreen(),
-                                  arguments: {
-                                    'participante': participante,
-                                    'modulo': modulo,
-                                  },
-                                ),
-
-
+                                  // Now navigate to the screen
+                                  Get.to(
+                                    () => ModuloScreen(),
+                                    arguments: {
+                                      'participante': participante,
+                                      'modulo': modulo,
+                                    },
+                                  );
+                                },
                                 child: Icon(Icons.create_rounded),
                               ),
                               const Icon(Icons.delete),

@@ -23,14 +23,12 @@ class CadastroParticipanteController extends GetxController {
   final TarefaRepository tarefaRepository;
   final AvaliacaoModuloRepository avaliacaoModuloRepository;
 
-  CadastroParticipanteController({
-    required this.participanteRepository,
-    required this.avaliacaoRepository,
-    required this.moduloRepository,
-    required this.avaliacaoModuloRepository,
-    required this.tarefaRepository
-  });
-
+  CadastroParticipanteController(
+      {required this.participanteRepository,
+      required this.avaliacaoRepository,
+      required this.moduloRepository,
+      required this.avaliacaoModuloRepository,
+      required this.tarefaRepository});
 
   final nomeCompletoController = TextEditingController();
   final dataNascimentoController = TextEditingController();
@@ -58,13 +56,15 @@ class CadastroParticipanteController extends GetxController {
 
   // Method to create a new participant
   // Method to create a new participant
-  Future<int?> createParticipante(int avaliadorID, List<String> selectedModulos) async {
+  Future<int?> createParticipante(
+      int avaliadorID, List<String> selectedModulos) async {
     try {
       // Assuming you have a ParticipanteEntity that takes necessary parameters
       // You would need to gather all the necessary data to create a new participant
       // For example, let's assume we need the name, date of birth, and other details
       String nomeCompleto = nomeCompletoController.text;
-      DateTime? dataNascimento = selectedDate.value; // or parse from dataNascimentoController.text if necessary
+      DateTime? dataNascimento = selectedDate
+          .value; // or parse from dataNascimentoController.text if necessary
       Sexo? sexo = selectedSexo.value;
       Escolaridade? escolaridade = selectedEscolaridade.value;
       Lateralidade? lateralidade = selectedLateralidade.value;
@@ -81,7 +81,8 @@ class CadastroParticipanteController extends GetxController {
       );
 
       // Call the method on the repository to save the participant
-      int? participanteId = await participanteRepository.createParticipante(novoParticipante);
+      int? participanteId =
+          await participanteRepository.createParticipante(novoParticipante);
 
       if (participanteId == null) {
         // Handle the case where the participant could not be saved
@@ -98,7 +99,6 @@ class CadastroParticipanteController extends GetxController {
     }
   }
 
-
   // Method to create modules and tasks
   List<ModuloEntity> createModulosEntities(List<String> selectedActivities) {
     return selectedActivities.map((activity) {
@@ -107,12 +107,14 @@ class CadastroParticipanteController extends GetxController {
         date: DateTime.now(),
         score: 0,
         status: StatusModulo.a_iniciar,
-        tarefas: [TarefaEntity(
-          nome: activity,
-          status: StatusTarefa.a_realizar,
-          // The moduloID will be set after the ModuloEntity is saved to the database
-          moduloID: null,
-        )],
+        tarefas: [
+          TarefaEntity(
+            nome: activity,
+            status: StatusTarefa.a_realizar,
+            // The moduloID will be set after the ModuloEntity is saved to the database
+            moduloID: null,
+          )
+        ],
       );
     }).toList();
   }
@@ -143,9 +145,9 @@ class CadastroParticipanteController extends GetxController {
     return moduloIds;
   }
 
-
   // Method to create and save tasks for modules
-  Future<void> createAndSaveTarefasForModulos(List<ModuloEntity> modulos, List<String> selectedActivities) async {
+  Future<void> createAndSaveTarefasForModulos(
+      List<ModuloEntity> modulos, List<String> selectedActivities) async {
     // Iterate over the modules and create tasks for each one
     for (int i = 0; i < modulos.length; i++) {
       ModuloEntity modulo = modulos[i];
@@ -162,7 +164,8 @@ class CadastroParticipanteController extends GetxController {
   }
 
   // Method to link an evaluation to modules
-  Future<void> linkAvaliacaoToModulos(int avaliacaoId, List<int> moduloIds) async {
+  Future<void> linkAvaliacaoToModulos(
+      int avaliacaoId, List<int> moduloIds) async {
     try {
       // Iterate over the list of modulo IDs and create a link for each one
       for (int moduloId in moduloIds) {
@@ -183,12 +186,13 @@ class CadastroParticipanteController extends GetxController {
     }
   }
 
-
   // Main method to orchestrate the creation of a participant and related entities
-  Future<bool> createParticipanteAndModulos(int avaliadorID, List<String> selectedActivities) async {
+  Future<bool> createParticipanteAndModulos(
+      int avaliadorID, List<String> selectedActivities) async {
     try {
       // Step 1: Create the participant and get the participantID
-      int? participantID = await createParticipante(avaliadorID, selectedActivities);
+      int? participantID =
+          await createParticipante(avaliadorID, selectedActivities);
       if (participantID == null) {
         throw Exception('Failed to create participant');
       }
@@ -201,6 +205,8 @@ class CadastroParticipanteController extends GetxController {
 
       // Step 3: Create ModuloEntity objects for each selected activity
       List<ModuloEntity> modulos = createModulosEntities(selectedActivities);
+
+      _initializeDefaultModulo(participantID);
 
       // Step 4: Save ModuloEntity objects and get their IDs
       List<int> moduloIds = await saveModulos(modulos);
@@ -220,7 +226,6 @@ class CadastroParticipanteController extends GetxController {
     }
   }
 
-
   // Method to create an evaluation
   // Method to create an evaluation
   Future<int?> createAvaliacao(int participanteID, int avaliadorID) async {
@@ -234,7 +239,8 @@ class CadastroParticipanteController extends GetxController {
       );
 
       // Call the method on the repository to save the evaluation
-      int? avaliacaoId = await avaliacaoRepository.createAvaliacao(novaAvaliacao);
+      int? avaliacaoId =
+          await avaliacaoRepository.createAvaliacao(novaAvaliacao);
 
       if (avaliacaoId == null) {
         // Handle the case where the evaluation could not be saved
@@ -250,7 +256,6 @@ class CadastroParticipanteController extends GetxController {
       rethrow;
     }
   }
-
 
   // Method to save a task to the database
   // Method to save a task to the database
@@ -271,6 +276,45 @@ class CadastroParticipanteController extends GetxController {
       print('An error occurred while saving the task: $e');
       rethrow;
     }
+  }
+
+  Future<ModuloEntity> _initializeDefaultModulo(int participantID) async {
+    // Create the ModuloEntity for the introduction module
+    ModuloEntity moduloIntroducao = ModuloEntity(
+      tarefas: [],
+      date: DateTime.now(),
+      moduloID: null, // This will be set after saving the module
+    );
+
+    // Save the ModuloEntity to the database and get the generated moduloID
+    int? moduloID = await moduloRepository.createModulo(moduloIntroducao);
+    if (moduloID == null) {
+      throw Exception('Failed to create the introduction module');
+    }
+
+    // Create the TarefaEntity instances with the correct moduloID
+    TarefaEntity tarefaOuvir = TarefaEntity(
+      nome: "Ouvir o Áudio",
+      moduloID: moduloID,
+    );
+    TarefaEntity apresentar = TarefaEntity(
+      nome: "Contar-nos o seu nome",
+      moduloID: moduloID,
+    );
+
+    // Save the TarefaEntity instances to the database
+    await tarefaRepository.createTarefa(tarefaOuvir);
+    await tarefaRepository.createTarefa(apresentar);
+
+    // Add the tasks to the module's task list
+    moduloIntroducao.tarefas.add(tarefaOuvir);
+    moduloIntroducao.tarefas.add(apresentar);
+
+    // Update the module with the tasks
+    await moduloRepository.updateModulo(moduloIntroducao);
+
+    // Return the updated module
+    return moduloIntroducao;
   }
 
 

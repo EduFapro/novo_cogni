@@ -7,6 +7,7 @@ import '../../app/domain/repositories/avaliacao_repository.dart';
 import '../../app/domain/repositories/avaliador_repository.dart';
 import '../../app/domain/repositories/modulo_repository.dart';
 import '../../app/domain/repositories/participante_repository.dart';
+import '../../app/domain/repositories/tarefa_repository.dart';
 
 class HomeController extends GetxController {
   var isLoading = false.obs;
@@ -19,12 +20,14 @@ class HomeController extends GetxController {
   final AvaliacaoRepository avaliacaoRepository;
   final ParticipanteRepository participanteRepository;
   final ModuloRepository moduloRepository;
+  final TarefaRepository tarefaRepository;
 
   HomeController({
     required this.avaliadorRepository,
     required this.avaliacaoRepository,
     required this.participanteRepository,
     required this.moduloRepository,
+    required this.tarefaRepository,
   });
 
   @override
@@ -59,6 +62,4 @@ class HomeController extends GetxController {
       print("Error fetching data: $e");
     }
   }
-
-
 }
