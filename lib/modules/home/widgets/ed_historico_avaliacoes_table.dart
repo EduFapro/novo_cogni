@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:novo_cogni/routes.dart';
 import 'package:novo_cogni/utils/enums/modulo_enums.dart';
-import '../../modulo_atividades/modulo_controller.dart';
-import '../../modulo_atividades/modulo_screen.dart';
 import '../home_controller.dart';
 
 class EdHistoricoAvaliacoesTable extends StatelessWidget {
@@ -18,6 +16,7 @@ class EdHistoricoAvaliacoesTable extends StatelessWidget {
       if (controller.isLoading.isTrue) {
         return Center(child: CircularProgressIndicator());
       } else {
+        print(controller.avaliacoes.length);
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -55,9 +54,11 @@ class EdHistoricoAvaliacoesTable extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: controller.avaliacoes.length,
                   itemBuilder: (context, index) {
-                    if (index < controller.participantes.length &&
+                    // Ensure index is within the range for all lists
+                    bool isIndexInRange = index < controller.participantes.length &&
                         index < controller.modulos.length &&
-                        index < controller.avaliadores.length) {
+                        index < controller.avaliadores.length;
+                    if (isIndexInRange) {
                       final participante = controller.participantes[index];
                       final modulo = controller.modulos[index];
                       final avaliador = controller.avaliadores[index];

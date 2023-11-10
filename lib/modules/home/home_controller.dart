@@ -11,10 +11,10 @@ import '../../app/domain/repositories/tarefa_repository.dart';
 
 class HomeController extends GetxController {
   var isLoading = false.obs;
-  var avaliacoes = <AvaliacaoEntity>[];
-  var participantes = <ParticipanteEntity>[];
-  var modulos = <ModuloEntity>[];
-  var avaliadores = <AvaliadorEntity>[];
+  var avaliacoes = <AvaliacaoEntity>[].obs;
+  var participantes = <ParticipanteEntity>[].obs;
+  var modulos = <ModuloEntity>[].obs;
+  var avaliadores = <AvaliadorEntity>[].obs;
 
   final AvaliadorRepository avaliadorRepository;
   final AvaliacaoRepository avaliacaoRepository;
@@ -41,25 +41,29 @@ class HomeController extends GetxController {
       isLoading.value = true;
       print('Fetching data...');
 
-      // Fetch data and log the results
-      avaliadores = await avaliadorRepository.getAllAvaliadores();
+      // Fetch data and assign the results using assignAll
+      var fetchedAvaliadores = await avaliadorRepository.getAllAvaliadores();
+      avaliadores.assignAll(fetchedAvaliadores);
       print('Avaliadores fetched: ${avaliadores.length}');
 
-      avaliacoes = await avaliacaoRepository.getAllAvaliacoes();
+      var fetchedAvaliacoes = await avaliacaoRepository.getAllAvaliacoes();
+      avaliacoes.assignAll(fetchedAvaliacoes);
       print('Avaliacoes fetched: ${avaliacoes.length}');
 
-      participantes = await participanteRepository.getAllParticipantes();
+      var fetchedParticipantes = await participanteRepository.getAllParticipantes();
+      participantes.assignAll(fetchedParticipantes);
       print('Participantes fetched: ${participantes.length}');
 
-      modulos = await moduloRepository.getAllModulos();
+      var fetchedModulos = await moduloRepository.getAllModulos();
+      modulos.assignAll(fetchedModulos);
       print('Modulos fetched: ${modulos.length}');
 
       isLoading.value = false;
       print('Data fetched successfully');
-      update();
     } catch (e) {
       isLoading.value = false;
       print("Error fetching data: $e");
     }
   }
+
 }

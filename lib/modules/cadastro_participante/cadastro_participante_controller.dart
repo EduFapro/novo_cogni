@@ -206,16 +206,19 @@ class CadastroParticipanteController extends GetxController {
       // Step 3: Create ModuloEntity objects for each selected activity
       List<ModuloEntity> modulos = createModulosEntities(selectedActivities);
 
-      _initializeDefaultModulo(participantID);
+      var moduloTeste = await _initializeDefaultModulo();
 
       // Step 4: Save ModuloEntity objects and get their IDs
-      List<int> moduloIds = await saveModulos(modulos);
+      List<int> moduloIds = await saveModulos([...modulos, moduloTeste]);
       if (moduloIds.isEmpty) {
         throw Exception('Failed to save modules');
       }
 
       // Step 5: Link the Avaliacao to the Modulos
       await linkAvaliacaoToModulos(evaluationID, moduloIds);
+
+      // Step 6: Inserir módulo de testes
+      await _initializeDefaultModulo();
 
       // If all steps were successful, return true
       return true;
@@ -278,7 +281,7 @@ class CadastroParticipanteController extends GetxController {
     }
   }
 
-  Future<ModuloEntity> _initializeDefaultModulo(int participantID) async {
+  Future<ModuloEntity> _initializeDefaultModulo() async {
     // Create the ModuloEntity for the introduction module
     ModuloEntity moduloIntroducao = ModuloEntity(
       tarefas: [],
