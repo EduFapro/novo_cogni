@@ -1,16 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TarefaBinding  extends Bindings {
+import '../audio_player/audio_recorder_controller.dart';
 
+class TarefaController extends GetxController {
+  final audioRecorderController = AudioRecorderController().obs;
+
+  // Add any other variables and methods needed for the TarefaScreen
 
   @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
+  void onInit() {
+    super.onInit();
+    // Initialize anything when the controller is created
   }
 
   @override
-  void dependencies() {
-    // TODO: implement dependencies
+  void onClose() {
+    // Dispose resources when the controller is removed from memory
+    audioRecorderController.value.dispose();
+    super.onClose();
   }
+
+// Add methods to control audio recording, playback, etc.
 }
