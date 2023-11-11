@@ -10,6 +10,7 @@ import '../../app/domain/repositories/modulo_repository.dart';
 import '../../app/domain/repositories/avaliacao_modulo_repository.dart';
 import '../../app/domain/repositories/tarefa_repository.dart';
 import 'cadastro_participante_controller.dart';
+import 'cadastro_participante_service.dart';
 
 class CadastroParticipanteBinding extends Bindings {
   @override
@@ -22,22 +23,25 @@ class CadastroParticipanteBinding extends Bindings {
     Get.lazyPut(() => TarefaLocalDataSource());
 
     // Register repositories with their respective data sources
-    Get.lazyPut(() => ParticipanteRepository(localDataSource: Get.find()));
-    Get.lazyPut(() => AvaliacaoRepository(localDataSource: Get.find()));
-    Get.lazyPut(() => ModuloRepository(
-          moduloLocalDataSource: Get.find(),
-          tarefaLocalDataSource: Get.find(),
-        ));
-    Get.lazyPut(() => AvaliacaoModuloRepository(localDataSource: Get.find()));
-    Get.lazyPut(() => TarefaLocalDataSource());
-    Get.lazyPut(() => TarefaRepository(localDataSource: Get.find(),));
+    Get.lazyPut<ParticipanteRepository>(() => ParticipanteRepository(localDataSource: Get.find()));
+    Get.lazyPut<AvaliacaoRepository>(() => AvaliacaoRepository(localDataSource: Get.find()));
+    Get.lazyPut<ModuloRepository>(() => ModuloRepository(
+      moduloLocalDataSource: Get.find(),
+      tarefaLocalDataSource: Get.find(),
+    ));
+    Get.lazyPut<AvaliacaoModuloRepository>(() => AvaliacaoModuloRepository(localDataSource: Get.find()));
+    Get.lazyPut<TarefaRepository>(() => TarefaRepository(localDataSource: Get.find()));
 
-    // Register controller with all required repositories
-    Get.lazyPut(() => CadastroParticipanteController(
-        participanteRepository: Get.find(),
-        avaliacaoRepository: Get.find(),
-        moduloRepository: Get.find(),
-        avaliacaoModuloRepository: Get.find(),
-        tarefaRepository: Get.find()));
+    // Register service
+    Get.lazyPut<ParticipanteService>(() => ParticipanteService(
+      participanteRepository: Get.find<ParticipanteRepository>(),
+      avaliacaoRepository: Get.find<AvaliacaoRepository>(),
+      moduloRepository: Get.find<ModuloRepository>(),
+      avaliacaoModuloRepository: Get.find<AvaliacaoModuloRepository>(),
+      tarefaRepository: Get.find<TarefaRepository>(),
+    ));
+
+    // Register controller with the service
+    Get.lazyPut<CadastroParticipanteController>(() => CadastroParticipanteController(Get.find<ParticipanteService>()));
   }
 }

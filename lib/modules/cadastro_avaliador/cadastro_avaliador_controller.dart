@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../app/domain/entities/avaliador_entity.dart';
 import '../../app/domain/repositories/avaliador_repository.dart';
-import '../../utils/enums/pessoa_enums.dart';
+import '../../app/enums/pessoa_enums.dart';
 import '../avaliadores/avaliadores_controller.dart';
 
 class CadastroAvaliadorController extends GetxController {

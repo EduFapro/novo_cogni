@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../../utils/enums/pessoa_enums.dart';
 import '../../domain/entities/participante_entity.dart';
+import '../../enums/pessoa_enums.dart';
 import '../data_constants/participante_constants.dart';
 import '../data_constants/database_constants.dart';
 import 'database_helper.dart';

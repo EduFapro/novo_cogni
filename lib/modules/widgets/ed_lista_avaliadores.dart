@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:novo_cogni/app/domain/entities/avaliador_entity.dart';
-import '../../utils/enums/pessoa_enums.dart';
+import '../../app/enums/pessoa_enums.dart';
 import '../avaliadores/avaliadores_controller.dart';
 import 'ed_input_text.dart';
 import 'ed_novo_avaliador_button.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../utils/enums/pessoa_enums.dart';
+import '../../../app/enums/pessoa_enums.dart';
 import '../cadastro_avaliador_controller.dart';
 
 class FormularioAvaliador extends StatelessWidget {

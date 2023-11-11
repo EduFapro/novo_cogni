@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/utils/enums/modulo_enums.dart';
+import 'package:novo_cogni/app/enums/modulo_enums.dart';
+import 'package:novo_cogni/modules/modulo_atividades/widgets/tarefas_button.dart';
+import 'package:novo_cogni/routes.dart';
 import 'modulo_controller.dart';
 
 class ModuloScreen extends StatelessWidget {
@@ -53,11 +55,13 @@ class ModuloScreen extends StatelessWidget {
                           width: screenWidth * 0.9,
                           height: screenHeight * 0.1,
                           color: Colors.black54,
-                          child: Text("Avaliação", style: TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white70
-                          ),),
+                          child: Text(
+                            "Avaliação",
+                            style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white70),
+                          ),
                         ),
                         Text("Hahaha"),
                         Column(
@@ -66,29 +70,53 @@ class ModuloScreen extends StatelessWidget {
                               width: screenWidth * 0.9,
                               height: screenHeight * 0.1,
                               color: Colors.black54,
-                              child: Text("Testes", style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white70
-                              ),),
+                              child: Text(
+                                "Testes",
+                                style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white70),
+                              ),
                             ),
                             Divider(),
                             Container(
                               width: screenWidth * 0.9,
                               height: screenHeight * 0.04,
-                              child: Text("Ouvir Áudio", style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black
-                              ),),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "Ouvir Áudio",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.black),
+                                  ),
+                                  TarefasButton(
+                                    onPressed: () {
+                                      Get.toNamed(AppRoutes.tarefa);
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                             Divider(),
                             Container(
                               width: screenWidth * 0.9,
                               height: screenHeight * 0.04,
-                              child: Text("Contar-nos seu Nome", style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black
-                              ),),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "Contar-nos seu Nome",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.black),
+                                  ),
+                                  TarefasButton(
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              ),
                             ),
                             Divider(),
                           ],

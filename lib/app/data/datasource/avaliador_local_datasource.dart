@@ -1,7 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../../utils/enums/pessoa_enums.dart';
 import '../../domain/entities/avaliador_entity.dart';
+import '../../enums/pessoa_enums.dart';
 import '../data_constants/avaliador_constants.dart';
 import '../data_constants/database_constants.dart';
 import 'database_helper.dart';

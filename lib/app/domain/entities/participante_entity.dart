@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../../../utils/enums/pessoa_enums.dart';
 import '../../data/data_constants/participante_constants.dart';
+import '../../enums/pessoa_enums.dart';
 
 class ParticipanteEntity extends Equatable {
   final int? participanteID;

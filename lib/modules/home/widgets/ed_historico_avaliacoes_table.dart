@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novo_cogni/app/enums/modulo_enums.dart';
 import 'package:novo_cogni/routes.dart';
-import 'package:novo_cogni/utils/enums/modulo_enums.dart';
 import '../home_controller.dart';
 
 class EdHistoricoAvaliacoesTable extends StatelessWidget {

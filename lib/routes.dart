@@ -11,6 +11,8 @@ import 'modules/home/home_screen.dart';
 import 'modules/login/login_screen.dart';
 import 'modules/login/login_screen_binding.dart';
 import 'modules/modulo_atividades/modulo_binding.dart';
+import 'modules/tarefa/tarefa_binding.dart';
+import 'modules/tarefa/tarefa_screen.dart';
 
 class AppRoutes {
   static const login = '/login';
@@ -19,6 +21,7 @@ class AppRoutes {
   static const avaliadores = '/avaliadores';
   static const cadastroParticipante = '/cadastroParticipante';
   static const modulo = '/modulo';
+  static const tarefa = '/tarefa';
 }
 
 final routes = [
@@ -52,6 +55,10 @@ final routes = [
     page: () => ModuloScreen(),
     binding: ModuloBinding(),
   ),
-
+  GetPage(
+    name: AppRoutes.tarefa,
+    page: () => TarefaScreen(),
+    binding: TarefaBinding(),
+  ),
 
 ];
