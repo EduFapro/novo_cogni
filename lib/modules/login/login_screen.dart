@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:novo_cogni/modules/widgets/ed_form_title.dart';
+import '../../mixins/ValidationMixin.dart';
 import '../../routes.dart';
 import '../widgets/ed_input_text.dart';
-import 'login_screen_controller.dart';
-import 'mixins/ValidationMixin.dart';
+import 'login_controller.dart';
 
-class LoginScreen extends StatelessWidget with ValidationMixin {
+class LoginScreen extends GetView<LoginController> with ValidationMixin {
   LoginScreen({Key? key}) : super(key: key);
   final formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
-
-  final controller = Get.find<LoginScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const AppTitle(title: 'Login'),
+                          FormTitle(title: 'Login'),
                           const SizedBox(height: 10.0),
                           EdInputText(
                             placeholder: "Email",
@@ -68,7 +67,8 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
                                 ),
                               );
                             } else {
-                              return SizedBox.shrink(); // Return an empty widget if there's no error
+                              return SizedBox
+                                  .shrink(); // Return an empty widget if there's no error
                             }
                           }),
 
@@ -77,10 +77,32 @@ class LoginScreen extends StatelessWidget with ValidationMixin {
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
                                 print("Email: $email, Password: $password");
-                                var successfulLogin = await controller.logAdmin(email, password);
-
-                                if (successfulLogin) {
+                                var successfulAdminLogin =
+                                    await controller.logAdmin(email, password);
+                                if (successfulAdminLogin) {
+                                  print("hohohoho");
                                   Get.toNamed(AppRoutes.home);
+                                } else {
+                                  var successfulLogin =
+                                  await controller.login(email, password);
+                                  if (successfulLogin) {
+                                    if ((controller
+                                        .currentAvaliadorFirstLogin.value == false)) {
+                                      print(controller
+                                          .currentAvaliadorFirstLogin.value);
+                                      Get.toNamed(AppRoutes.home);
+                                    } else {
+                                      Get.toNamed(
+                                        AppRoutes.novaSenha,
+                                        arguments: {
+                                          'firstLogin': controller
+                                              .currentAvaliadorFirstLogin.value,
+                                          'avaliadorID': controller
+                                              .currentAvaliadorID.value,
+                                        },
+                                      );
+                                    }
+                                  }
                                 }
                               }
                             },
@@ -124,24 +146,6 @@ class EdEndText extends StatelessWidget {
         text,
         textAlign: TextAlign.end,
         style: const TextStyle(color: Colors.white),
-      ),
-    );
-  }
-}
-
-class AppTitle extends StatelessWidget {
-  final String title;
-
-  const AppTitle({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: GoogleFonts.inter(
-        color: Colors.white,
-        fontSize: 32,
-        fontWeight: FontWeight.bold,
       ),
     );
   }

@@ -12,7 +12,6 @@ class CadastroAvaliadorController extends GetxController {
 
   CadastroAvaliadorController(this._repository, this._avaliadoresController);
 
-
   final nomeCompletoController = TextEditingController();
   final dataNascimentoController = TextEditingController();
   final especialidadeController = TextEditingController();
@@ -65,6 +64,7 @@ class CadastroAvaliadorController extends GetxController {
       cpfOuNif: CPF_NIFController.text,
       email: emailController.text,
       password: '0000',
+      primeiro_login: true,
     );
 
     try {

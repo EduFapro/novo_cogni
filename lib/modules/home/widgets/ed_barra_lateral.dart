@@ -11,24 +11,30 @@ class EdBarraLateral extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        children: <Widget>[
-          Text(
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: Text(
             "CogniVoice",
             style: GoogleFonts.notoSans(
                 color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 30,),
-          EdLeadingButton(
+        ),
+        SizedBox(height: 30,),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: EdMainLateralButton(
               icon: Icons.home,
               text: "Home",
               onPressed: () {
                 Get.toNamed(AppRoutes.home,);
 
               },),
-          EdLeadingButton(
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: EdMainLateralButton(
             icon: Icons.person_3,
             text: "Avaliadores",
             onPressed: () {
@@ -36,34 +42,34 @@ class EdBarraLateral extends StatelessWidget {
 
             },
           ),
-          Spacer(),
-          EdAvatarPerfil(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                EdBotaoQuadrado(
-                  icon: Icons.settings_rounded,
-                  backgroundColor: Colors.black,
-                  iconColor: Colors.white,
-                  onTap: () {},
-                ),
-                SizedBox(width: 8.0),
-                EdBotaoQuadrado(
-                  icon: Icons.logout_rounded,
-                  backgroundColor: Colors.black,
-                  iconColor: Colors.white,
-                  onTap: () {
-                    // Routes.instance.pushAndRemoveUntil(
-                    //     route: LoginScreen(), context: context);
-                  },
-                ),
-              ],
-            ),
+        ),
+        Spacer(),
+        EdAvatarPerfil(),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              EdBotaoQuadrado(
+                icon: Icons.settings_rounded,
+                backgroundColor: Colors.black,
+                iconColor: Colors.white,
+                onTap: () {},
+              ),
+              SizedBox(width: 8.0),
+              EdBotaoQuadrado(
+                icon: Icons.logout_rounded,
+                backgroundColor: Colors.black,
+                iconColor: Colors.white,
+                onTap: () {
+                  // Routes.instance.pushAndRemoveUntil(
+                  //     route: LoginScreen(), context: context);
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

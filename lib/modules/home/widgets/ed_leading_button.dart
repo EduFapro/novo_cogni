@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class EdLeadingButton extends StatelessWidget {
+class EdMainLateralButton extends StatelessWidget {
   final IconData icon;
   final String text;
   final Function onPressed;
 
-  const EdLeadingButton({
+  const EdMainLateralButton({
     Key? key,
     required this.icon,
     required this.text, required this.onPressed,

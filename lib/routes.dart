@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:novo_cogni/modules/modulo_atividades/modulo_screen.dart';
+import 'package:novo_cogni/modules/nova_senha/nova_senha_screen.dart';
 import 'modules/avaliadores/avaliadores_binding.dart';
 import 'modules/avaliadores/avaliadores_screen.dart';
 import 'modules/cadastro_avaliador/cadastro_avaliador_binding.dart';
@@ -9,8 +10,9 @@ import 'modules/cadastro_participante/cadastro_participante_screen.dart';
 import 'modules/home/home_binding.dart';
 import 'modules/home/home_screen.dart';
 import 'modules/login/login_screen.dart';
-import 'modules/login/login_screen_binding.dart';
+import 'modules/login/login_binding.dart';
 import 'modules/modulo_atividades/modulo_binding.dart';
+import 'modules/nova_senha/nova_senha_binding.dart';
 import 'modules/tarefa/tarefa_binding.dart';
 import 'modules/tarefa/tarefa_screen.dart';
 
@@ -22,6 +24,7 @@ class AppRoutes {
   static const cadastroParticipante = '/cadastroParticipante';
   static const modulo = '/modulo';
   static const tarefa = '/tarefa';
+  static const novaSenha = '/new_password';
 }
 
 final routes = [
@@ -48,7 +51,7 @@ final routes = [
   GetPage(
     name: AppRoutes.login,
     page: () => LoginScreen(),
-    binding: LoginScreenBinding(),
+    binding: LoginBinding(),
   ),
   GetPage(
     name: AppRoutes.modulo,
@@ -60,5 +63,9 @@ final routes = [
     page: () => TarefaScreen(),
     binding: TarefaBinding(),
   ),
-
+  GetPage(
+    name: AppRoutes.novaSenha,
+    page: () => NovaSenhaScreen(),
+    binding: NovaSenhaBinding(),
+  ),
 ];

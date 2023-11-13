@@ -1,13 +1,17 @@
 import 'dart:async';
-import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:get/get.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as p;
 
-class AudioRecorderController {
+import '../../utils/file_management/audio_management.dart';
+
+class AudioRecorderController extends GetxController {
   final AudioRecorder _audioRecorder = AudioRecorder();
-  int recordDuration = 0;
-  RecordState recordState = RecordState.stop;
-  Amplitude? amplitude;
+  var recordDuration = 0.obs;
+  var recordState = RecordState.stop.obs;
+  var amplitude = Rxn<Amplitude>();
   Timer? timer;
   StreamSubscription<RecordState>? recordSub;
   StreamSubscription<Amplitude>? amplitudeSub;
@@ -19,47 +23,45 @@ class AudioRecorderController {
 
     amplitudeSub = _audioRecorder
         .onAmplitudeChanged(const Duration(milliseconds: 300))
-        .listen((amp) => amplitude = amp);
+        .listen((amp) => amplitude.value = amp);
   }
+
 
   Future<void> start() async {
     try {
       if (await _audioRecorder.hasPermission()) {
-        // Define the recording configuration
         const config = RecordConfig(
-          encoder: AudioEncoder.aacLc, // You can choose the encoder as per your requirement
-          bitRate: 128000, // Example bitrate
-          sampleRate: 44100, // Example sample rate
+          encoder: AudioEncoder.aacLc,
+          bitRate: 128000,
+          sampleRate: 44100,
         );
 
-        // Define the file path for the recording
-        final dir = await getApplicationDocumentsDirectory();
+        final dirPath = await getTemporaryDirectoryPath(); // Use a temporary directory
         final path = p.join(
-          dir.path,
-          'audio_${DateTime.now().millisecondsSinceEpoch}.aac', // File extension based on encoder
+          dirPath,
+          'audio_${DateTime.now().millisecondsSinceEpoch}.aac',
         );
 
-        // Start recording
         await _audioRecorder.start(config, path: path);
-
-        // Reset and start the timer
-        recordDuration = 0;
+        recordDuration.value = 0;
         startTimer();
       }
     } catch (e) {
-      // Handle exceptions
       print('Error starting recording: $e');
     }
   }
-
 
   Future<void> stop() async {
     try {
       final path = await _audioRecorder.stop();
       timer?.cancel();
-      recordDuration = 0;
+      recordDuration.value = 0;
       if (path != null) {
-        // Do something with the path, e.g., notify listeners
+        final fileName = p.basename(path);
+        final file = File(path);
+        final data = await file.readAsBytes();
+        await saveAudioFile(ByteData.view(data.buffer), fileName);
+        await file.delete(); // Optionally delete the file from the temporary directory
       }
     } catch (e) {
       print('Error stopping recording: $e');
@@ -88,16 +90,15 @@ class AudioRecorderController {
 
 
   void updateRecordState(RecordState state) {
-    recordState = state;
-    // Notify listeners if needed, e.g., using a callback or a state management solution
+    recordState.value = state; // Use .value to assign to Rx<RecordState>
+    update(); // This should work as your class extends GetxController
   }
-
 
   void startTimer() {
     timer?.cancel();
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      recordDuration++;
-      // Update UI or notify listeners about the timer update
+      recordDuration.value++; // Use .value to update RxInt
+      update(); // Notify listeners
     });
   }
 

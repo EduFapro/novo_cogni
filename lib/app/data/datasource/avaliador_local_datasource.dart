@@ -29,7 +29,7 @@ class AvaliadorLocalDataSource {
         });
   }
 
-// avaliador_local_datasource.dart
+
   Future<int?> create(AvaliadorEntity avaliador) async {
     try {
       final Database? database = await db;
@@ -46,7 +46,9 @@ class AvaliadorLocalDataSource {
           CPF_OU_NIF_AVALIADOR: avaliador.cpfOuNif,
           EMAIL_AVALIADOR: avaliador.email,
           ESPECIALIDADE_AVALIADOR: avaliador.especialidade,
-          PASSWORD_AVALIADOR: '0000'  // Add this line
+          PASSWORD_AVALIADOR: '0000',
+          PRIMEIRO_LOGIN: 1,
+          EH_ADMIN: 0,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );

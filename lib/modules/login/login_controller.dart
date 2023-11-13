@@ -7,13 +7,14 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../app/data/datasource/avaliador_local_datasource.dart';
 import '../../app/domain/entities/avaliador_entity.dart';
 
-class LoginScreenController extends GetxController {
+class LoginController extends GetxController {
   final AvaliadorLocalDataSource avaliadorDataSource;
   var isLoading = false.obs;
   var loginError = RxString('');
   var currentAvaliadorID = RxInt(0);
+  var currentAvaliadorFirstLogin = RxBool(false);
 
-  LoginScreenController(this.avaliadorDataSource);
+  LoginController(this.avaliadorDataSource);
 
   Future<bool> logAdmin(String email, String password) async {
     final storedEmail = dotenv.env['EMAIL_ADMIN'];
@@ -36,7 +37,7 @@ class LoginScreenController extends GetxController {
         return false;
       }
     } else {
-      return await login(email, password);
+      return false;
     }
   }
 
@@ -44,6 +45,7 @@ class LoginScreenController extends GetxController {
     isLoading.value = true;
     try {
       AvaliadorEntity? user = await avaliadorDataSource.getAvaliadorByEmail(email);
+      currentAvaliadorFirstLogin.value = user!.primeiro_login;
       if (user != null && user.password == password) {
         currentAvaliadorID.value = user.avaliadorID!;
         isLoading.value = false;

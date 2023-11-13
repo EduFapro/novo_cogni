@@ -4,4 +4,12 @@ mixin ValidationMixin {
 
   String? validatePassword(String? value) =>
       (value!.length < 4) ? 'Password must be at least 4 characters' : null;
+
+  String? validateSecondPassword(String? secondPassword, String firstPassword) {
+    if (secondPassword != firstPassword) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
 }

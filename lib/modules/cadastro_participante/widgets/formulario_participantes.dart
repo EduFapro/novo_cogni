@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../../app/enums/idioma_enums.dart';
 import '../../../app/enums/modulo_enums.dart';
 import '../../../app/enums/pessoa_enums.dart';
-import '../../login/login_screen_controller.dart';
+import '../../login/login_controller.dart';
 import '../cadastro_participante_controller.dart';
 
 class FormularioParticipante extends StatefulWidget {
@@ -22,7 +22,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
   @override
   Widget build(BuildContext context) {
     var controller = widget.controller;
-    final loginController = Get.find<LoginScreenController>();
+    final loginController = Get.find<LoginController>();
     int? avaliadorID = loginController.currentAvaliadorID.value;
     double screenWidth = MediaQuery.of(context).size.width;
     double formWidth = screenWidth * 0.8;

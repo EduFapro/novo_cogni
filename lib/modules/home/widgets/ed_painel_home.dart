@@ -9,24 +9,24 @@ class EdPainelHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double cardWidth = MediaQuery.of(context).size.width / 4; // A quarter of the screen width
-    double cardHeight = 200;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
-    return SingleChildScrollView(
+    double cardWidth = screenWidth / 6;
+    double cardHeight = 100;
+
+    return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
                   "Home",
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold
-                  ),
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(width: 8.0),
                 NovoParticipanteButton(),
@@ -34,7 +34,7 @@ class EdPainelHome extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(
               children: <Widget>[
                 EdFolderCard(
@@ -43,14 +43,14 @@ class EdPainelHome extends StatelessWidget {
                   folderColor: Color(0xff50bee9),
                   tituloCard: "Total de Projetos",
                 ),
-                SizedBox(width: 8.0),
+                SizedBox(width: 50.0),
                 EdFolderCard(
                   cardHeight: cardHeight,
-                  cardWidth: cardWidth,
+                  cardWidth: 2,
                   folderColor: Color(0xfffdbb11),
                   tituloCard: "Em progresso",
                 ),
-                SizedBox(width: 8.0),
+                SizedBox(width: 50.0),
                 EdFolderCard(
                   cardHeight: cardHeight,
                   cardWidth: cardWidth,
@@ -61,13 +61,13 @@ class EdPainelHome extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: EdHistoricoAvaliacoesPesquisar(
               placeholder: "Pesquisar...",
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: EdHistoricoAvaliacoesTable(),
           ),
         ],
@@ -75,4 +75,3 @@ class EdPainelHome extends StatelessWidget {
     );
   }
 }
-

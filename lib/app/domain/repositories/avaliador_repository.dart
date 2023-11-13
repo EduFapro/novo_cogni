@@ -6,27 +6,22 @@ class AvaliadorRepository {
 
   AvaliadorRepository({required this.localDataSource});
 
-  // Create an Avaliador
   Future<int?> createAvaliador(AvaliadorEntity avaliador) async {
     return await localDataSource.create(avaliador);
   }
 
-  // Get an Avaliador by ID
   Future<AvaliadorEntity?> getAvaliador(int id) async {
     return await localDataSource.getAvaliador(id);
   }
 
-  // Delete an Avaliador by ID
   Future<int> deleteAvaliador(int id) async {
     return await localDataSource.deleteAvaliador(id);
   }
 
-  // Update an Avaliador
   Future<int> updateAvaliador(AvaliadorEntity avaliador) async {
     return await localDataSource.updateAvaliador(avaliador);
   }
 
-  // Get all Avaliadores
   Future<List<AvaliadorEntity>> getAllAvaliadores() async {
     try {
       return await localDataSource.getAllAvaliadores();
@@ -36,7 +31,6 @@ class AvaliadorRepository {
     }
   }
 
-  // Get the number of Avaliadores
   Future<int?> getNumeroAvaliadores() async {
     return await localDataSource.getNumeroAvaliadores();
   }
