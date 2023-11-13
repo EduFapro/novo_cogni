@@ -6,15 +6,18 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../../app/data/datasource/avaliador_local_datasource.dart';
 import '../../app/domain/entities/avaliador_entity.dart';
+import '../user_avaliador/UserAvaliadorController.dart';
 
 class LoginController extends GetxController {
   final AvaliadorLocalDataSource avaliadorDataSource;
+  final UserAvaliadorController userController;
+
   var isLoading = false.obs;
   var loginError = RxString('');
   var currentAvaliadorID = RxInt(0);
   var currentAvaliadorFirstLogin = RxBool(false);
 
-  LoginController(this.avaliadorDataSource);
+  LoginController(this.avaliadorDataSource, this.userController);
 
   Future<bool> logAdmin(String email, String password) async {
     final storedEmail = dotenv.env['EMAIL_ADMIN'];
@@ -44,11 +47,13 @@ class LoginController extends GetxController {
   Future<bool> login(String email, String password) async {
     isLoading.value = true;
     try {
-      AvaliadorEntity? user = await avaliadorDataSource.getAvaliadorByEmail(email);
+      AvaliadorEntity? user =
+          await avaliadorDataSource.getAvaliadorByEmail(email);
       currentAvaliadorFirstLogin.value = user!.primeiro_login;
       if (user != null && user.password == password) {
         currentAvaliadorID.value = user.avaliadorID!;
         isLoading.value = false;
+        userController.updateUser(user);
         return true;
       } else {
         loginError.value = "Invalid credentials";

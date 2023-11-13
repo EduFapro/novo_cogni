@@ -54,10 +54,8 @@ class EdHistoricoAvaliacoesTable extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: controller.avaliacoes.length,
                   itemBuilder: (context, index) {
-                    // Ensure index is within the range for all lists
-                    bool isIndexInRange = index < controller.participantes.length &&
-                        index < controller.modulos.length &&
-                        index < controller.avaliadores.length;
+                    bool isIndexInRange =
+                        index <= controller.modulos.length ;
                     if (isIndexInRange) {
                       final participante = controller.participantes[index];
                       final modulo = controller.modulos[index];
