@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../app/enums/idioma_enums.dart';
 import '../../../app/enums/modulo_enums.dart';
 import '../../../app/enums/pessoa_enums.dart';
+import '../../home/home_controller.dart';
 import '../../login/login_controller.dart';
 import '../cadastro_participante_controller.dart';
 
@@ -16,8 +17,8 @@ class FormularioParticipante extends StatefulWidget {
 }
 
 class _FormularioParticipanteState extends State<FormularioParticipante> {
-  Map<String, bool> itemsMap = Map.fromIterable(items, key: (v) => v, value: (v) => false);
-
+  Map<String, bool> itemsMap =
+      Map.fromIterable(items, key: (v) => v, value: (v) => false);
 
   @override
   Widget build(BuildContext context) {
@@ -261,7 +262,6 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                               },
                             );
                           }).toList(),
-
                         ],
                       ),
                     ),
@@ -305,19 +305,23 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                       // int avaliadorID = avaliadorID; // Replace with actual avaliadorID retrieval logic
 
                       // Call the method to handle participant and modules creation
-                      bool success = await controller.createParticipanteAndModulos(avaliadorID, selectedActivities);
+                      bool success =
+                          await controller.createParticipanteAndModulos(
+                              avaliadorID, selectedActivities);
 
                       if (success) {
-                      // Close the form if everything was successful
-                      Get.back();
+                        // var homeCtrller = Get.find<HomeController>();
+                        // homeCtrller.refreshData();
+                        Get.back();
                       } else {
-                      // Handle the case where the operation failed
-                      // For example, show an error message to the user
-                      Get.snackbar(
-                      'Error', // Title
-                      'Failed to create participant and modules.', // Message
-                      snackPosition: SnackPosition.BOTTOM,
-                      );
+                        // Handle the case where the operation failed
+                        // For example, show an error message to the user
+                        Get.snackbar(
+                          'Error', // Title
+                          'Failed to create participant and modules.',
+                          // Message
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
                       }
                     },
                     style: TextButton.styleFrom(
@@ -331,8 +335,6 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                     ),
                     child: const Text("Cadastrar"),
                   ),
-
-
                 ],
               ),
             ),
@@ -341,5 +343,4 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
       ),
     );
   }
-
 }

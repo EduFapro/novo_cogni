@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../app/domain/entities/participante_entity.dart';
 import '../../app/enums/idioma_enums.dart';
 import '../../app/enums/pessoa_enums.dart';
+import '../home/home_controller.dart';
 import 'cadastro_participante_service.dart';
 
 class CadastroParticipanteController extends GetxController {
@@ -53,7 +55,15 @@ class CadastroParticipanteController extends GetxController {
       sobrenome: '',
     );
 
-    return await participanteService.createParticipanteAndModulos(avaliadorID, selectedActivities, novoParticipante);
+    var success = await participanteService.createParticipanteAndModulos(avaliadorID, selectedActivities, novoParticipante);
+
+    if (success.isNotEmpty) {
+      final HomeController homeController = Get.find<HomeController>();
+      homeController.addNewParticipante(novoParticipante, success);
+      // homeController.refreshData(); // Call a method to refresh data or update the list
+    }
+
+    return true;
   }
 
   // Method to print form data for debugging purposes
@@ -76,4 +86,5 @@ class CadastroParticipanteController extends GetxController {
     // Dispose other resources if needed
     super.onClose();
   }
+
 }

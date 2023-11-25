@@ -79,20 +79,23 @@ class ParticipanteService {
   }
 
 
-  Future<bool> createParticipanteAndModulos(int avaliadorID, List<String> selectedActivities, ParticipanteEntity novoParticipante) async {
+  Future<Map<String, int>> createParticipanteAndModulos(int avaliadorID, List<String> selectedActivities, ParticipanteEntity novoParticipante) async {
     // Orchestrating method to create participant and related entities
     int? participanteId = await createParticipante(avaliadorID, selectedActivities, novoParticipante);
-    if (participanteId == null) return false;
+    if (participanteId == null) return {};
 
     int? avaliacaoId = await createAvaliacao(participanteId, avaliadorID);
-    if (avaliacaoId == null) return false;
+    if (avaliacaoId == null) return {};
 
     List<ModuloEntity> modulos = await createModulosEntities(selectedActivities);
     List<int> moduloIds = await saveModulos(modulos);
 
     await linkAvaliacaoToModulos(avaliacaoId, moduloIds);
 
-    return true;
+    return {
+      "participanteId": participanteId,
+      "avaliacaoId": avaliacaoId,
+    };
   }
 
   Future<ModuloEntity> _initializeDefaultModulo() async {

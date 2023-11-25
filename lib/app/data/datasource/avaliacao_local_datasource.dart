@@ -86,4 +86,20 @@ class AvaliacaoLocalDataSource {
     final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABELA_AVALIACOES");
     return result.first["count"] as int?;
   }
+
+  Future<List<AvaliacaoEntity>> getAvaliacoesByAvaliadorID(int avaliadorID) async {
+    final Database? database = await db;
+    List<Map<String, dynamic>> maps = await database!.query(
+      TABELA_AVALIACOES,
+      columns: [ID_AVALIACAO, ID_AVALIADOR_FK, ID_PARTICIPANTE_FK],
+      where: "$ID_AVALIADOR_FK = ?",
+      whereArgs: [avaliadorID],
+    );
+
+    if (maps.isNotEmpty) {
+      return maps.map((map) => AvaliacaoEntity.fromMap(map)).toList();
+    }
+    return [];
+  }
 }
+

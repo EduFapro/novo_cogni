@@ -1,6 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../../domain/entities/participante_entity.dart';
 import '../../enums/pessoa_enums.dart';
+import '../data_constants/avaliacao_constants.dart';
 import '../data_constants/participante_constants.dart';
 import '../data_constants/database_constants.dart';
 import 'database_helper.dart';
@@ -104,6 +105,22 @@ Future<ParticipanteEntity?> getParticipante(int id) async {
       print(ex);
       return [];
     }
+  }
+
+  Future<ParticipanteEntity?> getParticipanteByAvaliacao(int avaliacaoId) async {
+    final Database? database = await db;
+    final List<Map<String, dynamic>> maps = await database!.query(
+      TABELA_AVALIACOES, // Assuming the participanteID is stored in the avaliacoes table
+      columns: [ID_PARTICIPANTE_FK], // Replace with your foreign key column name
+      where: '$ID_AVALIACAO = ?', // Replace with your primary key column name for avaliacoes
+      whereArgs: [avaliacaoId],
+    );
+
+    if (maps.isNotEmpty) {
+      int participanteId = maps.first[ID_PARTICIPANTE_FK];
+      return await getParticipante(participanteId);
+    }
+    return null;
   }
 
   Future<int?> getNumeroParticipantes() async {

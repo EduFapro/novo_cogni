@@ -35,7 +35,9 @@ class ParticipanteRepository {
       return [];
     }
   }
-
+  Future<ParticipanteEntity?> getParticipanteByAvaliacao(int avaliacaoId) async {
+    return await localDataSource.getParticipanteByAvaliacao(avaliacaoId);
+  }
   // Get the number of Participantes
   Future<int?> getNumeroParticipantes() async {
     return await localDataSource.getNumeroParticipantes();

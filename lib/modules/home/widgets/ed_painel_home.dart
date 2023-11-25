@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'ed_historico_avaliacoes_table.dart';
+import 'ed_historico_avaliacoes.dart';
 import 'ed_folder_card.dart';
-import 'ed_historico_avaliacoes_pesquisar.dart';
 import 'ed_novo_participante_button.dart';
 
 class EdPainelHome extends StatelessWidget {
@@ -62,13 +61,8 @@ class EdPainelHome extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: EdHistoricoAvaliacoesPesquisar(
-              placeholder: "Pesquisar...",
+            child: EdHistoricoAvaliacoes(
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: EdHistoricoAvaliacoesTable(),
           ),
         ],
       ),

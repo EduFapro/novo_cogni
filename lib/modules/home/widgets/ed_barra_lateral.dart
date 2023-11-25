@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:novo_cogni/global/user_controller.dart';
 import '../../../routes.dart';
 import 'ed_avatar_perfil.dart';
 import 'ed_botao_quadrado.dart';
@@ -11,6 +12,7 @@ class EdBarraLateral extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: <Widget>[
         Padding(
@@ -62,8 +64,8 @@ class EdBarraLateral extends StatelessWidget {
                 backgroundColor: Colors.black,
                 iconColor: Colors.white,
                 onTap: () {
-                  // Routes.instance.pushAndRemoveUntil(
-                  //     route: LoginScreen(), context: context);
+                  Get.offAllNamed(AppRoutes.login);
+
                 },
               ),
             ],

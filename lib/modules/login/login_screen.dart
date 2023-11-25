@@ -49,7 +49,6 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                             onSaved: (value) => password = value ?? '',
                           ),
                           const SizedBox(height: 20.0),
-                          const EdEndText(text: "Cadastrar novo avaliador"),
                           const EdEndText(text: "Esqueceu sua senha?"),
                           const SizedBox(height: 20.0),
 

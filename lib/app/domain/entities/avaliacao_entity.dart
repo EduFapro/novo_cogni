@@ -1,13 +1,18 @@
 import 'dart:convert';
 import '../../data/data_constants/avaliacao_constants.dart';
+import '../../enums/modulo_enums.dart';
 
 class AvaliacaoEntity {
   final int? avaliacaoID;
   final int avaliadorID;
   final int participanteID;
+  Status status;
+  DateTime? dataAvaliacao;
 
   AvaliacaoEntity({
     this.avaliacaoID,
+    this.dataAvaliacao,
+    this.status = Status.a_iniciar,
     required this.avaliadorID,
     required this.participanteID,
   });
@@ -15,7 +20,9 @@ class AvaliacaoEntity {
   Map<String, dynamic> toMap() {
     return {
       ID_AVALIACAO: avaliacaoID,
+      DATA_AVALIACAO: dataAvaliacao?.toIso8601String(),
       ID_AVALIADOR_FK: avaliadorID,
+      STATUS: status.description,
       ID_PARTICIPANTE_FK: participanteID,
     };
   }
@@ -25,6 +32,8 @@ class AvaliacaoEntity {
     return AvaliacaoEntity(
       avaliacaoID: map[ID_AVALIACAO] as int?,
       avaliadorID: map[ID_AVALIADOR_FK] as int,
+      status: Status.values.firstWhere((e) => e.description == map[STATUS], orElse: () => Status.a_iniciar),
+      dataAvaliacao: map[DATA_AVALIACAO] != null ? DateTime.parse(map[DATA_AVALIACAO] as String) : null,
       participanteID: map[ID_PARTICIPANTE_FK] as int,
     );
   }

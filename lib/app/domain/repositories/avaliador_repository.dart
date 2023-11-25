@@ -14,6 +14,10 @@ class AvaliadorRepository {
     return await localDataSource.getAvaliador(id);
   }
 
+  Future<AvaliadorEntity?> getAvaliadorByEmail(String email) async {
+    return await localDataSource.getAvaliadorByEmail(email);
+  }
+
   Future<int> deleteAvaliador(int id) async {
     return await localDataSource.deleteAvaliador(id);
   }

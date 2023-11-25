@@ -4,6 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:novo_cogni/routes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import 'global/global_binding.dart';
+
 void main() async {
   // Ensure that Flutter binding is initialized.
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: GlobalBinding(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

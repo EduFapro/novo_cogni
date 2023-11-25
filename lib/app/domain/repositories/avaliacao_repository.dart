@@ -40,4 +40,9 @@ class AvaliacaoRepository {
   Future<int?> getNumeroAvaliacoes() async {
     return await localDataSource.getNumeroAvaliacoes();
   }
+
+
+  Future<List<AvaliacaoEntity>> getAvaliacoesByAvaliadorID(int avaliadorID) async {
+    return await localDataSource.getAvaliacoesByAvaliadorID(avaliadorID);
+  }
 }
