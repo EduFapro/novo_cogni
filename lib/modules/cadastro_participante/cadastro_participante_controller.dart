@@ -41,7 +41,7 @@ class CadastroParticipanteController extends GetxController {
   }
 
   // Method to create a new participant and related modules
-  Future<bool> createParticipanteAndModulos(int avaliadorID, List<String> selectedActivities) async {
+  Future<bool> createParticipanteAndModulos(int avaliadorID, List<String> selectedModules) async {
     String nomeCompleto = nomeCompletoController.text;
     DateTime? dataNascimento = selectedDate.value;
     Sexo? sexo = selectedSexo.value;
@@ -55,7 +55,7 @@ class CadastroParticipanteController extends GetxController {
       sobrenome: '',
     );
 
-    var success = await participanteService.createParticipanteAndModulos(avaliadorID, selectedActivities, novoParticipante);
+    var success = await participanteService.createParticipanteAndModulos(avaliadorID, selectedModules, novoParticipante);
 
     if (success.isNotEmpty) {
       final HomeController homeController = Get.find<HomeController>();

@@ -10,6 +10,7 @@ import '../data_constants/tarefa_constants.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
+
   factory DatabaseHelper() => _instance;
 
   static Database? _db;
@@ -29,7 +30,8 @@ class DatabaseHelper {
     String path = join(databasesPath, DATABASE_NAME);
     print("Database path: $path");
 
-    return await openDatabase(path, version: VERSAO_DATABASE, onCreate: _onCreate);
+    return await openDatabase(path,
+        version: VERSAO_DATABASE, onCreate: _onCreate);
   }
 
   void _onCreate(Database db, int newVersion) async {
@@ -39,7 +41,7 @@ class DatabaseHelper {
     await db.execute(SCRIPT_CREATE_TABELA_MODULOS);
     await db.execute(SCRIPT_CREATE_TABELA_TAREFAS);
     await db.execute(SCRIPT_CREATE_TABELA_AVALIACAO_MODULOS);
+    await db.execute(SCRIPT_INSERT_MODULOS);
+    await db.execute(SCRIPT_INSERT_TAREFAS);
   }
-
-
 }

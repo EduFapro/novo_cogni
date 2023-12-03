@@ -6,12 +6,10 @@ class TarefaEntity {
   int? tarefaID;
   int? moduloID;
   String nome;
-  StatusTarefa status;
 
   TarefaEntity(
       {this.tarefaID,
       required this.nome,
-      this.status = StatusTarefa.a_realizar,
       this.moduloID});
 
   Map<String, dynamic> toMap() {
@@ -19,7 +17,6 @@ class TarefaEntity {
       ID_TAREFA: tarefaID,
       NOME: nome,
       MODULO_ID: moduloID,
-      STATUS: status.toString(),
     };
   }
 
@@ -28,10 +25,6 @@ class TarefaEntity {
       tarefaID: map[ID_TAREFA] as int?,
       nome: map[NOME] as String,
       moduloID: map[MODULO_ID],
-      status: StatusTarefa.values.firstWhere(
-        (e) => e.toString() == map[STATUS],
-        orElse: () => StatusTarefa.a_realizar,
-      ),
     );
   }
 
@@ -40,7 +33,6 @@ class TarefaEntity {
     return 'TarefaEntity{'
         'tarefa_id: $tarefaID, '
         'nome: "$nome", '
-        'status: ${status.description}'
         '}';
   }
 }

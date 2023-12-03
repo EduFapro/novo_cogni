@@ -23,12 +23,21 @@ class ModuloController extends GetxController {
   void onInit() {
     super.onInit();
     // Retrieve and set the arguments
+
     final arguments = Get.arguments as Map<String, dynamic>;
-    if (arguments.containsKey('participante') && arguments.containsKey('modulo')) {
+
+    print("-------");
+    print(arguments);
+    print("-------");
+
+    if (arguments.containsKey('participante')
+        // && arguments.containsKey('modulo')
+    ) {
       participante.value = arguments['participante'];
-      modulo.value = arguments['modulo'];
+      // modulo.value = arguments['modulo'];
+      print("Nome: ${participante.value!.nome}");
     } else {
-      // Handle the case where arguments are not passed or are incorrect
+      print("NÃO HÁ CHAVE participante");
     }
   }
 }

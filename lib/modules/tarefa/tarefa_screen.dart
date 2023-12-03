@@ -10,6 +10,7 @@ class TarefaScreen extends StatelessWidget {
     final TarefaController tarefaController = Get.find();
 
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: Obx(() {
           return AudioRecorderInterface(

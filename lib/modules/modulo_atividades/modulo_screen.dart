@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/enums/modulo_enums.dart';
 import 'package:novo_cogni/modules/modulo_atividades/widgets/tarefas_button.dart';
 import 'package:novo_cogni/routes.dart';
 import 'modulo_controller.dart';
+import 'widgets/ed_modulo_item.dart';
 
 class ModuloScreen extends StatelessWidget {
   const ModuloScreen({Key? key}) : super(key: key);
@@ -15,134 +15,127 @@ class ModuloScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Avaliação"),
+        centerTitle: true,
+      ),
       body: Container(
+        color: Colors.greenAccent,
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Obx(
-              () => Card(
-                color: Colors.greenAccent,
+                  () => Card(
+                color: Color(2631464),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(controller.participante.value?.nome ?? ''),
-                      Text('Idade:${controller.age} anos'),
-                      Text(controller.modulo.value?.status.description ?? ''),
-                    ],
+                  child: Container(
+                    width: screenWidth * 0.3,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(controller.participante.value?.nome ?? ''),
+                        Text('Idade:${controller.age} anos'),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            const Text("Lista de Atividades",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Container(
+              width: screenWidth,
+              child: const Text(
+                "Lista de Atividades",
+                style: TextStyle(
+                  fontSize: 43,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
             const SizedBox(height: 10),
-            Expanded(
-                child: SizedBox(
-              width: screenWidth * 0.9,
-              child: Card(
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          width: screenWidth * 0.9,
-                          height: screenHeight * 0.1,
-                          color: Colors.black54,
-                          child: Text(
-                            "Avaliação",
-                            style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white70),
-                          ),
-                        ),
-                        Text("Hahaha"),
-                        Column(
+            ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+
+                width: screenWidth * 0.3,
+                child: Card(
+                  child: Column(
+                    children: [
+                      EdModuloItem(),
+                      Container(
+                        height: screenHeight * 0.04,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              width: screenWidth * 0.9,
-                              height: screenHeight * 0.1,
-                              color: Colors.black54,
-                              child: Text(
-                                "Testes",
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white70),
-                              ),
+                            Text(
+                              "Contar-nos seu Nome",
+                              style: TextStyle(fontSize: 20, color: Colors.black),
                             ),
-                            Divider(),
-                            Container(
-                              width: screenWidth * 0.9,
-                              height: screenHeight * 0.04,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    "Ouvir Áudio",
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.black),
-                                  ),
-                                  TarefasButton(
-                                    onPressed: () {
-                                      Get.toNamed(AppRoutes.tarefa);
-                                    },
-                                  ),
-                                ],
-                              ),
+                            TarefasButton(
+                              onPressed: () {},
                             ),
-                            Divider(),
-                            Container(
-                              width: screenWidth * 0.9,
-                              height: screenHeight * 0.04,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    "Contar-nos seu Nome",
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.black),
-                                  ),
-                                  TarefasButton(
-                                    onPressed: () {},
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Divider(),
                           ],
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            width: screenWidth * 0.5,
+                            height: screenHeight * 0.07,
+                            color: Colors.black54,
+                            child: Text(
+                              "Testes",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white70),
+                            ),
+                          ),
+                          Container(
+                            height: screenHeight * 0.04,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Ouvir Áudio",
+                                  style: TextStyle(fontSize: 20, color: Colors.black),
+                                ),
+                                TarefasButton(
+                                  onPressed: () {
+                                    Get.toNamed(AppRoutes.tarefa);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: screenHeight * 0.04,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Contar-nos seu Nome",
+                                  style: TextStyle(fontSize: 20, color: Colors.black),
+                                ),
+                                TarefasButton(
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            )
-                //
-                //
-                // Obx(
-                //       () => ListView.builder(
-                //     itemCount: controller.modulo.value?.tarefas.length ?? 0,
-                //     itemBuilder: (context, index) {
-                //       final tarefa = controller.modulo.value?.tarefas[index];
-                //       return ListTile(
-                //         title: Text(tarefa!.nome),
-                //         subtitle: Text(tarefa.nome),
-                //         // Add trailing and leading widgets if needed
-                //       );
-                //     },
-                //   ),
-                // ),
-                ),
+            ),
           ],
         ),
       ),

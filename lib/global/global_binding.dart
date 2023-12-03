@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/global/user_controller.dart';
 import 'package:novo_cogni/global/user_service.dart';
-import 'package:novo_cogni/modules/home/home_controller.dart';
-import 'package:novo_cogni/modules/home/home_controller.dart';
 
 import '../app/data/datasource/avaliacao_local_datasource.dart';
 import '../app/data/datasource/avaliacao_modulo_local_datasource.dart';

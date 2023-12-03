@@ -114,6 +114,7 @@ class EdHistoricoAvaliacoes extends StatelessWidget {
                             Get.toNamed(
                               AppRoutes.modulo,
                               arguments: {
+                                'participante':participante,
                                 'avaliacao': avaliacao,
                               },
                             );

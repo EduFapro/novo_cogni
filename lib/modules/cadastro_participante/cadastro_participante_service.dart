@@ -48,7 +48,7 @@ class ParticipanteService {
     // Logic to create module entities
     List<ModuloEntity> modulos = selectedActivities.map((activity) {
       // Convert each activity to a ModuloEntity
-      return ModuloEntity(/* parameters based on activity */);
+      return ModuloEntity(titulo: "hahahah");
     }).toList();
     return modulos;
   }
@@ -97,13 +97,4 @@ class ParticipanteService {
       "avaliacaoId": avaliacaoId,
     };
   }
-
-  Future<ModuloEntity> _initializeDefaultModulo() async {
-    // Logic to initialize default module
-    ModuloEntity moduloIntroducao = ModuloEntity(/* parameters for default module */);
-    // Additional logic if needed
-    return moduloIntroducao;
-  }
-
-// Additional methods as required...
 }

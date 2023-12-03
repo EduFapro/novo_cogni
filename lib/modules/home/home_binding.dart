@@ -10,20 +10,19 @@ import 'home_controller.dart';
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-
     Get.lazyPut(() => ParticipanteLocalDataSource());
     Get.lazyPut(() => ModuloLocalDataSource());
     Get.lazyPut(() => TarefaLocalDataSource());
 
     // Register repositories with their respective data sources
     Get.lazyPut(() => ParticipanteRepository(localDataSource: Get.find()));
-    Get.lazyPut(() => ModuloRepository(
-        moduloLocalDataSource: Get.find(), tarefaLocalDataSource: Get.find()));
-    Get.lazyPut(() => TarefaRepository(localDataSource: Get.find()));
+    Get.put(ModuloRepository(
+        moduloLocalDataSource: Get.find(), tarefaLocalDataSource: Get.find()),
+        permanent: true); // Using Get.put with permanent
+    Get.put(() => TarefaRepository(localDataSource: Get.find()), permanent: true);
 
     // Register controller with all required repositories
-    Get.lazyPut(() => HomeController(
-
-        ));
+    Get.lazyPut(() => HomeController());
   }
 }
+

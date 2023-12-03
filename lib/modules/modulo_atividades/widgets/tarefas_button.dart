@@ -12,7 +12,14 @@ class TarefasButton extends StatelessWidget {
         width: 100,
         height: 50,
         child: Card(
-          child: Text('Iniciar'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0), // Rounded corners for the card
+            side: BorderSide(
+              color: Colors.blue, // Border color
+              width: 2.0, // Border width
+            ),
+          ),
+          child: Center(child: Text('Iniciar')),
         ),
       ),
     );

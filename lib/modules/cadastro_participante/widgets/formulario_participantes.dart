@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../app/domain/use_cases/modulos.dart';
 import '../../../app/enums/idioma_enums.dart';
 import '../../../app/enums/modulo_enums.dart';
 import '../../../app/enums/pessoa_enums.dart';
@@ -17,8 +18,14 @@ class FormularioParticipante extends StatefulWidget {
 }
 
 class _FormularioParticipanteState extends State<FormularioParticipante> {
-  Map<String, bool> itemsMap =
-      Map.fromIterable(items, key: (v) => v, value: (v) => false);
+  late Map<String, bool> itemsMap;
+
+  @override
+  void initState() {
+    super.initState();
+    itemsMap = { for (var v in lista_modulos) v.titulo! : false };
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -296,10 +303,11 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                       controller.printFormData();
 
                       // Capture selected activities from the form
-                      List<String> selectedActivities = itemsMap.entries
+                      List<String> selectedModules = itemsMap.entries
                           .where((entry) => entry.value)
                           .map((entry) => entry.key)
                           .toList();
+                      print("HOHOHOOHO");
 
                       // // Assuming avaliadorID is already defined and available in the current context
                       // int avaliadorID = avaliadorID; // Replace with actual avaliadorID retrieval logic
@@ -307,7 +315,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                       // Call the method to handle participant and modules creation
                       bool success =
                           await controller.createParticipanteAndModulos(
-                              avaliadorID, selectedActivities);
+                              avaliadorID, selectedModules);
 
                       if (success) {
                         // var homeCtrller = Get.find<HomeController>();
