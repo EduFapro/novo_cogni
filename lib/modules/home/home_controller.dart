@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../app/domain/entities/avaliacao_entity.dart';
 import '../../app/domain/entities/avaliador_entity.dart';
 import '../../app/domain/entities/participante_entity.dart';
+import '../../app/enums/modulo_enums.dart';
 import '../../global/user_controller.dart';
 
 class HomeController extends GetxController {
@@ -14,13 +15,19 @@ class HomeController extends GetxController {
   var participantes = RxList<ParticipanteEntity>();
   var participanteDetails = RxMap<int, ParticipanteEntity>();
 
+  var numAvaliacoesInProgress = 0.obs;
+  var numAvaliacoesFinished = 0.obs;
+  var numAvaliacoesTotal = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
     print("HomeController initialized");
     setupListeners();
     fetchData();
+    numAvaliacoesTotal.value = avaliacoes.length;
   }
+
 
   void setupListeners() {
     listenToUserChanges();
@@ -41,6 +48,20 @@ class HomeController extends GetxController {
       avaliacoes.assignAll(newAvaliacoes);
       isLoading.value = newAvaliacoes.isNotEmpty;
       print("Avaliacoes updated: ${avaliacoes.length}");
+
+      // Reset counters
+      numAvaliacoesInProgress.value = 0;
+      numAvaliacoesFinished.value = 0;
+      numAvaliacoesTotal.value = newAvaliacoes.length;
+
+      // Update counters based on the status of each avaliacao
+      for (var avaliacao in newAvaliacoes) {
+        if (avaliacao.status == Status.em_progresso) {
+          numAvaliacoesInProgress.value++;
+        } else if (avaliacao.status == Status.terminado) {
+          numAvaliacoesFinished.value++;
+        }
+      }
     });
   }
 

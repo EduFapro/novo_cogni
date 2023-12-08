@@ -8,12 +8,14 @@ class EdFolderCard extends StatelessWidget {
     required this.cardWidth,
     required this.folderColor,
     required this.tituloCard,
+    required this.numero,
   });
 
   final double cardHeight;
   final double cardWidth;
   final String tituloCard;
   final Color folderColor;
+  final int numero;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class EdFolderCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(tituloCard),
-                    Text("999"),
+                    Text(numero.toString()),
                   ],
                 )
               ]),

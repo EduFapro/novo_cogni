@@ -42,12 +42,10 @@ class UserController extends GetxController {
             if (participante != null) {
               participantes.add(participante);
               participanteDetails[avaliacao.avaliacaoID!] = participante;
-              // print("Participante for Avaliacao ID ${avaliacao.avaliacaoID}: $participante");
             }
           }
         }
       } else {
-        // print("Current User ID is null");
       }
 
       print("Fim do try, user: ${user}");

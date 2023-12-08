@@ -20,7 +20,7 @@ class ModuloRepository {
 
   // Get an Modulo by ID
   Future<ModuloEntity?> getModulo(int id) async {
-    return await moduloLocalDataSource.getModulo(id);
+    return await moduloLocalDataSource.getModuloById(id);
   }
 
   // Delete an Modulo by ID
@@ -44,12 +44,21 @@ class ModuloRepository {
   }
 
   Future<ModuloEntity?> getModuloWithTarefas(int moduloId) async {
-    final modulo = await moduloLocalDataSource.getModulo(moduloId);
+    final modulo = await moduloLocalDataSource.getModuloById(moduloId);
     if (modulo != null) {
       final tarefas = await tarefaLocalDataSource.getTarefasForModulo(moduloId);
       modulo.tarefas = tarefas;
     }
     return modulo;
+  }
+
+  Future<ModuloEntity?> getModuloByName(String nome) async {
+    try {
+      return moduloLocalDataSource.getModuloByName(nome);
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
   }
 
 

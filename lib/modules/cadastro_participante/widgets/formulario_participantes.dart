@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/domain/use_cases/modulos.dart';
 import '../../../app/enums/idioma_enums.dart';
-import '../../../app/enums/modulo_enums.dart';
 import '../../../app/enums/pessoa_enums.dart';
-import '../../home/home_controller.dart';
 import '../../login/login_controller.dart';
 import '../cadastro_participante_controller.dart';
 
@@ -23,9 +21,8 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
   @override
   void initState() {
     super.initState();
-    itemsMap = { for (var v in lista_modulos) v.titulo! : false };
+    itemsMap = {for (var v in lista_modulos) v.titulo!: false};
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -193,31 +190,6 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                 children: [
                   Row(
                     children: [
-                      // SizedBox(width: spacingWidth),
-                      // SizedBox(
-                      //   width: fieldWidthRow1,
-                      //   child: TextFormField(
-                      //     controller: controller.dataAvaliacaoController,
-                      //     decoration: InputDecoration(
-                      //       filled: true,
-                      //       fillColor: Color(0xffededed),
-                      //       labelText: 'Data da Avaliação',
-                      //     ),
-                      //     readOnly: true,
-                      //     onTap: () async {
-                      //       DateTime? pickedDate = await showDatePicker(
-                      //         context: context,
-                      //         initialDate: DateTime.now(),
-                      //         firstDate: DateTime(1900),
-                      //         lastDate: DateTime.now(),
-                      //       );
-                      //       if (pickedDate != null) {
-                      //         controller.dataAvaliacaoController.text =
-                      //             pickedDate.toLocal().toString().split(' ')[0];
-                      //       }
-                      //     },
-                      //   ),
-                      // ),
                       SizedBox(width: spacingWidth),
                       SizedBox(
                         width: fieldWidthRow1,
@@ -307,10 +279,7 @@ class _FormularioParticipanteState extends State<FormularioParticipante> {
                           .where((entry) => entry.value)
                           .map((entry) => entry.key)
                           .toList();
-                      print("HOHOHOOHO");
 
-                      // // Assuming avaliadorID is already defined and available in the current context
-                      // int avaliadorID = avaliadorID; // Replace with actual avaliadorID retrieval logic
 
                       // Call the method to handle participant and modules creation
                       bool success =

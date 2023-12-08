@@ -23,14 +23,15 @@ class ParticipanteService {
     required this.tarefaRepository,
   });
 
-  Future<int?> createParticipante(int avaliadorID, List<String> selectedModulos, ParticipanteEntity novoParticipante) async {
-    int? participanteId = await participanteRepository.createParticipante(novoParticipante);
+  Future<int?> createParticipante(int avaliadorID, List<String> selectedModulos,
+      ParticipanteEntity novoParticipante) async {
+    int? participanteId =
+        await participanteRepository.createParticipante(novoParticipante);
     if (participanteId != null) {
       // Additional logic if needed when participanteId is not null
     }
     return participanteId;
   }
-
 
   Future<int?> createAvaliacao(int participanteID, int avaliadorID) async {
     AvaliacaoEntity avaliacao = AvaliacaoEntity(
@@ -44,14 +45,6 @@ class ParticipanteService {
   }
 
 
-  Future<List<ModuloEntity>> createModulosEntities(List<String> selectedActivities) async {
-    // Logic to create module entities
-    List<ModuloEntity> modulos = selectedActivities.map((activity) {
-      // Convert each activity to a ModuloEntity
-      return ModuloEntity(titulo: "hahahah");
-    }).toList();
-    return modulos;
-  }
 
   Future<List<int>> saveModulos(List<ModuloEntity> modulos) async {
     List<int> moduloIds = [];
@@ -64,8 +57,8 @@ class ParticipanteService {
     return moduloIds;
   }
 
-
-  Future<void> linkAvaliacaoToModulos(int avaliacaoId, List<int> moduloIds) async {
+  Future<void> linkAvaliacaoToModulos(
+      int avaliacaoId, List<int> moduloIds) async {
     for (var moduloId in moduloIds) {
       AvaliacaoModuloEntity avaliacaoModulo = AvaliacaoModuloEntity(
         avaliacaoId: avaliacaoId,
@@ -78,18 +71,21 @@ class ParticipanteService {
     }
   }
 
-
-  Future<Map<String, int>> createParticipanteAndModulos(int avaliadorID, List<String> selectedActivities, ParticipanteEntity novoParticipante) async {
+  Future<Map<String, int>> createParticipanteAndModulos(
+      int avaliadorID,
+      List<String> selectedActivities,
+      ParticipanteEntity novoParticipante) async {
     // Orchestrating method to create participant and related entities
-    int? participanteId = await createParticipante(avaliadorID, selectedActivities, novoParticipante);
+    int? participanteId = await createParticipante(
+        avaliadorID, selectedActivities, novoParticipante);
     if (participanteId == null) return {};
 
     int? avaliacaoId = await createAvaliacao(participanteId, avaliadorID);
     if (avaliacaoId == null) return {};
 
-    List<ModuloEntity> modulos = await createModulosEntities(selectedActivities);
-    List<int> moduloIds = await saveModulos(modulos);
+    // List<ModuloEntity> modulos = await createModulosEntities(selectedActivities);
 
+    List<int> moduloIds = await fetchModuloIds(selectedActivities);
     await linkAvaliacaoToModulos(avaliacaoId, moduloIds);
 
     return {
@@ -97,4 +93,15 @@ class ParticipanteService {
       "avaliacaoId": avaliacaoId,
     };
   }
+  Future<List<int>> fetchModuloIds(List<String> selectedActivities) async {
+    print(selectedActivities);
+    List<Future<int>> futures = selectedActivities.map((e) async {
+      var modulo = await moduloRepository.getModuloByName(e);
+      return modulo!.moduloID!;
+    }).toList();
+
+    return await Future.wait(futures);
+  }
+
+
 }

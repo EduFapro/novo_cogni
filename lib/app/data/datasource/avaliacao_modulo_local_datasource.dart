@@ -92,7 +92,7 @@ class AvaliacaoModuloLocalDataSource {
     var modulos = <ModuloEntity>[];
 
     for (var id in moduloIds) {
-      var modulo = await ModuloLocalDataSource().getModulo(id);
+      var modulo = await ModuloLocalDataSource().getModuloById(id);
       if (modulo != null) {
         modulos.add(modulo);
       }

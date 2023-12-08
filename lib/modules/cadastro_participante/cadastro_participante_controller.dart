@@ -60,7 +60,6 @@ class CadastroParticipanteController extends GetxController {
     if (success.isNotEmpty) {
       final HomeController homeController = Get.find<HomeController>();
       homeController.addNewParticipante(novoParticipante, success);
-      // homeController.refreshData(); // Call a method to refresh data or update the list
     }
 
     return true;

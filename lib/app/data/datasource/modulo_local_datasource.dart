@@ -31,7 +31,7 @@ class ModuloLocalDataSource {
     }
   }
 
-  Future<ModuloEntity?> getModulo(int id) async {
+  Future<ModuloEntity?> getModuloById(int id) async {
     try {
       final Database? database = await db;
 
@@ -101,6 +101,27 @@ class ModuloLocalDataSource {
     final Database? database = await db;
     final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABELA_MODULOS");
     return result.first["count"] as int?;
+  }
+
+  Future<ModuloEntity?> getModuloByName(String nome) async {
+    try {
+      final Database? database = await db;
+
+      final List<Map<String, dynamic>> maps = await database!.query(
+        TABELA_MODULOS,
+        where: '$TITULO = ?',
+        whereArgs: [nome],
+      );
+
+      if (maps.isNotEmpty) {
+        return ModuloEntity.fromMap(maps.first);
+      }
+
+      return null;
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
   }
 
   Future<void> closeDatabase() async {
