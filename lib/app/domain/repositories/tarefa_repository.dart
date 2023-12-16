@@ -6,6 +6,16 @@ class TarefaRepository {
 
   TarefaRepository({required this.localDataSource});
 
+  Future<List<TarefaEntity>?> getTarefasForModulo(int moduloId) async {
+    try {
+      return localDataSource.getTarefasForModulo(moduloId);
+    } on Exception catch (e) {
+      print(e);
+      print("Não foi possível recuperar tarefas para módulo de id $moduloId");
+      return null;
+    }
+  }
+
   // Create a Tarefa
   Future<int?> createTarefa(TarefaEntity tarefa) async {
     return await localDataSource.create(tarefa);

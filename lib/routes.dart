@@ -1,5 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:novo_cogni/modules/modulo_atividades/modulo_screen.dart';
+import 'package:novo_cogni/modules/lista_modulos/lista_modulos_screen.dart';
 import 'package:novo_cogni/modules/nova_senha/nova_senha_screen.dart';
 import 'modules/avaliadores/avaliadores_binding.dart';
 import 'modules/avaliadores/avaliadores_screen.dart';
@@ -11,7 +11,7 @@ import 'modules/home/home_binding.dart';
 import 'modules/home/home_screen.dart';
 import 'modules/login/login_screen.dart';
 import 'modules/login/login_binding.dart';
-import 'modules/modulo_atividades/modulo_binding.dart';
+import 'modules/lista_modulos/lista_modulos_binding.dart';
 import 'modules/nova_senha/nova_senha_binding.dart';
 import 'modules/tarefa/tarefa_binding.dart';
 import 'modules/tarefa/tarefa_screen.dart';
@@ -55,8 +55,8 @@ final routes = [
   ),
   GetPage(
     name: AppRoutes.modulo,
-    page: () => ModuloScreen(),
-    binding: ModuloBinding(),
+    page: () => ListaModulosScreen(),
+    binding: ListaModulosBinding(),
   ),
   GetPage(
     name: AppRoutes.tarefa,

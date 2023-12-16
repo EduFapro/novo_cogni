@@ -75,14 +75,14 @@ class EdHistoricoAvaliacoes extends StatelessWidget {
           Obx(() {
             return ListView.builder(
               shrinkWrap: true,
-              itemCount: homeController.avaliacoes.value.length,
+              itemCount: homeController.avaliacoes.length,
               itemBuilder: (context, index) {
-                final avaliacao = homeController.avaliacoes.value[index];
-                print("Index: $index");
-                print("Avaliacao: $avaliacao");
+                final avaliacao = homeController.avaliacoes[index];
+                // print("Index: $index");
+                // print("Avaliacao: $avaliacao");
                 final dateFormat = DateFormat.yMd();
                 final participante = homeController.participanteDetails[avaliacao.avaliacaoID];
-                print("Participante: $participante");
+                // print("Participante: $participante");
 
                 return Card(
                   child: Padding(
@@ -119,7 +119,7 @@ class EdHistoricoAvaliacoes extends StatelessWidget {
                               },
                             );
                           },
-                          child: Icon(Icons.create_rounded),
+                          child: const Icon(Icons.create_rounded),
                         ),
                         const Icon(Icons.delete),
                       ],

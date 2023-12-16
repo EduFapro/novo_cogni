@@ -51,7 +51,7 @@ class EdPainelHome extends GetView<HomeController> {
               Obx(
                 () => EdFolderCard(
                   cardHeight: cardHeight,
-                  cardWidth: 2,
+                  cardWidth: cardWidth,
                   folderColor: Color(0xfffdbb11),
                   tituloCard: "Em progresso",
                   numero: controller.numAvaliacoesInProgress.value,
