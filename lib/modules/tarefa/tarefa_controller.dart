@@ -1,13 +1,23 @@
+import 'dart:typed_data';
+
 import 'package:get/get.dart';
-import '../audio_player/audio_recorder_controller.dart';
+import '../../audio_player/audio_recorder_controller.dart';
+import '../../utils/file_management/audio_management.dart';
+
 
 class TarefaController extends GetxController {
   final audioRecorderController = AudioRecorderController();
+  RxString audioPath = ''.obs; // Observable for the audio path
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize anything when the controller is created
+    audioPath.value = 'assets/audio/audio_placeholder.mp3';
+  }
+
+  Future<void> saveAudio(ByteData data, String fileName) async {
+    String path = await saveAudioFile(data, fileName);
+    audioPath.value = path; // Update the audio path
   }
 
   @override
@@ -15,6 +25,4 @@ class TarefaController extends GetxController {
     audioRecorderController.dispose();
     super.onClose();
   }
-
-// ... other methods
 }

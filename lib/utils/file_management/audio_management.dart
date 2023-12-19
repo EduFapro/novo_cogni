@@ -13,7 +13,7 @@ Future<String> getTemporaryDirectoryPath() async {
   return directory.path;
 }
 
-Future<void> saveAudioFile(ByteData data, String fileName) async {
+Future<String> saveAudioFile(ByteData data, String fileName) async {
   final String dirPath = await getSecureStoragePath();
   final mySubDir = Directory('$dirPath/MyAudioFiles');
   if (!await mySubDir.exists()) {
@@ -22,6 +22,7 @@ Future<void> saveAudioFile(ByteData data, String fileName) async {
   final filePath = p.join(mySubDir.path, fileName);
   final file = File(filePath);
   await file.writeAsBytes(data.buffer.asUint8List());
+  return filePath; // Return the file path
 }
 
 Future<String> getSecureStoragePath() async {
@@ -34,4 +35,3 @@ Future<String> getSecureStoragePath() async {
 
   return secureDir.path;
 }
-

@@ -37,4 +37,5 @@ flutter:
     - assets/folder.svg
     - assets/abstract-user.svg
     - assets/profile-placeholder.png
+    - assets/audio/audio_placeholder.mp3
     - .env
