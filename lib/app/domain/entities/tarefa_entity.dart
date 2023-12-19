@@ -1,5 +1,6 @@
 import 'package:novo_cogni/app/data/data_constants/tarefa_constants.dart';
 
+import '../../enums/tarefa_enums.dart';
 
 class TarefaEntity {
   int? tarefaID;

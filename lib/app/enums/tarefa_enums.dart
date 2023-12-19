@@ -1,12 +1,12 @@
-enum StatusTarefa { a_realizar, realizado }
+enum StatusTarefa { iniciar, feito }
 
 extension StatusDescription on StatusTarefa {
   String get description {
     switch (this) {
-      case StatusTarefa.a_realizar:
-        return "A realizar";
-      case StatusTarefa.realizado:
-        return "Realizado";
+      case StatusTarefa.iniciar:
+        return "Iniciar";
+      case StatusTarefa.feito:
+        return "Feito";
       default:
         return "---";
     }

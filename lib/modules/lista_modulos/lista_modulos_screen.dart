@@ -16,7 +16,6 @@ class ListaModulosScreen extends GetView<ListaModulosController> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Get.delete<ListaModulosController>();
             Get.back();
           },
         ),
