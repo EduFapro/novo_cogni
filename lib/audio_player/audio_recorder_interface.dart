@@ -16,35 +16,30 @@ class AudioRecorderInterface extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-          onPressed: () async {
-            // Define the path where the recording will be saved
-            String path = await _getRecordingPath();
-            await controller.startRecording(path);
-          },
-          child: Text('Record'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            await controller.pauseRecording();
-          },
-          child: Text('Pause'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            String? path = await controller.stopRecording();
-            if (path != null) onStop(path);
-          },
-          child: Text('Stop'),
-        ),
+        Obx(() {
+          return IconButton(
+            icon: Icon(
+              controller.isRecording.value ? Icons.stop : Icons.mic,
+              size: 56.0,
+              color: controller.isRecording.value ? Colors.red : Colors.blue,
+            ),
+            onPressed: () async {
+              if (controller.isRecording.value) {
+                String? path = await controller.stopRecording();
+                if (path != null) onStop(path);
+              } else {
+                String path = await _getRecordingPath();
+                await controller.startRecording(path);
+              }
+            },
+          );
+        }),
       ],
     );
   }
 
   // Helper method to generate a path for the recording
   Future<String> _getRecordingPath() async {
-    // You can use the path_provider package to get a suitable directory
-    // For example, using the application's documents directory:
     final directory = await getApplicationDocumentsDirectory();
     String fileName = 'recording_${DateTime.now().millisecondsSinceEpoch}.aac';
     return '${directory.path}/$fileName';
