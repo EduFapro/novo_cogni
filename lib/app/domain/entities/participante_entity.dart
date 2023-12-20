@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../data/data_constants/participante_constants.dart';
+import '../../data/data_constants/participant_constants.dart';
 import '../../enums/pessoa_enums.dart';
 
 class ParticipanteEntity extends Equatable {

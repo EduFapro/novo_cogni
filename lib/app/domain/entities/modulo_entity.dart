@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:novo_cogni/app/domain/entities/tarefa_entity.dart';
-import '../../data/data_constants/modulo_constants.dart';
+import '../../data/data_constants/module_constants.dart';
 import '../../enums/modulo_enums.dart';
 
 class ModuloEntity {

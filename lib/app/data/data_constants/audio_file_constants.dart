@@ -1,0 +1,17 @@
+import 'package:novo_cogni/app/data/data_constants/task_instances_constants.dart';
+
+import 'database_constants.dart';
+
+const ID_FILE = "file_id";
+const ID_TASK_INSTANCE_FK = "task_inst_id";
+const FILE_PATH = "file_path";
+
+const SCRIPT_CREATE_TABLE_FILES = '''
+  CREATE TABLE $TABLE_FILES
+  (
+    $ID_FILE INTEGER PRIMARY KEY AUTOINCREMENT,
+    $ID_TASK_INSTANCE_FK INTEGER UNIQUE NOT NULL,
+    $FILE_PATH TEXT NOT NULL,
+    FOREIGN KEY ($ID_TASK_INSTANCE_FK) REFERENCES $TABLE_TASK_INSTANCES($ID_TASK_INSTANCE)
+  )
+''';

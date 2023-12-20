@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../data/data_constants/avaliador_constants.dart';
+import '../../data/data_constants/evaluator_constants.dart';
 import '../../enums/pessoa_enums.dart';
 
 class AvaliadorEntity extends Equatable {

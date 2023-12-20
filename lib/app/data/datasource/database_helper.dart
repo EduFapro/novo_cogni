@@ -1,12 +1,12 @@
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../data_constants/avaliacao_modulo_constants.dart';
-import '../data_constants/modulo_constants.dart';
-import '../data_constants/avaliacao_constants.dart';
-import '../data_constants/avaliador_constants.dart';
+import '../data_constants/module_constants.dart';
+import '../data_constants/evaluation_constants.dart';
+import '../data_constants/evaluator_constants.dart';
 import '../data_constants/database_constants.dart';
-import '../data_constants/participante_constants.dart';
-import '../data_constants/tarefa_constants.dart';
+import '../data_constants/participant_constants.dart';
+import '../data_constants/task_constants.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();

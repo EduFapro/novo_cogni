@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '../../data/data_constants/avaliacao_constants.dart';
+import '../../data/data_constants/evaluation_constants.dart';
 import '../../enums/modulo_enums.dart';
 
 class AvaliacaoEntity {

@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../../domain/entities/tarefa_entity.dart';
 import '../data_constants/database_constants.dart';
-import '../data_constants/tarefa_constants.dart';
+import '../data_constants/task_constants.dart';
 import 'database_helper.dart';
 
 class TarefaLocalDataSource {

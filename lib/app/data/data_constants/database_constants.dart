@@ -1,11 +1,14 @@
 const DATABASE_NAME = "cognivoice_db";
-const VERSAO_DATABASE = 1;
+const DATABASE_VERSION = 1;
 
-const TABELA_AVALIADORES = "avaliadores";
-const TABELA_PARTICIPANTES = "participantes";
-const TABELA_AVALIACOES = "avaliacoes";
-const TABELA_MODULOS = "modulos";
-const TABELA_TAREFAS = "tarefas";
-const TABELA_AVALIACAO_MODULOS = "avaliacao_modulos";
+const TABLE_EVALUATORS = "evaluators";
+const TABLE_PARTICIPANTS = "participants";
+const TABLE_EVALUATIONS = "evaluations";
+const TABLE_MODULES = "modules";
+const TABLE_TASKS = "tasks";
+const TABLE_EVALUATION_MODULES = "evaluation_modules";
 
-
+// Inside database_constants.dart or respective files
+const TABLE_TASK_INSTANCES = "task_instances";
+const TABLE_MODULE_INSTANCES = "module_instances";
+const TABLE_FILES = "files";

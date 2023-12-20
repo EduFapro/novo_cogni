@@ -1,6 +1,6 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../../domain/entities/modulo_entity.dart';
-import '../data_constants/modulo_constants.dart';
+import '../data_constants/module_constants.dart';
 import '../data_constants/database_constants.dart';
 import 'database_helper.dart';
 
