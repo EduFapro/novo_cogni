@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/modules/home/home_controller.dart';
-import 'ed_historico_avaliacoes.dart';
+import 'ed_evaluation_history.dart';
 import 'ed_folder_card.dart';
-import 'ed_novo_participante_button.dart';
+import 'ed_new_participant_button.dart';
 
-class EdPainelHome extends GetView<HomeController> {
-  const EdPainelHome({Key? key}) : super(key: key);
+class EdHomePanel extends GetView<HomeController> {
+  const EdHomePanel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,6 @@ class EdPainelHome extends GetView<HomeController> {
 
     double cardWidth = screenWidth / 6;
     double cardHeight = 100;
-
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +29,7 @@ class EdPainelHome extends GetView<HomeController> {
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 8.0),
-              NovoParticipanteButton(),
+              EdNewParticipantButton(),
             ],
           ),
         ),
@@ -39,32 +38,32 @@ class EdPainelHome extends GetView<HomeController> {
           child: Row(
             children: <Widget>[
               Obx(
-                () => EdFolderCard(
+                    () => EdFolderCard(
                   cardHeight: cardHeight,
                   cardWidth: cardWidth,
                   folderColor: Color(0xff50bee9),
-                  tituloCard: "Total de Projetos",
-                  numero: controller.numAvaliacoesTotal.value,
+                  titleCard: "Total Projects",
+                  number: controller.numEvaluationsTotal.value,
                 ),
               ),
               SizedBox(width: 50.0),
               Obx(
-                () => EdFolderCard(
+                    () => EdFolderCard(
                   cardHeight: cardHeight,
                   cardWidth: cardWidth,
                   folderColor: Color(0xfffdbb11),
-                  tituloCard: "Em progresso",
-                  numero: controller.numAvaliacoesInProgress.value,
+                  titleCard: "In Progress",
+                  number: controller.numEvaluationsInProgress.value,
                 ),
               ),
               SizedBox(width: 50.0),
               Obx(
-                () => EdFolderCard(
+                    () => EdFolderCard(
                   cardHeight: cardHeight,
                   cardWidth: cardWidth,
                   folderColor: Color(0xff02bf72),
-                  tituloCard: "Concluído",
-                  numero: controller.numAvaliacoesFinished.value,
+                  titleCard: "Completed",
+                  number: controller.numEvaluationsFinished.value,
                 ),
               ),
             ],
@@ -72,7 +71,7 @@ class EdPainelHome extends GetView<HomeController> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: EdHistoricoAvaliacoes(),
+          child: EdEvaluationHistory(),
         ),
       ],
     );

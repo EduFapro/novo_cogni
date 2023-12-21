@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../data_constants/avaliacao_modulo_constants.dart';
+import '../../domain/use_cases/module_use_cases.dart';
 import '../data_constants/module_constants.dart';
 import '../data_constants/evaluation_constants.dart';
 import '../data_constants/evaluator_constants.dart';
@@ -31,17 +31,25 @@ class DatabaseHelper {
     print("Database path: $path");
 
     return await openDatabase(path,
-        version: VERSAO_DATABASE, onCreate: _onCreate);
+        version: DATABASE_VERSION, onCreate: _onCreate);
   }
 
   void _onCreate(Database db, int newVersion) async {
-    await db.execute(SCRIPT_CREATE_TABELA_AVALIADORES);
-    await db.execute(SCRIPT_CREATE_TABELA_PARTICIPANTES);
-    await db.execute(SCRIPT_CREATE_TABELA_AVALIACOES);
-    await db.execute(SCRIPT_CREATE_TABELA_MODULOS);
-    await db.execute(SCRIPT_CREATE_TABELA_TAREFAS);
-    await db.execute(SCRIPT_CREATE_TABELA_AVALIACAO_MODULOS);
-    await db.execute(SCRIPT_INSERT_MODULOS);
-    await db.execute(SCRIPT_INSERT_TAREFAS);
+    await db.execute(SCRIPT_CREATE_TABLE_EVALUATORS);
+    await db.execute(SCRIPT_CREATE_TABLE_PARTICIPANTS);
+    await db.execute(SCRIPT_CREATE_TABLE_EVALUATIONS);
+    await db.execute(SCRIPT_CREATE_TABLE_MODULES);
+    await db.execute(SCRIPT_CREATE_TABLE_TASKS);
+    await insertInitialData();
+  }
+
+  Future<void> insertInitialData() async {
+    final db = await this.db;
+    for (var module in modulesList) {
+      await db.insert(TABLE_MODULES, module.toMap());
+    }
+    for (var task in tasksList) {
+      await db.insert(TABLE_TASKS, task.toMap());
+    }
   }
 }

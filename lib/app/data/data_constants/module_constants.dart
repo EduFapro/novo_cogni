@@ -11,9 +11,3 @@ const SCRIPT_CREATE_TABLE_MODULES = '''
     $TITLE TEXT NOT NULL
   )
 ''';
-
-final SCRIPT_INSERT_MODULES = '''
-    INSERT INTO $TABLE_MODULES
-        ($ID_MODULE, $TITLE) VALUES
-        ${list_modules.map((module) => "(${module.moduleID}, '${module.title}')").join(", ")};
-''';

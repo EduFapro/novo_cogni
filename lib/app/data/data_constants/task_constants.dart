@@ -16,8 +16,3 @@ const SCRIPT_CREATE_TABLE_TASKS = '''
   )
 ''';
 
-final SCRIPT_INSERT_TASKS = '''
-    INSERT INTO $TABLE_TASKS
-        ($MODULE_ID, $NAME) VALUES
-        ${list_tasks.map((task) => "(${task.moduleID}, '${task.name}')").join(", ")};
-''';

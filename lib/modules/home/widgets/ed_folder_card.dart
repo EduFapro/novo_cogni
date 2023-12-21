@@ -7,15 +7,15 @@ class EdFolderCard extends StatelessWidget {
     required this.cardHeight,
     required this.cardWidth,
     required this.folderColor,
-    required this.tituloCard,
-    required this.numero,
+    required this.titleCard,
+    required this.number,
   });
 
   final double cardHeight;
   final double cardWidth;
-  final String tituloCard;
+  final String titleCard;
   final Color folderColor;
-  final int numero;
+  final int number;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,8 @@ class EdFolderCard extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(tituloCard),
-                    Text(numero.toString()),
+                    Text(titleCard),
+                    Text(number.toString()),
                   ],
                 )
               ]),

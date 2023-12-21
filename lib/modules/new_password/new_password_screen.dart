@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:novo_cogni/modules/new_password/new_password_controller.dart';
+import '../../mixins/ValidationMixin.dart';
+
+import '../widgets/ed_form_title.dart';
+import '../widgets/ed_input_text.dart';
+
+class NewPasswordScreen extends GetView<NewPasswordController>
+    with ValidationMixin {
+  NewPasswordScreen({Key? key}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
+  String firstPassword = '';
+  String secondPassword = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 500, maxWidth: 500),
+            child: Container(
+                padding: const EdgeInsets.all(48),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.05),
+                  borderRadius: const BorderRadius.all(Radius.circular(24)),
+                ),
+                child: Form(
+                  key: formKey,
+                  child: Wrap(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          FormTitle(title: 'New Password'),
+                          const SizedBox(height: 10.0),
+                          EdInputText(
+                            placeholder: "Password",
+                            obscureText: true,
+                            validator: (value) {
+                              return validatePassword(value);
+                            },
+                            onSaved: (value) => firstPassword = value ?? '',
+                          ),
+                          const SizedBox(height: 10.0),
+                          EdInputText(
+                            placeholder: "Confirm Password",
+                            obscureText: true,
+                            validator: (value) {
+                              return validateSecondPassword(value, firstPassword);
+                            },
+                            onSaved: (value) => secondPassword = value ?? '',
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              // Button logic
+                            },
+                            style: TextButton.styleFrom(
+                              // Button style
+                            ),
+                            child: const Text("Confirm"),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )),
+          ),
+        ),
+      ),
+      backgroundColor: const Color(0xFF161E2E),
+    );
+  }
+}

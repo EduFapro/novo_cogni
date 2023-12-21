@@ -1,30 +1,31 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:novo_cogni/modules/lista_modulos/lista_modulos_screen.dart';
-import 'package:novo_cogni/modules/nova_senha/nova_senha_screen.dart';
-import 'modules/avaliadores/avaliadores_binding.dart';
-import 'modules/avaliadores/avaliadores_screen.dart';
-import 'modules/cadastro_avaliador/cadastro_avaliador_binding.dart';
-import 'modules/cadastro_avaliador/cadastro_avaliador_screen.dart';
-import 'modules/cadastro_participante/cadastro_participante_binding.dart';
-import 'modules/cadastro_participante/cadastro_participante_screen.dart';
+import 'package:novo_cogni/modules/lista_modulos/module_controller.dart';
+import 'package:novo_cogni/modules/lista_modulos/modules_list_screen.dart';
+
+import 'modules/evaluator_registration/evaluator_registration_binding.dart';
+import 'modules/evaluator_registration/evaluator_registration_screen.dart';
+import 'modules/evaluators/evaluators_binding.dart';
+import 'modules/evaluators/evaluators_screen.dart';
 import 'modules/home/home_binding.dart';
 import 'modules/home/home_screen.dart';
+import 'modules/lista_modulos/modules_list_binding.dart';
 import 'modules/login/login_screen.dart';
 import 'modules/login/login_binding.dart';
-import 'modules/lista_modulos/lista_modulos_binding.dart';
-import 'modules/nova_senha/nova_senha_binding.dart';
-import 'modules/tarefa/tarefa_binding.dart';
-import 'modules/tarefa/tarefa_screen.dart';
+import 'modules/new_password/new_password_binding.dart';
+import 'modules/new_password/new_password_screen.dart';
+import 'modules/participant_registration/participant_registration_binding.dart';
+import 'modules/task/task_binding.dart';
+import 'modules/task/task_screen.dart';
 
 class AppRoutes {
   static const login = '/login';
   static const home = '/home';
-  static const cadastroAvaliador = '/cadastroAvaliador';
-  static const avaliadores = '/avaliadores';
-  static const cadastroParticipante = '/cadastroParticipante';
-  static const modulo = '/modulo';
-  static const tarefa = '/tarefa';
-  static const novaSenha = '/new_password';
+  static const evaluatorRegistration = '/evaluatorRegistration';
+  static const evaluators = '/evaluators';
+  static const participantRegistration = '/participantRegistration';
+  static const module = '/module';
+  static const task = '/task';
+  static const newPassword = '/new_password';
 }
 
 final routes = [
@@ -34,19 +35,19 @@ final routes = [
     binding: HomeBinding(),
   ),
   GetPage(
-    name: AppRoutes.avaliadores,
-    page: () => AvaliadoresScreen(),
-    binding: AvaliadoresBinding(),
+    name: AppRoutes.evaluators,
+    page: () => EvaluatorsScreen(),
+    binding: EvaluatorsBinding(),
   ),
   GetPage(
-    name: AppRoutes.cadastroAvaliador,
-    page: () => CadastroAvaliadorScreen(),
-    binding: CadastroAvaliadorBinding(),
+    name: AppRoutes.evaluatorRegistration,
+    page: () => EvaluatorRegistrationScreen(),
+    binding: EvaluatorRegistrationBinding(),
   ),
   GetPage(
-    name: AppRoutes.cadastroParticipante,
-    page: () => CadastroParticipanteScreen(),
-    binding: CadastroParticipanteBinding(),
+    name: AppRoutes.participantRegistration,
+    page: () => ParticipantRegistrationScreen(),
+    binding: ParticipantRegistrationBinding(),
   ),
   GetPage(
     name: AppRoutes.login,
@@ -54,18 +55,18 @@ final routes = [
     binding: LoginBinding(),
   ),
   GetPage(
-    name: AppRoutes.modulo,
-    page: () => ListaModulosScreen(),
-    binding: ListaModulosBinding(),
+    name: AppRoutes.module,
+    page: () => ModulesListScreen(),
+    binding: ModulesListBinding(),
   ),
   GetPage(
-    name: AppRoutes.tarefa,
-    page: () => TarefaScreen(),
-    binding: TarefaBinding(),
+    name: AppRoutes.task,
+    page: () => TaskScreen(),
+    binding: TaskBinding(),
   ),
   GetPage(
-    name: AppRoutes.novaSenha,
-    page: () => NovaSenhaScreen(),
-    binding: NovaSenhaBinding(),
+    name: AppRoutes.newPassword,
+    page: () => NewPasswordScreen(),
+    binding: NewPasswordBinding(),
   ),
 ];

@@ -1,28 +1,27 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/data/datasource/modulo_local_datasource.dart';
-import 'package:novo_cogni/app/data/datasource/participante_local_datasource.dart';
-import 'package:novo_cogni/app/domain/repositories/tarefa_repository.dart';
-import '../../app/data/datasource/tarefa_local_datasource.dart';
-import '../../app/domain/repositories/modulo_repository.dart';
-import '../../app/domain/repositories/participante_repository.dart';
+import 'package:novo_cogni/app/data/datasource/participant_local_datasource.dart';
+import 'package:novo_cogni/app/domain/repositories/task_repository.dart';
+import '../../app/data/datasource/modulo_local_datasource.dart';
+import '../../app/data/datasource/task_local_datasource.dart';
+import '../../app/domain/repositories/module_repository.dart';
+import '../../app/domain/repositories/participant_repository.dart';
 import 'home_controller.dart';
 
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ParticipanteLocalDataSource());
-    Get.lazyPut(() => ModuloLocalDataSource());
-    Get.lazyPut(() => TarefaLocalDataSource());
+    Get.lazyPut(() => ParticipantLocalDataSource());
+    Get.lazyPut(() => ModuleLocalDataSource());
+    Get.lazyPut(() => TaskLocalDataSource());
 
     // Register repositories with their respective data sources
-    Get.lazyPut(() => ParticipanteRepository(localDataSource: Get.find()));
-    Get.put(ModuloRepository(
-        moduloLocalDataSource: Get.find(), tarefaLocalDataSource: Get.find()),
+    Get.lazyPut(() => ParticipantRepository(localDataSource: Get.find()));
+    Get.put(ModuleRepository(
+        moduleLocalDataSource: Get.find(), taskLocalDataSource: Get.find()),
         permanent: true); // Using Get.put with permanent
-    Get.put(() => TarefaRepository(localDataSource: Get.find()), permanent: true);
+    Get.put(() => TaskRepository(localDataSource: Get.find()), permanent: true);
 
     // Register controller with all required repositories
     Get.lazyPut(() => HomeController());
   }
 }
-

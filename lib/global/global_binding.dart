@@ -2,33 +2,29 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/global/user_controller.dart';
 import 'package:novo_cogni/global/user_service.dart';
 
-import '../app/data/datasource/avaliacao_local_datasource.dart';
-import '../app/data/datasource/avaliacao_modulo_local_datasource.dart';
-import '../app/data/datasource/avaliador_local_datasource.dart';
-import '../app/data/datasource/participante_local_datasource.dart';
-import '../app/domain/repositories/avaliacao_modulo_repository.dart';
-import '../app/domain/repositories/avaliacao_repository.dart';
-import '../app/domain/repositories/avaliador_repository.dart';
-import '../app/domain/repositories/participante_repository.dart';
+import '../app/data/datasource/evaluation_local_datasource.dart';
+import '../app/data/datasource/evaluator_local_datasource.dart';
+import '../app/data/datasource/participant_local_datasource.dart';
+import '../app/domain/repositories/evaluation_repository.dart';
+import '../app/domain/repositories/evaluator_repository.dart';
+import '../app/domain/repositories/participant_repository.dart';
 
 class GlobalBinding extends Bindings {
   @override
   void dependencies() {
     // Data sources (Lazy Initialization)
-    Get.lazyPut<AvaliadorLocalDataSource>(() => AvaliadorLocalDataSource());
-    Get.lazyPut<AvaliacaoLocalDataSource>(() => AvaliacaoLocalDataSource());
-    Get.lazyPut<ParticipanteLocalDataSource>(() => ParticipanteLocalDataSource());
-    Get.lazyPut<AvaliacaoModuloLocalDataSource>(() => AvaliacaoModuloLocalDataSource());
+    Get.lazyPut<EvaluatorLocalDataSource>(() => EvaluatorLocalDataSource());
+    Get.lazyPut<EvaluationLocalDataSource>(() => EvaluationLocalDataSource());
+    Get.lazyPut<ParticipantLocalDataSource>(() => ParticipantLocalDataSource());
 
     // Repositories (Lazy Initialization)
-    Get.lazyPut<AvaliadorRepository>(() => AvaliadorRepository(
-        localDataSource: Get.find<AvaliadorLocalDataSource>()));
-    Get.lazyPut<AvaliacaoRepository>(() => AvaliacaoRepository(
-        localDataSource: Get.find<AvaliacaoLocalDataSource>()));
-    Get.lazyPut<ParticipanteRepository>(() => ParticipanteRepository(
-        localDataSource: Get.find<ParticipanteLocalDataSource>()));
-    Get.lazyPut<AvaliacaoModuloRepository>(() => AvaliacaoModuloRepository(
-        localDataSource: Get.find<AvaliacaoModuloLocalDataSource>()));
+    Get.lazyPut<EvaluatorRepository>(() => EvaluatorRepository(
+        localDataSource: Get.find<EvaluatorLocalDataSource>()));
+    Get.lazyPut<EvaluationRepository>(() => EvaluationRepository(
+        localDataSource: Get.find<EvaluationLocalDataSource>()));
+    Get.lazyPut<ParticipantRepository>(() => ParticipantRepository(
+        localDataSource: Get.find<ParticipantLocalDataSource>()));
+
 
     // Core Services (Immediate Initialization)
     Get.put<UserService>(UserService());

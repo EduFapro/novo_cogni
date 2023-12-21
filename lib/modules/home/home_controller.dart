@@ -1,23 +1,22 @@
 import 'package:get/get.dart';
-
-import '../../app/domain/entities/avaliacao_entity.dart';
-import '../../app/domain/entities/avaliador_entity.dart';
-import '../../app/domain/entities/participante_entity.dart';
-import '../../app/enums/modulo_enums.dart';
+import '../../app/domain/entities/evaluation_entity.dart';
+import '../../app/domain/entities/evaluator_entity.dart';
+import '../../app/domain/entities/participant_entity.dart';
+import '../../app/enums/module_enums.dart';
 import '../../global/user_controller.dart';
 
 class HomeController extends GetxController {
   final UserController userController = Get.find<UserController>();
 
   var isLoading = false.obs;
-  var user = Rxn<AvaliadorEntity>();
-  var avaliacoes = RxList<AvaliacaoEntity>();
-  var participantes = RxList<ParticipanteEntity>();
-  var participanteDetails = RxMap<int, ParticipanteEntity>();
+  var user = Rxn<EvaluatorEntity>();
+  var evaluations = RxList<EvaluationEntity>();
+  var participants = RxList<ParticipantEntity>();
+  var participantDetails = RxMap<int, ParticipantEntity>();
 
-  var numAvaliacoesInProgress = 0.obs;
-  var numAvaliacoesFinished = 0.obs;
-  var numAvaliacoesTotal = 0.obs;
+  var numEvaluationsInProgress = 0.obs;
+  var numEvaluationsFinished = 0.obs;
+  var numEvaluationsTotal = 0.obs;
 
   @override
   void onInit() {
@@ -25,59 +24,56 @@ class HomeController extends GetxController {
     print("HomeController initialized");
     setupListeners();
     fetchData();
-    numAvaliacoesTotal.value = avaliacoes.length;
+    numEvaluationsTotal.value = evaluations.length;
   }
-
 
   void setupListeners() {
     listenToUserChanges();
-    listenToAvaliacoesChanges();
-    listenToParticipantesChanges();
-    listenToParticipanteDetailsChanges();
+    listenToEvaluationsChanges();
+    listenToParticipantsChanges();
+    listenToParticipantDetailsChanges();
   }
 
   void listenToUserChanges() {
-    ever(userController.user, (AvaliadorEntity? newUser) {
+    ever(userController.user, (EvaluatorEntity? newUser) {
       user.value = newUser;
-      print("User updated: ${user.value?.nome}");
+      print("User updated: ${user.value?.name}");
     });
   }
 
-  void listenToAvaliacoesChanges() {
-    ever(userController.avaliacoes, (List<AvaliacaoEntity> newAvaliacoes) {
-      avaliacoes.assignAll(newAvaliacoes);
-      isLoading.value = newAvaliacoes.isNotEmpty;
-      print("Avaliacoes updated: ${avaliacoes.length}");
+  void listenToEvaluationsChanges() {
+    ever(userController.evaluations, (List<EvaluationEntity> newEvaluations) {
+      evaluations.assignAll(newEvaluations);
+      isLoading.value = newEvaluations.isNotEmpty;
+      print("Evaluations updated: ${evaluations.length}");
 
       // Reset counters
-      numAvaliacoesInProgress.value = 0;
-      numAvaliacoesFinished.value = 0;
-      numAvaliacoesTotal.value = newAvaliacoes.length;
+      numEvaluationsInProgress.value = 0;
+      numEvaluationsFinished.value = 0;
+      numEvaluationsTotal.value = newEvaluations.length;
 
-      // Update counters based on the status of each avaliacao
-      for (var avaliacao in newAvaliacoes) {
-        if (avaliacao.status == Status.em_progresso) {
-          numAvaliacoesInProgress.value++;
-        } else if (avaliacao.status == Status.terminado) {
-          numAvaliacoesFinished.value++;
+      // Update counters based on the status of each evaluation
+      for (var evaluation in newEvaluations) {
+        if (evaluation.status == Status.in_progress) {
+          numEvaluationsInProgress.value++;
+        } else if (evaluation.status == Status.completed) {
+          numEvaluationsFinished.value++;
         }
       }
     });
   }
 
-  void listenToParticipantesChanges() {
-    ever(userController.participantes,
-        (List<ParticipanteEntity> newParticipantes) {
-      participantes.assignAll(newParticipantes);
-      print("Participantes updated: ${participantes.length}");
+  void listenToParticipantsChanges() {
+    ever(userController.participants, (List<ParticipantEntity> newParticipants) {
+      participants.assignAll(newParticipants);
+      print("Participants updated: ${participants.length}");
     });
   }
 
-  void listenToParticipanteDetailsChanges() {
-    ever(userController.participanteDetails,
-        (Map<int, ParticipanteEntity> newDetails) {
-      participanteDetails.assignAll(newDetails);
-      print("Participante details updated");
+  void listenToParticipantDetailsChanges() {
+    ever(userController.participantDetails, (Map<int, ParticipantEntity> newDetails) {
+      participantDetails.assignAll(newDetails);
+      print("Participant details updated");
     });
   }
 
@@ -91,39 +87,30 @@ class HomeController extends GetxController {
     updateLoadingState();
   }
 
-  // void refreshData() async {
-  //   // Await the completion of fetchData()
-  //   fetchData();
-  //
-  //   // After fetchData() completes, you can perform additional actions if needed
-  //   // For example, you might want to update the UI or trigger other processes
-  // }
-
   void updateLoadingState() {
     isLoading.value = !(user.value != null &&
-        avaliacoes.isNotEmpty &&
-        participantes.isNotEmpty);
+        evaluations.isNotEmpty &&
+        participants.isNotEmpty);
   }
 
-  void addNewParticipante(
-      ParticipanteEntity newParticipante, Map<String, int> newParticipanteMap) {
-    print("DENTRO DA HOME CONTROLLER: $newParticipanteMap");
-    var newParticipanteID = newParticipanteMap["participanteId"];
-    var newAvaliacaoID = newParticipanteMap["avaliacaoId"];
-    var avaliadorID = user.value!.avaliadorID;
-    print("newParticipanteID: $newParticipanteID");
-    print("newParticipanteID: $newAvaliacaoID");
-    print("AvaliadorID: $avaliadorID");
+  void addNewParticipant(ParticipantEntity newParticipant, Map<String, int> newParticipantMap) {
+    print("Inside HomeController: $newParticipantMap");
+    var newParticipantID = newParticipantMap["participanteId"];
+    var newEvaluationID = newParticipantMap["avaliacaoId"];
+    var evaluatorID = user.value!.evaluatorID;
+    print("newParticipantID: $newParticipantID");
+    print("newEvaluationID: $newEvaluationID");
+    print("EvaluatorID: $evaluatorID");
 
-    print("Adding new participante");
+    print("Adding new participant");
 
-    participantes.add(newParticipante);
-    participanteDetails[newParticipanteID!] = newParticipante;
+    participants.add(newParticipant);
+    participantDetails[newParticipantID!] = newParticipant;
 
-    avaliacoes.add(AvaliacaoEntity(
-        avaliadorID: avaliadorID!,
-        avaliacaoID: newAvaliacaoID,
-        participanteID: newParticipanteID));
+    evaluations.add(EvaluationEntity(
+        evaluatorID: evaluatorID!,
+        evaluationID: newEvaluationID,
+        participantID: newParticipantID));
 
     // Refresh data to update UI and other dependent components
     // refreshData();

@@ -1,23 +1,22 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/global/user_service.dart';
 
-import '../app/domain/entities/avaliacao_entity.dart';
-import '../app/domain/entities/avaliador_entity.dart';
-import '../app/domain/entities/participante_entity.dart';
-import '../app/domain/repositories/avaliador_repository.dart';
-import '../app/domain/repositories/participante_repository.dart';
+import '../app/domain/entities/evaluation_entity.dart';
+import '../app/domain/entities/evaluator_entity.dart';
+import '../app/domain/entities/participant_entity.dart';
+import '../app/domain/repositories/evaluator_repository.dart';
+import '../app/domain/repositories/participant_repository.dart';
 
 class UserController extends GetxController {
-  Rx<AvaliadorEntity?> user = Rxn<AvaliadorEntity>();
+  Rx<EvaluatorEntity?> user = Rxn<EvaluatorEntity>();
 
-  var avaliadorRepo = Get.find<AvaliadorRepository>();
+  var evaluatorRepo = Get.find<EvaluatorRepository>();
   var userService = Get.find<UserService>();
-  var participanteRepo = Get.find<ParticipanteRepository>();
+  var participantRepo = Get.find<ParticipantRepository>();
 
-  var avaliacoes = <AvaliacaoEntity>[].obs;
-  var participantes = <ParticipanteEntity>[].obs;
-  var participanteDetails = <int, ParticipanteEntity>{}.obs;
-
+  var evaluations = <EvaluationEntity>[].obs;
+  var participants = <ParticipantEntity>[].obs;
+  var participantDetails = <int, ParticipantEntity>{}.obs;
 
   @override
   void onInit() {
@@ -26,45 +25,43 @@ class UserController extends GetxController {
 
   Future<void> fetchUserData() async {
     try {
-      int? currentUserId = user.value?.avaliadorID;
+      int? currentUserId = user.value?.evaluatorID;
       if (currentUserId != null) {
         var fetchedUser = await userService.getUser(currentUserId);
         if (fetchedUser != null) {
           user.value = fetchedUser;
           print("Fetched User: ${user.value}");
 
-          var fetchedAvaliacoes = await userService.getAvaliacoesByUser(fetchedUser);
-          avaliacoes.assignAll(fetchedAvaliacoes);
-          // print("Fetched Avaliacoes: ${avaliacoes}");
+          var fetchedEvaluations = await userService.getEvaluationsByUser(fetchedUser);
+          evaluations.assignAll(fetchedEvaluations);
 
-          for (var avaliacao in fetchedAvaliacoes) {
-            var participante = await participanteRepo.getParticipanteByAvaliacao(avaliacao.avaliacaoID!);
-            if (participante != null) {
-              participantes.add(participante);
-              participanteDetails[avaliacao.avaliacaoID!] = participante;
+          for (var evaluation in fetchedEvaluations) {
+            var participant = await participantRepo.getParticipantByEvaluation(evaluation.evaluationID!);
+            if (participant != null) {
+              participants.add(participant);
+              participantDetails[evaluation.evaluationID!] = participant;
             }
           }
         }
       } else {
+        // Handle no current user scenario
       }
 
-      print("Fim do try, user: ${user}");
+      print("End of try, user: ${user}");
     } catch (e) {
       print("Error fetching user data: $e");
     }
   }
 
-  Future<void> updateUser(AvaliadorEntity newUser) async {
+  Future<void> updateUser(EvaluatorEntity newUser) async {
     user.value = newUser;
     await fetchUserData();
   }
 
-  Future<AvaliadorEntity?> getCurrentUserOrFetch() async {
+  Future<EvaluatorEntity?> getCurrentUserOrFetch() async {
     if (user.value == null) {
       await fetchUserData();
     }
     return user.value;
   }
-
-
 }

@@ -21,106 +21,76 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 500, maxWidth: 500),
             child: Container(
-                padding: const EdgeInsets.all(48),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
-                  borderRadius: const BorderRadius.all(Radius.circular(24)),
-                ),
-                child: Form(
-                  key: formKey,
-                  child: Wrap(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FormTitle(title: 'Login'),
-                          const SizedBox(height: 10.0),
-                          EdInputText(
-                            placeholder: "Email",
-                            validator: validateEmail,
-                            onSaved: (value) => email = value ?? '',
-                          ),
-                          const SizedBox(height: 10.0),
-                          EdInputText(
-                            placeholder: "Senha",
-                            obscureText: true,
-                            validator: validatePassword,
-                            onSaved: (value) => password = value ?? '',
-                          ),
-                          const SizedBox(height: 20.0),
-                          const EdEndText(text: "Esqueceu sua senha?"),
-                          const SizedBox(height: 20.0),
+              padding: const EdgeInsets.all(48),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.05),
+                borderRadius: const BorderRadius.all(Radius.circular(24)),
+              ),
+              child: Form(
+                key: formKey,
+                child: Wrap(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        FormTitle(title: 'Login'),
+                        const SizedBox(height: 10.0),
+                        EdInputText(
+                          placeholder: "Email",
+                          validator: validateEmail,
+                          onSaved: (value) => email = value ?? '',
+                        ),
+                        const SizedBox(height: 10.0),
+                        EdInputText(
+                          placeholder: "Password",
+                          obscureText: true,
+                          validator: validatePassword,
+                          onSaved: (value) => password = value ?? '',
+                        ),
+                        const SizedBox(height: 20.0),
+                        const EdEndText(text: "Forgot your password?"),
+                        const SizedBox(height: 20.0),
 
-                          // Display login error
-                          Obx(() {
-                            if (controller.loginError.value.isNotEmpty) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10.0),
-                                child: Text(
-                                  controller.loginError.value,
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 14,
-                                  ),
+                        // Display login error
+                        Obx(() {
+                          if (controller.loginError.value.isNotEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: Text(
+                                controller.loginError.value,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14,
                                 ),
-                              );
-                            } else {
-                              return SizedBox
-                                  .shrink(); // Return an empty widget if there's no error
-                            }
-                          }),
-
-                          TextButton(
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                formKey.currentState!.save();
-                                print("Email: $email, Password: $password");
-                                var successfulAdminLogin =
-                                    await controller.logAdmin(email, password);
-                                if (successfulAdminLogin) {
-                                  print("hohohoho");
-                                  Get.toNamed(AppRoutes.home);
-                                } else {
-                                  var successfulLogin =
-                                  await controller.login(email, password);
-                                  if (successfulLogin) {
-                                    if ((controller
-                                        .currentAvaliadorFirstLogin.value == false)) {
-                                      print(controller
-                                          .currentAvaliadorFirstLogin.value);
-                                      Get.toNamed(AppRoutes.home);
-                                    } else {
-                                      Get.toNamed(
-                                        AppRoutes.novaSenha,
-                                        arguments: {
-                                          'firstLogin': controller
-                                              .currentAvaliadorFirstLogin.value,
-                                          'avaliadorID': controller
-                                              .currentAvaliadorID.value,
-                                        },
-                                      );
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.all(20),
-                              textStyle: const TextStyle(fontSize: 16),
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
                               ),
+                            );
+                          } else {
+                            return const SizedBox.shrink(); // Return an empty widget if there's no error
+                          }
+                        }),
+
+                        TextButton(
+                          onPressed: () async {
+                            // Login logic
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.all(20),
+                            textStyle: const TextStyle(fontSize: 16),
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Text("Entrar"),
                           ),
-                        ],
-                      )
-                    ],
-                  ),
-                )),
+                          child: const Text("Login"),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),

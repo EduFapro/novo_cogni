@@ -2,21 +2,21 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/domain/repositories/avaliador_repository.dart';
+import 'package:novo_cogni/app/domain/repositories/evaluator_repository.dart';
 
-import '../../app/domain/entities/avaliador_entity.dart';
+import '../../app/domain/entities/evaluator_entity.dart';
 import '../../global/user_controller.dart';
 
 class LoginController extends GetxController {
-  final AvaliadorRepository avaliadorRepository;
+  final EvaluatorRepository evaluatorRepository;
 
   var isLoading = false.obs;
   var loginError = RxString('');
-  var currentAvaliadorID = RxInt(0);
-  var currentAvaliadorFirstLogin = RxBool(false);
+  var currentEvaluatorId = RxInt(0);
+  var currentEvaluatorFirstLogin = RxBool(false);
   var userController = Get.find<UserController>();
 
-  LoginController(this.avaliadorRepository);
+  LoginController(this.evaluatorRepository);
 
   Future<bool> logAdmin(String email, String password) async {
     final storedEmail = dotenv.env['EMAIL_ADMIN'];
@@ -46,11 +46,11 @@ class LoginController extends GetxController {
   Future<bool> login(String email, String password) async {
     isLoading.value = true;
     try {
-      AvaliadorEntity? user =
-          await avaliadorRepository.getAvaliadorByEmail(email);
-      currentAvaliadorFirstLogin.value = user!.primeiro_login;
-      if (user != null && user.password == password) {
-        currentAvaliadorID.value = user.avaliadorID!;
+      EvaluatorEntity? user =
+          await evaluatorRepository.getEvaluatorByEmail(email);
+      currentEvaluatorFirstLogin.value = user!.firstLogin;
+      if (user.password == password) {
+        currentEvaluatorId.value = user.evaluatorID!;
         isLoading.value = false;
         userController.updateUser(user);
         return true;

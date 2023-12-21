@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/modules/home/widgets/ed_side_bar.dart';
 import 'home_controller.dart';
-import 'widgets/ed_barra_lateral.dart';
 import 'widgets/ed_painel_home.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -20,12 +20,12 @@ class HomeScreen extends GetView<HomeController> {
             Container(
               width: oneSeventhWidth,
               color: Color(0xff000000),
-              child: EdBarraLateral(),
+              child: EdSidebar(),
             ),
             Container(
               width: sixSeventhWidth,
               color: Color(0xfff3f2f2),
-              child: EdPainelHome(),
+              child: EdHomePanel(),
             ),
           ],
         )
