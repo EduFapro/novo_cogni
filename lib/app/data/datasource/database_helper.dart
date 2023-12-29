@@ -26,22 +26,41 @@ class DatabaseHelper {
   }
 
   initDb() async {
-    String databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, DATABASE_NAME);
-    print("Database path: $path");
+    try {
+      String databasesPath = await getDatabasesPath();
+      String path = join(databasesPath, DATABASE_NAME);
+      print("Database path: $path");
 
-    return await openDatabase(path,
-        version: DATABASE_VERSION, onCreate: _onCreate);
+      var db = await openDatabase(path,
+          version: DATABASE_VERSION, onCreate: _onCreate);
+      print("Database initialized");
+      return db;
+    } catch (e) {
+      print("Error initializing database: $e");
+      throw e;
+    }
   }
 
   void _onCreate(Database db, int newVersion) async {
-    await db.execute(SCRIPT_CREATE_TABLE_EVALUATORS);
-    await db.execute(SCRIPT_CREATE_TABLE_PARTICIPANTS);
-    await db.execute(SCRIPT_CREATE_TABLE_EVALUATIONS);
-    await db.execute(SCRIPT_CREATE_TABLE_MODULES);
-    await db.execute(SCRIPT_CREATE_TABLE_TASKS);
-    await insertInitialData();
+    try {
+      await db.execute(SCRIPT_CREATE_TABLE_EVALUATORS);
+      print("Evaluators table created");
+      // Uncomment other table creations and initial data insertions
+    } catch (e) {
+      print("Error creating tables: $e");
+      throw e;
+    }
   }
+
+  //
+  // void _onCreate(Database db, int newVersion) async {
+  //   await db.execute(SCRIPT_CREATE_TABLE_EVALUATORS);
+  //   // await db.execute(SCRIPT_CREATE_TABLE_PARTICIPANTS);
+  //   // await db.execute(SCRIPT_CREATE_TABLE_EVALUATIONS);
+  //   // await db.execute(SCRIPT_CREATE_TABLE_MODULES);
+  //   // await db.execute(SCRIPT_CREATE_TABLE_TASKS);
+  //   // await insertInitialData();
+  // }
 
   Future<void> insertInitialData() async {
     final db = await this.db;

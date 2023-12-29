@@ -71,8 +71,39 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                         }),
 
                         TextButton(
-                          onPressed: () async {
-                            // Login logic
+
+                            onPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                formKey.currentState!.save();
+                                print("Email: $email, Password: $password");
+                                var successfulAdminLogin =
+                                await controller.logAdmin(email, password);
+                                if (successfulAdminLogin) {
+                                  Get.toNamed(AppRoutes.home);
+                                } else {
+                                  var successfulLogin =
+                                  await controller.login(email, password);
+                                  if (successfulLogin) {
+                                    if ((controller.currentEvaluatorFirstLogin
+                                        .value == false)) {
+                                      print(controller
+                                          .currentEvaluatorFirstLogin.value);
+                                      Get.toNamed(AppRoutes.home);
+                                    } else {
+                                      Get.toNamed(
+                                        AppRoutes.newPassword,
+                                        arguments: {
+                                          'firstLogin': controller
+                                              .currentEvaluatorFirstLogin.value,
+                                          'avaliadorID': controller
+                                              .currentEvaluatorId.value,
+                                        },
+                                      );
+                                    }
+                                  }
+                                }
+                              }
+
                           },
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
