@@ -116,12 +116,9 @@ class HomeController extends GetxController {
     // refreshData();
   }
 
-// void refreshData() async {
-//   isLoading.value = true;
-//
-//   fetchData();
-//   update();
-//
-//   isLoading.value = false;
-// }
+
+void refreshData() async {
+  // Await the completion of fetchData()
+  fetchData();
+}
 }

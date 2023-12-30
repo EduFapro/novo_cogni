@@ -3,30 +3,18 @@ import 'package:get/get.dart';
 import '../../../app/domain/use_cases/module_use_cases.dart';
 import '../../../app/enums/language_enums.dart';
 import '../../../app/enums/person_enums.dart';
+import '../../home/home_controller.dart';
 import '../../login/login_controller.dart';
 import '../participant_registration_controller.dart';
 
-class ParticipantForm extends StatefulWidget {
-  final ParticipantRegistrationController controller;
+class ParticipantForm extends GetView<ParticipantRegistrationController> {
 
-  ParticipantForm({required this.controller});
+  Map<String, bool> itemsMap = {for (var v in modulesList) v.title!: false};
 
-  @override
-  State<ParticipantForm> createState() => _ParticipantFormState();
-}
 
-class _ParticipantFormState extends State<ParticipantForm> {
-  late Map<String, bool> itemsMap;
-
-  @override
-  void initState() {
-    super.initState();
-    itemsMap = {for (var v in modulesList) v.title!: false};
-  }
 
   @override
   Widget build(BuildContext context) {
-    var controller = widget.controller;
     final loginController = Get.find<LoginController>();
     int? evaluatorId = loginController.currentEvaluatorId.value;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -235,9 +223,9 @@ class _ParticipantFormState extends State<ParticipantForm> {
                               title: Text(key),
                               value: itemsMap[key],
                               onChanged: (bool? value) {
-                                setState(() {
+
                                   itemsMap[key] = value!;
-                                });
+
                               },
                             );
                           }).toList(),
@@ -282,24 +270,24 @@ class _ParticipantFormState extends State<ParticipantForm> {
 
 
                       // Call the method to handle participant and modules creation
-                      // bool success =
-                      // await controller.createParticipantAndModules(
-                      //     evaluatorId, selectedModules);
+                      bool success =
+                      await controller.createParticipantAndModules(
+                          evaluatorId, selectedModules);
 
-                      // if (success) {
-                      //   // var homeCtrller = Get.find<HomeController>();
-                      //   // homeCtrller.refreshData();
-                      //   Get.back();
-                      // } else {
-                      //   // Handle the case where the operation failed
-                      //   // For example, show an error message to the user
-                      //   Get.snackbar(
-                      //     'Error', // Title
-                      //     'Failed to create participant and modules.',
-                      //     // Message
-                      //     snackPosition: SnackPosition.BOTTOM,
-                      //   );
-                      // }
+                      if (success) {
+                        var homeCtrller = Get.find<HomeController>();
+                        homeCtrller.refreshData();
+                        Get.back();
+                      } else {
+                        // Handle the case where the operation failed
+                        // For example, show an error message to the user
+                        Get.snackbar(
+                          'Error', // Title
+                          'Failed to create participant and modules.',
+                          // Message
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      }
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,

@@ -44,8 +44,8 @@ class DatabaseHelper {
   void _onCreate(Database db, int newVersion) async {
     try {
       await db.execute(SCRIPT_CREATE_TABLE_EVALUATORS);
-      print("Evaluators table created");
-      // Uncomment other table creations and initial data insertions
+      await db.execute(SCRIPT_CREATE_TABLE_PARTICIPANTS);
+      await db.execute(SCRIPT_CREATE_TABLE_EVALUATIONS);
     } catch (e) {
       print("Error creating tables: $e");
       throw e;

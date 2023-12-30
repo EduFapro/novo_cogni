@@ -23,9 +23,6 @@ class ParticipantRegistrationService {
       ParticipantEntity newParticipant) async {
     int? participantId =
     await participantRepository.createParticipant(newParticipant);
-    if (participantId != null) {
-      // Additional logic if needed when participantId is not null
-    }
     return participantId;
   }
 
@@ -51,40 +48,33 @@ class ParticipantRegistrationService {
     return moduleIds;
   }
 
-  // Future<void> linkEvaluationToModules(
-  //     int evaluationId, List<int> moduleIds) async {
-  //   for (var moduleId in moduleIds) {
-  //     EvaluationModuleEntity evaluationModule = EvaluationModuleEntity(
-  //       evaluationId: evaluationId,
-  //       moduleId: moduleId,
-  //       // Add other necessary fields and initializations
-  //     );
-  //
-  //     // Assuming you have a method in the EvaluationModuleRepository to create an EvaluationModuleEntity
-  //     await evaluationModuleRepository.createEvaluationModule(evaluationModule);
-  //   }
-  // }
+  Future<void> linkEvaluationToModules(
+      int evaluationId, List<int> moduleIds) async {
+    for (var moduleId in moduleIds) {
 
-  // Future<Map<String, int>> createParticipantAndModules(
-  //     int evaluatorId,
-  //     List<String> selectedModules,
-  //     ParticipantEntity newParticipant) async {
-  //   // Orchestrating method to create participant and related entities
-  //   int? participantId = await createParticipant(
-  //       evaluatorId, selectedModules, newParticipant);
-  //   if (participantId == null) return {};
-  //
-  //   int? evaluationId = await createEvaluation(participantId, evaluatorId);
-  //   if (evaluationId == null) return {};
-  //
-  //   List<int> moduleIds = await fetchModuleIds(selectedModules);
-  //   await linkEvaluationToModules(evaluationId, moduleIds);
-  //
-  //   return {
-  //     "participantId": participantId,
-  //     "evaluationId": evaluationId,
-  //   };
-  // }
+    }
+  }
+
+  Future<Map<String, int>> createParticipantAndModules(
+      int evaluatorId,
+      List<String> selectedModules,
+      ParticipantEntity newParticipant) async {
+
+    int? participantId = await createParticipant(
+        evaluatorId, selectedModules, newParticipant);
+    if (participantId == null) return {};
+
+    int? evaluationId = await createEvaluation(participantId, evaluatorId);
+    if (evaluationId == null) return {};
+
+    List<int> moduleIds = await fetchModuleIds(selectedModules);
+    await linkEvaluationToModules(evaluationId, moduleIds);
+
+    return {
+      "participantId": participantId,
+      "evaluationId": evaluationId,
+    };
+  }
 
   Future<List<int>> fetchModuleIds(List<String> selectedModules) async {
     print(selectedModules);

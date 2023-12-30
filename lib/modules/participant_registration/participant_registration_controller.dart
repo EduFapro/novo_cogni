@@ -41,31 +41,34 @@ class ParticipantRegistrationController extends GetxController {
   }
 
   // Method to create a new participant and related modules
-  // Future<bool> createParticipantAndModules(int evaluatorId, List<String> selectedModules) async {
-  //   String fullName = fullNameController.text;
-  //   DateTime? birthDate = selectedDate.value;
-  //   Sex? sex = selectedSex.value;
-  //   EducationLevel? educationLevel = selectedEducationLevel.value;
-  //
-  //   ParticipantEntity newParticipant = ParticipantEntity(
-  //     name: fullName,
-  //     birthDate: birthDate!,
-  //     sex: sex!,
-  //     educationLevel: educationLevel!,
-  //     surname: '',
-  //   );
-  //
-  //   var success = await participantService.createParticipantAndModules(evaluatorId, selectedModules, newParticipant);
-  //
-  //   if (success.isNotEmpty) {
-  //     final HomeController homeController = Get.find<HomeController>();
-  //     homeController.addNewParticipant(newParticipant, success);
-  //   }
-  //
-  //   return true;
-  // }
+
+  Future<bool> createParticipantAndModules(int evaluatorId, List<String> selectedModules) async {
+    String fullName = fullNameController.text;
+    DateTime? birthDate = selectedDate.value;
+    Sex? sex = selectedSex.value;
+    EducationLevel? educationLevel = selectedEducationLevel.value;
+
+    ParticipantEntity newParticipant = ParticipantEntity(
+      name: fullName,
+      birthDate: birthDate!,
+      sex: sex!,
+      educationLevel: educationLevel!,
+      surname: '',
+    );
+
+    var success = await participantService.createParticipantAndModules(evaluatorId, selectedModules, newParticipant);
+
+    if (success.isNotEmpty) {
+      final HomeController homeController = Get.find<HomeController>();
+      homeController.addNewParticipant(newParticipant, success);
+    }
+
+    return true;
+  }
 
   // Method to print form data for debugging purposes
+
+
   void printFormData() {
     print("Full Name: ${fullNameController.text}");
     print("Birth Date: ${birthDateController.text}");
