@@ -8,7 +8,6 @@ const TABLE_MODULES = "modules";
 const TABLE_TASKS = "tasks";
 const TABLE_EVALUATION_MODULES = "evaluation_modules";
 
-// Inside database_constants.dart or respective files
 const TABLE_TASK_INSTANCES = "task_instances";
 const TABLE_MODULE_INSTANCES = "module_instances";
 const TABLE_FILES = "files";

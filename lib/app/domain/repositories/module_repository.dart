@@ -1,7 +1,7 @@
 import 'package:novo_cogni/app/data/datasource/task_local_datasource.dart';
 import 'package:novo_cogni/app/domain/entities/module_entity.dart';
 
-import '../../data/datasource/modulo_local_datasource.dart';
+import '../../data/datasource/module_local_datasource.dart';
 
 class ModuleRepository {
   final ModuleLocalDataSource moduleLocalDataSource;

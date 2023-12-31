@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../app/enums/person_enums.dart';
+import '../../../enums/person_enums.dart';
 import '../evaluators_controller.dart';
 import '../../widgets/ed_input_text.dart';
 import 'ed_new_evaluator_button.dart';

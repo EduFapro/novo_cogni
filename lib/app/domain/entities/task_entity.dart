@@ -1,38 +1,49 @@
 import 'package:novo_cogni/app/data/data_constants/task_constants.dart';
 
+import '../../../enums/task_enums.dart';
 
 class TaskEntity {
   int? taskID;
-  int? moduleID;
-  String name;
+  int moduleID;
+  String title;
+  TaskMode taskMode;
+  int position;
+  String? image_path;
 
-  TaskEntity({
-    this.taskID,
-    required this.name,
-    this.moduleID,
-  });
+  TaskEntity(
+      {this.taskID,
+      required this.moduleID,
+      required this.title,
+      required this.taskMode,
+      required this.position,
+      this.image_path});
 
   Map<String, dynamic> toMap() {
     return {
       ID_TASK: taskID,
-      NAME: name,
+      TITLE: title,
       MODULE_ID: moduleID,
+      MODE: taskMode,
+      POSITION: position,
+      IMAGE_PATH: image_path
     };
   }
 
   static TaskEntity fromMap(Map<String, dynamic> map) {
     return TaskEntity(
-      taskID: map[ID_TASK] as int?,
-      name: map[NAME] as String,
-      moduleID: map[MODULE_ID] as int?,
-    );
+        taskID: map[ID_TASK] as int?,
+        title: map[TITLE] as String,
+        moduleID: map[MODULE_ID],
+        taskMode: map[MODE],
+        position: map[POSITION],
+        image_path: map[IMAGE_PATH]);
   }
 
   @override
   String toString() {
     return 'TaskEntity{'
         'task_id: $taskID, '
-        'name: "$name", '
+        'name: "$title", '
         '}';
   }
 }

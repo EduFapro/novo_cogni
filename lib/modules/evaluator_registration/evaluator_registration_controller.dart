@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../app/domain/entities/evaluator_entity.dart';
 import '../../app/domain/repositories/evaluator_repository.dart';
-import '../../app/enums/person_enums.dart';
+import '../../enums/person_enums.dart';
 import '../evaluators/evaluators_controller.dart';
 
 class EvaluatorRegistrationController extends GetxController {

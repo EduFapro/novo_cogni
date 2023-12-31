@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../app/domain/use_cases/module_use_cases.dart';
-import '../../../app/enums/language_enums.dart';
-import '../../../app/enums/person_enums.dart';
+import '../../../enums/language_enums.dart';
+import '../../../enums/person_enums.dart';
 import '../../home/home_controller.dart';
 import '../../login/login_controller.dart';
 import '../participant_registration_controller.dart';
 
 class ParticipantForm extends GetView<ParticipantRegistrationController> {
-
-  Map<String, bool> itemsMap = {for (var v in modulesList) v.title!: false};
-
-
-
   @override
   Widget build(BuildContext context) {
     final loginController = Get.find<LoginController>();
@@ -79,8 +73,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                                 lastDate: DateTime.now(),
                               );
                               if (pickedDate != null) {
-                                controller.birthDateController.text =
-                                pickedDate
+                                controller.birthDateController.text = pickedDate
                                     .toLocal()
                                     .toString()
                                     .split(' ')[0];
@@ -106,8 +99,8 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             items: Sex.values.map((sex) {
                               return DropdownMenuItem<Sex>(
                                 value: sex,
-                                child: Text(
-                                    sex == Sex.male ? 'Male' : 'Female'),
+                                child:
+                                    Text(sex == Sex.male ? 'Male' : 'Female'),
                               );
                             }).toList(),
                             onChanged: (Sex? value) {
@@ -174,67 +167,69 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
             SizedBox(height: 16.0),
             Form(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: spacingWidth),
-                      SizedBox(
-                        width: fieldWidthRow1,
-                        child: DropdownButtonFormField<Language>(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color(0xffededed),
-                            labelText: 'Language',
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(width: spacingWidth),
+                        SizedBox(
+                          width: fieldWidthRow1,
+                          child: DropdownButtonFormField<Language>(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Color(0xffededed),
+                              labelText: 'Language',
+                            ),
+                            items: Language.values.map((language) {
+                              return DropdownMenuItem<Language>(
+                                value: language,
+                                child: Text(language == Language.portuguese
+                                    ? 'Portuguese'
+                                    : 'Spanish'),
+                              );
+                            }).toList(),
+                            onChanged: (Language? value) {
+                              controller.selectedLanguage.value = value;
+                            },
+                            value: controller.selectedLanguage.value,
                           ),
-                          items: Language.values.map((language) {
-                            return DropdownMenuItem<Language>(
-                              value: language,
-                              child: Text(language == Language.portuguese
-                                  ? 'Portuguese'
-                                  : 'Spanish'),
-                            );
-                          }).toList(),
-                          onChanged: (Language? value) {
-                            controller.selectedLanguage.value = value;
-                          },
-                          value: controller.selectedLanguage.value,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 32.0),
-                  Padding(
-                    padding: EdgeInsets.only(left: spacingWidth),
-                    child: SizedBox(
-                      height: 300,
-                      width: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Select modules",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          ...itemsMap.keys.map((String key) {
-                            return CheckboxListTile(
-                              title: Text(key),
-                              value: itemsMap[key],
-                              onChanged: (bool? value) {
-
-                                  itemsMap[key] = value!;
-
-                              },
-                            );
-                          }).toList(),
-                        ],
+                      ],
+                    ),
+                    SizedBox(height: 32.0),
+                    Padding(
+                      padding: EdgeInsets.only(left: spacingWidth),
+                      child: SizedBox(
+                        height: 300,
+                        width: 200,
+                        child: Obx(() {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Select modules",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              ...controller.itemsMap.keys.map((String key) {
+                                return CheckboxListTile(
+                                  title: Text(key),
+                                  value: controller.itemsMap[key],
+                                  onChanged: (bool? value) {
+                                    // Assign the value directly to the controller's itemsMap
+                                    if (value != null) {
+                                      controller.itemsMap[key] = value;
+                                    }
+                                  },
+                                );
+                              }).toList(),
+                            ],
+                          );
+                        }),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ]),
             ),
             Align(
               alignment: Alignment.bottomRight,
@@ -259,20 +254,18 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                   SizedBox(width: 20),
                   TextButton(
                     onPressed: () async {
-                      // This will print the form data for debugging purposes
                       controller.printFormData();
 
                       // Capture selected activities from the form
-                      List<String> selectedModules = itemsMap.entries
+                      List<String> selectedModules = controller.itemsMap.entries
                           .where((entry) => entry.value)
                           .map((entry) => entry.key)
                           .toList();
 
-
                       // Call the method to handle participant and modules creation
                       bool success =
-                      await controller.createParticipantAndModules(
-                          evaluatorId, selectedModules);
+                          await controller.createParticipantAndModules(
+                              evaluatorId, selectedModules);
 
                       if (success) {
                         var homeCtrller = Get.find<HomeController>();

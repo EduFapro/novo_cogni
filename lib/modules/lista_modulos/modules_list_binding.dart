@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/repositories/module_repository.dart';
 import 'package:novo_cogni/app/domain/repositories/task_repository.dart';
 
-import '../../app/data/datasource/modulo_local_datasource.dart';
+import '../../app/data/datasource/module_local_datasource.dart';
 import '../../app/data/datasource/task_local_datasource.dart';
 import 'modules_list_controller.dart';
 import 'modules_list_service.dart';

@@ -30,7 +30,6 @@ class ParticipantRegistrationService {
     EvaluationEntity evaluation = EvaluationEntity(
       participantID: participantId,
       evaluatorID: evaluatorId,
-      // Add other necessary fields and initializations
     );
 
     int? evaluationId = await evaluationRepository.createEvaluation(evaluation);
@@ -64,9 +63,10 @@ class ParticipantRegistrationService {
         evaluatorId, selectedModules, newParticipant);
     if (participantId == null) return {};
 
+    print("ID Participante: $participantId");
     int? evaluationId = await createEvaluation(participantId, evaluatorId);
     if (evaluationId == null) return {};
-
+    print("ID Avaliacao: $participantId");
     List<int> moduleIds = await fetchModuleIds(selectedModules);
     await linkEvaluationToModules(evaluationId, moduleIds);
 

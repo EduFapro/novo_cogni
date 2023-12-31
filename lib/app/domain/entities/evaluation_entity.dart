@@ -1,28 +1,28 @@
 import 'dart:convert';
+import '../../../enums/module_enums.dart';
 import '../../data/data_constants/evaluation_constants.dart';
-import '../../enums/module_enums.dart';
 
 class EvaluationEntity {
   final int? evaluationID;
   final int evaluatorID;
   final int participantID;
   Status status;
-  DateTime? evaluationDate;
+  DateTime evaluationDate;
 
   EvaluationEntity({
     this.evaluationID,
-    this.evaluationDate,
+    DateTime? evaluationDate,
     this.status = Status.to_start,
     required this.evaluatorID,
     required this.participantID,
-  });
+  }) : evaluationDate = evaluationDate ?? DateTime.now();
 
   Map<String, dynamic> toMap() {
     return {
       ID_EVALUATION: evaluationID,
-      EVALUATION_DATE: evaluationDate?.toIso8601String(),
+      EVALUATION_DATE: evaluationDate.toIso8601String(),
       ID_EVALUATOR_FK: evaluatorID,
-      STATUS: status.description,
+      EVALUATION_STATUS: status.description,
       ID_PARTICIPANT_FK: participantID,
     };
   }
@@ -31,7 +31,7 @@ class EvaluationEntity {
     return EvaluationEntity(
       evaluationID: map[ID_EVALUATION] as int?,
       evaluatorID: map[ID_EVALUATOR_FK] as int,
-      status: Status.values.firstWhere((e) => e.description == map[STATUS], orElse: () => Status.to_start),
+      status: Status.values.firstWhere((e) => e.description == map[EVALUATION_STATUS], orElse: () => Status.to_start),
       evaluationDate: map[EVALUATION_DATE] != null ? DateTime.parse(map[EVALUATION_DATE] as String) : null,
       participantID: map[ID_PARTICIPANT_FK] as int,
     );

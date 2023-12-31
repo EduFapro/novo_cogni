@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/enums/task_enums.dart';
+import 'package:novo_cogni/enums/task_enums.dart';
 import 'package:novo_cogni/modules/task/task_controller.dart';
 import '../../audio_player/audio_player_interface.dart';
 import '../../audio_player/audio_recorder_interface.dart';

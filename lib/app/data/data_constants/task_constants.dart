@@ -1,18 +1,22 @@
-
 import 'database_constants.dart';
 import 'module_constants.dart';
 
 const ID_TASK = "task_id";
-const NAME = "name";
+const TITLE = "name";
 const MODULE_ID = "module_id";
+const MODE = "mode";
+const POSITION = "position";
+const IMAGE_PATH = "image_path";
 
 const SCRIPT_CREATE_TABLE_TASKS = '''
   CREATE TABLE $TABLE_TASKS
   (
     $ID_TASK INTEGER PRIMARY KEY AUTOINCREMENT,
     $MODULE_ID INTEGER NOT NULL,
-    $NAME TEXT NOT NULL,
+    $TITLE TEXT NOT NULL,
+    $MODE TEXT NOT NULL,
+    $POSITION INT NOT NULL,
+    $IMAGE_PATH TEXT,
     FOREIGN KEY ($MODULE_ID) REFERENCES $TABLE_MODULES($ID_MODULE)
   )
 ''';
-

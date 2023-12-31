@@ -6,8 +6,9 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/domain/entities/participant_entity.dart';
-import '../../app/enums/language_enums.dart';
-import '../../app/enums/person_enums.dart';
+import '../../app/domain/use_cases/module_use_cases.dart';
+import '../../enums/language_enums.dart';
+import '../../enums/person_enums.dart';
 import '../home/home_controller.dart';
 import 'participant_registration_service.dart';
 
@@ -24,6 +25,9 @@ class ParticipantRegistrationController extends GetxController {
   final selectedDate = Rx<DateTime?>(null);
   final selectedLaterality = Rx<Handedness?>(null);
   final selectedLanguage = Rx<Language?>(null);
+
+  final RxMap<String, bool> itemsMap =
+      RxMap<String, bool>({for (var v in modulesList) v.title!: false});
 
   // Method to select a date using a date picker
   void selectDate(BuildContext context) async {
@@ -42,7 +46,8 @@ class ParticipantRegistrationController extends GetxController {
 
   // Method to create a new participant and related modules
 
-  Future<bool> createParticipantAndModules(int evaluatorId, List<String> selectedModules) async {
+  Future<bool> createParticipantAndModules(
+      int evaluatorId, List<String> selectedModules) async {
     String fullName = fullNameController.text;
     DateTime? birthDate = selectedDate.value;
     Sex? sex = selectedSex.value;
@@ -56,8 +61,9 @@ class ParticipantRegistrationController extends GetxController {
       surname: '',
     );
 
-    var success = await participantService.createParticipantAndModules(evaluatorId, selectedModules, newParticipant);
-
+    var success = await participantService.createParticipantAndModules(
+        evaluatorId, selectedModules, newParticipant);
+    print(success);
     if (success.isNotEmpty) {
       final HomeController homeController = Get.find<HomeController>();
       homeController.addNewParticipant(newParticipant, success);
@@ -65,9 +71,6 @@ class ParticipantRegistrationController extends GetxController {
 
     return true;
   }
-
-  // Method to print form data for debugging purposes
-
 
   void printFormData() {
     print("Full Name: ${fullNameController.text}");
@@ -79,7 +82,6 @@ class ParticipantRegistrationController extends GetxController {
     // Add more prints as needed for other fields
   }
 
-
   @override
   void onClose() {
     // Dispose of controllers and any other resources
@@ -88,5 +90,4 @@ class ParticipantRegistrationController extends GetxController {
     // Dispose other resources if needed
     super.onClose();
   }
-
 }

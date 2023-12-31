@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import '../../../enums/person_enums.dart';
 import '../../data/data_constants/evaluator_constants.dart';
-import '../../enums/person_enums.dart';
 
 class EvaluatorEntity extends Equatable {
   final int? evaluatorID;

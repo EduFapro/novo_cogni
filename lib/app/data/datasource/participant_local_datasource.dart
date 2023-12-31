@@ -1,5 +1,5 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../enums/person_enums.dart';
+import '../../../enums/person_enums.dart';
 import '../data_constants/database_constants.dart';
 import '../data_constants/evaluation_constants.dart';
 import 'database_helper.dart';

@@ -1,3 +1,4 @@
+import 'package:novo_cogni/app/data/data_constants/module_instance_constants.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../../domain/use_cases/module_use_cases.dart';
@@ -7,6 +8,7 @@ import '../data_constants/evaluator_constants.dart';
 import '../data_constants/database_constants.dart';
 import '../data_constants/participant_constants.dart';
 import '../data_constants/task_constants.dart';
+import '../data_constants/task_instances_constants.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
@@ -46,21 +48,16 @@ class DatabaseHelper {
       await db.execute(SCRIPT_CREATE_TABLE_EVALUATORS);
       await db.execute(SCRIPT_CREATE_TABLE_PARTICIPANTS);
       await db.execute(SCRIPT_CREATE_TABLE_EVALUATIONS);
+      await db.execute(SCRIPT_CREATE_TABLE_MODULES);
+      await db.execute(SCRIPT_CREATE_TABLE_TASKS);
+      await db.execute(SCRIPT_CREATE_TABLE_MODULE_INSTANCES);
+      await db.execute(SCRIPT_CREATE_TABLE_TASK_INSTANCES);
+      insertInitialData();
     } catch (e) {
       print("Error creating tables: $e");
       throw e;
     }
   }
-
-  //
-  // void _onCreate(Database db, int newVersion) async {
-  //   await db.execute(SCRIPT_CREATE_TABLE_EVALUATORS);
-  //   // await db.execute(SCRIPT_CREATE_TABLE_PARTICIPANTS);
-  //   // await db.execute(SCRIPT_CREATE_TABLE_EVALUATIONS);
-  //   // await db.execute(SCRIPT_CREATE_TABLE_MODULES);
-  //   // await db.execute(SCRIPT_CREATE_TABLE_TASKS);
-  //   // await insertInitialData();
-  // }
 
   Future<void> insertInitialData() async {
     final db = await this.db;

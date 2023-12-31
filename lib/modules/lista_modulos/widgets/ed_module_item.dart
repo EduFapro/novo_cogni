@@ -42,7 +42,7 @@ class EdModuleItem extends GetView<ModulesListController> {
           [moduleId] ?? [];
 
           return Column(
-            children: tasks.map((task) => EdTaskItem(taskName: task.name)).toList(),
+            children: tasks.map((task) => EdTaskItem(taskName: task.title)).toList(),
           );
         }),
       ],

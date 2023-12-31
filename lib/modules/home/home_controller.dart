@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import '../../app/domain/entities/evaluation_entity.dart';
 import '../../app/domain/entities/evaluator_entity.dart';
 import '../../app/domain/entities/participant_entity.dart';
-import '../../app/enums/module_enums.dart';
+import '../../enums/module_enums.dart';
 import '../../global/user_controller.dart';
 
 class HomeController extends GetxController {
