@@ -94,9 +94,8 @@ class HomeController extends GetxController {
   }
 
   void addNewParticipant(ParticipantEntity newParticipant, Map<String, int> newParticipantMap) {
-    print("Inside HomeController: $newParticipantMap");
-    var newParticipantID = newParticipantMap["participanteId"];
-    var newEvaluationID = newParticipantMap["avaliacaoId"];
+    var newParticipantID = newParticipantMap["participantId"];
+    var newEvaluationID = newParticipantMap["evaluationId"];
     var evaluatorID = user.value!.evaluatorID;
     print("newParticipantID: $newParticipantID");
     print("newEvaluationID: $newEvaluationID");

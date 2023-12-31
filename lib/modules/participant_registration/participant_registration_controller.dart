@@ -53,17 +53,25 @@ class ParticipantRegistrationController extends GetxController {
     Sex? sex = selectedSex.value;
     EducationLevel? educationLevel = selectedEducationLevel.value;
 
+    List<String> nameParts = fullName.split(' ');
+    String name = nameParts.first;
+    String surname = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+
     ParticipantEntity newParticipant = ParticipantEntity(
-      name: fullName,
+      name: name,
       birthDate: birthDate!,
       sex: sex!,
       educationLevel: educationLevel!,
-      surname: '',
+      surname: surname,
     );
+
+    print("Novo participante: $newParticipant");
 
     var success = await participantService.createParticipantAndModules(
         evaluatorId, selectedModules, newParticipant);
-    print(success);
+
+    print("Variavel success: $success");
+
     if (success.isNotEmpty) {
       final HomeController homeController = Get.find<HomeController>();
       homeController.addNewParticipant(newParticipant, success);
