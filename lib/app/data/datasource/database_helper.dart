@@ -62,9 +62,11 @@ class DatabaseHelper {
   Future<void> insertInitialData() async {
     final db = await this.db;
     for (var module in modulesList) {
+      print(module);
       await db.insert(TABLE_MODULES, module.toMap());
     }
     for (var task in tasksList) {
+      print(task);
       await db.insert(TABLE_TASKS, task.toMap());
     }
   }

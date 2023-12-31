@@ -23,7 +23,7 @@ class TaskEntity {
       ID_TASK: taskID,
       TITLE: title,
       MODULE_ID: moduleID,
-      MODE: taskMode,
+      MODE: taskMode.description,
       POSITION: position,
       IMAGE_PATH: image_path
     };
@@ -34,7 +34,7 @@ class TaskEntity {
         taskID: map[ID_TASK] as int?,
         title: map[TITLE] as String,
         moduleID: map[MODULE_ID],
-        taskMode: map[MODE],
+        taskMode: map[MODE] == TaskMode.record.description ? TaskMode.record : TaskMode.play,
         position: map[POSITION],
         image_path: map[IMAGE_PATH]);
   }
