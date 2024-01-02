@@ -8,7 +8,7 @@ import '../data_constants/evaluator_constants.dart';
 import '../data_constants/database_constants.dart';
 import '../data_constants/participant_constants.dart';
 import '../data_constants/task_constants.dart';
-import '../data_constants/task_instances_constants.dart';
+import '../data_constants/task_instance_constants.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
@@ -62,11 +62,9 @@ class DatabaseHelper {
   Future<void> insertInitialData() async {
     final db = await this.db;
     for (var module in modulesList) {
-      print(module);
       await db.insert(TABLE_MODULES, module.toMap());
     }
     for (var task in tasksList) {
-      print(task);
       await db.insert(TABLE_TASKS, task.toMap());
     }
   }

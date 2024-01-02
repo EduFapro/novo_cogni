@@ -1,4 +1,4 @@
-import 'package:novo_cogni/app/data/data_constants/task_instances_constants.dart';
+import 'package:novo_cogni/app/data/data_constants/task_instance_constants.dart';
 
 import 'database_constants.dart';
 

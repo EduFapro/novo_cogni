@@ -1,28 +1,26 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../domain/entities/module_entity.dart';
-import '../data_constants/module_constants.dart';
+import '../../domain/entities/module_instance_entity.dart';
+import '../data_constants/module_instance_constants.dart';
 import '../data_constants/database_constants.dart';
 import 'database_helper.dart';
 
 class ModuleInstanceLocalDataSource {
-
   static final ModuleInstanceLocalDataSource _instance = ModuleInstanceLocalDataSource.internal();
 
   factory ModuleInstanceLocalDataSource() => _instance;
-
   ModuleInstanceLocalDataSource.internal();
 
   final dbHelper = DatabaseHelper();
 
   Future<Database?> get db async => dbHelper.db;
 
-  Future<int?> create(ModuleEntity module) async {
+  Future<int?> create(ModuleInstanceEntity moduleInstance) async {
     try {
       final Database? database = await db;
 
       return await database!.insert(
-        TABLE_MODULES,
-        module.toMap(),
+        TABLE_MODULE_INSTANCES,
+        moduleInstance.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (ex) {
@@ -31,18 +29,18 @@ class ModuleInstanceLocalDataSource {
     }
   }
 
-  Future<ModuleEntity?> getModuleById(int id) async {
+  Future<ModuleInstanceEntity?> getModuleInstanceById(int id) async {
     try {
       final Database? database = await db;
 
       final List<Map<String, dynamic>> maps = await database!.query(
-        TABLE_MODULES,
-        where: '$ID_MODULE = ?',
+        TABLE_MODULE_INSTANCES,
+        where: '$ID_MODULE_INSTANCE = ?',
         whereArgs: [id],
       );
 
       if (maps.isNotEmpty) {
-        return ModuleEntity.fromMap(maps.first);
+        return ModuleInstanceEntity.fromMap(maps.first);
       }
 
       return null;
@@ -52,13 +50,13 @@ class ModuleInstanceLocalDataSource {
     }
   }
 
-  Future<int> deleteModule(int id) async {
+  Future<int> deleteModuleInstance(int id) async {
     try {
       final Database? database = await db;
 
       return await database!.delete(
-        TABLE_MODULES,
-        where: "$ID_MODULE = ?",
+        TABLE_MODULE_INSTANCES,
+        where: "$ID_MODULE_INSTANCE = ?",
         whereArgs: [id],
       );
     } catch (ex) {
@@ -67,15 +65,15 @@ class ModuleInstanceLocalDataSource {
     }
   }
 
-  Future<int> updateModule(ModuleEntity module) async {
+  Future<int> updateModuleInstance(ModuleInstanceEntity moduleInstance) async {
     try {
       final Database? database = await db;
 
       return await database!.update(
-        TABLE_MODULES,
-        module.toMap(),
-        where: "$ID_MODULE = ?",
-        whereArgs: [module.moduleID],
+        TABLE_MODULE_INSTANCES,
+        moduleInstance.toMap(),
+        where: "$ID_MODULE_INSTANCE = ?",
+        whereArgs: [moduleInstance.moduleInstanceID],
       );
     } catch (ex) {
       print(ex);
@@ -83,13 +81,13 @@ class ModuleInstanceLocalDataSource {
     }
   }
 
-  Future<List<ModuleEntity>> getAllModules() async {
+  Future<List<ModuleInstanceEntity>> getAllModuleInstances() async {
     try {
       final Database? database = await db;
-      final List<Map<String, dynamic>> maps = await database!.query(TABLE_MODULES);
+      final List<Map<String, dynamic>> maps = await database!.query(TABLE_MODULE_INSTANCES);
 
       return List.generate(maps.length, (i) {
-        return ModuleEntity.fromMap(maps[i]);
+        return ModuleInstanceEntity.fromMap(maps[i]);
       });
     } catch (ex) {
       print(ex);
@@ -97,35 +95,9 @@ class ModuleInstanceLocalDataSource {
     }
   }
 
-  Future<int?> getNumberOfModules() async {
+  Future<int?> getNumberOfModuleInstances() async {
     final Database? database = await db;
-    final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABLE_MODULES");
+    final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABLE_MODULE_INSTANCES");
     return result.first["count"] as int?;
-  }
-
-  Future<ModuleEntity?> getModuleByName(String title) async {
-    try {
-      final Database? database = await db;
-
-      final List<Map<String, dynamic>> maps = await database!.query(
-        TABLE_MODULES,
-        where: '$TITLE = ?',
-        whereArgs: [title],
-      );
-
-      if (maps.isNotEmpty) {
-        return ModuleEntity.fromMap(maps.first);
-      }
-
-      return null;
-    } catch (ex) {
-      print(ex);
-      return null;
-    }
-  }
-
-  Future<void> closeDatabase() async {
-    final Database? database = await db;
-    return database!.close();
   }
 }

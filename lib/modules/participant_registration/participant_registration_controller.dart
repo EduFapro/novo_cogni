@@ -65,12 +65,9 @@ class ParticipantRegistrationController extends GetxController {
       surname: surname,
     );
 
-    print("Novo participante: $newParticipant");
 
     var success = await participantService.createParticipantAndModules(
         evaluatorId, selectedModules, newParticipant);
-
-    print("Variavel success: $success");
 
     if (success.isNotEmpty) {
       final HomeController homeController = Get.find<HomeController>();

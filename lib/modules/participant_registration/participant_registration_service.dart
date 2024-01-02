@@ -1,3 +1,5 @@
+import 'package:novo_cogni/app/domain/entities/module_instance_entity.dart';
+
 import '../../app/domain/entities/evaluation_entity.dart';
 import '../../app/domain/entities/module_entity.dart';
 import '../../app/domain/entities/participant_entity.dart';
@@ -50,7 +52,7 @@ class ParticipantRegistrationService {
   Future<void> linkEvaluationToModules(
       int evaluationId, List<int> moduleIds) async {
     for (var moduleId in moduleIds) {
-
+      var newModuleInstance = ModuleInstanceEntity(moduleID: moduleId, evaluationID: evaluationId);
     }
   }
 
@@ -58,15 +60,14 @@ class ParticipantRegistrationService {
       int evaluatorId,
       List<String> selectedModules,
       ParticipantEntity newParticipant) async {
+    print("SELECT MODULES: $selectedModules");
 
     int? participantId = await createParticipant(
         evaluatorId, selectedModules, newParticipant);
     if (participantId == null) return {};
 
-    print("ID Participante: $participantId");
     int? evaluationId = await createEvaluation(participantId, evaluatorId);
     if (evaluationId == null) return {};
-    print("ID Avaliacao: $participantId");
     List<int> moduleIds = await fetchModuleIds(selectedModules);
     await linkEvaluationToModules(evaluationId, moduleIds);
 

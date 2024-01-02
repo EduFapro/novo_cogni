@@ -101,7 +101,6 @@ class HomeController extends GetxController {
     print("newEvaluationID: $newEvaluationID");
     print("EvaluatorID: $evaluatorID");
 
-    print("Adding new participant");
 
     participants.add(newParticipant);
     participantDetails[newParticipantID!] = newParticipant;
