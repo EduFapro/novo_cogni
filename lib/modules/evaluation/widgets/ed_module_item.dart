@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes.dart';
-import '../modules_list_controller.dart';
+import '../evaluation_controller.dart';
 import 'ed_task_button.dart';
 
 
-class EdModuleItem extends GetView<ModulesListController> {
+class EdModuleItem extends GetView<EvaluationController> {
   final String moduleName;
   final int moduleId;
 

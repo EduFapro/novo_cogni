@@ -45,4 +45,9 @@ class ModuleInstanceRepository {
   Future<int?> getNumberOfModuleInstances() async {
     return await moduleInstanceLocalDataSource.getNumberOfModuleInstances();
   }
+
+  Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(int evaluationId) async {
+    return await moduleInstanceLocalDataSource.getModuleInstancesByEvaluationId(evaluationId);
+  }
+
 }

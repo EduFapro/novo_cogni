@@ -4,10 +4,10 @@ import 'package:novo_cogni/app/domain/entities/module_entity.dart';
 import 'package:novo_cogni/app/domain/entities/participant_entity.dart';
 import 'package:novo_cogni/app/domain/entities/task_entity.dart';
 
-import 'modules_list_service.dart';
+import 'evaluation_service.dart';
 
-class ModulesListController extends GetxController {
-  final ModulesListService moduleService;
+class EvaluationController extends GetxController {
+  final EvaluationService moduleService;
 
   var participant = Rx<ParticipantEntity?>(null);
   var evaluation = Rx<EvaluationEntity?>(null);
@@ -16,7 +16,7 @@ class ModulesListController extends GetxController {
 
   var isLoading = false.obs;
 
-  ModulesListController({required this.moduleService});
+  EvaluationController({required this.moduleService});
 
   int get age {
     if (participant.value?.birthDate == null) {
@@ -39,25 +39,25 @@ class ModulesListController extends GetxController {
       evaluation.value = arguments['evaluation'];
     }
 
-    // if (evaluation.value != null) {
-    //   var modules = await getModulesByEvaluationId(evaluation.value!.evaluationID!);
-    //   if (modules != null && modules.isNotEmpty) {
-    //     modulesList.value = modules;
-    //     await fetchTasksForModules(modules);
-    //   }
-    // }
+    if (evaluation.value != null) {
+      var modules = await getModulesByEvaluationId(evaluation.value!.evaluationID!);
+      if (modules != null && modules.isNotEmpty) {
+        modulesList.value = modules;
+        await fetchTasksForModules(modules);
+      }
+    }
     isLoading.value = false;
   }
 
-  // Future<List<ModuleEntity>?> getModulesByEvaluationId(int evaluationId) async {
-  //   try {
-  //     List<ModuleEntity> modules = await moduleService.getModulesByEvaluationId(evaluationId);
-  //     return modules;
-  //   } catch (e) {
-  //     print("Error fetching modules for evaluationId $evaluationId: $e");
-  //     return null;
-  //   }
-  // }
+  Future<List<ModuleEntity>?> getModulesByEvaluationId(int evaluationId) async {
+    try {
+      List<ModuleEntity> modules = await moduleService.getModulesByEvaluationId(evaluationId);
+      return modules;
+    } catch (e) {
+      print("Error fetching modules for evaluationId $evaluationId: $e");
+      return null;
+    }
+  }
 
   Future<void> fetchTasksForModules(List<ModuleEntity> modules) async {
     for (var module in modules) {

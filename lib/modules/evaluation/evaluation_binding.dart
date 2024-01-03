@@ -1,18 +1,21 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/app/data/datasource/module_instance_local_datasource.dart';
+import 'package:novo_cogni/app/domain/repositories/module_instance_repository.dart';
 import 'package:novo_cogni/app/domain/repositories/module_repository.dart';
 import 'package:novo_cogni/app/domain/repositories/task_repository.dart';
 
 import '../../app/data/datasource/module_local_datasource.dart';
 import '../../app/data/datasource/task_local_datasource.dart';
-import 'modules_list_controller.dart';
-import 'modules_list_service.dart';
+import 'evaluation_controller.dart';
+import 'evaluation_service.dart';
 
-class ModulesListBinding extends Bindings {
+class EvaluationBinding extends Bindings {
   @override
   void dependencies() {
     // Register data sources
     Get.lazyPut(() => ModuleLocalDataSource());
     Get.lazyPut(() => TaskLocalDataSource());
+    Get.lazyPut(() => ModuleInstanceLocalDataSource());
 
 
     // Register repositories with their respective data sources
@@ -22,16 +25,18 @@ class ModulesListBinding extends Bindings {
             taskLocalDataSource: Get.find()),
         permanent: true);
     Get.put(TaskRepository(localDataSource: Get.find()), permanent: true);
+    Get.put(ModuleInstanceRepository(moduleInstanceLocalDataSource: Get.find()));
 
 
 
-    var moduleService = ModulesListService(
+    var moduleService = EvaluationService(
         moduleRepository: Get.find<ModuleRepository>(),
-        taskRepository: Get.find<TaskRepository>());
+        taskRepository: Get.find<TaskRepository>(),
+        moduleInstanceRepository: Get.find<ModuleInstanceRepository>(),);
     Get.put(moduleService, permanent: true);
 
     Get.put(
-      ModulesListController(moduleService: moduleService),
+      EvaluationController(moduleService: moduleService),
       permanent: false,
     );
     // Get.put(

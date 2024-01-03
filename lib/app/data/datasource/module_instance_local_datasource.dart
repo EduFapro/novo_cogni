@@ -100,4 +100,23 @@ class ModuleInstanceLocalDataSource {
     final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABLE_MODULE_INSTANCES");
     return result.first["count"] as int?;
   }
+
+  Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(int evaluationId) async {
+    try {
+      final Database? database = await db;
+      final List<Map<String, dynamic>> maps = await database!.query(
+        TABLE_MODULE_INSTANCES,
+        where: '$ID_EVALUATION_FK = ?',
+        whereArgs: [evaluationId],
+      );
+
+      return List.generate(maps.length, (i) {
+        return ModuleInstanceEntity.fromMap(maps[i]);
+      });
+    } catch (ex) {
+      print(ex);
+      return [];
+    }
+  }
+
 }

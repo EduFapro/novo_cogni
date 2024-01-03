@@ -109,7 +109,7 @@ class EdEvaluationHistory extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             Get.toNamed(
-                              AppRoutes.module,
+                              AppRoutes.evaluation,
                               arguments: {
                                 'participant': participante,
                                 'evaluation': evaluation,

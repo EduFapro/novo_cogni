@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/lista_modulos/widgets/ed_module_item.dart';
+import 'package:novo_cogni/modules/evaluation/widgets/ed_module_item.dart';
 
-import 'modules_list_controller.dart';
+import 'evaluation_controller.dart';
 
-class ModulesListScreen extends GetView<ModulesListController> {
-  const ModulesListScreen({Key? key}) : super(key: key);
+class EvaluationScreen extends GetView<EvaluationController> {
+  const EvaluationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
