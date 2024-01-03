@@ -39,3 +39,6 @@ flutter:
     - assets/profile-placeholder.png
     - assets/audio/audio_placeholder.mp3
     - .env
+    - assets/audio/CincoPatinhosForamPassear.mp3
+    - assets/audio/EhMelhorUmPassaroNaMaoDoQueDoisVoando.mp3
+    - assets/audio/NemTudoQueReluzEhOuro.mp3

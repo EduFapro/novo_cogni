@@ -1,0 +1,15 @@
+import 'database_constants.dart';
+
+const ID_RECORDING = "recording_id";
+const ID_TASK_INSTANCE_FK = "task__instance_id";
+const FILE_PATH = "file_path";
+
+const SCRIPT_CREATE_TABLE_FILES = '''
+  CREATE TABLE $TABLE_FILES
+  (
+    $ID_RECORDING INTEGER PRIMARY KEY AUTOINCREMENT,
+    $ID_TASK_INSTANCE_FK INTEGER UNIQUE NOT NULL,
+    $FILE_PATH TEXT NOT NULL,
+    FOREIGN KEY ($ID_TASK_INSTANCE_FK) REFERENCES $TABLE_TASKS($ID_TASK_INSTANCE_FK)
+  )
+''';

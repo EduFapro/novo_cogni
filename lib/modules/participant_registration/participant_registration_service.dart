@@ -79,7 +79,6 @@ class ParticipantRegistrationService {
       var taskInstance = TaskInstanceEntity(
         taskID: task.taskID!,
         moduleInstanceID: moduleInstance.moduleInstanceID!,
-        fileID: 0000,
       );
 
       return taskInstanceRepository.createTaskInstance(taskInstance);
@@ -110,7 +109,6 @@ class ParticipantRegistrationService {
     List<int> moduleIds = await fetchModuleIds(selectedModules);
 
     var moduleInstances = await linkEvaluationToModules(evaluationId, moduleIds);
-    print("Module Instances: $moduleInstances");
     for (var moduleInstance in moduleInstances) {
       var module = await moduleRepository.getModuleWithTasks(moduleInstance.moduleID);
       print("Each module: $module");
@@ -128,7 +126,6 @@ class ParticipantRegistrationService {
 
 
   Future<List<int>> fetchModuleIds(List<String> selectedModules) async {
-    print(selectedModules);
     List<Future<int>> futures = selectedModules.map((name) async {
       var module = await moduleRepository.getModuleByName(name);
       return module!.moduleID!;
