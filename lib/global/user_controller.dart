@@ -30,7 +30,6 @@ class UserController extends GetxController {
         var fetchedUser = await userService.getUser(currentUserId);
         if (fetchedUser != null) {
           user.value = fetchedUser;
-          print("Fetched User: ${user.value}");
 
           var fetchedEvaluations = await userService.getEvaluationsByUser(fetchedUser);
           evaluations.assignAll(fetchedEvaluations);
@@ -47,7 +46,6 @@ class UserController extends GetxController {
         // Handle no current user scenario
       }
 
-      print("End of try, user: ${user}");
     } catch (e) {
       print("Error fetching user data: $e");
     }

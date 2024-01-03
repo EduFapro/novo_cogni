@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:novo_cogni/app/domain/entities/task_entity.dart';
 
 import '../../data/data_constants/module_constants.dart';
@@ -27,4 +26,7 @@ class ModuleEntity {
       title: map[TITLE] as String?,
     );
   }
+
+
+
 }

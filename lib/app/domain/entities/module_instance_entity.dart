@@ -1,17 +1,17 @@
 import '../../../enums/module_enums.dart';
-import '../../data/data_constants/module_constants.dart';
 import '../../data/data_constants/module_instance_constants.dart';
 
 class ModuleInstanceEntity {
   int? moduleInstanceID;
   int moduleID;
   int evaluationID;
-  Status status = Status.to_start;
+  Status status;
 
   ModuleInstanceEntity({
     this.moduleInstanceID,
     required this.moduleID,
     required this.evaluationID,
+    this.status = Status.to_start,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,7 +19,7 @@ class ModuleInstanceEntity {
       ID_MODULE_INSTANCE: moduleInstanceID,
       ID_MODULE_FK: moduleID,
       ID_EVALUATION_FK: evaluationID,
-      MODULE_INSTANCE_STATUS: status,
+      MODULE_INSTANCE_STATUS: status.description,
     };
   }
 
@@ -29,5 +29,10 @@ class ModuleInstanceEntity {
       moduleID: map[ID_MODULE_FK],
       evaluationID: map[ID_EVALUATION_FK],
     );
+  }
+
+  @override
+  String toString() {
+    return 'ModuleInstanceEntity{moduleInstanceID: $moduleInstanceID, moduleID: $moduleID, evaluationID: $evaluationID, status: $status}';
   }
 }

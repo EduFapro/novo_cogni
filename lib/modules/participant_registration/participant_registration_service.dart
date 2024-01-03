@@ -1,30 +1,38 @@
+import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/module_instance_entity.dart';
+import 'package:novo_cogni/app/domain/repositories/module_instance_repository.dart';
 
 import '../../app/domain/entities/evaluation_entity.dart';
 import '../../app/domain/entities/module_entity.dart';
 import '../../app/domain/entities/participant_entity.dart';
+import '../../app/domain/entities/task_instance_entity.dart';
 import '../../app/domain/repositories/evaluation_repository.dart';
 import '../../app/domain/repositories/module_repository.dart';
 import '../../app/domain/repositories/participant_repository.dart';
+import '../../app/domain/repositories/task_instance_repository.dart';
 import '../../app/domain/repositories/task_repository.dart';
 
 class ParticipantRegistrationService {
   final ParticipantRepository participantRepository;
   final EvaluationRepository evaluationRepository;
   final ModuleRepository moduleRepository;
+  final ModuleInstanceRepository moduleInstanceRepository;
   final TaskRepository taskRepository;
+  final TaskInstanceRepository taskInstanceRepository;
 
   ParticipantRegistrationService({
     required this.participantRepository,
     required this.evaluationRepository,
     required this.moduleRepository,
     required this.taskRepository,
+    required this.taskInstanceRepository,
+    required this.moduleInstanceRepository,
   });
 
   Future<int?> createParticipant(int evaluatorId, List<String> selectedModules,
       ParticipantEntity newParticipant) async {
     int? participantId =
-    await participantRepository.createParticipant(newParticipant);
+        await participantRepository.createParticipant(newParticipant);
     return participantId;
   }
 
@@ -49,33 +57,75 @@ class ParticipantRegistrationService {
     return moduleIds;
   }
 
-  Future<void> linkEvaluationToModules(
-      int evaluationId, List<int> moduleIds) async {
-    for (var moduleId in moduleIds) {
-      var newModuleInstance = ModuleInstanceEntity(moduleID: moduleId, evaluationID: evaluationId);
+  Future<List<ModuleInstanceEntity>> linkEvaluationToModules(
+      int evaluationId, List<int> moduleInstancesIds) async {
+    var tasks = moduleInstancesIds.map((moduleId) {
+      var newModuleInstance =
+      ModuleInstanceEntity(moduleID: moduleId, evaluationID: evaluationId);
+      return moduleInstanceRepository.createModuleInstance(newModuleInstance);
+    });
+
+    var results = await Future.wait(tasks);
+    return results.whereType<ModuleInstanceEntity>().toList(); // This should now work correctly
+  }
+
+
+  Future<List<TaskInstanceEntity>> linkTaskInstancesToModuleInstances(
+      ModuleInstanceEntity moduleInstance, ModuleEntity module) async {
+    print("Linking task instances for module instance ID: ${moduleInstance.moduleInstanceID}");
+
+    var tasks = module.tasks.map((task) {
+      print("Creating task instance for task ID: ${task.taskID}");
+      var taskInstance = TaskInstanceEntity(
+        taskID: task.taskID!,
+        moduleInstanceID: moduleInstance.moduleInstanceID!,
+        fileID: 0000,
+      );
+
+      return taskInstanceRepository.createTaskInstance(taskInstance);
+    });
+
+    try {
+      var results = await Future.wait(tasks);
+      return results.whereType<TaskInstanceEntity>().toList();
+    } catch (e) {
+      print("Error creating task instances: $e");
+      return [];
     }
   }
 
-  Future<Map<String, int>> createParticipantAndModules(
-      int evaluatorId,
-      List<String> selectedModules,
-      ParticipantEntity newParticipant) async {
-    print("SELECT MODULES: $selectedModules");
 
-    int? participantId = await createParticipant(
-        evaluatorId, selectedModules, newParticipant);
+
+  Future<Map<String, int>> createParticipantAndModules(int evaluatorId,
+      List<String> selectedModules, ParticipantEntity newParticipant) async {
+    int? participantId =
+    await createParticipant(evaluatorId, selectedModules, newParticipant);
+
     if (participantId == null) return {};
 
     int? evaluationId = await createEvaluation(participantId, evaluatorId);
+
     if (evaluationId == null) return {};
+
     List<int> moduleIds = await fetchModuleIds(selectedModules);
-    await linkEvaluationToModules(evaluationId, moduleIds);
+
+    var moduleInstances = await linkEvaluationToModules(evaluationId, moduleIds);
+    print("Module Instances: $moduleInstances");
+    for (var moduleInstance in moduleInstances) {
+      var module = await moduleRepository.getModuleWithTasks(moduleInstance.moduleID);
+      print("Each module: $module");
+      if (module != null) {
+        print("Labirintio nokok");
+        await linkTaskInstancesToModuleInstances(moduleInstance, module);
+      }
+    }
 
     return {
       "participantId": participantId,
       "evaluationId": evaluationId,
     };
   }
+
 
   Future<List<int>> fetchModuleIds(List<String> selectedModules) async {
     print(selectedModules);
@@ -86,4 +136,6 @@ class ParticipantRegistrationService {
 
     return await Future.wait(futures);
   }
+
+
 }

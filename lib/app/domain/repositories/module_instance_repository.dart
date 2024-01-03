@@ -7,9 +7,14 @@ class ModuleInstanceRepository {
   ModuleInstanceRepository({required this.moduleInstanceLocalDataSource});
 
   // Create a Module Instance
-  Future<int?> createModuleInstance(ModuleInstanceEntity moduleInstance) async {
-    return await moduleInstanceLocalDataSource.create(moduleInstance);
+  Future<ModuleInstanceEntity?> createModuleInstance(ModuleInstanceEntity moduleInstance) async {
+    int? id = await moduleInstanceLocalDataSource.create(moduleInstance);
+    if (id != null) {
+      return await moduleInstanceLocalDataSource.getModuleInstanceById(id);
+    }
+    return null;
   }
+
 
   // Get a Module Instance by ID
   Future<ModuleInstanceEntity?> getModuleInstance(int id) async {

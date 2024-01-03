@@ -42,12 +42,20 @@ class ModuleRepository {
   // Get a Module with its Tasks
   Future<ModuleEntity?> getModuleWithTasks(int moduleId) async {
     final module = await moduleLocalDataSource.getModuleById(moduleId);
+    print("Fetched module: $module");
+
     if (module != null) {
       final tasks = await taskLocalDataSource.getTasksForModule(moduleId);
+      print("Fetched tasks: $tasks");
+
       module.tasks = tasks;
+    } else {
+      print("Module with ID $moduleId not found.");
     }
+
     return module;
   }
+
 
   // Get a Module by Name
   Future<ModuleEntity?> getModuleByName(String name) async {
@@ -63,4 +71,8 @@ class ModuleRepository {
   Future<int?> getNumberOfModules() async {
     return await moduleLocalDataSource.getNumberOfModules();
   }
+
+
+
+
 }
