@@ -22,7 +22,7 @@ class TaskInstanceLocalDataSource {
       return await database!.insert(
         TABLE_TASK_INSTANCES,
         taskInstance.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
+        conflictAlgorithm: ConflictAlgorithm.ignore,
       );
     } catch (ex) {
       print(ex);
