@@ -61,44 +61,49 @@ class ParticipantRegistrationService {
       int evaluationId, List<int> moduleInstancesIds) async {
     var tasks = moduleInstancesIds.map((moduleId) {
       var newModuleInstance =
-      ModuleInstanceEntity(moduleID: moduleId, evaluationID: evaluationId);
+          ModuleInstanceEntity(moduleID: moduleId, evaluationID: evaluationId);
       return moduleInstanceRepository.createModuleInstance(newModuleInstance);
     });
 
     var results = await Future.wait(tasks);
-    return results.whereType<ModuleInstanceEntity>().toList(); // This should now work correctly
+    return results.whereType<ModuleInstanceEntity>().toList();
   }
-
 
   Future<List<TaskInstanceEntity>> linkTaskInstancesToModuleInstances(
       ModuleInstanceEntity moduleInstance, ModuleEntity module) async {
-    print("Linking task instances for module instance ID: ${moduleInstance.moduleInstanceID}");
+    print(
+        "Linking task instances for module instance ID: ${moduleInstance.moduleInstanceID}");
 
-    var tasks = module.tasks.map((task) {
-      print("Creating task instance for task ID: ${task.taskID}");
-      var taskInstance = TaskInstanceEntity(
-        taskID: task.taskID!,
-        moduleInstanceID: moduleInstance.moduleInstanceID!,
-      );
+    var tasks = module.tasks.map((task) async {
+      try {
+        print("Creating task instance for task ID: ${task.taskID}");
+        var taskInstance = TaskInstanceEntity(
+          taskID: task.taskID!,
+          moduleInstanceID: moduleInstance.moduleInstanceID!,
+        );
 
-      return taskInstanceRepository.createTaskInstance(taskInstance);
-    });
+        return await taskInstanceRepository.createTaskInstance(taskInstance);
+      } catch (e) {
+        print("Error creating task instance for task ID ${task.taskID}: $e");
+        return null; // Return null in case of error
+      }
+    }).toList();
 
     try {
       var results = await Future.wait(tasks);
-      return results.whereType<TaskInstanceEntity>().toList();
+      return results
+          .whereType<TaskInstanceEntity>()
+          .toList(); // Filter out null values
     } catch (e) {
-      print("Error creating task instances: $e");
+      print("Error during Future.wait: $e");
       return [];
     }
   }
 
-
-
   Future<Map<String, int>> createParticipantAndModules(int evaluatorId,
       List<String> selectedModules, ParticipantEntity newParticipant) async {
     int? participantId =
-    await createParticipant(evaluatorId, selectedModules, newParticipant);
+        await createParticipant(evaluatorId, selectedModules, newParticipant);
 
     if (participantId == null) return {};
 
@@ -108,12 +113,13 @@ class ParticipantRegistrationService {
 
     List<int> moduleIds = await fetchModuleIds(selectedModules);
 
-    var moduleInstances = await linkEvaluationToModules(evaluationId, moduleIds);
+    var moduleInstances =
+        await linkEvaluationToModules(evaluationId, moduleIds);
     for (var moduleInstance in moduleInstances) {
-      var module = await moduleRepository.getModuleWithTasks(moduleInstance.moduleID);
+      var module =
+          await moduleRepository.getModuleWithTasks(moduleInstance.moduleID);
       print("Each module: $module");
       if (module != null) {
-        print("Labirintio nokok");
         await linkTaskInstancesToModuleInstances(moduleInstance, module);
       }
     }
@@ -124,7 +130,6 @@ class ParticipantRegistrationService {
     };
   }
 
-
   Future<List<int>> fetchModuleIds(List<String> selectedModules) async {
     List<Future<int>> futures = selectedModules.map((name) async {
       var module = await moduleRepository.getModuleByName(name);
@@ -133,6 +138,4 @@ class ParticipantRegistrationService {
 
     return await Future.wait(futures);
   }
-
-
 }

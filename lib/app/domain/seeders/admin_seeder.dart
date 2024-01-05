@@ -56,7 +56,7 @@ class Config {
       }
     } else {
       // Handle the case where the date string is null or empty
-      return DateTime.now(); // Example fallback
+      return DateTime.now();
     }
   }
 
