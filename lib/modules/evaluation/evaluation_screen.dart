@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/evaluation/widgets/ed_module_instance_task.dart';
+import 'package:novo_cogni/modules/evaluation/widgets/ed_module_instance_item.dart';
 
 import 'evaluation_controller.dart';
 
@@ -65,24 +65,23 @@ class EvaluationScreen extends GetView<EvaluationController> {
             ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Container(
-                width: screenWidth * 0.3,
+                width: screenWidth * 0.4,
                 child: Card(
                   child: Obx(() {
                     if (controller.isLoading.isTrue) {
                       return Center(child: CircularProgressIndicator());
                     } else {
-                      // Retrieve all module titles asynchronously along with their tasks
                       var futureModules = controller.modulesInstanceList.value?.map((moduleInstance) async {
-                        var module = await moduleInstance?.module; // Await the future to get the module
-                        var tasks = await controller.getTasks(moduleInstance!.moduleID); // Fetch tasks for the module
-                        return EdModuleInstanceTask(
+                        var module = await moduleInstance?.module;
+                        var tasks = await controller.getTasks(moduleInstance!.moduleID);
+                        return EdModuleInstanceItem(
                           moduleName: module!.title!,
                           moduleId: moduleInstance.moduleID,
-                          taskInstances: tasks, // Pass the tasks here
+                          taskInstances: tasks,
                         );
                       }).toList() ?? [];
 
-                      return FutureBuilder<List<EdModuleInstanceTask>>(
+                      return FutureBuilder<List<EdModuleInstanceItem>>(
                         // Wait for all futures to complete
                         future: Future.wait(futureModules),
                         builder: (context, snapshot) {
@@ -104,7 +103,6 @@ class EvaluationScreen extends GetView<EvaluationController> {
                 ),
               ),
             )
-
           ],
         ),
       ),

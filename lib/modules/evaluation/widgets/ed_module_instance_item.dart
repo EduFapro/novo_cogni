@@ -6,13 +6,14 @@ import 'package:novo_cogni/modules/evaluation/widgets/ed_task_button.dart';
 import 'package:novo_cogni/routes.dart';
 
 import '../../../app/domain/entities/task_entity.dart';
+import 'ed_module_button.dart';
 
-class EdModuleInstanceTask extends GetView<EvaluationController> {
+class EdModuleInstanceItem extends GetView<EvaluationController> {
   final String moduleName;
   final int moduleId;
   final List<TaskInstanceEntity> taskInstances;
 
-  const EdModuleInstanceTask({
+  const EdModuleInstanceItem({
     Key? key,
     required this.moduleName,
     required this.moduleId,
@@ -30,14 +31,20 @@ class EdModuleInstanceTask extends GetView<EvaluationController> {
           width: screenWidth * 0.5,
           height: screenHeight * 0.07,
           color: Colors.black54,
-          child: Text(
-            moduleName,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.w600,
-              color: Colors.white70,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                moduleName,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white70,
+                ),
+              ),
+              ModuleButton(onPressed: () {  },)
+            ],
           ),
         ),
         Column(
