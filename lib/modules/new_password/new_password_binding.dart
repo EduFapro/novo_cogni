@@ -7,8 +7,7 @@ import 'new_password_controller.dart';
 class NewPasswordBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => EvaluatorLocalDataSource());
-    Get.lazyPut(() => EvaluatorRepository(localDataSource: Get.find()));
+
     Get.lazyPut(() => NewPasswordController(
           evaluatorRepository: Get.find<EvaluatorRepository>(),
         ));

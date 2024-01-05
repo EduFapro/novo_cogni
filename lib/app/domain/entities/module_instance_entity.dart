@@ -1,5 +1,8 @@
+import 'package:get/get.dart';
+
 import '../../../constants/enums/module_enums.dart';
 import '../../data/data_constants/module_instance_constants.dart';
+import '../repositories/module_repository.dart';
 import 'module_entity.dart';
 
 class ModuleInstanceEntity {
@@ -7,7 +10,7 @@ class ModuleInstanceEntity {
   int moduleID;
   int evaluationID;
   Status status;
-  ModuleEntity? module;
+  ModuleEntity? _module;
 
   ModuleInstanceEntity({
     this.moduleInstanceID,
@@ -33,6 +36,12 @@ class ModuleInstanceEntity {
     );
   }
 
+  Future<ModuleEntity?> get module async {
+    if (_module == null) {
+      _module = await Get.find<ModuleRepository>().getModule(moduleID);
+    }
+    return _module;
+  }
   @override
   String toString() {
     return 'ModuleInstanceEntity{moduleInstanceID: $moduleInstanceID, moduleID: $moduleID, evaluationID: $evaluationID, status: $status}';

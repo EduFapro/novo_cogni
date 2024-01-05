@@ -71,20 +71,40 @@ class EvaluationScreen extends GetView<EvaluationController> {
                     if (controller.isLoading.isTrue) {
                       return Center(child: CircularProgressIndicator());
                     } else {
-                      return Column(
-                        children: controller.modulesInstanceList.value
-                                ?.map((modulo) => EdModuleInstanceTask(
-                                      moduleName: modulo?.module?.title ?? "Banana",
-                                      moduleId: modulo!.moduleID!,
-                                    ))
-                                .toList() ??
-                            [Text('No modules available')],
+                      // Retrieve all module titles asynchronously along with their tasks
+                      var futureModules = controller.modulesInstanceList.value?.map((moduleInstance) async {
+                        var module = await moduleInstance?.module; // Await the future to get the module
+                        var tasks = await controller.getTasks(moduleInstance!.moduleID); // Fetch tasks for the module
+                        return EdModuleInstanceTask(
+                          moduleName: module!.title!,
+                          moduleId: moduleInstance.moduleID,
+                          taskInstances: tasks, // Pass the tasks here
+                        );
+                      }).toList() ?? [];
+
+                      return FutureBuilder<List<EdModuleInstanceTask>>(
+                        // Wait for all futures to complete
+                        future: Future.wait(futureModules),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return Text('No modules available');
+                          }
+                          // Return the list of widgets if data is available
+                          return Column(children: snapshot.data!);
+                        },
                       );
                     }
                   }),
                 ),
               ),
-            ),
+            )
+
           ],
         ),
       ),

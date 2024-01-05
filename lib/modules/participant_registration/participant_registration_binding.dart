@@ -18,29 +18,7 @@ import '../../app/domain/repositories/task_repository.dart';
 class ParticipantRegistrationBinding extends Bindings {
   @override
   void dependencies() {
-    // Register data sources
-    Get.lazyPut(() => ParticipantLocalDataSource());
-    Get.lazyPut(() => EvaluationLocalDataSource());
-    Get.lazyPut(() => ModuleLocalDataSource());
-    Get.lazyPut(() => ModuleInstanceLocalDataSource());
-    Get.lazyPut(() => TaskLocalDataSource());
-    Get.lazyPut(() => TaskInstanceLocalDataSource());
 
-    // Register repositories with their respective data sources
-    Get.lazyPut<ParticipantRepository>(
-            () => ParticipantRepository(localDataSource: Get.find()));
-    Get.lazyPut<ModuleInstanceRepository>(() =>
-        ModuleInstanceRepository(moduleInstanceLocalDataSource: Get.find()));
-    Get.lazyPut<EvaluationRepository>(
-            () => EvaluationRepository(localDataSource: Get.find()));
-    Get.lazyPut<ModuleRepository>(() => ModuleRepository(
-      moduleLocalDataSource: Get.find(),
-      taskLocalDataSource: Get.find(),
-    ));
-    Get.lazyPut<TaskRepository>(
-            () => TaskRepository(localDataSource: Get.find()));
-    Get.lazyPut<TaskInstanceRepository>(
-            () => TaskInstanceRepository(localDataSource: Get.find()));
 
     // Register service
     Get.lazyPut<ParticipantRegistrationService>(

@@ -42,18 +42,16 @@ class EvaluationService {
 
   Future<List<TaskInstanceEntity>?> getTasksByModuleId(int moduleId) async {
     try {
-      List<TaskInstanceEntity> taskInstanceList = await taskInstanceRepository
-          .getTaskInstancesForModuleInstance(moduleId);
-      for (var taskInstance in taskInstanceList) {
-        taskInstance.task = await taskRepository.getTask(taskInstance.taskID);
-      }
-      return await taskInstanceRepository
-          .getTaskInstancesForModuleInstance(moduleId);
+      // Fetch task instances for the given module instance ID
+      List<TaskInstanceEntity> taskInstanceList = await taskInstanceRepository.getTaskInstancesForModuleInstance(moduleId);
+
+      return taskInstanceList;
     } catch (e) {
       print('Error fetching tasks for module: $moduleId $e');
-      return [];
+      return null;
     }
   }
+
 
   Future<List<ModuleInstanceEntity>> getModulesInstanceByEvaluationId(
       int evaluationId) async {

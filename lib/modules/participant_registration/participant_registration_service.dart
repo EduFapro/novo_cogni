@@ -119,7 +119,6 @@ class ParticipantRegistrationService {
     for (var moduleInstance in moduleInstances) {
       var module =
           await moduleRepository.getModuleWithTasks(moduleInstance.moduleID);
-      moduleInstance.module = module;
       print("Each module: $module");
       if (module != null) {
         await linkTaskInstancesToModuleInstances(moduleInstance, module);

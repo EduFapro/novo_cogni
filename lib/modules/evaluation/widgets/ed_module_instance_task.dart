@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/app/domain/entities/task_instance_entity.dart';
+import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
+import 'package:novo_cogni/modules/evaluation/widgets/ed_task_button.dart';
+import 'package:novo_cogni/routes.dart';
 
-import '../../../routes.dart';
-import '../evaluation_controller.dart';
-import 'ed_task_button.dart';
-
+import '../../../app/domain/entities/task_entity.dart';
 
 class EdModuleInstanceTask extends GetView<EvaluationController> {
   final String moduleName;
   final int moduleId;
+  final List<TaskInstanceEntity> taskInstances;
 
   const EdModuleInstanceTask({
-    super.key,
+    Key? key,
     required this.moduleName,
-    required this.moduleId
-  });
+    required this.moduleId,
+    required this.taskInstances,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +34,30 @@ class EdModuleInstanceTask extends GetView<EvaluationController> {
             moduleName,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.w600,
-                color: Colors.white70),
+              fontSize: 40,
+              fontWeight: FontWeight.w600,
+              color: Colors.white70,
+            ),
           ),
         ),
-        Obx(() {
-          var tasks = controller.tasksListDetails.value
-              .firstWhere((element) => element.containsKey(moduleId), orElse: () => {})
-          [moduleId] ?? [];
-
-          return Column(
-            children: tasks.map((task) => EdTaskItem(taskName: task.task!.title)).toList(),
-          );
-        }),
+        Column(
+          children: taskInstances.map((taskInstance) {
+            return FutureBuilder<TaskEntity?>(
+              future: taskInstance.task,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData) {
+                  return Text('Task not found');
+                } else {
+                  return EdTaskItem(taskName: snapshot.data!.title);
+                }
+              },
+            );
+          }).toList(),
+        )
       ],
     );
   }
@@ -54,9 +67,9 @@ class EdTaskItem extends StatelessWidget {
   final String taskName;
 
   const EdTaskItem({
-    super.key,
+    Key? key,
     required this.taskName,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +113,6 @@ class EdTaskItem extends StatelessWidget {
                   );
                 },
               ),
-
             ),
           ],
         ),

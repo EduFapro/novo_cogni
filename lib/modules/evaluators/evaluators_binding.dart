@@ -6,8 +6,7 @@ import 'evaluators_controller.dart';
 class EvaluatorsBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => EvaluationLocalDataSource());
-    Get.lazyPut(() => EvaluatorRepository(localDataSource: Get.find()));
+
     Get.put(EvaluatorsController(), permanent: true);
 
 

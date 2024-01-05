@@ -5,6 +5,7 @@ import 'package:novo_cogni/app/domain/entities/participant_entity.dart';
 
 import '../../app/domain/entities/module_instance_entity.dart';
 import '../../app/domain/entities/task_instance_entity.dart';
+import '../../app/domain/repositories/task_instance_repository.dart';
 import 'evaluation_service.dart';
 
 class EvaluationController extends GetxController {
@@ -89,5 +90,13 @@ class EvaluationController extends GetxController {
       print("Error fetching modules for evaluationId $evaluationId: $e");
       return null;
     }
+  }
+
+  Future<List<TaskInstanceEntity>> getTasks(int moduleId) async {
+    // This method should return a Future that completes with a list of task instances.
+    // It should wait for the task entities to be fetched asynchronously.
+    var taskInstances = await Get.find<TaskInstanceRepository>().getTaskInstancesForModuleInstance(moduleId);
+
+    return taskInstances;
   }
 }

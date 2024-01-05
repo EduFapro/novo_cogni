@@ -1,11 +1,14 @@
+import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/task_entity.dart';
+
+import '../repositories/task_repository.dart';
 
 class TaskInstanceEntity {
   int? taskInstanceID;
   int taskID;
   int moduleInstanceID;
   String status;
-  TaskEntity? task;
+  TaskEntity? _task;
 
   TaskInstanceEntity({
     this.taskInstanceID,
@@ -30,6 +33,13 @@ class TaskInstanceEntity {
       moduleInstanceID: map['module_inst_id'] as int,
       status: map['status'] as String,
     );
+  }
+
+  Future<TaskEntity?> get task async {
+    if (_task == null) {
+      _task = await Get.find<TaskRepository>().getTask(taskID);
+    }
+    return _task;
   }
 
   @override
