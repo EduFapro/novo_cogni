@@ -58,14 +58,14 @@ class ParticipantRegistrationService {
   }
 
   Future<List<ModuleInstanceEntity>> linkEvaluationToModules(
-      int evaluationId, List<int> moduleInstancesIds) async {
-    var tasks = moduleInstancesIds.map((moduleId) {
+      int evaluationId, List<int> moduleIds) async {
+    var moduleInstances = moduleIds.map((moduleId) {
       var newModuleInstance =
           ModuleInstanceEntity(moduleID: moduleId, evaluationID: evaluationId);
       return moduleInstanceRepository.createModuleInstance(newModuleInstance);
     });
 
-    var results = await Future.wait(tasks);
+    var results = await Future.wait(moduleInstances);
     return results.whereType<ModuleInstanceEntity>().toList();
   }
 
@@ -115,9 +115,11 @@ class ParticipantRegistrationService {
 
     var moduleInstances =
         await linkEvaluationToModules(evaluationId, moduleIds);
+
     for (var moduleInstance in moduleInstances) {
       var module =
           await moduleRepository.getModuleWithTasks(moduleInstance.moduleID);
+      moduleInstance.module = module;
       print("Each module: $module");
       if (module != null) {
         await linkTaskInstancesToModuleInstances(moduleInstance, module);

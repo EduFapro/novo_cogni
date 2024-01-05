@@ -42,7 +42,7 @@ class EdModuleInstanceTask extends GetView<EvaluationController> {
           [moduleId] ?? [];
 
           return Column(
-            children: tasks.map((task) => EdTaskItem(taskName: task.title)).toList(),
+            children: tasks.map((task) => EdTaskItem(taskName: task.task!.title)).toList(),
           );
         }),
       ],

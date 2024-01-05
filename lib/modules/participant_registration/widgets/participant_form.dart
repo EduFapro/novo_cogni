@@ -78,7 +78,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                                     .toString()
                                     .split(' ')[0];
                                 controller.selectedDate.value =
-                                    pickedDate; // Update the selectedDate value
+                                    pickedDate;
                               }
                             },
                           ),

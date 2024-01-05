@@ -1,11 +1,13 @@
 import '../../../constants/enums/module_enums.dart';
 import '../../data/data_constants/module_instance_constants.dart';
+import 'module_entity.dart';
 
 class ModuleInstanceEntity {
   int? moduleInstanceID;
   int moduleID;
   int evaluationID;
   Status status;
+  ModuleEntity? module;
 
   ModuleInstanceEntity({
     this.moduleInstanceID,

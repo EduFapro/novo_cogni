@@ -72,9 +72,9 @@ class EvaluationScreen extends GetView<EvaluationController> {
                       return Center(child: CircularProgressIndicator());
                     } else {
                       return Column(
-                        children: controller.modulesList.value
+                        children: controller.modulesInstanceList.value
                                 ?.map((modulo) => EdModuleInstanceTask(
-                                      moduleName: modulo?.title ?? "",
+                                      moduleName: modulo?.module?.title ?? "Banana",
                                       moduleId: modulo!.moduleID!,
                                     ))
                                 .toList() ??

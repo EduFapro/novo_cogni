@@ -1,8 +1,11 @@
+import 'package:novo_cogni/app/domain/entities/task_entity.dart';
+
 class TaskInstanceEntity {
   int? taskInstanceID;
   int taskID;
   int moduleInstanceID;
   String status;
+  TaskEntity? task;
 
   TaskInstanceEntity({
     this.taskInstanceID,

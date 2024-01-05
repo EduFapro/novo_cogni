@@ -4,7 +4,7 @@ import '../entities/task_prompt_entity.dart';
 class TaskPromptRepository {
   final TaskPromptLocalDataSource _localDataSource;
 
-  TaskPromptRepository(this._localDataSource);
+  TaskPromptRepository(this._localDataSource,);
 
   @override
   Future<int?> create(TaskPromptEntity taskPrompt) async {
