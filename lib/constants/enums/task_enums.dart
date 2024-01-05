@@ -21,9 +21,9 @@ extension ModeDescription on TaskMode {
   String get description {
     switch (this) {
       case TaskMode.play:
-        return "Play";  // Changed to "Play" to reflect the action
+        return "Play";
       case TaskMode.record:
-        return "Record"; // Changed to "Record" to reflect the action
+        return "Record";
       default:
         return "---";
     }

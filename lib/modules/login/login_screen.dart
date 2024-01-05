@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:novo_cogni/modules/widgets/ed_form_title.dart';
 import '../../mixins/ValidationMixin.dart';
 import '../../routes.dart';
@@ -79,6 +78,7 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                                 var successfulAdminLogin =
                                 await controller.logAdmin(email, password);
                                 if (successfulAdminLogin) {
+                                  await controller.login(email, password);
                                   Get.toNamed(AppRoutes.home);
                                 } else {
                                   var successfulLogin =

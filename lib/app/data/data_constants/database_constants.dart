@@ -10,4 +10,4 @@ const TABLE_EVALUATION_MODULES = "evaluation_modules";
 
 const TABLE_TASK_INSTANCES = "task_instances";
 const TABLE_MODULE_INSTANCES = "module_instances";
-const TABLE_FILES = "files";
+const TABLE_TASK_PROMPTS = "prompts";

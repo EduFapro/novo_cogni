@@ -37,8 +37,5 @@ flutter:
     - assets/folder.svg
     - assets/abstract-user.svg
     - assets/profile-placeholder.png
-    - assets/audio/audio_placeholder.mp3
+    - assets/audio/
     - .env
-    - assets/audio/CincoPatinhosForamPassear.mp3
-    - assets/audio/EhMelhorUmPassaroNaMaoDoQueDoisVoando.mp3
-    - assets/audio/NemTudoQueReluzEhOuro.mp3

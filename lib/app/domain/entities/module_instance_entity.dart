@@ -1,4 +1,4 @@
-import '../../../enums/module_enums.dart';
+import '../../../constants/enums/module_enums.dart';
 import '../../data/data_constants/module_instance_constants.dart';
 
 class ModuleInstanceEntity {

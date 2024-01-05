@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../../enums/person_enums.dart';
+import '../../../constants/enums/person_enums.dart';
 import '../../data/data_constants/evaluator_constants.dart';
 
 class EvaluatorEntity extends Equatable {
@@ -12,7 +12,6 @@ class EvaluatorEntity extends Equatable {
   final String cpfOrNif;
   final String email;
   late String password;
-  final bool isEvaluator = false;
   bool firstLogin;
 
   EvaluatorEntity({

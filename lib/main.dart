@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:novo_cogni/routes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import 'app/data/datasource/database_helper.dart';
 import 'global/global_binding.dart';
 
 void main() async {
-  // Ensure that Flutter binding is initialized.
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize sqflite for FFI.
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+  try {
+    await dotenv.load(fileName: ".env");
 
-  // Load the .env file for environment variables.
-  await dotenv.load(fileName: ".env");
+    // Initialize sqflite for FFI (used in desktop applications)
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
 
-  runApp(MyApp());
+    // Now initialize the database
+    await DatabaseHelper().initDb();
+
+
+    runApp(MyApp());
+  } catch (e) {
+    print("Initialization Error: $e");
+    // Handle the initialization error
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -25,9 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: GlobalBinding(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: AppRoutes.login,
       getPages: routes,
     );

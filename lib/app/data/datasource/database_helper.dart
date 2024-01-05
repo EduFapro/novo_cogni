@@ -1,7 +1,10 @@
 import 'package:novo_cogni/app/data/data_constants/module_instance_constants.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../domain/use_cases/module_use_cases.dart';
+import '../../domain/seeders/admin_seeder.dart';
+import '../../domain/seeders/modules_seeder.dart';
+import '../../domain/seeders/prompts_seeder.dart';
+import '../../domain/seeders/tasks_seeder.dart';
 import '../data_constants/module_constants.dart';
 import '../data_constants/evaluation_constants.dart';
 import '../data_constants/evaluator_constants.dart';
@@ -9,6 +12,7 @@ import '../data_constants/database_constants.dart';
 import '../data_constants/participant_constants.dart';
 import '../data_constants/task_constants.dart';
 import '../data_constants/task_instance_constants.dart';
+import '../data_constants/task_prompt_constants.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
@@ -52,6 +56,7 @@ class DatabaseHelper {
       await db.execute(SCRIPT_CREATE_TABLE_TASKS);
       await db.execute(SCRIPT_CREATE_TABLE_MODULE_INSTANCES);
       await db.execute(SCRIPT_CREATE_TABLE_TASK_INSTANCES);
+      await db.execute(SCRIPT_CREATE_TABLE_TASK_PROMPT);
       insertInitialData();
     } catch (e) {
       print("Error creating tables: $e");
@@ -66,6 +71,16 @@ class DatabaseHelper {
     }
     for (var task in tasksList) {
       await db.insert(TABLE_TASKS, task.toMap());
+    }
+    for (var taskPrompt in tasksPromptsList) {
+      await db.insert(TABLE_TASK_PROMPTS, taskPrompt.toMap());
+    }
+    print(      "Config.adminMap: ${Config.adminMap}");
+    try {
+      await db.insert(TABLE_EVALUATORS, Config.adminMap);
+    } catch (e) {
+      "NÃO DEU P INSERIR NO BD $e";
+      "Config.adminMap: ${Config.adminMap}";
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/evaluation/widgets/ed_module_item.dart';
+import 'package:novo_cogni/modules/evaluation/widgets/ed_module_instance_task.dart';
 
 import 'evaluation_controller.dart';
 
@@ -73,7 +73,7 @@ class EvaluationScreen extends GetView<EvaluationController> {
                     } else {
                       return Column(
                         children: controller.modulesList.value
-                                ?.map((modulo) => EdModuleItem(
+                                ?.map((modulo) => EdModuleInstanceTask(
                                       moduleName: modulo?.title ?? "",
                                       moduleId: modulo!.moduleID!,
                                     ))
@@ -82,79 +82,6 @@ class EvaluationScreen extends GetView<EvaluationController> {
                       );
                     }
                   }),
-
-                  // child: Column(
-                  //   children: [
-                  //     EdModuloItem(),
-                  //     Container(
-                  //       height: screenHeight * 0.04,
-                  //       child: Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //         children: [
-                  //           Text(
-                  //             "Contar-nos seu Nome",
-                  //             style:
-                  //                 TextStyle(fontSize: 20, color: Colors.black),
-                  //           ),
-                  //           TarefasButton(
-                  //             onPressed: () {},
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     Column(
-                  //       children: [
-                  //         Container(
-                  //           width: screenWidth * 0.5,
-                  //           height: screenHeight * 0.07,
-                  //           color: Colors.black54,
-                  //           child: Text(
-                  //             "Testes",
-                  //             textAlign: TextAlign.center,
-                  //             style: TextStyle(
-                  //                 fontSize: 40,
-                  //                 fontWeight: FontWeight.w600,
-                  //                 color: Colors.white70),
-                  //           ),
-                  //         ),
-                  //         Container(
-                  //           height: screenHeight * 0.04,
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //             children: [
-                  //               Text(
-                  //                 "Ouvir Áudio",
-                  //                 style: TextStyle(
-                  //                     fontSize: 20, color: Colors.black),
-                  //               ),
-                  //               TarefasButton(
-                  //                 onPressed: () {
-                  //                   Get.toNamed(AppRoutes.tarefa);
-                  //                 },
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         Container(
-                  //           height: screenHeight * 0.04,
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //             children: [
-                  //               Text(
-                  //                 "Contar-nos seu Nome",
-                  //                 style: TextStyle(
-                  //                     fontSize: 20, color: Colors.black),
-                  //               ),
-                  //               TarefasButton(
-                  //                 onPressed: () {},
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
                 ),
               ),
             ),

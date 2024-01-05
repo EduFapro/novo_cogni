@@ -1,6 +1,6 @@
 import 'package:novo_cogni/app/data/data_constants/task_constants.dart';
 
-import '../../../enums/task_enums.dart';
+import '../../../constants/enums/task_enums.dart';
 
 class TaskEntity {
   int? taskID;

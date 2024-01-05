@@ -20,7 +20,17 @@ extension SexDesc on Sex {
       case Sex.female:
         return "Female";
       default:
-        return "---";
+        return "Male";
+    }
+  }
+  static Sex fromString(String sexString) {
+    switch (sexString) {
+      case 'male':
+        return Sex.male;
+      case 'female':
+        return Sex.female;
+      default:
+        return Sex.male;
     }
   }
 }

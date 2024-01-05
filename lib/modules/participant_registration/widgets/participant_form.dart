@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../enums/language_enums.dart';
-import '../../../enums/person_enums.dart';
+import '../../../constants/enums/language_enums.dart';
+import '../../../constants/enums/person_enums.dart';
 import '../../home/home_controller.dart';
 import '../../login/login_controller.dart';
 import '../participant_registration_controller.dart';

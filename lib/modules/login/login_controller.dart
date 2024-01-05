@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/repositories/evaluator_repository.dart';
 
 import '../../app/domain/entities/evaluator_entity.dart';
+import '../../app/domain/seeders/admin_seeder.dart';
 import '../../global/user_controller.dart';
 
 class LoginController extends GetxController {
@@ -19,17 +19,14 @@ class LoginController extends GetxController {
   LoginController(this.evaluatorRepository);
 
   Future<bool> logAdmin(String email, String password) async {
-    final storedEmail = dotenv.env['EMAIL_ADMIN'];
-    final secretKey = dotenv.env['SECRET_KEY'];
-
     // If the email is the admin's
-    if (email == storedEmail) {
+    if (email == Config.adminEmail ) {
       // Hash the entered password
       var bytes = utf8.encode(password);
       var hashedEnteredPassword = sha256.convert(bytes).toString();
 
       // Hash the stored secret key
-      var secretBytes = utf8.encode(secretKey!);
+      var secretBytes = utf8.encode(Config.secretKey!);
       var hashedStoredPassword = sha256.convert(secretBytes).toString();
 
       if (hashedEnteredPassword == hashedStoredPassword) {

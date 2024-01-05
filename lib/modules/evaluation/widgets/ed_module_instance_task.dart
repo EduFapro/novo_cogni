@@ -6,11 +6,11 @@ import '../evaluation_controller.dart';
 import 'ed_task_button.dart';
 
 
-class EdModuleItem extends GetView<EvaluationController> {
+class EdModuleInstanceTask extends GetView<EvaluationController> {
   final String moduleName;
   final int moduleId;
 
-  const EdModuleItem({
+  const EdModuleInstanceTask({
     super.key,
     required this.moduleName,
     required this.moduleId
@@ -92,9 +92,15 @@ class EdTaskItem extends StatelessWidget {
               flex: 2,
               child: TasksButton(
                 onPressed: () {
-                  Get.toNamed(AppRoutes.task);
+                  Get.toNamed(
+                    AppRoutes.task,
+                    arguments: {
+                      'taskName': taskName,
+                    },
+                  );
                 },
               ),
+
             ),
           ],
         ),

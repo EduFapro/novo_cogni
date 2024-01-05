@@ -3,8 +3,8 @@ import 'evaluation_constants.dart';
 import 'module_constants.dart';
 
 const ID_MODULE_INSTANCE = "module_inst_id";
-const ID_MODULE_FK = "module_id";
-const ID_EVALUATION_FK = "evaluation_id";
+const ID_MODULE_FK = ID_MODULE;
+const ID_EVALUATION_FK = ID_EVALUATION;
 const MODULE_INSTANCE_STATUS = "status";
 
 const SCRIPT_CREATE_TABLE_MODULE_INSTANCES = '''

@@ -6,9 +6,9 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/domain/entities/participant_entity.dart';
-import '../../app/domain/use_cases/module_use_cases.dart';
-import '../../enums/language_enums.dart';
-import '../../enums/person_enums.dart';
+import '../../app/domain/seeders/modules_seeder.dart';
+import '../../../constants/enums/person_enums.dart';
+import '../../constants/enums/language_enums.dart';
 import '../home/home_controller.dart';
 import 'participant_registration_service.dart';
 

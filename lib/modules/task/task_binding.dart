@@ -1,11 +1,15 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/app/data/datasource/task_local_datasource.dart';
+import 'package:novo_cogni/app/domain/repositories/task_repository.dart';
 import 'package:novo_cogni/modules/task/task_controller.dart';
-import '../../audio_player/audio_player_controller.dart';
+import 'package:novo_cogni/modules/task/task_service.dart';
 
 class TaskBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<TaskController>(() => TaskController());
-    Get.lazyPut<AudioPlayerController>(() => AudioPlayerController());
+    Get.lazyPut<TaskLocalDataSource>(() => TaskLocalDataSource());
+    Get.lazyPut<TaskRepository>(() => TaskRepository(localDataSource: Get.find()));
+    Get.lazyPut<TaskService>(() => TaskService(taskPromptRepository: Get.find()));
+    Get.lazyPut<TaskController>(() => TaskController(taskService: Get.find()));
   }
 }

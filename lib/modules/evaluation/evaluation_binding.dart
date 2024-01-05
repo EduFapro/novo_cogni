@@ -39,11 +39,5 @@ class EvaluationBinding extends Bindings {
       EvaluationController(moduleService: moduleService),
       permanent: false,
     );
-    // Get.put(
-    //   ModulesListService(
-    //       moduleRepository: Get.find<ModuleRepository>(),
-    //       evaluationModuleRepository: evaluationModuleRepo),
-    //   permanent: true,
-    // );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../enums/person_enums.dart';
+import '../../../constants/enums/person_enums.dart';
 import '../evaluator_registration_controller.dart';
 
 class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {

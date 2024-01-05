@@ -5,8 +5,8 @@ import 'evaluator_constants.dart';
 
 const ID_EVALUATION = "evaluation_id";
 const EVALUATION_DATE = "evaluation_date";
-const ID_EVALUATOR_FK = "evaluator_id";
-const ID_PARTICIPANT_FK = "participant_id";
+const ID_EVALUATOR_FK = ID_EVALUATOR;
+const ID_PARTICIPANT_FK = ID_PARTICIPANT;
 const EVALUATION_STATUS = "status";
 
 const SCRIPT_CREATE_TABLE_EVALUATIONS = '''
