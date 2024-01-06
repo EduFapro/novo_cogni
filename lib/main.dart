@@ -5,6 +5,7 @@ import 'package:novo_cogni/routes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'app/data/datasource/database_helper.dart';
+import 'constants/translation/ui_strings.dart';
 import 'global/global_binding.dart';
 
 void main() async {
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: UiStrings(),
+      locale: Locale('pt','BR'),
+      fallbackLocale: Locale('pt','BR'),
       initialBinding: GlobalBinding(),
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: AppRoutes.login,

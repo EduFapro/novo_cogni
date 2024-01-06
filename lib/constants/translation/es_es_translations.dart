@@ -1,0 +1,18 @@
+final Map<String, String> ptBrTranslations = {
+  'hello': 'Olá',
+  'new_participant': 'Novo Participante',
+  'password': 'Senha',
+  'forgot_your_password': 'Esqueceu sua senha?',
+  'login': 'Entrar',
+  'email': 'E-mail',
+  'home': 'Início',
+  'evaluators': 'Avaliadores',
+  'total_projects': 'Total de Projetos',
+  'in_progress': 'Em Andamento',
+  'completed': 'Concluídos',
+  'evaluation_history': 'Histórico de Avaliações',
+  'name': 'Nome',
+  'status': 'Status',
+  'evaluator': 'Avaliador',
+  'date': 'Data',
+};

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../constants/translation/ui_strings.dart';
 import '../../../routes.dart';
 
 class EdNewParticipantButton extends StatelessWidget {
@@ -26,7 +27,7 @@ class EdNewParticipantButton extends StatelessWidget {
         children: <Widget>[
           Icon(Icons.add, color: Colors.white),
           SizedBox(width: 4.0),
-          Text("Novo Participante"),
+          Text(UiStrings.newParticipant),
         ],
       ),
     );
