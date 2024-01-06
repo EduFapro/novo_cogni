@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/person_enums.dart';
 import '../evaluators_controller.dart';
 import '../../widgets/ed_input_text.dart';
@@ -26,7 +27,7 @@ class EdEvaluatorsList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Evaluators List",
+            UiStrings.evaluatorsList,
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 20),
@@ -41,11 +42,11 @@ class EdEvaluatorsList extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
                   columnSpacing: 16,
-                  columns: const [
-                    DataColumn(label: Text('Name')),
-                    DataColumn(label: Text('Email')),
-                    DataColumn(label: Text('Date of Birth')),
-                    DataColumn(label: Text('Gender')),
+                  columns: [
+                    DataColumn(label: Text(UiStrings.name)),
+                    DataColumn(label: Text(UiStrings.email)),
+                    DataColumn(label: Text(UiStrings.dateOfBirth)),
+                    DataColumn(label: Text(UiStrings.sex)),
                   ],
                   rows: evaluatorsList.map((evaluator) {
                     return DataRow(

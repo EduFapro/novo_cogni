@@ -18,6 +18,7 @@ import '../app/domain/repositories/participant_repository.dart';
 import '../app/domain/repositories/task_instance_repository.dart';
 import '../app/domain/repositories/task_prompt_repository.dart';
 import '../app/domain/repositories/task_repository.dart';
+import 'language_controller.dart';
 
 class GlobalBinding extends Bindings {
   @override
@@ -58,6 +59,7 @@ class GlobalBinding extends Bindings {
     // User-related Services
     Get.put<UserService>(UserService(), permanent: true);
     Get.put<UserController>(UserController(), permanent: true);
+    Get.put(LanguageController());
   }
 }
 

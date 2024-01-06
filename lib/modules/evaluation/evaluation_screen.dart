@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/evaluation/widgets/ed_module_instance_item.dart';
 
 import 'evaluation_controller.dart';
@@ -20,7 +21,7 @@ class EvaluationScreen extends GetView<EvaluationController> {
             Get.back();
           },
         ),
-        title: Text("Avaliação"),
+        title: Text(UiStrings.evaluation),
         centerTitle: true,
       ),
       body: Container(
@@ -52,8 +53,8 @@ class EvaluationScreen extends GetView<EvaluationController> {
             const SizedBox(height: 20),
             Container(
               width: screenWidth,
-              child: const Text(
-                "Lista de Atividades",
+              child: Text(
+                UiStrings.listOfActivities,
                 style: TextStyle(
                   fontSize: 43,
                   fontWeight: FontWeight.bold,

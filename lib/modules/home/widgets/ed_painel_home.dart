@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/home/home_controller.dart';
 import 'ed_evaluation_history.dart';
 import 'ed_folder_card.dart';
@@ -25,7 +26,7 @@ class EdHomePanel extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Home",
+                UiStrings.home,
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 8.0),
@@ -42,7 +43,7 @@ class EdHomePanel extends GetView<HomeController> {
                   cardHeight: cardHeight,
                   cardWidth: cardWidth,
                   folderColor: Color(0xff50bee9),
-                  titleCard: "Total Projects",
+                  titleCard: UiStrings.totalProjects,
                   number: controller.numEvaluationsTotal.value,
                 ),
               ),
@@ -52,7 +53,7 @@ class EdHomePanel extends GetView<HomeController> {
                   cardHeight: cardHeight,
                   cardWidth: cardWidth,
                   folderColor: Color(0xfffdbb11),
-                  titleCard: "In Progress",
+                  titleCard: UiStrings.inProgress,
                   number: controller.numEvaluationsInProgress.value,
                 ),
               ),
@@ -62,7 +63,7 @@ class EdHomePanel extends GetView<HomeController> {
                   cardHeight: cardHeight,
                   cardWidth: cardWidth,
                   folderColor: Color(0xff02bf72),
-                  titleCard: "Completed",
+                  titleCard: UiStrings.completed,
                   number: controller.numEvaluationsFinished.value,
                 ),
               ),

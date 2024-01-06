@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/module_enums.dart';
 import '../../../routes.dart';
 import '../../widgets/ed_input_text.dart';
@@ -22,7 +23,7 @@ class EdEvaluationHistory extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "Evaluation History",
+                UiStrings.evaluationHistory,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
@@ -55,19 +56,19 @@ class EdEvaluationHistory extends StatelessWidget {
             children: [
               Expanded(
                 flex: 2,
-                child: Text("Name", style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.name, style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 2,
-                child: Text("Status", style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.status, style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 2,
-                child: Text("Evaluator", style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.evaluator, style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 2,
-                child: Text("Date", style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.date, style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           ),

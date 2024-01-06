@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
 import '../../../constants/enums/person_enums.dart';
 import '../evaluator_registration_controller.dart';
@@ -28,7 +29,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Evaluator Registration',
+              UiStrings.evaluatorRegistration,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -47,7 +48,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                           child: TextFormField(
                             controller: controller.fullNameController,
                             decoration: InputDecoration(
-                              labelText: 'Full Name',
+                              labelText: UiStrings.fullName,
                             ),
                           ),
                         ),
@@ -57,7 +58,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                           child: TextFormField(
                             controller: controller.dateOfBirthController,
                             decoration: InputDecoration(
-                              labelText: 'Date of Birth',
+                              labelText: UiStrings.dateOfBirth,
                             ),
                             readOnly: true,
                             onTap: () => controller.selectDate(context),
@@ -73,7 +74,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                           child: TextFormField(
                             controller: controller.specialtyController,
                             decoration: InputDecoration(
-                              labelText: 'Specialty',
+                              labelText: UiStrings.specialty,
                             ),
                           ),
                         ),
@@ -83,7 +84,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                           child: TextFormField(
                             controller: controller.cpfOrNifController,
                             decoration: InputDecoration(
-                              labelText: 'CPF/NIF',
+                              labelText: UiStrings.cpfNif,
                             ),
                           ),
                         ),
@@ -93,7 +94,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                           child: TextFormField(
                             controller: controller.emailController,
                             decoration: InputDecoration(
-                              labelText: 'Email',
+                              labelText: UiStrings.email,
                             ),
                           ),
                         ),
@@ -104,7 +105,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                       width: fieldWidthRow2,
                       child: DropdownButtonFormField<Sex>(
                         decoration: InputDecoration(
-                          labelText: 'Sex',
+                          labelText: UiStrings.sex,
                         ),
                         items: Sex.values.map((Sex sex) {
                           return DropdownMenuItem<Sex>(
@@ -128,7 +129,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                             onPressed: () {
                               Get.back();
                             },
-                            child: const Text("Cancel",
+                            child: Text(UiStrings.cancel,
                                 style: TextStyle(color: Color(0xff000000))),
                           ),
                           SizedBox(width: 20),
@@ -145,7 +146,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                                 );
                               }
                             },
-                            child: const Text("Register"),
+                            child: Text(UiStrings.register),
                           ),
                         ],
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/participant_registration/participant_registration_controller.dart';
 import 'package:novo_cogni/modules/participant_registration/widgets/participant_form.dart';
 
@@ -16,7 +17,7 @@ class ParticipantRegistrationScreen extends GetView<ParticipantRegistrationContr
           backgroundColor: Color(0xfffdfdfd),
           iconTheme: IconThemeData(color: Colors.black),
           title: Text(
-            "Participant Registration",
+            UiStrings.participantRegistration,
             style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,

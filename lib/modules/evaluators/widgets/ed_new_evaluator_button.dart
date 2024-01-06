@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../app/domain/entities/evaluator_entity.dart';
+import '../../../constants/translation/ui_strings.dart';
 import '../../../routes.dart';
 import '../evaluators_controller.dart';
 
@@ -37,7 +38,7 @@ class EdNewEvaluatorButton extends StatelessWidget {
         children: <Widget>[
           Icon(Icons.add, color: Colors.white),
           SizedBox(width: 4.0),
-          Text("New Evaluator"),
+          Text(UiStrings.newEvaluator),
         ],
       ),
     );

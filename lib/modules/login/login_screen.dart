@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/widgets/ed_form_title.dart';
 import '../../mixins/ValidationMixin.dart';
 import '../../routes.dart';
 import '../widgets/ed_input_text.dart';
+import '../widgets/ed_language_dropdown.dart';
 import 'login_controller.dart';
 
 class LoginScreen extends GetView<LoginController> with ValidationMixin {
@@ -33,22 +35,22 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        FormTitle(title: 'Login'),
+                        FormTitle(title: UiStrings.login),
                         const SizedBox(height: 10.0),
                         EdInputText(
-                          placeholder: "Email",
+                          placeholder: UiStrings.login,
                           validator: validateEmail,
                           onSaved: (value) => email = value ?? '',
                         ),
                         const SizedBox(height: 10.0),
                         EdInputText(
-                          placeholder: "Password",
+                          placeholder: UiStrings.password,
                           obscureText: true,
                           validator: validatePassword,
                           onSaved: (value) => password = value ?? '',
                         ),
                         const SizedBox(height: 20.0),
-                        const EdEndText(text: "Forgot your password?"),
+                        EdEndText(text: UiStrings.forgotYourPassword),
                         const SizedBox(height: 20.0),
 
                         // Display login error
@@ -65,45 +67,45 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                               ),
                             );
                           } else {
-                            return const SizedBox.shrink(); // Return an empty widget if there's no error
+                            return const SizedBox
+                                .shrink(); // Return an empty widget if there's no error
                           }
                         }),
 
                         TextButton(
-
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                formKey.currentState!.save();
-                                print("Email: $email, Password: $password");
-                                var successfulAdminLogin =
-                                await controller.logAdmin(email, password);
-                                if (successfulAdminLogin) {
-                                  await controller.login(email, password);
-                                  Get.toNamed(AppRoutes.home);
-                                } else {
-                                  var successfulLogin =
-                                  await controller.login(email, password);
-                                  if (successfulLogin) {
-                                    if ((controller.currentEvaluatorFirstLogin
-                                        .value == false)) {
-                                      print(controller
-                                          .currentEvaluatorFirstLogin.value);
-                                      Get.toNamed(AppRoutes.home);
-                                    } else {
-                                      Get.toNamed(
-                                        AppRoutes.newPassword,
-                                        arguments: {
-                                          'firstLogin': controller
-                                              .currentEvaluatorFirstLogin.value,
-                                          'avaliadorID': controller
-                                              .currentEvaluatorId.value,
-                                        },
-                                      );
-                                    }
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
+                              print("Email: $email, Password: $password");
+                              var successfulAdminLogin =
+                                  await controller.logAdmin(email, password);
+                              if (successfulAdminLogin) {
+                                await controller.login(email, password);
+                                Get.toNamed(AppRoutes.home);
+                              } else {
+                                var successfulLogin =
+                                    await controller.login(email, password);
+                                if (successfulLogin) {
+                                  if ((controller
+                                          .currentEvaluatorFirstLogin.value ==
+                                      false)) {
+                                    print(controller
+                                        .currentEvaluatorFirstLogin.value);
+                                    Get.toNamed(AppRoutes.home);
+                                  } else {
+                                    Get.toNamed(
+                                      AppRoutes.newPassword,
+                                      arguments: {
+                                        'firstLogin': controller
+                                            .currentEvaluatorFirstLogin.value,
+                                        'avaliadorID':
+                                            controller.currentEvaluatorId.value,
+                                      },
+                                    );
                                   }
                                 }
                               }
-
+                            }
                           },
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
@@ -114,11 +116,12 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text("Login"),
+                          child: Text(UiStrings.login),
                         ),
+
                       ],
-                    )
-                  ],
+                    ),
+                    EdLanguageDropdown(),    ],
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/language_enums.dart';
 import '../../../constants/enums/person_enums.dart';
 import '../../home/home_controller.dart';
@@ -28,7 +29,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Identification Data',
+              UiStrings.identificationData,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -50,7 +51,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                               filled: true,
                               fillColor: Color(0xffededed),
                               border: InputBorder.none,
-                              labelText: 'Full Name',
+                              labelText: UiStrings.fullName,
                             ),
                           ),
                         ),
@@ -62,7 +63,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
-                              labelText: 'Date of Birth',
+                              labelText: UiStrings.dateOfBirth,
                             ),
                             readOnly: true,
                             onTap: () async {
@@ -94,7 +95,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
-                              labelText: 'Sex',
+                              labelText: UiStrings.sex,
                             ),
                             items: Sex.values.map((sex) {
                               return DropdownMenuItem<Sex>(
@@ -116,7 +117,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
-                              labelText: 'Education Level',
+                              labelText: UiStrings.educationLevel,
                             ),
                             items: EducationLevel.values.map((educationLevel) {
                               return DropdownMenuItem<EducationLevel>(
@@ -137,7 +138,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
-                              labelText: 'Laterality',
+                              labelText: UiStrings.laterality,
                             ),
                             items: Handedness.values.map((laterality) {
                               return DropdownMenuItem<Handedness>(
@@ -158,7 +159,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
               ),
             ),
             Text(
-              'Modules',
+              UiStrings.modules,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -178,7 +179,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
-                              labelText: 'Language',
+                              labelText: UiStrings.language,
                             ),
                             items: Language.values.map((language) {
                               return DropdownMenuItem<Language>(
@@ -208,7 +209,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                "Select modules",
+                                UiStrings.selectedModules,
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
@@ -248,7 +249,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text("Cancel",
+                    child: Text(UiStrings.cancel,
                         style: TextStyle(color: Color(0xff000000))),
                   ),
                   SizedBox(width: 20),
@@ -291,7 +292,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text("Register"),
+                    child: Text(UiStrings.register),
                   ),
                 ],
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/evaluators/widgets/ed_lista_avaliadores.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
+import 'package:novo_cogni/modules/evaluators/widgets/ed_evaluators_list.dart';
 
 import 'evaluators_controller.dart';
 class EvaluatorsScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class EvaluatorsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Evaluators"),
+        title: Text(UiStrings.evaluators),
         centerTitle: false,
         elevation: 0,
         backgroundColor: Colors.black,
