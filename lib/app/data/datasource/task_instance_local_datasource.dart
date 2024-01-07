@@ -69,10 +69,16 @@ class TaskInstanceLocalDataSource {
   Future<int> updateTaskInstance(TaskInstanceEntity taskInstance) async {
     try {
       final Database? database = await db;
+      final updatedMap = taskInstance.toMap();
+
+      // Include the completingTime in the update if it's not null
+      if (taskInstance.completingTime != null) {
+        updatedMap[TASK_COMPLETING_TIME] = taskInstance.completingTime;
+      }
 
       return await database!.update(
         TABLE_TASK_INSTANCES,
-        taskInstance.toMap(),
+        updatedMap,
         where: "$ID_TASK_INSTANCE = ?",
         whereArgs: [taskInstance.taskInstanceID],
       );

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../../../constants/enums/evaluation_enums.dart';
 import '../../../constants/enums/module_enums.dart';
 import '../../data/data_constants/evaluation_constants.dart';
 
@@ -6,13 +7,13 @@ class EvaluationEntity {
   final int? evaluationID;
   final int evaluatorID;
   final int participantID;
-  Status status;
+  EvaluationStatus status;
   DateTime evaluationDate;
 
   EvaluationEntity({
     this.evaluationID,
     DateTime? evaluationDate,
-    this.status = Status.to_start,
+    this.status = EvaluationStatus.pending,
     required this.evaluatorID,
     required this.participantID,
   }) : evaluationDate = evaluationDate ?? DateTime.now();
@@ -31,7 +32,7 @@ class EvaluationEntity {
     return EvaluationEntity(
       evaluationID: map[ID_EVALUATION] as int?,
       evaluatorID: map[ID_EVALUATOR_FK] as int,
-      status: Status.values.firstWhere((e) => e.description == map[EVALUATION_STATUS], orElse: () => Status.to_start),
+      status: EvaluationStatus.values.firstWhere((e) => e.description == map[EVALUATION_STATUS], orElse: () => EvaluationStatus.pending),
       evaluationDate: map[EVALUATION_DATE] != null ? DateTime.parse(map[EVALUATION_DATE] as String) : null,
       participantID: map[ID_PARTICIPANT_FK] as int,
     );

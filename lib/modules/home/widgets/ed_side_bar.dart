@@ -53,12 +53,12 @@ class EdSidebar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              EdSquareButton(
-                icon: Icons.settings_rounded,
-                backgroundColor: Colors.black,
-                iconColor: Colors.white,
-                onTap: () {},
-              ),
+              // EdSquareButton(
+              //   icon: Icons.settings_rounded,
+              //   backgroundColor: Colors.black,
+              //   iconColor: Colors.white,
+              //   onTap: () {},
+              // ),
               SizedBox(width: 8.0),
               EdSquareButton(
                 icon: Icons.logout_rounded,

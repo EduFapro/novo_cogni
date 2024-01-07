@@ -46,7 +46,7 @@ class EvaluationController extends GetxController {
           evaluation.value!.evaluationID!);
       if (modules != null && modules.isNotEmpty) {
         modulesInstanceList.value = modules;
-        await fetchTasksForModules(modules);
+        await fetchTaskInstancesForModuleInstances(modules);
       }
     }
     isLoading.value = false;
@@ -63,23 +63,18 @@ class EvaluationController extends GetxController {
     }
   }
 
-  Future<void> fetchTasksForModules(List<ModuleInstanceEntity> moduleInstances) async {
-    for (var module in moduleInstances) {
-      var tasks = await getTasksByModuleId(module.moduleID!);
+  Future<void> fetchTaskInstancesForModuleInstances(List<ModuleInstanceEntity> moduleInstances) async {
+    for (var moduleInstances in moduleInstances) {
+      var tasks = await await evaluationService.getTasksByModuleId(moduleInstances.moduleInstanceID!);
       if (tasks != null && tasks.isNotEmpty) {
-        tasksListDetails.value.add({module.moduleID!: tasks});
+        print("Tasks for module ${moduleInstances.moduleID}: $tasks");
+        tasksListDetails.value.add({moduleInstances.moduleID!: tasks});
+      } else {
+        print("No tasks found for module ${moduleInstances.moduleInstanceID}");
       }
     }
   }
 
-  Future<List<TaskInstanceEntity>?> getTasksByModuleId(int moduleId) async {
-    try {
-      return await evaluationService.getTasksByModuleId(moduleId);
-    } catch (e) {
-      print('Error fetching tasks for moduleId $moduleId: $e');
-      return [];
-    }
-  }
 
   Future<List<ModuleInstanceEntity>?> getModuleInstancesByEvaluationId(int evaluationId) async {
     try {
@@ -93,8 +88,7 @@ class EvaluationController extends GetxController {
   }
 
   Future<List<TaskInstanceEntity>> getTasks(int moduleId) async {
-    // This method should return a Future that completes with a list of task instances.
-    // It should wait for the task entities to be fetched asynchronously.
+
     var taskInstances = await Get.find<TaskInstanceRepository>().getTaskInstancesForModuleInstance(moduleId);
 
     return taskInstances;

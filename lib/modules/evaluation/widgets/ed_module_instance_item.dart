@@ -43,7 +43,9 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
                   color: Colors.white70,
                 ),
               ),
-              ModuleButton(onPressed: () {  },)
+              ModuleButton(
+                onPressed: () {},
+              )
             ],
           ),
         ),
@@ -52,6 +54,8 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
             return FutureBuilder<TaskEntity?>(
               future: taskInstance.task,
               builder: (context, snapshot) {
+                print(
+                    "TaskEntity for TaskInstance ${taskInstance.taskInstanceID}: ${snapshot.data}");
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
                 } else if (snapshot.hasError) {
@@ -59,7 +63,9 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
                 } else if (!snapshot.hasData) {
                   return Text('Task not found');
                 } else {
-                  return EdTaskItem(taskName: snapshot.data!.title);
+                  return EdTaskItem(
+                      taskId: taskInstance.taskID!,
+                      taskName: snapshot.data!.title);
                 }
               },
             );
@@ -72,10 +78,12 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
 
 class EdTaskItem extends StatelessWidget {
   final String taskName;
+  final int taskId;
 
   const EdTaskItem({
     Key? key,
     required this.taskName,
+    required this.taskId,
   }) : super(key: key);
 
   @override
@@ -112,11 +120,10 @@ class EdTaskItem extends StatelessWidget {
               flex: 2,
               child: TasksButton(
                 onPressed: () {
+                  print(taskId);
                   Get.toNamed(
                     AppRoutes.task,
-                    arguments: {
-                      'taskName': taskName,
-                    },
+                    arguments: {'taskName': taskName, 'taskId': taskId},
                   );
                 },
               ),

@@ -1,13 +1,13 @@
-enum Status { to_start, in_progress, completed }
+enum ModuleStatus { pending, in_progress, completed }
 
-extension StatusDescription on Status {
+extension ModuleStatusDescription on ModuleStatus {
   String get description {
     switch (this) {
-      case Status.to_start:
-        return "To Start";
-      case Status.in_progress:
+      case ModuleStatus.pending:
+        return "Pending";
+      case ModuleStatus.in_progress:
         return "In Progress";
-      case Status.completed:
+      case ModuleStatus.completed:
         return "Completed";
       default:
         return "Unknown";

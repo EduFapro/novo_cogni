@@ -74,12 +74,13 @@ class EvaluationScreen extends GetView<EvaluationController> {
                     } else {
                       var futureModules = controller.modulesInstanceList.value?.map((moduleInstance) async {
                         var module = await moduleInstance?.module;
-                        var tasks = await controller.getTasks(moduleInstance!.moduleID);
+                        var tasks = await controller.getTasks(moduleInstance!.moduleInstanceID!);
                         return EdModuleInstanceItem(
                           moduleName: module!.title!,
                           moduleId: moduleInstance.moduleID,
                           taskInstances: tasks,
                         );
+
                       }).toList() ?? [];
 
                       return FutureBuilder<List<EdModuleInstanceItem>>(

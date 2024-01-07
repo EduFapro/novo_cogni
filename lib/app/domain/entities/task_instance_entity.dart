@@ -1,37 +1,42 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/task_entity.dart';
-
+import '../../../constants/enums/task_enums.dart';
+import '../../data/data_constants/task_instance_constants.dart';
 import '../repositories/task_repository.dart';
 
 class TaskInstanceEntity {
   int? taskInstanceID;
   int taskID;
   int moduleInstanceID;
-  String status;
+  TaskStatus status;
   TaskEntity? _task;
+  int? completingTime; // Duration in seconds
 
   TaskInstanceEntity({
     this.taskInstanceID,
     required this.taskID,
     required this.moduleInstanceID,
-    this.status = 'pending',
+    this.status = TaskStatus.pending,
+    this.completingTime,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'task_inst_id': taskInstanceID,
-      'task_id': taskID,
-      'module_inst_id': moduleInstanceID,
-      'status': status,
+      ID_TASK_INSTANCE: taskInstanceID,
+      ID_TASK_FK: taskID,
+      ID_MODULE_INSTANCE_FK: moduleInstanceID,
+      TASK_INSTANCE_STATUS: status.description,
+      TASK_COMPLETING_TIME: completingTime, // Add duration to map
     };
   }
 
   static TaskInstanceEntity fromMap(Map<String, dynamic> map) {
     return TaskInstanceEntity(
-      taskInstanceID: map['task_inst_id'] as int?,
-      taskID: map['task_id'] as int,
-      moduleInstanceID: map['module_inst_id'] as int,
-      status: map['status'] as String,
+      taskInstanceID: map[ID_TASK_INSTANCE] as int?,
+      taskID: map[ID_TASK_FK] as int,
+      moduleInstanceID: map[ID_MODULE_INSTANCE_FK] as int,
+      status: TaskStatus.values.firstWhere((e) => e.description == map[TASK_INSTANCE_STATUS], orElse: () => TaskStatus.pending),
+      completingTime: map[TASK_COMPLETING_TIME] as int?,
     );
   }
 
@@ -42,8 +47,15 @@ class TaskInstanceEntity {
     return _task;
   }
 
+  void updateDuration(Duration duration) {
+    completingTime = duration.inSeconds;
+  }
+  void completeTask(Duration duration) {
+    status = TaskStatus.done;
+    completingTime = duration.inSeconds;
+  }
   @override
   String toString() {
-    return 'TaskInstanceEntity(taskInstanceID: $taskInstanceID, taskID: $taskID, moduleInstanceID: $moduleInstanceID, status: $status)';
+    return 'TaskInstanceEntity(taskInstanceID: $taskInstanceID, taskID: $taskID, moduleInstanceID: $moduleInstanceID, status: $status, duration: $completingTime seconds)';
   }
 }

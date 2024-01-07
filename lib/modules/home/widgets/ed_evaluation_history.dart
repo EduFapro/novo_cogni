@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/module_enums.dart';
 import '../../../routes.dart';

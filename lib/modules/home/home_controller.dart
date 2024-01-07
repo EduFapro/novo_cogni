@@ -54,9 +54,9 @@ class HomeController extends GetxController {
 
       // Update counters based on the status of each evaluation
       for (var evaluation in newEvaluations) {
-        if (evaluation.status == Status.in_progress) {
+        if (evaluation.status == ModuleStatus.in_progress) {
           numEvaluationsInProgress.value++;
-        } else if (evaluation.status == Status.completed) {
+        } else if (evaluation.status == ModuleStatus.completed) {
           numEvaluationsFinished.value++;
         }
       }

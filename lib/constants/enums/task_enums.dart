@@ -1,14 +1,12 @@
-enum TaskStatus { toBegin, done }
-enum TaskMode {
-  play,
-  record,
-}
+enum TaskStatus { pending, done }
+
+enum TaskMode { play, record }
 
 extension StatusDescription on TaskStatus {
   String get description {
     switch (this) {
-      case TaskStatus.toBegin:
-        return "Begin";
+      case TaskStatus.pending:
+        return "Pending";
       case TaskStatus.done:
         return "Done";
       default:

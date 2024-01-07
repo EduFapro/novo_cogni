@@ -9,14 +9,14 @@ class ModuleInstanceEntity {
   int? moduleInstanceID;
   int moduleID;
   int evaluationID;
-  Status status;
+  ModuleStatus status;
   ModuleEntity? _module;
 
   ModuleInstanceEntity({
     this.moduleInstanceID,
     required this.moduleID,
     required this.evaluationID,
-    this.status = Status.to_start,
+    this.status = ModuleStatus.pending,
   });
 
   Map<String, dynamic> toMap() {

@@ -33,7 +33,7 @@ class TaskScreen extends GetView<TaskController> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 IconButton(
-                  iconSize: 48, // Larger icon size
+                  iconSize: 48,
                   icon: Icon(controller.isPlaying.value ? Icons.stop : Icons.play_arrow),
                   onPressed: () => controller.togglePlay(controller.audioPath.value),
                 ),
@@ -120,21 +120,24 @@ class EdCheckIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final controller = Get.find<TaskController>();
+
+    return Obx(() => Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.black, // Color for the border
-          width: 2.0, // Border width
+          color: controller.audioPlayed.value ? Colors.black : Colors.grey,
+          width: 2.0,
         ),
       ),
       child: IconButton(
         icon: Icon(Icons.check),
-        onPressed: onPressed,
+        onPressed: controller.audioPlayed.value ? onPressed : null, // Enable button based on audioPlayed
       ),
-    );
+    ));
   }
 }
+
 
 class EdSkipButton extends StatelessWidget {
   final String text;
@@ -144,19 +147,22 @@ class EdSkipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
+    final controller = Get.find<TaskController>(); // Ensure the controller is accessible
+
+    return Obx(() => ElevatedButton(
+      onPressed: controller.isPlaying.value ? null : onPressed,
       child: Text(text),
       style: ElevatedButton.styleFrom(
-        primary: Colors.white, // Background color
-        onPrimary: Colors.black, // Text color
-        elevation: 2, // Elevation
+        primary: controller.isPlaying.value ? Colors.grey : Colors.white,
+        onPrimary: Colors.black,
+        elevation: 2,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.0), // Rounded corners
-          side: BorderSide(color: Colors.black), // Border color and width
+          borderRadius: BorderRadius.circular(4.0),
+          side: BorderSide(color: controller.isPlaying.value ? Colors.grey : Colors.black),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Padding
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       ),
-    );
+    ));
   }
 }
+

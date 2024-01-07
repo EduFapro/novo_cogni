@@ -31,7 +31,7 @@ class TaskPromptRepository {
     return localDataSource.getAllTaskPrompts();
   }
 
-  Future<TaskPromptEntity?> getTaskPromptByTaskID(int taskID) async {
+  Future<TaskPromptEntity?> getTaskPromptByTaskInstanceID(int taskID) async {
     return localDataSource.getTaskPromptByTaskID(taskID);
   }
 

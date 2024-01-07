@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
 
+import '../../app/domain/entities/task_instance_entity.dart';
 import '../../file_management/audio_management.dart';
 
 class TaskController extends GetxController {
@@ -18,18 +19,40 @@ class TaskController extends GetxController {
   var audioPath = ''.obs;
   var isPlaying = false.obs;
   var isRecording = false.obs;
+  var audioPlayed = false.obs;
+
+  DateTime? _audioStopTime;
+  DateTime? _buttonClickTime;
 
   TaskController({required this.taskService});
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    final args = Get.arguments as Map<String, dynamic>;
+    final taskid = args['taskId'];
+    final taskName = args['taskName'];
+    print("taskId $taskid");
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
 
     // Set a default path for audio
-    audioPath.value = 'assets/audio/audio_placeholder.mp3';
+
+    try {
+      audioPath.value = await getPromptAudioFilePath(taskid);
+    } catch (e) {
+      print("Error fetching audio file: $e");
+      audioPath.value = 'assets/audio/audio_placeholder.mp3';
+    }
+
+    // Listen for audio player events
+    _audioPlayer.onPlayerComplete.listen((event) {
+      isPlaying.value = false; // Set isPlaying to false when playback completes
+      audioPlayed.value = true; // Set audioPlayed to true when playback completes
+      _audioStopTime = DateTime.now(); // Save the stop time
+    });
   }
+
 
   // Player functions
   Future<void> togglePlay(String path) async {
@@ -47,9 +70,12 @@ class TaskController extends GetxController {
     isPlaying.value = true;
   }
 
+
   Future<void> stop() async {
     await _audioPlayer.stop();
     isPlaying.value = false;
+    audioPlayed.value = true;
+    _audioStopTime = DateTime.now();
   }
 
 
@@ -88,10 +114,45 @@ class TaskController extends GetxController {
     final String filePath = path.join(directory.path, 'recording_$timestamp.aac');
     return filePath;
   }
+
+
+  Future<void> onCheckButtonPressed(int taskInstanceId) async {
+    _buttonClickTime = DateTime.now();
+
+    if (_audioStopTime != null) {
+      final duration = _buttonClickTime!.difference(_audioStopTime!);
+
+      // Fetch the task instance
+      TaskInstanceEntity? taskInstance = await taskService.getTaskInstance(taskInstanceId);
+      if (taskInstance != null) {
+        // Update the task instance
+        taskInstance.completeTask(duration);
+
+        // Update the task instance in the database
+        bool updated = await taskService.updateTaskInstance(taskInstance);
+        if (updated) {
+          // Handle successful update
+        } else {
+          // Handle update failure
+        }
+      }
+    }
+  }
+
   @override
   void onClose() {
     _audioPlayer.dispose();
     _recorder.dispose();
     super.onClose();
+  }
+
+  Future<String> getPromptAudioFilePath(int taskId) async {
+    print("taskInstanceId $taskId");
+    final taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskId);
+    if (taskPrompt != null) {
+      return taskPrompt.filePath;
+    } else {
+      throw Exception("Task prompt not found for task instance ID: $taskId");
+    }
   }
 }

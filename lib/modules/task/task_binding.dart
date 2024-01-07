@@ -10,8 +10,8 @@ import '../../app/domain/repositories/task_prompt_repository.dart';
 class TaskBinding extends Bindings {
   @override
   void dependencies() {
-
-    Get.lazyPut<TaskService>(() => TaskService(taskPromptRepository: Get.find()));
+    Get.lazyPut<TaskService>(() => TaskService(
+        taskPromptRepository: Get.find(), taskInstanceRepository: Get.find()));
     Get.lazyPut<TaskController>(() => TaskController(taskService: Get.find()));
   }
 }
