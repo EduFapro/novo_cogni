@@ -6,6 +6,7 @@ import 'package:novo_cogni/modules/evaluation/widgets/ed_task_button.dart';
 import 'package:novo_cogni/routes.dart';
 
 import '../../../app/domain/entities/task_entity.dart';
+import '../../../constants/route_arguments.dart';
 import 'ed_module_button.dart';
 
 class EdModuleInstanceItem extends GetView<EvaluationController> {
@@ -44,7 +45,9 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
                 ),
               ),
               ModuleButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.launchNextTask();
+                },
               )
             ],
           ),
@@ -65,6 +68,7 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
                 } else {
                   return EdTaskItem(
                       taskId: taskInstance.taskID!,
+                      taskInstanceId: taskInstance.taskInstanceID,
                       taskName: snapshot.data!.title);
                 }
               },
@@ -79,12 +83,14 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
 class EdTaskItem extends StatelessWidget {
   final String taskName;
   final int taskId;
+  final taskInstanceId;
 
-  const EdTaskItem({
-    Key? key,
-    required this.taskName,
-    required this.taskId,
-  }) : super(key: key);
+  const EdTaskItem(
+      {Key? key,
+      required this.taskName,
+      required this.taskId,
+      required this.taskInstanceId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +129,11 @@ class EdTaskItem extends StatelessWidget {
                   print(taskId);
                   Get.toNamed(
                     AppRoutes.task,
-                    arguments: {'taskName': taskName, 'taskId': taskId},
+                    arguments: {
+                      RouteArguments.TASK_NAME: taskName,
+                      RouteArguments.TASK_ID: taskId,
+                      RouteArguments.TASK_INSTANCE_ID: taskInstanceId
+                    },
                   );
                 },
               ),

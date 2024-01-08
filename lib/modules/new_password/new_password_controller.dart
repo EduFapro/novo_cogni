@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/route_arguments.dart';
 
 import '../../app/domain/repositories/evaluator_repository.dart';
 
@@ -14,8 +15,8 @@ class NewPasswordController extends GetxController {
   void onInit() {
     super.onInit();
     var arguments = Get.arguments;
-    isFirstLogin = arguments['firstLogin'];
-    evaluatorId = arguments['evaluatorId'];
+    isFirstLogin = arguments[RouteArguments.FIRST_LOGIN];
+    evaluatorId = arguments[RouteArguments.EVALUATOR_ID];
   }
 
   Future<void> changePassword(String newPassword) async {

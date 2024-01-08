@@ -36,6 +36,16 @@ class TaskInstanceRepository {
     return await localDataSource.getTaskInstancesForModuleInstance(moduleInstanceId);
   }
 
+  Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
+    try {
+    return await localDataSource.getFirstPendingTaskInstance();
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
+  }
+
+
   // Close the database
   Future<void> closeDatabase() async {
     await localDataSource.closeDatabase();

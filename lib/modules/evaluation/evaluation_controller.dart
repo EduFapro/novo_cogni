@@ -2,10 +2,12 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/evaluation_entity.dart';
 import 'package:novo_cogni/app/domain/entities/module_entity.dart';
 import 'package:novo_cogni/app/domain/entities/participant_entity.dart';
+import 'package:novo_cogni/constants/route_arguments.dart';
 
 import '../../app/domain/entities/module_instance_entity.dart';
 import '../../app/domain/entities/task_instance_entity.dart';
 import '../../app/domain/repositories/task_instance_repository.dart';
+import '../../routes.dart';
 import 'evaluation_service.dart';
 
 class EvaluationController extends GetxController {
@@ -34,16 +36,17 @@ class EvaluationController extends GetxController {
     // Retrieve and set the arguments
     final arguments = Get.arguments as Map<String, dynamic>;
 
-    if (arguments.containsKey('participant')) {
-      participant.value = arguments['participant'];
+    if (arguments.containsKey(RouteArguments.PARTICIPANT)) {
+      participant.value = arguments[RouteArguments.PARTICIPANT];
     }
-    if (arguments.containsKey('evaluation')) {
-      evaluation.value = arguments['evaluation'];
+    if (arguments.containsKey(RouteArguments.EVALUATION)) {
+      evaluation.value = arguments[RouteArguments.EVALUATION];
     }
 
     if (evaluation.value != null) {
-      List<ModuleInstanceEntity>? modules = await getModuleInstancesByEvaluationId(
-          evaluation.value!.evaluationID!);
+      List<ModuleInstanceEntity>? modules =
+          await getModuleInstancesByEvaluationId(
+              evaluation.value!.evaluationID!);
       if (modules != null && modules.isNotEmpty) {
         modulesInstanceList.value = modules;
         await fetchTaskInstancesForModuleInstances(modules);
@@ -63,9 +66,11 @@ class EvaluationController extends GetxController {
     }
   }
 
-  Future<void> fetchTaskInstancesForModuleInstances(List<ModuleInstanceEntity> moduleInstances) async {
+  Future<void> fetchTaskInstancesForModuleInstances(
+      List<ModuleInstanceEntity> moduleInstances) async {
     for (var moduleInstances in moduleInstances) {
-      var tasks = await await evaluationService.getTasksByModuleId(moduleInstances.moduleInstanceID!);
+      var tasks = await await evaluationService
+          .getTasksByModuleId(moduleInstances.moduleInstanceID!);
       if (tasks != null && tasks.isNotEmpty) {
         print("Tasks for module ${moduleInstances.moduleID}: $tasks");
         tasksListDetails.value.add({moduleInstances.moduleID!: tasks});
@@ -75,11 +80,11 @@ class EvaluationController extends GetxController {
     }
   }
 
-
-  Future<List<ModuleInstanceEntity>?> getModuleInstancesByEvaluationId(int evaluationId) async {
+  Future<List<ModuleInstanceEntity>?> getModuleInstancesByEvaluationId(
+      int evaluationId) async {
     try {
-      List<ModuleInstanceEntity> modules =
-          await evaluationService.getModulesInstanceByEvaluationId(evaluationId);
+      List<ModuleInstanceEntity> modules = await evaluationService
+          .getModulesInstanceByEvaluationId(evaluationId);
       return modules;
     } catch (e) {
       print("Error fetching modules for evaluationId $evaluationId: $e");
@@ -88,9 +93,29 @@ class EvaluationController extends GetxController {
   }
 
   Future<List<TaskInstanceEntity>> getTasks(int moduleId) async {
-
-    var taskInstances = await Get.find<TaskInstanceRepository>().getTaskInstancesForModuleInstance(moduleId);
+    var taskInstances = await Get.find<TaskInstanceRepository>()
+        .getTaskInstancesForModuleInstance(moduleId);
 
     return taskInstances;
+  }
+
+  Future<void> launchNextTask() async {
+    final nextTaskInstance =
+        await evaluationService.getFirstPendingTaskInstance();
+    if (nextTaskInstance != null) {
+      final taskEntity = await nextTaskInstance.task;
+      if (taskEntity != null) {
+        final taskName = taskEntity.title;
+        final taskId = taskEntity.taskID;
+        Get.toNamed(
+          AppRoutes.task,
+          arguments: {
+            RouteArguments.TASK_NAME: taskName,
+            RouteArguments.TASK_ID: taskId,
+            RouteArguments.TASK_INSTANCE_ID: nextTaskInstance.taskInstanceID,
+          },
+        );
+      }
+    }
   }
 }

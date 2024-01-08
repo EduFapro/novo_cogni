@@ -74,8 +74,14 @@ class EvaluationService {
       return [];
     }
   }
+  Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
+    try {
+      return await taskInstanceRepository.getFirstPendingTaskInstance();
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
+  }
 
-// Future<int?> createModule(ModuleEntity module) async {
-//   return await moduleRepository.createModule(module);
-// }
+
 }

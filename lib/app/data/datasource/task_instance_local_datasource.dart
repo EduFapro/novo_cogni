@@ -1,6 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../../domain/entities/task_instance_entity.dart';
 import '../data_constants/database_constants.dart';
+import '../data_constants/task_constants.dart';
 import '../data_constants/task_instance_constants.dart';
 import 'database_helper.dart';
 
@@ -149,5 +150,31 @@ class TaskInstanceLocalDataSource {
       return [];
     }
   }
+  Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
+    try {
+      final Database? database = await db;
+
+      final List<Map<String, dynamic>> maps = await database!.rawQuery('''
+      SELECT ti.*
+      FROM $TABLE_TASK_INSTANCES ti
+      JOIN $TABLE_TASKS t ON ti.$ID_TASK_FK = t.$ID_TASK
+      WHERE ti.$TASK_INSTANCE_STATUS = 'Pending'
+      ORDER BY t.$POSITION ASC
+      LIMIT 1
+    ''');
+
+      if (maps.isNotEmpty) {
+        return TaskInstanceEntity.fromMap(maps.first);
+      } else {
+        print("Couldn't find task for getFirstPendingTaskInstance");
+      }
+
+      return null;
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
+  }
+
 
 }

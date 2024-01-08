@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
+import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/module_enums.dart';
 import '../../../routes.dart';
@@ -81,7 +82,7 @@ class EdEvaluationHistory extends StatelessWidget {
               itemBuilder: (context, index) {
                 final evaluation = homeController.evaluations[index];
                 final dateFormat = DateFormat.yMd();
-                final participante = homeController.participantDetails[evaluation.evaluationID];
+                final participant = homeController.participantDetails[evaluation.evaluationID];
 
                 return Card(
                   child: Padding(
@@ -90,7 +91,7 @@ class EdEvaluationHistory extends StatelessWidget {
                       children: [
                         Expanded(
                             flex: 2,
-                            child: Text(participante?.name ?? 'Unknown')
+                            child: Text(participant?.name ?? 'Unknown')
                         ),
                         Expanded(
                             flex: 2,
@@ -113,8 +114,8 @@ class EdEvaluationHistory extends StatelessWidget {
                             Get.toNamed(
                               AppRoutes.evaluation,
                               arguments: {
-                                'participant': participante,
-                                'evaluation': evaluation,
+                                RouteArguments.PARTICIPANT: participant,
+                                RouteArguments.EVALUATION: evaluation,
                               },
                             );
                           },

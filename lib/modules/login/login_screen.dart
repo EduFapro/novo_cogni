@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/widgets/ed_form_title.dart';
+import '../../constants/route_arguments.dart';
 import '../../mixins/ValidationMixin.dart';
 import '../../routes.dart';
 import '../widgets/ed_input_text.dart';
@@ -96,9 +97,9 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                                     Get.toNamed(
                                       AppRoutes.newPassword,
                                       arguments: {
-                                        'firstLogin': controller
+                                        RouteArguments.FIRST_LOGIN: controller
                                             .currentEvaluatorFirstLogin.value,
-                                        'avaliadorID':
+                                        RouteArguments.EVALUATOR_ID:
                                             controller.currentEvaluatorId.value,
                                       },
                                     );
@@ -118,10 +119,10 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                           ),
                           child: Text(UiStrings.login),
                         ),
-
                       ],
                     ),
-                    EdLanguageDropdown(),    ],
+                    EdLanguageDropdown(),
+                  ],
                 ),
               ),
             ),

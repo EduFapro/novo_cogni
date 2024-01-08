@@ -10,7 +10,7 @@ class TaskInstanceEntity {
   int moduleInstanceID;
   TaskStatus status;
   TaskEntity? _task;
-  int? completingTime; // Duration in seconds
+  int? completingTime;
 
   TaskInstanceEntity({
     this.taskInstanceID,
