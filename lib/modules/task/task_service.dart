@@ -3,6 +3,7 @@ import 'package:novo_cogni/app/domain/repositories/task_prompt_repository.dart';
 import '../../app/domain/entities/task_instance_entity.dart';
 import '../../app/domain/entities/task_prompt_entity.dart';
 import '../../app/domain/repositories/task_instance_repository.dart';
+import '../../constants/enums/task_enums.dart';
 
 class TaskService {
   final TaskPromptRepository taskPromptRepository;
@@ -47,5 +48,25 @@ class TaskService {
   Future<bool> updateTaskInstance(TaskInstanceEntity taskInstance) async {
     int result = await taskInstanceRepository.updateTaskInstance(taskInstance);
     return result > 0; // Return true if update was successful
+  }
+
+  Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
+    try {
+      // Assuming 'getAllTaskInstances' returns all task instances
+      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository.getAllTaskInstances();
+
+      // Find the first task instance with a 'pending' status
+      for (var taskInstance in taskInstances) {
+        if (taskInstance.status == TaskStatus.pending) {
+          return taskInstance;
+        }
+      }
+
+      // Return null if no pending task instances are found
+      return null;
+    } catch (e) {
+      print("Error in getFirstPendingTaskInstance: $e");
+      return null;
+    }
   }
 }

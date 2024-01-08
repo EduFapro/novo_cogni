@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/evaluation_entity.dart';
 import 'package:novo_cogni/app/domain/entities/module_entity.dart';
@@ -100,19 +101,24 @@ class EvaluationController extends GetxController {
   }
 
   Future<void> launchNextTask() async {
-    final nextTaskInstance =
-        await evaluationService.getFirstPendingTaskInstance();
+    print("launch nekisti task");
+    final nextTaskInstance = await evaluationService.getFirstPendingTaskInstance();
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
       if (taskEntity != null) {
         final taskName = taskEntity.title;
         final taskId = taskEntity.taskID;
+        final taskInstanceId = nextTaskInstance.taskInstanceID;
+
+        print("Just Before GetToNamed $taskName, $taskId, $taskInstanceId");
+
+        // Use Get.toNamed to navigate to the task without removing the evaluation screen from the stack
         Get.toNamed(
           AppRoutes.task,
           arguments: {
             RouteArguments.TASK_NAME: taskName,
             RouteArguments.TASK_ID: taskId,
-            RouteArguments.TASK_INSTANCE_ID: nextTaskInstance.taskInstanceID,
+            RouteArguments.TASK_INSTANCE_ID: taskInstanceId,
           },
         );
       }

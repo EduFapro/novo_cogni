@@ -12,23 +12,25 @@ class TaskScreen extends GetView<TaskController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          Text(controller.taskName),
-          Center(
-            child: mode == TaskMode.play
-                ? buildAudioPlayerInterface(context)
-                : buildAudioRecorderInterface(),
-          ),
-        ],
-      ),
+      body: Obx(() {
+        return controller.currentTask.value != null
+            ? Column(
+                children: [
+                  Text("Lol"),
+                  Center(
+                    child: mode == TaskMode.play
+                        ? buildAudioPlayerInterface(context)
+                        : buildAudioRecorderInterface(),
+                  ),
+                ],
+              )
+            : Center(child: CircularProgressIndicator());
+      }),
     );
   }
 
   Widget buildAudioPlayerInterface(BuildContext context) {
-    final Size windowSize = MediaQuery
-        .of(context)
-        .size;
+    final Size windowSize = MediaQuery.of(context).size;
     return Card(
       elevation: 4.0,
       shape: RoundedRectangleBorder(
@@ -36,18 +38,17 @@ class TaskScreen extends GetView<TaskController> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Obx(() =>
-            Column(
+        child: Obx(() => Column(
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     IconButton(
                       iconSize: 48,
-                      icon: Icon(controller.isPlaying.value ? Icons.stop : Icons
-                          .play_arrow),
-                      onPressed: () =>
-                          controller.togglePlay(controller.audioPath.value),
+                      icon: Icon(controller.isPlaying.value
+                          ? Icons.stop
+                          : Icons.play_arrow),
+                      onPressed: () => controller.togglePlay(),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -135,8 +136,7 @@ class EdCheckIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<TaskController>();
 
-    return Obx(() =>
-        Container(
+    return Obx(() => Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
@@ -152,7 +152,6 @@ class EdCheckIconButton extends StatelessWidget {
   }
 }
 
-
 class EdSkipButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -162,27 +161,25 @@ class EdSkipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<
-        TaskController>(); // Ensure the controller is accessible
+    final controller =
+        Get.find<TaskController>(); // Ensure the controller is accessible
 
-    return Obx(() =>
-        ElevatedButton(
+    return Obx(() => ElevatedButton(
           onPressed: controller.isPlaying.value ? null : onPressed,
           child: Text(text),
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.black,
-            backgroundColor: controller.isPlaying.value ? Colors.grey : Colors
-                .white,
+            backgroundColor:
+                controller.isPlaying.value ? Colors.grey : Colors.white,
             elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
               side: BorderSide(
-                  color: controller.isPlaying.value ? Colors.grey : Colors
-                      .black),
+                  color:
+                      controller.isPlaying.value ? Colors.grey : Colors.black),
             ),
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           ),
         ));
   }
 }
-

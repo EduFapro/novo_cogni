@@ -1,81 +1,72 @@
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:novo_cogni/constants/route_arguments.dart';
-import 'package:novo_cogni/modules/task/task_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
-
 import '../../app/domain/entities/task_instance_entity.dart';
+import '../../app/domain/entities/task_entity.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
 import '../evaluation/evaluation_controller.dart';
+import 'task_service.dart';
 
 class TaskController extends GetxController {
   final TaskService taskService;
-
-  // Dependency controllers
   late final AudioPlayer _audioPlayer;
   late final AudioRecorder _recorder;
 
-  // Observable states
   var audioPath = ''.obs;
   var isPlaying = false.obs;
   var isRecording = false.obs;
   var audioPlayed = false.obs;
+  var currentTask = Rx<TaskInstanceEntity?>(null);
 
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
-
-  late final taskId;
-  late final taskInstanceId;
-  late final taskName;
 
   TaskController({required this.taskService});
 
   @override
   Future<void> onInit() async {
     super.onInit();
-
-    final args = Get.arguments as Map<String, dynamic>;
-    
-    taskId = args[RouteArguments.TASK_ID];
-    taskName = args[RouteArguments.TASK_NAME];
-    taskInstanceId = args[RouteArguments.TASK_INSTANCE_ID];
-
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
 
-    // Set a default path for audio
+    final args = Get.arguments as Map<String, dynamic>;
+    await updateCurrentTask(args['taskInstanceId']);
 
-    try {
-      audioPath.value = await getPromptAudioFilePath();
-    } catch (e) {
-      print("Error fetching audio file: $e");
-      audioPath.value = 'assets/audio/audio_placeholder.mp3';
-    }
-
-    // Listen for audio player events
     _audioPlayer.onPlayerComplete.listen((event) {
-      isPlaying.value = false; // Set isPlaying to false when playback completes
-      audioPlayed.value =
-          true; // Set audioPlayed to true when playback completes
-      _audioStopTime = DateTime.now(); // Save the stop time
+      isPlaying.value = false;
+      audioPlayed.value = true;
+      _audioStopTime = DateTime.now();
     });
   }
 
-  // Player functions
-  Future<void> togglePlay(String path) async {
-    if (isPlaying.value) {
-      await stop();
-    } else {
-      await play(path);
+  Future<void> updateCurrentTask(int taskInstanceId) async {
+    try {
+      var taskInstance = await taskService.getTaskInstance(taskInstanceId);
+      if (taskInstance != null) {
+        currentTask.value = taskInstance;
+        var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskInstance.taskID);
+        audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+      }
+    } catch (e) {
+      print("Error updating current task: $e");
+      audioPath.value = 'assets/audio/audio_placeholder.mp3';
     }
   }
 
-  Future<void> play(String path) async {
-    Source source = DeviceFileSource(path);
+  Future<void> togglePlay() async {
+    if (!isPlaying.value) {
+      await play();
+    } else {
+      await stop();
+    }
+  }
+
+  Future<void> play() async {
+    Source source = DeviceFileSource(audioPath.value);
     await _audioPlayer.play(source);
     isPlaying.value = true;
   }
@@ -87,7 +78,6 @@ class TaskController extends GetxController {
     _audioStopTime = DateTime.now();
   }
 
-  // Recorder functions
   Future<void> startRecording() async {
     bool hasPermission = await _recorder.hasPermission();
     if (hasPermission) {
@@ -100,7 +90,7 @@ class TaskController extends GetxController {
       await _recorder.start(config, path: recordingPath);
       isRecording.value = true;
     } else {
-      // Handle the scenario when the permission is not granted.
+      // Handle permission not granted
     }
   }
 
@@ -119,71 +109,62 @@ class TaskController extends GetxController {
 
   Future<String> _getRecordingPath() async {
     final directory = await getApplicationDocumentsDirectory();
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final String filePath =
-        path.join(directory.path, 'recording_$timestamp.aac');
+    final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final filePath = path.join(directory.path, 'recording_$timestamp.aac');
     return filePath;
   }
 
   Future<void> onCheckButtonPressed() async {
-    await concludeTaskInstance(taskInstanceId);
-
-    // Fetch the task instance
-    TaskInstanceEntity? taskInstance = await taskService.getTaskInstance(taskInstanceId);
-    if (taskInstance != null && taskInstance.status == TaskStatus.done) {
-      // Find the EvaluationController and launch the next task
-      final evaluationController = Get.find<EvaluationController>();
-      await evaluationController.launchNextTask();
-    }
+    await concludeTaskInstance(currentTask.value?.taskInstanceID ?? 0);
+    final evaluationController = Get.find<EvaluationController>();
+    await launchNextTask();
   }
 
+  Future<void> concludeTaskInstance(int taskInstanceId) async {
+    try {
+      TaskInstanceEntity? taskInstance = await taskService.getTaskInstance(taskInstanceId);
+      if (taskInstance != null) {
+        taskInstance.status = TaskStatus.done;
+        if (_audioStopTime != null) {
+          final duration = DateTime.now().difference(_audioStopTime!);
+          taskInstance.completeTask(duration);
+        }
+        bool updated = await taskService.updateTaskInstance(taskInstance);
+        if (!updated) {
+          print('Error updating task instance');
+        }
+      } else {
+        print('Task instance not found');
+      }
+    } catch (e) {
+      print('Error in concludeTaskInstance: $e');
+    }
+  }
+  Future<void> launchNextTask() async {
+    print("launch nekisti task");
+    final nextTaskInstance = await taskService.getFirstPendingTaskInstance();
+    if (nextTaskInstance != null) {
+      final taskEntity = await nextTaskInstance.task;
+      if (taskEntity != null) {
+        // Update the current task without navigating to a new screen
+        currentTask.value = nextTaskInstance;
+        audioPath.value = (await taskService.getTaskPromptByTaskInstanceID(nextTaskInstance.taskID))?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+        audioPlayed.value = false;
+        isPlaying.value = false;
 
+        // Reset the audio player
+        var currentPosition = await _audioPlayer.getCurrentPosition();
+        if (currentPosition!.inMilliseconds > 0) {
+          await _audioPlayer.stop();
+        }
+
+      }
+    }
+  }
   @override
   void onClose() {
     _audioPlayer.dispose();
     _recorder.dispose();
     super.onClose();
   }
-
-  Future<String> getPromptAudioFilePath() async {
-    final taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskId);
-    if (taskPrompt != null) {
-      return taskPrompt.filePath;
-    } else {
-      throw Exception("Task prompt not found for task instance ID: $taskId");
-    }
-  }
-
-  Future<void> concludeTaskInstance(int taskInstanceId) async {
-    try {
-      // Fetch the task instance
-      TaskInstanceEntity? taskInstance = await taskService.getTaskInstance(taskInstanceId);
-
-      if (taskInstance != null) {
-        // Update status to reflect task completion
-        taskInstance.status = TaskStatus.done;
-
-        // If there is a stop time for the audio, calculate the duration
-        if (_audioStopTime != null) {
-          final duration = DateTime.now().difference(_audioStopTime!);
-          taskInstance.completeTask(duration);
-        }
-
-        // Update the task instance in the database
-        bool updated = await taskService.updateTaskInstance(taskInstance);
-        if (!updated) {
-          print('Error updating task instance');
-          // Handle update failure
-        }
-      } else {
-        print('Task instance not found');
-        // Handle the case when task instance is not found
-      }
-    } catch (e) {
-      print('Error in concludeTaskInstance: $e');
-      // Handle exceptions
-    }
-  }
-
-
 }
