@@ -43,17 +43,23 @@ TaskEntity countToTenTask = TaskEntity(
     taskMode: TaskMode.play,
     position: 1);
 
-
 int cincoPatinhos = 5;
 int umPassaroNaMao = 6;
 int nemTudoQueReluz = 7;
+int cincoPatinhosWithRecording = 8;
+int umPassaroNaMaoWithRecording = 9;
+int nemTudoQueReluzWithRecording = 10;
 
 List<String> testingOnlyAudioTasksTitles = [
   "Cinco Patinhos",
   "Um Pássaro na Mão",
   "Nem Tudo Que Reluz"
 ];
-
+List<String> testingAudioWithRecordingTasksTitles = [
+  "Cinco Patinhos With Recording",
+  "Um Pássaro na Mão With Recording",
+  "Nem Tudo Que Reluz With Recording"
+];
 TaskEntity cincoPatinhosTask = TaskEntity(
   taskID: cincoPatinhos,
   title: testingOnlyAudioTasksTitles[0],
@@ -76,6 +82,28 @@ TaskEntity nemTudoTask = TaskEntity(
   position: 2,
 );
 
+TaskEntity cincoPatinhosTaskWithRecording = TaskEntity(
+  taskID: cincoPatinhosWithRecording,
+  title: testingAudioWithRecordingTasksTitles[0],
+  moduleID: testingRecordingId,
+  taskMode: TaskMode.record,
+  position: 0,
+);
+TaskEntity umPassaroTaskWithRecording = TaskEntity(
+  taskID: umPassaroNaMaoWithRecording,
+  title: testingAudioWithRecordingTasksTitles[1],
+  moduleID: testingRecordingId,
+  taskMode: TaskMode.record,
+  position: 1,
+);
+TaskEntity nemTudoTaskWithRecording = TaskEntity(
+  taskID: nemTudoQueReluzWithRecording,
+  title: testingAudioWithRecordingTasksTitles[2],
+  moduleID: testingRecordingId,
+  taskMode: TaskMode.record,
+  position: 2,
+);
+
 List<TaskEntity> tasksList = [
   listenTask,
   introduceTask,
@@ -83,5 +111,8 @@ List<TaskEntity> tasksList = [
   countToTenTask,
   cincoPatinhosTask,
   umPassaroTask,
-  nemTudoTask
+  nemTudoTask,
+  cincoPatinhosTaskWithRecording,
+  umPassaroTaskWithRecording,
+  nemTudoTaskWithRecording,
 ];

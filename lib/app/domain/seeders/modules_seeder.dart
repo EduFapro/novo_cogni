@@ -4,8 +4,9 @@ import 'package:novo_cogni/app/domain/entities/module_entity.dart';
 int testModuleId = 1;
 int way2AgeModuleId = 2;
 int testingOnlyAudioId = 3;
+int testingRecordingId = 4;
 
-List<String> moduleTitles = ['Tests', 'Way2Age', "testingOnlyAudio"];
+List<String> moduleTitles = ['Tests', 'Way2Age', "testingOnlyAudio", 'testingRecording'];
 
 ModuleEntity testModule = ModuleEntity(
     moduleID: testModuleId,
@@ -19,9 +20,15 @@ ModuleEntity testingOnlyAudioModule = ModuleEntity(
     moduleID: testingOnlyAudioId,
     title: moduleTitles[2]);
 
+ModuleEntity testingRecordingModule = ModuleEntity(
+  moduleID: testingRecordingId,
+  title: moduleTitles[3]);
+
+
 List<ModuleEntity> modulesList = [
   testModule,
   way2AgeModule,
-  testingOnlyAudioModule
+  testingOnlyAudioModule,
+  testingRecordingModule
 ];
 

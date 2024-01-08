@@ -1,11 +1,12 @@
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
-import '../../app/domain/entities/task_instance_entity.dart';
 import '../../app/domain/entities/task_entity.dart';
+import '../../app/domain/entities/task_instance_entity.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
 import '../evaluation/evaluation_controller.dart';
@@ -21,6 +22,8 @@ class TaskController extends GetxController {
   var isRecording = false.obs;
   var audioPlayed = false.obs;
   var currentTask = Rx<TaskInstanceEntity?>(null);
+  var taskMode = Rx<TaskMode>(TaskMode.play);
+  var currentTaskEntity = Rx<TaskEntity?>(null);
 
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
@@ -34,12 +37,15 @@ class TaskController extends GetxController {
     _recorder = AudioRecorder();
 
     final args = Get.arguments as Map<String, dynamic>;
-    await updateCurrentTask(args['taskInstanceId']);
+    await updateCurrentTask(args[RouteArguments.TASK_INSTANCE_ID]);
 
     _audioPlayer.onPlayerComplete.listen((event) {
       isPlaying.value = false;
       audioPlayed.value = true;
       _audioStopTime = DateTime.now();
+    });
+    taskMode.listen((mode) {
+      print("Task mode changed to: $mode");
     });
   }
 
@@ -48,6 +54,16 @@ class TaskController extends GetxController {
       var taskInstance = await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
         currentTask.value = taskInstance;
+        var taskEntity = await taskService.getTask(taskInstance.taskID);
+        currentTaskEntity.value = taskEntity;
+
+        // Example condition to set taskMode
+        if (taskEntity != null && taskEntity.taskMode == TaskMode.record) {
+          taskMode.value = TaskMode.record;
+        } else {
+          taskMode.value = TaskMode.play;
+        }
+
         var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskInstance.taskID);
         audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
       }
@@ -56,6 +72,7 @@ class TaskController extends GetxController {
       audioPath.value = 'assets/audio/audio_placeholder.mp3';
     }
   }
+
 
   Future<void> togglePlay() async {
     if (!isPlaying.value) {
@@ -122,7 +139,8 @@ class TaskController extends GetxController {
 
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
-      TaskInstanceEntity? taskInstance = await taskService.getTaskInstance(taskInstanceId);
+      TaskInstanceEntity? taskInstance =
+          await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
         taskInstance.status = TaskStatus.done;
         if (_audioStopTime != null) {
@@ -140,27 +158,44 @@ class TaskController extends GetxController {
       print('Error in concludeTaskInstance: $e');
     }
   }
+
   Future<void> launchNextTask() async {
-    print("launch nekisti task");
+    print("Launching next task");
+
+    // First, ensure the current task is concluded
+    await concludeTaskInstance(currentTask.value?.taskInstanceID ?? 0);
+
+    // Fetch the next pending task instance
     final nextTaskInstance = await taskService.getFirstPendingTaskInstance();
+
     if (nextTaskInstance != null) {
-      final taskEntity = await nextTaskInstance.task;
+      // Update the current task
+      currentTask.value = nextTaskInstance;
+
+      // Fetch task entity for the next task
+      var taskEntity = await taskService.getTask(nextTaskInstance.taskID);
       if (taskEntity != null) {
-        // Update the current task without navigating to a new screen
-        currentTask.value = nextTaskInstance;
-        audioPath.value = (await taskService.getTaskPromptByTaskInstanceID(nextTaskInstance.taskID))?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+        currentTaskEntity.value = taskEntity;
+        taskMode.value = taskEntity.taskMode;
+
+        // Fetch and set the audio path for the next task
+        var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(nextTaskInstance.taskID);
+        audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+
+        // Reset audio player and recording states
         audioPlayed.value = false;
         isPlaying.value = false;
-
-        // Reset the audio player
-        var currentPosition = await _audioPlayer.getCurrentPosition();
-        if (currentPosition!.inMilliseconds > 0) {
-          await _audioPlayer.stop();
+        if (isRecording.value) {
+          await stopRecording();
         }
-
       }
+    } else {
+      print("No more tasks available");
+      // Handle the scenario when no more tasks are available
     }
   }
+
+
   @override
   void onClose() {
     _audioPlayer.dispose();
