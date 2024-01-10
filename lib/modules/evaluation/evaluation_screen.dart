@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/evaluation/widgets/ed_module_instance_item.dart';
 
@@ -25,31 +26,24 @@ class EvaluationScreen extends GetView<EvaluationController> {
         centerTitle: true,
       ),
       body: Container(
-        color: Colors.greenAccent,
-        width: MediaQuery.of(context).size.width,
+        color: Color(0x42000000),
+        width: screenWidth,
         padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Obx(
-              () => Card(
+Card(
                 color: Color(0x00282728),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
-                    width: screenWidth * 0.3,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text(controller.participant.value?.name ?? ''),
-                        Text('Idade:${controller.age} anos'),
-                      ],
-                    ),
+                    width: screenWidth * 0.8,
+                    child: ParticipantCard(),
                   ),
                 ),
               ),
-            ),
+
             const SizedBox(height: 20),
             Container(
               width: screenWidth,
@@ -72,22 +66,25 @@ class EvaluationScreen extends GetView<EvaluationController> {
                     if (controller.isLoading.isTrue) {
                       return Center(child: CircularProgressIndicator());
                     } else {
-                      var futureModules = controller.modulesInstanceList.value?.map((moduleInstance) async {
-                        var module = await moduleInstance?.module;
-                        var tasks = await controller.getTasks(moduleInstance!.moduleInstanceID!);
-                        return EdModuleInstanceItem(
-                          moduleName: module!.title!,
-                          moduleId: moduleInstance.moduleID,
-                          taskInstances: tasks,
-                        );
-
-                      }).toList() ?? [];
+                      var futureModules = controller.modulesInstanceList.value
+                              ?.map((moduleInstance) async {
+                            var module = await moduleInstance?.module;
+                            var tasks = await controller
+                                .getTasks(moduleInstance!.moduleInstanceID!);
+                            return EdModuleInstanceItem(
+                              moduleName: module!.title!,
+                              moduleId: moduleInstance.moduleID,
+                              taskInstances: tasks,
+                            );
+                          }).toList() ??
+                          [];
 
                       return FutureBuilder<List<EdModuleInstanceItem>>(
                         // Wait for all futures to complete
                         future: Future.wait(futureModules),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
                           if (snapshot.hasError) {
@@ -107,6 +104,44 @@ class EvaluationScreen extends GetView<EvaluationController> {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ParticipantCard extends StatelessWidget {
+  // No need to extend GetView since this widget doesn't need the controller directly
+
+  @override
+  Widget build(BuildContext context) {
+    // Use Get.find to access the controller within the build method
+    final EvaluationController controller = Get.find<EvaluationController>();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        // Now, you're accessing the controller directly without Obx, which is fine
+        buildRichText("Nome", controller.participant.value?.name ?? ''),
+        buildRichText("Idade", "${controller.age} anos"),
+        buildRichText("Status", controller.evaluation.value!.status.description),
+      ],
+    );
+  }
+
+  RichText buildRichText(String label, String value) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: '$label: ',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          TextSpan(
+            text: value,
+            style: TextStyle(color: Colors.black),
+          ),
+        ],
       ),
     );
   }

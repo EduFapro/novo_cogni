@@ -4,30 +4,45 @@ import '../../../constants/enums/task_enums.dart';
 import 'package:novo_cogni/modules/task/task_controller.dart';
 
 class TaskScreen extends GetView<TaskController> {
-  final TaskMode mode;
-
-  TaskScreen({Key? key, this.mode = TaskMode.play}) : super(key: key);
+  TaskScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Obx(() {
+        var mode = controller.taskMode.value;
         return controller.currentTask.value != null
             ? Column(
-                children: [
-                  Text("Lol"),
-                  Center(
-                    child: mode == TaskMode.play
-                        ? buildAudioPlayerInterface(context)
-                        : buildAudioRecorderInterface(),
-                  ),
-                ],
-              )
+          children: [
+            Text("Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}"),
+            Center(
+              child: buildInterfaceBasedOnMode(context, mode),
+            ),
+          ],
+        )
             : Center(child: CircularProgressIndicator());
       }),
     );
   }
+
+  Widget buildInterfaceBasedOnMode(BuildContext context, TaskMode mode) {
+    switch (mode) {
+      case TaskMode.play:
+        return buildAudioPlayerInterface(context);
+      case TaskMode.record:
+        return Column(
+          children: [
+            buildAudioPlayerInterface(context),
+            buildAudioRecorderInterface(),
+          ],
+        );
+      default:
+        return Container(); // Or some other default widget
+    }
+  }
+
+
 
   Widget buildAudioPlayerInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;

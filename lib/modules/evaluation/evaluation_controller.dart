@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/evaluation_entity.dart';
 import 'package:novo_cogni/app/domain/entities/module_entity.dart';
@@ -25,10 +24,19 @@ class EvaluationController extends GetxController {
 
   int get age {
     if (participant.value?.birthDate == null) {
-      return 0;
+      print("Birth date is null");
+      return -1;
     }
-    return DateTime.now().year - participant.value!.birthDate.year;
+
+    DateTime birthDate = participant.value!.birthDate; // Assuming this is already a DateTime object.
+    return calculateAge(birthDate);
   }
+
+
+
+
+
+
 
   @override
   Future<void> onInit() async {
@@ -70,7 +78,7 @@ class EvaluationController extends GetxController {
   Future<void> fetchTaskInstancesForModuleInstances(
       List<ModuleInstanceEntity> moduleInstances) async {
     for (var moduleInstances in moduleInstances) {
-      var tasks = await await evaluationService
+      var tasks = await evaluationService
           .getTasksByModuleId(moduleInstances.moduleInstanceID!);
       if (tasks != null && tasks.isNotEmpty) {
         print("Tasks for module ${moduleInstances.moduleID}: $tasks");
@@ -101,7 +109,6 @@ class EvaluationController extends GetxController {
   }
 
   Future<void> launchNextTask() async {
-    print("launch nekisti task");
     final nextTaskInstance = await evaluationService.getFirstPendingTaskInstance();
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
@@ -112,7 +119,6 @@ class EvaluationController extends GetxController {
 
         print("Just Before GetToNamed $taskName, $taskId, $taskInstanceId");
 
-        // Use Get.toNamed to navigate to the task without removing the evaluation screen from the stack
         Get.toNamed(
           AppRoutes.task,
           arguments: {
@@ -124,4 +130,13 @@ class EvaluationController extends GetxController {
       }
     }
   }
+}
+int calculateAge(DateTime birthDate) {
+  DateTime currentDate = DateTime.now();
+  int age = currentDate.year - birthDate.year;
+  if (currentDate.month < birthDate.month ||
+      (currentDate.month == birthDate.month && currentDate.day < birthDate.day)) {
+    age--;
+  }
+  return age;
 }

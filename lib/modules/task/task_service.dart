@@ -1,17 +1,21 @@
 import 'package:novo_cogni/app/domain/repositories/task_prompt_repository.dart';
 
+import '../../app/domain/entities/task_entity.dart';
 import '../../app/domain/entities/task_instance_entity.dart';
 import '../../app/domain/entities/task_prompt_entity.dart';
 import '../../app/domain/repositories/task_instance_repository.dart';
+import '../../app/domain/repositories/task_repository.dart';
 import '../../constants/enums/task_enums.dart';
 
 class TaskService {
   final TaskPromptRepository taskPromptRepository;
   final TaskInstanceRepository taskInstanceRepository;
+  final TaskRepository taskRepository;
 
   TaskService(
       {required this.taskPromptRepository,
-      required this.taskInstanceRepository});
+      required this.taskInstanceRepository,
+        required this.taskRepository,});
 
   Future<TaskPromptEntity?> getTaskPromptByTaskInstanceID(int taskInstanceId) async {
     try {
@@ -66,6 +70,16 @@ class TaskService {
       return null;
     } catch (e) {
       print("Error in getFirstPendingTaskInstance: $e");
+      return null;
+    }
+  }
+
+  // Method to get a task by its ID
+  Future<TaskEntity?> getTask(int taskId) async {
+    try {
+      return await taskRepository.getTask(taskId);
+    } catch (e) {
+      print("Error fetching task with ID: $taskId: $e");
       return null;
     }
   }
