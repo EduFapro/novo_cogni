@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
@@ -10,10 +12,14 @@ import '../widgets/ed_language_dropdown.dart';
 import 'login_controller.dart';
 
 class LoginScreen extends GetView<LoginController> with ValidationMixin {
+  List<String> audioDevices = [];
+
   LoginScreen({Key? key}) : super(key: key);
   final formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +128,20 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                       ],
                     ),
                     EdLanguageDropdown(),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await listUsbDevicesWindows();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        onPrimary: Colors.white,
+                      ),
+                      child: Text('Execute Function'),
+                    ),
+                    ElevatedButton(
+                      onPressed: handleGetAudioDevices,
+                      child: Text('Get Audio Devices'),
+                    ),
                   ],
                 ),
               ),
@@ -132,8 +152,64 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
       backgroundColor: const Color(0xFF161E2E),
     );
   }
+
+  Future<void> listUsbDevicesWindows() async {
+    try {
+      ProcessResult results = await Process.run(
+        'wmic',
+        ['path', 'Win32_USBControllerDevice'],
+        runInShell: true,
+      );
+
+      if (results.exitCode == 0) {
+        print('USB Devices:\n${results.stdout}');
+      } else {
+        print('Error: ${results.stderr}');
+      }
+    } catch (e) {
+      print('Failed to run command: $e');
+    }
+  }
+
+  void handleGetAudioDevices() async {
+    var devices = await getAudioDevices();
+      audioDevices = devices;
+
+  }
+
+}
+Future<List<String>> getAudioDevices() async {
+  // Run the command
+  var result = await Process.run('wmic', ['path', 'Win32_USBControllerDevice'], runInShell: true);
+
+  // Check for errors
+  if (result.exitCode != 0) {
+    print('Error: ${result.stderr}');
+    return [];
+  }
+
+  // Parse the output
+  return parseAudioDevices(result.stdout);
 }
 
+List<String> parseAudioDevices(String rawOutput) {
+  List<String> audioDevices = [];
+
+  // Split the output into lines
+  var lines = rawOutput.split('\n');
+
+  // Define a pattern that identifies audio devices (this is a placeholder, you'll need to define a real pattern)
+  var audioDevicePattern = RegExp(r'Audio', caseSensitive: false);
+
+  // Iterate through each line and check for the pattern
+  for (var line in lines) {
+    if (audioDevicePattern.hasMatch(line)) {
+      audioDevices.add(line);
+    }
+  }
+print(audioDevices);
+  return audioDevices;
+}
 class EdEndText extends StatelessWidget {
   final String text;
 
