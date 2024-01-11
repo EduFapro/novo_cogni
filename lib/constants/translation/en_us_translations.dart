@@ -34,4 +34,5 @@ final Map<String, String> enUsTranslations = {
   'cpf_nif': 'CPF/NIF',
   'evaluation': 'Evaluation',
   'list_of_activities': 'List of Activities',
+  'click_on_play_to_listen_to_audio': 'Click on play to listen to the audio',
 };

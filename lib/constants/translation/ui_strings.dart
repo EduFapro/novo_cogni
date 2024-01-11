@@ -82,4 +82,6 @@ class UiStrings extends Translations {
   static String get evaluation => 'evaluation'.tr;
 
   static String get listOfActivities => 'list_of_activities'.tr;
+
+  static String get clickOnPlayToListenToTheTask => 'click_on_play_to_listen_to_audio'.tr;
 }

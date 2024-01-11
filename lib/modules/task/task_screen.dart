@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/enums/task_enums.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/task/task_controller.dart';
+
+import '../../constants/enums/task_enums.dart';
+import '../widgets/music_visualizer.dart';
 
 class TaskScreen extends GetView<TaskController> {
   TaskScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
       body: Obx(() {
         var mode = controller.taskMode.value;
         return controller.currentTask.value != null
             ? Column(
-          children: [
-            Text("Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}"),
-            Center(
-              child: buildInterfaceBasedOnMode(context, mode),
-            ),
-          ],
-        )
+                children: [
+                  SizedBox(height: windowSize.height * 0.1),
+                  Text(
+                      "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}"),
+                  Center(
+                    child: buildInterfaceBasedOnMode(context, mode),
+                  ),
+                ],
+              )
             : Center(child: CircularProgressIndicator());
       }),
     );
@@ -29,32 +35,40 @@ class TaskScreen extends GetView<TaskController> {
   Widget buildInterfaceBasedOnMode(BuildContext context, TaskMode mode) {
     switch (mode) {
       case TaskMode.play:
-        return buildAudioPlayerInterface(context);
+        return Column(
+          children: [
+            buildGeneralInterface(context),
+            buildAudioPlayerInterface(context),
+          ],
+        );
       case TaskMode.record:
         return Column(
           children: [
-            buildAudioPlayerInterface(context),
-            buildAudioRecorderInterface(),
+            buildGeneralInterface(context),
+            buildAudioRecorderInterface(context),
           ],
         );
       default:
-        return Container(); // Or some other default widget
+        return Container();
     }
   }
 
-
-
-  Widget buildAudioPlayerInterface(BuildContext context) {
+  Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
     return Card(
-      elevation: 4.0,
+      color: Color(0xFFD7D7D7),
+      elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Obx(() => Column(
               children: [
+                Text(
+                  UiStrings.clickOnPlayToListenToTheTask,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -68,102 +82,160 @@ class TaskScreen extends GetView<TaskController> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        width: windowSize.width * 0.7,
+                        width: windowSize.width * 0.4,
                         height: 80,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          child: CustomPaint(
-                            painter: WaveformPainter(),
-                          ),
-                        ),
+                        child: MusicVisualizer(
+                          isPlaying: controller.isPlaying.value,
+                          barCount: 30, // Example: 30 bars
+                          barWidth: 3, // Example: Each bar is 3 pixels wide
+                        )
+
                       ),
                     ),
-                    EdCheckIconButton(
-                      onPressed: () {
-                        controller.onCheckButtonPressed();
-                      },
-                    )
                   ],
                 ),
-                EdSkipButton(
-                  text: 'Pular',
-                  onPressed: () {
-                    // Handle the skip button press
-                  },
-                )
               ],
             )),
       ),
     );
   }
 
-  Widget buildAudioRecorderInterface() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Obx(() {
-          return IconButton(
-            icon: Icon(
-              controller.isRecording.value ? Icons.stop : Icons.mic,
-              size: 56.0,
-              color: controller.isRecording.value ? Colors.red : Colors.blue,
+  Widget buildAudioPlayerInterface(BuildContext context) {
+    final Size windowSize = MediaQuery.of(context).size;
+    return Container(
+      child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child:
+              // Obx(() =>
+              Column(
+            children: [
+              SizedBox(
+                width: windowSize.width * 0.4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      width: windowSize.width * 0.2,
+                    ),
+                    EdSkipButton(
+                      text: 'Pular',
+                      onPressed: () {
+                        // Handle the skip button press
+                      },
+                    ),
+                    EdCheckIconButton(
+                      iconData: Icons.check,
+                      onPressed: () {
+                        controller.onCheckButtonPressed();
+                      },
+                      isActive: controller.audioPlayed.value,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )),
+      //    ),
+    );
+  }
+
+  Widget buildAudioRecorderInterface(BuildContext context) {
+    final Size windowSize = MediaQuery.of(context).size;
+    final TaskController controller = Get.find<TaskController>();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 400.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 20), // Add some spacing if needed
+          Obx(() {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Close button
+                EdCheckIconButton(
+                  iconData: Icons.close,
+                  onPressed: () {
+                    // Stop the recording
+                    controller.stopRecording();
+                  },
+                  isActive: controller.isRecording.value,
+                ),
+                IconButton(
+                  icon: Icon(
+                    controller.isRecording.value ? Icons.stop : Icons.mic,
+                    size: 115.0,
+                    color:
+                        controller.isRecording.value ? Colors.red : Colors.blue,
+                  ),
+                  onPressed: () async {
+                    if (controller.isRecording.value) {
+                      await controller.stopRecording();
+                    } else {
+                      await controller.startRecording();
+                    }
+                  },
+                ),
+                // Check button (active when not recording)
+                EdCheckIconButton(
+                  iconData: Icons.check,
+                  onPressed: () {
+                    controller.onCheckButtonPressed();
+                  },
+                  isActive: !controller.isRecording.value,
+                ),
+              ],
+            );
+          }),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: 300,
+              child: MusicVisualizer(
+                isPlaying: controller.isRecording.value,
+                barCount: 30,
+                barWidth: 2,
+                activeColor: Colors.red,
+              ),
             ),
-            onPressed: () async {
-              if (controller.isRecording.value) {
-                await controller.stopRecording();
-              } else {
-                await controller.startRecording();
-              }
-            },
-          );
-        }),
-      ],
+          )
+
+
+        ],
+      ),
     );
   }
 }
 
-class WaveformPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = Colors.blue
-      ..strokeWidth = 5; // Slightly thicker line for better visibility
-    // Draw a simple line for now
-    canvas.drawLine(
-        Offset(0, size.height / 2), Offset(size.width, size.height / 2), paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
 class EdCheckIconButton extends StatelessWidget {
+  final IconData iconData;
   final VoidCallback onPressed;
+  final bool isActive;
 
-  EdCheckIconButton({Key? key, required this.onPressed}) : super(key: key);
+  EdCheckIconButton({
+    Key? key,
+    required this.iconData,
+    required this.onPressed,
+    required this.isActive,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<TaskController>();
+    Color borderColor = isActive ? Colors.black : Colors.grey;
+    Color iconColor = iconData == Icons.check ? Colors.green : Colors.red;
 
-    return Obx(() => Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: controller.audioPlayed.value ? Colors.black : Colors.grey,
-              width: 2.0,
-            ),
-          ),
-          child: IconButton(
-            icon: Icon(Icons.check),
-            onPressed: controller.audioPlayed.value ? onPressed : null,
-          ),
-        ));
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: borderColor, width: 2.0),
+      ),
+      child: IconButton(
+        icon: Icon(iconData),
+        color: iconColor,
+        onPressed: isActive ? onPressed : null,
+      ),
+    );
   }
 }
 

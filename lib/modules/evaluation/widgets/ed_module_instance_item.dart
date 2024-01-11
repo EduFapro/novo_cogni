@@ -26,56 +26,32 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Column(
-      children: [
-        Container(
-          width: screenWidth * 0.5,
-          height: screenHeight * 0.07,
-          color: Colors.black54,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                moduleName,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white70,
-                ),
-              ),
-              ModuleButton(
-                onPressed: () {
-                  controller.launchNextTask();
-                },
-              )
-            ],
+    return Container(
+      decoration: BoxDecoration(
+          color: Color(0xFFA2A0A0),
+        borderRadius: BorderRadius.circular(20)
+      ),
+      width: screenWidth * 0.5,
+      height: screenHeight * 0.07,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            moduleName,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
           ),
-        ),
-        // Column(
-        //   children: taskInstances.map((taskInstance) {
-        //     return FutureBuilder<TaskEntity?>(
-        //       future: taskInstance.task,
-        //       builder: (context, snapshot) {
-        //         print(
-        //             "TaskEntity for TaskInstance ${taskInstance.taskInstanceID}: ${snapshot.data}");
-        //         if (snapshot.connectionState == ConnectionState.waiting) {
-        //           return CircularProgressIndicator();
-        //         } else if (snapshot.hasError) {
-        //           return Text('Error: ${snapshot.error}');
-        //         } else if (!snapshot.hasData) {
-        //           return Text('Task not found');
-        //         } else {
-        //           return EdTaskItem(
-        //               taskId: taskInstance.taskID!,
-        //               taskInstanceId: taskInstance.taskInstanceID,
-        //               taskName: snapshot.data!.title);
-        //         }
-        //       },
-        //     );
-        //   }).toList(),
-        // )
-      ],
+          ModuleButton(
+            onPressed: () {
+              controller.launchNextTask();
+            },
+          )
+        ],
+      ),
     );
   }
 }

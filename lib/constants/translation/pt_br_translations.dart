@@ -34,4 +34,5 @@ final Map<String, String> ptBrTranslations = {
   'cpf_nif': 'CPF/NIF',
   'evaluation': 'Avaliação',
   'list_of_activities': 'Lista de Atividades',
+  'click_on_play_to_listen_to_audio': 'Clique no play para ouvir o áudio',
 };
