@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../constants/translation/ui_strings.dart';
 import '../../../routes.dart';
 import '../../widgets/ed_language_dropdown.dart';
+import '../home_controller.dart';
 import 'ed_main_sidebar_button.dart';
-import 'ed_profile_avatar.dart';
 import 'ed_square_button.dart';
 
 class EdSidebar extends StatelessWidget {
@@ -13,7 +13,6 @@ class EdSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: <Widget>[
         Padding(
@@ -24,16 +23,20 @@ class EdSidebar extends StatelessWidget {
                 color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
-        SizedBox(height: 30,),
+        SizedBox(
+          height: 30,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: EdMainSidebarButton(
             icon: Icons.home,
             text: UiStrings.home,
             onPressed: () {
-              Get.toNamed(AppRoutes.home,);
-
-            },),
+              Get.toNamed(
+                AppRoutes.home,
+              );
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -42,7 +45,6 @@ class EdSidebar extends StatelessWidget {
             text: UiStrings.evaluators,
             onPressed: () {
               Get.toNamed(AppRoutes.evaluators);
-
             },
           ),
         ),
@@ -66,13 +68,49 @@ class EdSidebar extends StatelessWidget {
                 iconColor: Colors.white,
                 onTap: () {
                   Get.offAllNamed(AppRoutes.login);
-
                 },
               ),
             ],
           ),
         ),
-        EdLanguageDropdown(),],
+        EdLanguageDropdown(),
+      ],
+    );
+  }
+}
+class EdProfileAvatar extends StatelessWidget {
+  const EdProfileAvatar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var homeController = Get.find<HomeController>();
+
+    return Center(
+      child: Obx(() {
+        var user = homeController.user.value;
+        if (user == null || homeController.isLoading.isTrue) {
+          return CircularProgressIndicator(); // Or some placeholder
+        }
+
+        return Column(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.blue,
+              radius: 50.0,
+              child: Image.asset('assets/profile-placeholder.png',
+                  width: 300, height: 300),
+            ),
+            Text(
+              user.name ?? 'Unknown Name',
+              style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              user.specialty ?? 'Unknown Specialty',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

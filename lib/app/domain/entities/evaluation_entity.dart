@@ -23,7 +23,7 @@ class EvaluationEntity {
       ID_EVALUATION: evaluationID,
       EVALUATION_DATE: evaluationDate.toIso8601String(),
       ID_EVALUATOR_FK: evaluatorID,
-      EVALUATION_STATUS: status.description,
+      EVALUATION_STATUS: status.numericValue,
       ID_PARTICIPANT_FK: participantID,
     };
   }
@@ -32,7 +32,7 @@ class EvaluationEntity {
     return EvaluationEntity(
       evaluationID: map[ID_EVALUATION] as int?,
       evaluatorID: map[ID_EVALUATOR_FK] as int,
-      status: EvaluationStatus.values.firstWhere((e) => e.description == map[EVALUATION_STATUS], orElse: () => EvaluationStatus.pending),
+      status: EvaluationStatusExtension.fromValue(map[EVALUATION_STATUS] as int),
       evaluationDate: map[EVALUATION_DATE] != null ? DateTime.parse(map[EVALUATION_DATE] as String) : null,
       participantID: map[ID_PARTICIPANT_FK] as int,
     );
@@ -52,7 +52,7 @@ class EvaluationEntity {
 
   @override
   String toString() {
-    return 'EvaluationEntity(evaluationID: $evaluationID, evaluatorID: $evaluatorID, participantID: $participantID)';
+    return 'EvaluationEntity(evaluationID: $evaluationID, evaluatorID: $evaluatorID, participantID: $participantID, status: ${status.description})';
   }
 
 }

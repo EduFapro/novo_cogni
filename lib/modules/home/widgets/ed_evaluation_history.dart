@@ -4,12 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import '../../../constants/enums/module_enums.dart';
 import '../../../routes.dart';
 import '../../widgets/ed_input_text.dart';
 import '../home_controller.dart';
 
-class EdEvaluationHistory extends StatelessWidget {
+class EdEvaluationHistory extends GetView<HomeController>  {
   EdEvaluationHistory({Key? key}) : super(key: key);
 
   @override
@@ -19,22 +18,48 @@ class EdEvaluationHistory extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                UiStrings.evaluationHistory,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              EdInputText(
-                placeholder: "Search...",
-                obscureText: false,
-              ),
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              UiStrings.evaluationHistory,
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Column(
+              children: <Widget>[
+                Obx(
+                      () => buildIconLabel(
+                    context,
+                    Icons.folder_open,
+                    UiStrings.totalProjects,
+                    controller.numEvaluationsTotal.value,
+                  ),
+                ),
+                Obx(
+                      () => buildIconLabel(
+                    context,
+                    Icons.hourglass_empty,
+                    UiStrings.inProgress,
+                    controller.numEvaluationsInProgress.value,
+                  ),
+                ),
+                Obx(
+                      () => buildIconLabel(
+                    context,
+                    Icons.check_circle_outline,
+                    UiStrings.completed,
+                    controller.numEvaluationsFinished.value,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            EdInputText(
+              placeholder: "Search...",
+              obscureText: false,
+            ),
+          ],
         ),
         Obx(() {
           if (homeController.isLoading.isTrue) {
@@ -129,6 +154,21 @@ class EdEvaluationHistory extends StatelessWidget {
               },
             );
           }),
+        ],
+      ),
+    );
+  }
+
+
+  Widget buildIconLabel(
+      BuildContext context, IconData icon, String label, int count) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: <Widget>[
+          Icon(icon, size: 24.0),
+          SizedBox(width: 8.0),
+          Text('$label: $count'),
         ],
       ),
     );

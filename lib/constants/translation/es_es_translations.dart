@@ -35,4 +35,7 @@ final Map<String, String> esEsTranslations = {
   'evaluation': 'Evaluación',
   'list_of_activities': 'Lista de Actividades',
   'click_on_play_to_listen_to_audio': 'Haz clic en reproducir para escuchar el audio',
+  'pending_evaluation': 'Pendiente',
+  'in_progress_evaluation': 'En Progreso',
+  'completed_evaluation': "Completado",
 };

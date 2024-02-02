@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/modules/home/widgets/ed_side_bar.dart';
 import 'home_controller.dart';
-import 'widgets/ed_painel_home.dart';
+import 'widgets/ed_home_panel.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);

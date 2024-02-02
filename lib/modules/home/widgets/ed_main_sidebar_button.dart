@@ -23,9 +23,11 @@ class EdMainSidebarButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon),
+          Icon(icon, color: Colors.white,),
           SizedBox(width: 8.0),
-          Text(text),
+          Text(text, style: TextStyle(
+            color: Colors.white
+          ),),
         ],
       ),
     );

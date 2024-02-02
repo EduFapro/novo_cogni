@@ -12,7 +12,6 @@ class UiStrings extends Translations {
         'es_ES': esEsTranslations
       };
 
-  // Static getters for translation keys
   static String get hello => 'hello'.tr;
 
   static String get newParticipant => 'new_participant'.tr;
@@ -83,5 +82,13 @@ class UiStrings extends Translations {
 
   static String get listOfActivities => 'list_of_activities'.tr;
 
-  static String get clickOnPlayToListenToTheTask => 'click_on_play_to_listen_to_audio'.tr;
+  static String get clickOnPlayToListenToTheTask =>
+      'click_on_play_to_listen_to_audio'.tr;
+
+  static String get pendingEvaluation => 'pending_evaluation'.tr;
+
+  static String get inProgressEvaluation => 'in_progress_evaluation'.tr;
+
+  static String get completedEvaluation => 'completed_evaluation'.tr;
+
 }
