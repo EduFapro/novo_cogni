@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/enums/language_enums.dart';
 import '../../app/domain/entities/evaluation_entity.dart';
 import '../../app/domain/entities/evaluator_entity.dart';
 import '../../app/domain/entities/participant_entity.dart';
@@ -64,14 +65,16 @@ class HomeController extends GetxController {
   }
 
   void listenToParticipantsChanges() {
-    ever(userController.participants, (List<ParticipantEntity> newParticipants) {
+    ever(userController.participants,
+        (List<ParticipantEntity> newParticipants) {
       participants.assignAll(newParticipants);
       print("Participants updated: ${participants.length}");
     });
   }
 
   void listenToParticipantDetailsChanges() {
-    ever(userController.participantDetails, (Map<int, ParticipantEntity> newDetails) {
+    ever(userController.participantDetails,
+        (Map<int, ParticipantEntity> newDetails) {
       participantDetails.assignAll(newDetails);
       print("Participant details updated");
     });
@@ -93,7 +96,8 @@ class HomeController extends GetxController {
         participants.isNotEmpty);
   }
 
-  void addNewParticipant(ParticipantEntity newParticipant, Map<String, int> newParticipantMap) {
+  void addNewParticipant(ParticipantEntity newParticipant,
+      Map<String, int> newParticipantMap, Language language) {
     var newParticipantID = newParticipantMap["participantId"];
     var newEvaluationID = newParticipantMap["evaluationId"];
     var evaluatorID = user.value!.evaluatorID;
@@ -101,22 +105,21 @@ class HomeController extends GetxController {
     print("newEvaluationID: $newEvaluationID");
     print("EvaluatorID: $evaluatorID");
 
-
     participants.add(newParticipant);
     participantDetails[newParticipantID!] = newParticipant;
 
     evaluations.add(EvaluationEntity(
         evaluatorID: evaluatorID!,
         evaluationID: newEvaluationID,
-        participantID: newParticipantID));
+        participantID: newParticipantID,
+        language: language.numericValue));
 
     // Refresh data to update UI and other dependent components
     // refreshData();
   }
 
-
-void refreshData() async {
-  // Await the completion of fetchData()
-  fetchData();
-}
+  void refreshData() async {
+    // Await the completion of fetchData()
+    fetchData();
+  }
 }

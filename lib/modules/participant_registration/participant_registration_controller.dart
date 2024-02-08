@@ -24,7 +24,7 @@ class ParticipantRegistrationController extends GetxController {
   final selectedEducationLevel = Rx<EducationLevel?>(null);
   final selectedDate = Rx<DateTime?>(null);
   final selectedLaterality = Rx<Handedness?>(null);
-  final selectedLanguage = Rx<Language?>(null);
+  final selectedLanguage = Rx<Language?>(Language.portuguese);
 
   final RxMap<String, bool> itemsMap =
       RxMap<String, bool>({for (var v in modulesList) v.title!: false});
@@ -52,7 +52,8 @@ class ParticipantRegistrationController extends GetxController {
     DateTime? birthDate = selectedDate.value;
     Sex? sex = selectedSex.value;
     EducationLevel? educationLevel = selectedEducationLevel.value;
-    Handedness? handedness = selectedLaterality.value; // Ensure this is set
+    Handedness? handedness = selectedLaterality.value;
+    Language? language = selectedLanguage.value;
 
     List<String> nameParts = fullName.split(' ');
     String name = nameParts.first;
@@ -65,16 +66,15 @@ class ParticipantRegistrationController extends GetxController {
       birthDate: birthDate!,
       sex: sex!,
       educationLevel: educationLevel!,
-      handedness: handedness!, // Corrected
+      handedness: handedness!,
     );
 
-
     var success = await participantService.createParticipantAndModules(
-        evaluatorId, selectedModules, newParticipant);
+        evaluatorId, selectedModules, newParticipant, language!);
 
     if (success.isNotEmpty) {
       final HomeController homeController = Get.find<HomeController>();
-      homeController.addNewParticipant(newParticipant, success);
+      homeController.addNewParticipant(newParticipant, success, selectedLanguage.value!);
     }
 
     return true;

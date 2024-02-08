@@ -87,8 +87,6 @@ class EvaluationLocalDataSource {
   }
 
   Future<List<EvaluationEntity>> getEvaluationsByEvaluatorID(int evaluatorID) async {
-    print("Estou no datasource");
-    print("evaluatorID $evaluatorID");
     final Database? database = await db;
     List<Map<String, dynamic>> maps = await database!.query(
       TABLE_EVALUATIONS,
@@ -97,7 +95,6 @@ class EvaluationLocalDataSource {
       whereArgs: [evaluatorID],
     );
 
-    print("MAPS::::: $maps");
     if (maps.isNotEmpty) {
       return maps.map((map) => EvaluationEntity.fromMap(map)).toList();
     }

@@ -1,5 +1,7 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:novo_cogni/app/domain/entities/module_instance_entity.dart';
 import 'package:novo_cogni/app/domain/repositories/module_instance_repository.dart';
+import 'package:novo_cogni/constants/enums/language_enums.dart';
 
 import '../../app/domain/entities/evaluation_entity.dart';
 import '../../app/domain/entities/module_entity.dart';
@@ -35,10 +37,12 @@ class ParticipantRegistrationService {
     return participantId;
   }
 
-  Future<int?> createEvaluation(int participantId, int evaluatorId) async {
+  Future<int?> createEvaluation(
+      int participantId, int evaluatorId, Language selectedLanguage) async {
     EvaluationEntity evaluation = EvaluationEntity(
       participantID: participantId,
       evaluatorID: evaluatorId,
+      language: selectedLanguage.numericValue,
     );
 
     int? evaluationId = await evaluationRepository.createEvaluation(evaluation);
@@ -99,14 +103,18 @@ class ParticipantRegistrationService {
     }
   }
 
-  Future<Map<String, int>> createParticipantAndModules(int evaluatorId,
-      List<String> selectedModules, ParticipantEntity newParticipant) async {
+  Future<Map<String, int>> createParticipantAndModules(
+      int evaluatorId,
+      List<String> selectedModules,
+      ParticipantEntity newParticipant,
+      Language selectedLanguage) async {
     int? participantId =
         await createParticipant(evaluatorId, selectedModules, newParticipant);
 
     if (participantId == null) return {};
 
-    int? evaluationId = await createEvaluation(participantId, evaluatorId);
+    int? evaluationId =
+        await createEvaluation(participantId, evaluatorId, selectedLanguage);
 
     if (evaluationId == null) return {};
 

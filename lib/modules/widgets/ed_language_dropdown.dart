@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/global/language_controller.dart';
 import '../../constants/enums/language_enums.dart';
+import '../participant_registration/participant_registration_controller.dart';
 
-class EdLanguageDropdown extends GetView<LanguageController> {
+class EdLanguageFormDropdown extends GetView<ParticipantRegistrationController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => DropdownButton<Language>(
-      hint: Text(Language.portuguese.translationKey),
-      value: controller.currentLanguage.value,
+      value: controller.selectedLanguage.value,
       onChanged: (Language? newValue) {
         if (newValue != null) {
-          controller.changeLanguage(newValue);
+          controller.selectedLanguage.value = newValue;
         }
       },
       items: Language.values.map<DropdownMenuItem<Language>>((language) {
@@ -23,4 +22,6 @@ class EdLanguageDropdown extends GetView<LanguageController> {
     ));
   }
 }
+
+
 

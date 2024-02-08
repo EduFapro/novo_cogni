@@ -8,14 +8,16 @@ class EvaluationEntity {
   final int participantID;
   EvaluationStatus status;
   DateTime evaluationDate;
+  final int language;
 
-  EvaluationEntity({
-    this.evaluationID,
-    DateTime? evaluationDate,
-    this.status = EvaluationStatus.pending,
-    required this.evaluatorID,
-    required this.participantID,
-  }) : evaluationDate = evaluationDate ?? DateTime.now();
+  EvaluationEntity(
+      {this.evaluationID,
+      DateTime? evaluationDate,
+      this.status = EvaluationStatus.pending,
+      required this.evaluatorID,
+      required this.participantID,
+      required this.language})
+      : evaluationDate = evaluationDate ?? DateTime.now();
 
   Map<String, dynamic> toMap() {
     return {
@@ -24,37 +26,41 @@ class EvaluationEntity {
       ID_EVALUATOR_FK: evaluatorID,
       EVALUATION_STATUS: status.numericValue,
       ID_PARTICIPANT_FK: participantID,
+      LANGUAGE: language,
     };
   }
 
   static EvaluationEntity fromMap(Map<String, dynamic> map) {
-    int? evaluationID;
-    int evaluatorID = 0;
-    int participantID = 0;
-    EvaluationStatus status = EvaluationStatus.pending; // Default status
-    DateTime evaluationDate = DateTime.now(); // Default to current time
+    int? evaluationID = map[ID_EVALUATION] as int?;
+    int evaluatorID = map[ID_EVALUATOR_FK] as int;
+    int participantID = map[ID_PARTICIPANT_FK] as int;
+    int language = map[LANGUAGE];
+    EvaluationStatus status = EvaluationStatusExtension.fromNumericValue(
+        map[EVALUATION_STATUS] as int? ?? 0);
+    DateTime evaluationDate = DateTime.now();
 
-    try {
-      evaluationID = map[ID_EVALUATION] as int?;
-      evaluatorID = map[ID_EVALUATOR_FK] as int;
-      participantID = map[ID_PARTICIPANT_FK] as int;
-      status = EvaluationStatusExtension.fromNumericValue(map[EVALUATION_STATUS] as int? ?? 0);
-      String dateString = map[EVALUATION_DATE] as String;
-      evaluationDate = DateTime.tryParse(dateString) ?? DateTime.now();
-    } catch (e) {
-      print("Error parsing EvaluationEntity from map: $e");
+    // Check if the date string is not null before parsing
+    if (map[EVALUATION_DATE] != null) {
+      String dateString = map[EVALUATION_DATE];
+      DateTime? parsedDate = DateTime.tryParse(dateString);
+      if (parsedDate != null) {
+        evaluationDate = parsedDate;
+      } else {
+        // Handle the case where the date string is not in a valid format
+        print("Error parsing date string: $dateString");
+      }
     }
 
-    return EvaluationEntity(
+    var newEntity = EvaluationEntity(
       evaluationID: evaluationID,
       evaluatorID: evaluatorID,
       status: status,
       evaluationDate: evaluationDate,
       participantID: participantID,
+      language: language,
     );
+    return newEntity;
   }
-
-
 
   // Convert EvaluationEntity to JSON string
   String toJson() {
@@ -72,5 +78,4 @@ class EvaluationEntity {
   String toString() {
     return 'EvaluationEntity(evaluationID: $evaluationID, evaluatorID: $evaluatorID, participantID: $participantID, status: ${status.description})';
   }
-
 }

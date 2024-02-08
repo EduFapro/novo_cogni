@@ -56,9 +56,7 @@ class UserController extends GetxController {
     List<EvaluationEntity> fetchedEvaluations;
 
     try {
-      print("Usuario: $fetchedUser");
       fetchedEvaluations = await userService.getEvaluationsByUser(fetchedUser);
-      print("Fetched evaluations in user_controller: $fetchedEvaluations");
       evaluations.assignAll(fetchedEvaluations);
     } catch (e) {
       print("Error fetching evaluations: $e");
