@@ -25,10 +25,11 @@ class TaskInstanceEntity {
       ID_TASK_INSTANCE: taskInstanceID,
       ID_TASK_FK: taskID,
       ID_MODULE_INSTANCE_FK: moduleInstanceID,
-      TASK_INSTANCE_STATUS: status.description,
-      TASK_COMPLETING_TIME: completingTime, // Add duration to map
+      TASK_INSTANCE_STATUS: status.numericValue,
+      TASK_COMPLETING_TIME: completingTime,
     };
   }
+
 
   static TaskInstanceEntity fromMap(Map<String, dynamic> map) {
     return TaskInstanceEntity(

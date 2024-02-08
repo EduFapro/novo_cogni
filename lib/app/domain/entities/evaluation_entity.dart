@@ -31,8 +31,6 @@ class EvaluationEntity {
   }
 
   static EvaluationEntity fromMap(Map<String, dynamic> map) {
-    print("INSIDE FROM MAP EVALUATION ENTITY");
-    print("map: $map");
     int? evaluationID = map[ID_EVALUATION] as int?;
     int evaluatorID = map[ID_EVALUATOR_FK] as int;
     int participantID = map[ID_PARTICIPANT_FK] as int;

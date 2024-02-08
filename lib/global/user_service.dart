@@ -18,7 +18,6 @@ class UserService {
 
   Future<List<EvaluationEntity>> getEvaluationsByUser(EvaluatorEntity user) async {
     var evaluations = await evaluationRepo.getEvaluationsByEvaluatorID(user.evaluatorID!);
-    print("user_service evaluations: $evaluations");
     return evaluations;
   }
 

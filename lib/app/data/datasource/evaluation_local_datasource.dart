@@ -101,8 +101,6 @@ class EvaluationLocalDataSource {
       whereArgs: [evaluatorID],
     );
     if (maps.isNotEmpty) {
-      print("MAPS IS NOT EMPTY");
-      print("GODAMMIT MAPS: $maps");
       return maps.map((map) => EvaluationEntity.fromMap(map)).toList();
     }
     return [];

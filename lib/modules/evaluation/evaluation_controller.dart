@@ -28,15 +28,10 @@ class EvaluationController extends GetxController {
       return -1;
     }
 
-    DateTime birthDate = participant.value!.birthDate; // Assuming this is already a DateTime object.
+    DateTime birthDate = participant
+        .value!.birthDate; // Assuming this is already a DateTime object.
     return calculateAge(birthDate);
   }
-
-
-
-
-
-
 
   @override
   Future<void> onInit() async {
@@ -110,7 +105,8 @@ class EvaluationController extends GetxController {
   }
 
   Future<void> launchNextTask() async {
-    final nextTaskInstance = await evaluationService.getFirstPendingTaskInstance();
+    final nextTaskInstance =
+        await evaluationService.getFirstPendingTaskInstance();
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
       if (taskEntity != null) {
@@ -132,11 +128,13 @@ class EvaluationController extends GetxController {
     }
   }
 }
+
 int calculateAge(DateTime birthDate) {
   DateTime currentDate = DateTime.now();
   int age = currentDate.year - birthDate.year;
   if (currentDate.month < birthDate.month ||
-      (currentDate.month == birthDate.month && currentDate.day < birthDate.day)) {
+      (currentDate.month == birthDate.month &&
+          currentDate.day < birthDate.day)) {
     age--;
   }
   return age;

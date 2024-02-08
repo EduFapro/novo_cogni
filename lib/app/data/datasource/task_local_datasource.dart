@@ -99,17 +99,24 @@ class TaskLocalDataSource {
       final Database? database = await db;
       final List<Map<String, dynamic>> maps = await database!.query(
         TABLE_TASKS,
-        where: '\$MODULE_ID = ?',
+        where: '$MODULE_ID = ?',
         whereArgs: [moduleId],
       );
-      return List.generate(maps.length, (i) {
-        return TaskEntity.fromMap(maps[i]);
-      });
+      return maps.map((map) {
+        // Assuming MODE is already an integer
+        final newMap = Map<String, dynamic>.from(map);
+        newMap[MODE] = TaskModeExtension.fromNumericValue(newMap[MODE] as int);
+        return TaskEntity.fromMap(newMap);
+      }).toList();
     } catch (e) {
-      print('Error fetching tasks for module ID \$moduleId: \$e');
+      print('Error fetching tasks for module ID $moduleId: $e');
       return []; // Returning an empty list in case of error
     }
   }
 
-  }
+
+
+
+
+}
 

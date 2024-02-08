@@ -30,15 +30,18 @@ class TaskEntity {
   }
 
   static TaskEntity fromMap(Map<String, dynamic> map) {
+    // Make sure the modeValue is an integer, otherwise default to 0
+    final modeValue = map[MODE] is int ? map[MODE] as int : 0;
     return TaskEntity(
       taskID: map[ID_TASK] as int?,
       title: map[TITLE] as String,
       moduleID: map[MODULE_ID] as int,
-      taskMode: TaskModeExtension.fromNumericValue(map[MODE] as int), // Convert from numeric value
+      taskMode: TaskModeExtension.fromNumericValue(modeValue),
       position: map[POSITION] as int,
       image_path: map[IMAGE_PATH] as String?,
     );
   }
+
 
   @override
   String toString() {
