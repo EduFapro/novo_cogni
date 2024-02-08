@@ -5,9 +5,11 @@ import '../data_constants/database_constants.dart';
 import 'database_helper.dart';
 
 class EvaluationLocalDataSource {
-  static final EvaluationLocalDataSource _instance = EvaluationLocalDataSource.internal();
+  static final EvaluationLocalDataSource _instance =
+      EvaluationLocalDataSource.internal();
 
   factory EvaluationLocalDataSource() => _instance;
+
   EvaluationLocalDataSource.internal();
 
   final dbHelper = DatabaseHelper();
@@ -75,27 +77,32 @@ class EvaluationLocalDataSource {
 
     var result = await database!.query(TABLE_EVALUATIONS);
     List<EvaluationEntity> evaluations = result.isNotEmpty
-        ? result.map((c) => EvaluationEntity.fromMap(c as Map<String, dynamic>)).toList()
+        ? result
+            .map((c) => EvaluationEntity.fromMap(c as Map<String, dynamic>))
+            .toList()
         : [];
     return evaluations;
   }
 
   Future<int?> getNumberOfEvaluations() async {
     final Database? database = await db;
-    final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABLE_EVALUATIONS");
+    final List<Map<String, dynamic>> result = await database!
+        .rawQuery("SELECT COUNT(*) AS count FROM $TABLE_EVALUATIONS");
     return result.first["count"] as int?;
   }
 
-  Future<List<EvaluationEntity>> getEvaluationsByEvaluatorID(int evaluatorID) async {
+  Future<List<EvaluationEntity>> getEvaluationsByEvaluatorID(
+      int evaluatorID) async {
     final Database? database = await db;
     List<Map<String, dynamic>> maps = await database!.query(
       TABLE_EVALUATIONS,
-      columns: [ID_EVALUATION, ID_EVALUATOR_FK, ID_PARTICIPANT_FK],
+      columns: [ID_EVALUATION, ID_EVALUATOR_FK, ID_PARTICIPANT_FK, LANGUAGE],
       where: "$ID_EVALUATOR_FK = ?",
       whereArgs: [evaluatorID],
     );
-
     if (maps.isNotEmpty) {
+      print("MAPS IS NOT EMPTY");
+      print("GODAMMIT MAPS: $maps");
       return maps.map((map) => EvaluationEntity.fromMap(map)).toList();
     }
     return [];

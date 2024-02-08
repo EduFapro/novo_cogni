@@ -15,7 +15,7 @@ class EdLanguageDropdown extends GetView<LanguageController> {
         }
       },
       items: Language.values
-          .where((language) => language != Language.english) // Exclude English
+          .where((language) => language != Language.english)
           .map<DropdownMenuItem<Language>>((language) {
         return DropdownMenuItem<Language>(
           value: language,

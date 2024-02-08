@@ -54,8 +54,9 @@ class UserController extends GetxController {
 
     user.value = fetchedUser;
     List<EvaluationEntity> fetchedEvaluations;
-
+    print("Aqui vamos nós");
     try {
+      print("fetched user: $fetchedUser");
       fetchedEvaluations = await userService.getEvaluationsByUser(fetchedUser);
       evaluations.assignAll(fetchedEvaluations);
     } catch (e) {
@@ -65,17 +66,18 @@ class UserController extends GetxController {
 
     for (var evaluation in fetchedEvaluations) {
       try {
-        var participant = await participantRepo.getParticipantByEvaluation(evaluation.evaluationID!);
+        var participant = await participantRepo
+            .getParticipantByEvaluation(evaluation.evaluationID!);
         if (participant != null) {
           participants.add(participant);
           participantDetails[evaluation.evaluationID!] = participant;
         }
       } catch (e) {
-        print("Error linking participant to evaluation ID ${evaluation.evaluationID}: $e");
+        print(
+            "Error linking participant to evaluation ID ${evaluation.evaluationID}: $e");
       }
     }
   }
-
 
   Future<void> updateUser(EvaluatorEntity newUser) async {
     user.value = newUser;

@@ -54,6 +54,7 @@ class EvaluationRepository {
   /// Returns a list of [EvaluationEntity] or an empty list if no evaluations are found for the evaluator.
   Future<List<EvaluationEntity>> getEvaluationsByEvaluatorID(int evaluatorID) async {
     var evaluations = await localDataSource.getEvaluationsByEvaluatorID(evaluatorID);
+    print("here in evaluation repo, evaluations: $evaluations");
     return evaluations;
   }
 }

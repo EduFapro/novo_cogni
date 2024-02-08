@@ -24,7 +24,7 @@ class ParticipantRegistrationController extends GetxController {
   final selectedEducationLevel = Rx<EducationLevel?>(null);
   final selectedDate = Rx<DateTime?>(null);
   final selectedLaterality = Rx<Handedness?>(null);
-  final selectedLanguage = Rx<Language?>(null);
+  final selectedLanguage = Rx<Language?>(Language.values.first);
 
   final RxMap<String, bool> itemsMap =
       RxMap<String, bool>({for (var v in modulesList) v.title!: false});
