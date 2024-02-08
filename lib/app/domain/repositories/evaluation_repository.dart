@@ -53,6 +53,8 @@ class EvaluationRepository {
   /// Useful for fetching all evaluations conducted by a specific evaluator.
   /// Returns a list of [EvaluationEntity] or an empty list if no evaluations are found for the evaluator.
   Future<List<EvaluationEntity>> getEvaluationsByEvaluatorID(int evaluatorID) async {
-    return await localDataSource.getEvaluationsByEvaluatorID(evaluatorID);
+    var evaluations = await localDataSource.getEvaluationsByEvaluatorID(evaluatorID);
+    print(evaluations);
+    return evaluations;
   }
 }
