@@ -121,7 +121,7 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                         ),
                       ],
                     ),
-                    EdLanguageFormDropdown(),
+                    EdLanguageDropdown (),
                   ],
                 ),
               ),

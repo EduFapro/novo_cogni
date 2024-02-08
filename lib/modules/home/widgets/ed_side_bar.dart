@@ -73,7 +73,7 @@ class EdSidebar extends StatelessWidget {
             ],
           ),
         ),
-        EdLanguageFormDropdown(),
+        EdLanguageDropdown (),
       ],
     );
   }
