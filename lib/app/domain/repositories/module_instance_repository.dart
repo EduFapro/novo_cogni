@@ -2,52 +2,47 @@ import 'package:novo_cogni/app/data/datasource/module_instance_local_datasource.
 import 'package:novo_cogni/app/domain/entities/module_instance_entity.dart';
 
 class ModuleInstanceRepository {
-  final ModuleInstanceLocalDataSource moduleInstanceLocalDataSource;
+  final ModuleInstanceLocalDataSource _moduleInstanceLocalDataSource;
 
-  ModuleInstanceRepository({required this.moduleInstanceLocalDataSource});
+  ModuleInstanceRepository({required ModuleInstanceLocalDataSource moduleInstanceLocalDataSource})
+      : _moduleInstanceLocalDataSource = moduleInstanceLocalDataSource;
 
   // Create a Module Instance
   Future<ModuleInstanceEntity?> createModuleInstance(ModuleInstanceEntity moduleInstance) async {
-    int? id = await moduleInstanceLocalDataSource.create(moduleInstance);
+    int? id = await _moduleInstanceLocalDataSource.create(moduleInstance);
     if (id != null) {
-      return await moduleInstanceLocalDataSource.getModuleInstanceById(id);
+      return _moduleInstanceLocalDataSource.getModuleInstanceById(id);
     }
     return null;
   }
 
-
   // Get a Module Instance by ID
   Future<ModuleInstanceEntity?> getModuleInstance(int id) async {
-    return await moduleInstanceLocalDataSource.getModuleInstanceById(id);
+    return _moduleInstanceLocalDataSource.getModuleInstanceById(id);
   }
 
   // Delete a Module Instance by ID
   Future<int> deleteModuleInstance(int id) async {
-    return await moduleInstanceLocalDataSource.deleteModuleInstance(id);
+    return _moduleInstanceLocalDataSource.deleteModuleInstance(id);
   }
 
   // Update a Module Instance
   Future<int> updateModuleInstance(ModuleInstanceEntity moduleInstance) async {
-    return await moduleInstanceLocalDataSource.updateModuleInstance(moduleInstance);
+    return _moduleInstanceLocalDataSource.updateModuleInstance(moduleInstance);
   }
 
   // Get all Module Instances
   Future<List<ModuleInstanceEntity>> getAllModuleInstances() async {
-    try {
-      return await moduleInstanceLocalDataSource.getAllModuleInstances();
-    } catch (e) {
-      print('Error fetching all module instances: $e');
-      return [];
-    }
+    return _moduleInstanceLocalDataSource.getAllModuleInstances();
   }
 
   // Get the number of Module Instances
   Future<int?> getNumberOfModuleInstances() async {
-    return await moduleInstanceLocalDataSource.getNumberOfModuleInstances();
+    return _moduleInstanceLocalDataSource.getNumberOfModuleInstances();
   }
 
+  // Get Module Instances by Evaluation ID
   Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(int evaluationId) async {
-    return await moduleInstanceLocalDataSource.getModuleInstancesByEvaluationId(evaluationId);
+    return _moduleInstanceLocalDataSource.getModuleInstancesByEvaluationId(evaluationId);
   }
-
 }

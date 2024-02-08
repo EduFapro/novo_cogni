@@ -2,52 +2,43 @@ import 'package:novo_cogni/app/data/datasource/task_instance_local_datasource.da
 import 'package:novo_cogni/app/domain/entities/task_instance_entity.dart';
 
 class TaskInstanceRepository {
-  final TaskInstanceLocalDataSource localDataSource;
+  final TaskInstanceLocalDataSource _localDataSource;
 
-  TaskInstanceRepository({required this.localDataSource});
+  TaskInstanceRepository({required TaskInstanceLocalDataSource localDataSource})
+      : _localDataSource = localDataSource;
 
   // Create a Task Instance
   Future<int?> createTaskInstance(TaskInstanceEntity taskInstance) async {
-    return await localDataSource.create(taskInstance);
+    return await _localDataSource.create(taskInstance);
   }
 
   // Get a Task Instance by ID
   Future<TaskInstanceEntity?> getTaskInstance(int id) async {
-    return await localDataSource.getTaskInstanceById(id);
-  }
-
-  // Delete a Task Instance by ID
-  Future<int> deleteTaskInstance(int id) async {
-    return await localDataSource.deleteTaskInstance(id);
+    return await _localDataSource.getTaskInstance(id);
   }
 
   // Update a Task Instance
   Future<int> updateTaskInstance(TaskInstanceEntity taskInstance) async {
-    return await localDataSource.updateTaskInstance(taskInstance);
+    return await _localDataSource.updateTaskInstance(taskInstance);
   }
 
-  // Get all Task Instances
+  // Delete a Task Instance by ID
+  Future<int> deleteTaskInstance(int id) async {
+    return await _localDataSource.deleteTaskInstance(id);
+  }
+
+  // List all Task Instances
   Future<List<TaskInstanceEntity>> getAllTaskInstances() async {
-    return await localDataSource.getAllTaskInstances();
+    return await _localDataSource.getAllTaskInstances();
   }
 
   // Get Task Instances for a specific Module Instance
   Future<List<TaskInstanceEntity>> getTaskInstancesForModuleInstance(int moduleInstanceId) async {
-    return await localDataSource.getTaskInstancesForModuleInstance(moduleInstanceId);
+    return await _localDataSource.getTaskInstancesForModuleInstance(moduleInstanceId);
   }
 
+  // Get the first pending Task Instance
   Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
-    try {
-    return await localDataSource.getFirstPendingTaskInstance();
-    } catch (ex) {
-      print(ex);
-      return null;
-    }
-  }
-
-
-  // Close the database
-  Future<void> closeDatabase() async {
-    await localDataSource.closeDatabase();
+    return await _localDataSource.getFirstPendingTaskInstance();
   }
 }

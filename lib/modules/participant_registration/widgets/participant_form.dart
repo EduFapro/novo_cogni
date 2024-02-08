@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import '../../../constants/enums/language_enums.dart';
-import '../../../constants/enums/person_enums.dart';
+import '../../../constants/enums/person_enums/person_enums.dart';
 import '../../home/home_controller.dart';
 import '../../login/login_controller.dart';
+import '../../widgets/ed_language_form_dropdown.dart';
 import '../participant_registration_controller.dart';
 
 class ParticipantForm extends GetView<ParticipantRegistrationController> {
@@ -100,8 +100,8 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             items: Sex.values.map((sex) {
                               return DropdownMenuItem<Sex>(
                                 value: sex,
-                                child:
-                                    Text(sex == Sex.male ? 'Male' : 'Female'),
+
+                                child: Text(sex == Sex.male ? Sex.male.description : Sex.female.description),
                               );
                             }).toList(),
                             onChanged: (Sex? value) {
@@ -175,25 +175,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                         SizedBox(width: spacingWidth),
                         SizedBox(
                           width: fieldWidthRow1,
-                          child: DropdownButtonFormField<Language>(
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color(0xffededed),
-                              labelText: UiStrings.language,
-                            ),
-                            items: Language.values.map((language) {
-                              return DropdownMenuItem<Language>(
-                                value: language,
-                                child: Text(language == Language.portuguese
-                                    ? 'Portuguese'
-                                    : 'Spanish'),
-                              );
-                            }).toList(),
-                            onChanged: (Language? value) {
-                              controller.selectedLanguage.value = value;
-                            },
-                            value: controller.selectedLanguage.value,
-                          ),
+                          child: EdLanguageFormDropdown(),
                         ),
                       ],
                     ),

@@ -1,14 +1,14 @@
-import 'package:equatable/equatable.dart';
-import '../../../constants/enums/person_enums.dart';
+import '../../../constants/enums/person_enums/person_enums.dart';
 import '../../data/data_constants/participant_constants.dart';
 
-class ParticipantEntity extends Equatable {
+class ParticipantEntity {
   final int? participantID;
   final String name;
   final String surname;
   final DateTime birthDate;
   final Sex sex;
   final EducationLevel educationLevel;
+  final Handedness handedness;
 
   ParticipantEntity({
     this.participantID,
@@ -17,32 +17,32 @@ class ParticipantEntity extends Equatable {
     required this.birthDate,
     required this.sex,
     required this.educationLevel,
+    required this.handedness,
   });
 
-  ParticipantEntity.fromMap(Map<String, dynamic> map) :
-        participantID = map[ID_PARTICIPANT] as int?,
-        name = map[PARTICIPANT_NAME] ?? '',
-        surname = map[PARTICIPANT_SURNAME] ?? '',
-        birthDate = (map[BIRTH_DATE_PARTICIPANT] != null) ? DateTime.parse(map[BIRTH_DATE_PARTICIPANT]) : DateTime.now(),
-        sex = (map[PARTICIPANT_SEX] == 'Male') ? Sex.male : Sex.female,
-        educationLevel = (map[PARTICIPANT_EDUCATION_LEVEL] != null) ? EducationLevel.values.firstWhere((e) => e.toString().split('.').last == map[PARTICIPANT_EDUCATION_LEVEL]) : EducationLevel.other;
+  // Adapt fromMap method
+  static ParticipantEntity fromMap(Map<String, dynamic> map) {
+    return ParticipantEntity(
+      participantID: map[ID_PARTICIPANT],
+      name: map[PARTICIPANT_NAME],
+      surname: map[PARTICIPANT_SURNAME],
+      birthDate: DateTime.parse(map[BIRTH_DATE_PARTICIPANT]),
+      sex: SexExtension.fromValue(map[PARTICIPANT_SEX]),
+      educationLevel: EducationLevelExtension.fromValue(map[PARTICIPANT_EDUCATION_LEVEL]),
+      handedness: HandednessExtension.fromValue(map[PARTICIPANT_HANDEDNESS]),
+    );
+  }
 
-  Map<String, Object?> toMap() {
+  // Adapt toMap method
+  Map<String, dynamic> toMap() {
     return {
-      if (participantID != null) ID_PARTICIPANT: participantID,
+      ID_PARTICIPANT: participantID,
       PARTICIPANT_NAME: name,
       PARTICIPANT_SURNAME: surname,
       BIRTH_DATE_PARTICIPANT: birthDate.toIso8601String(),
-      PARTICIPANT_SEX: sex == Sex.male ? 'Male' : 'Female',
-      PARTICIPANT_EDUCATION_LEVEL: educationLevel.toString().split('.').last,
+      PARTICIPANT_SEX: sex.numericValue,
+      PARTICIPANT_EDUCATION_LEVEL: educationLevel.numericValue,
+      PARTICIPANT_HANDEDNESS: handedness.numericValue,
     };
   }
-
-  @override
-  String toString() {
-    return "Participant Name: $name $surname";
-  }
-
-  @override
-  List<Object?> get props => [participantID];
 }

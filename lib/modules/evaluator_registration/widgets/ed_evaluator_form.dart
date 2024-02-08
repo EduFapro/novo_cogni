@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
-import '../../../constants/enums/person_enums.dart';
+import '../../../constants/enums/person_enums/person_enums.dart';
 import '../evaluator_registration_controller.dart';
 
 class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
@@ -110,7 +110,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController> {
                         items: Sex.values.map((Sex sex) {
                           return DropdownMenuItem<Sex>(
                             value: sex,
-                            child: Text(sex == Sex.male ? 'Male' : 'Female'),
+                            child: Text(sex == Sex.male ? Sex.male.description : Sex.female.description),
                           );
                         }).toList(),
                         onChanged: (Sex? value) {

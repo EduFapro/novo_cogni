@@ -24,17 +24,20 @@ class ModuleInstanceEntity {
       ID_MODULE_INSTANCE: moduleInstanceID,
       ID_MODULE_FK: moduleID,
       ID_EVALUATION_FK: evaluationID,
-      MODULE_INSTANCE_STATUS: status.description,
+      MODULE_INSTANCE_STATUS: status.numericValue,
     };
   }
+
 
   static ModuleInstanceEntity fromMap(Map<String, dynamic> map) {
     return ModuleInstanceEntity(
       moduleInstanceID: map[ID_MODULE_INSTANCE] as int?,
-      moduleID: map[ID_MODULE_FK],
-      evaluationID: map[ID_EVALUATION_FK],
+      moduleID: map[ID_MODULE_FK] as int,
+      evaluationID: map[ID_EVALUATION_FK] as int,
+      status: ModuleStatusExtension.fromNumericValue(map[MODULE_INSTANCE_STATUS] as int),
     );
   }
+
 
   Future<ModuleEntity?> get module async {
     if (_module == null) {

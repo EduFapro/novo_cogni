@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../app/domain/entities/participant_entity.dart';
 import '../../app/domain/seeders/modules_seeder.dart';
-import '../../../constants/enums/person_enums.dart';
+import '../../constants/enums/person_enums/person_enums.dart';
 import '../../constants/enums/language_enums.dart';
 import '../home/home_controller.dart';
 import 'participant_registration_service.dart';
@@ -52,17 +52,20 @@ class ParticipantRegistrationController extends GetxController {
     DateTime? birthDate = selectedDate.value;
     Sex? sex = selectedSex.value;
     EducationLevel? educationLevel = selectedEducationLevel.value;
+    Handedness? handedness = selectedLaterality.value; // Ensure this is set
 
     List<String> nameParts = fullName.split(' ');
     String name = nameParts.first;
     String surname = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
 
+    // Include handedness in the constructor
     ParticipantEntity newParticipant = ParticipantEntity(
       name: name,
+      surname: surname,
       birthDate: birthDate!,
       sex: sex!,
       educationLevel: educationLevel!,
-      surname: surname,
+      handedness: handedness!, // Corrected
     );
 
 

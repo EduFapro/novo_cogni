@@ -1,78 +1,68 @@
-import 'package:novo_cogni/app/data/datasource/task_local_datasource.dart';
-import 'package:novo_cogni/app/domain/entities/module_entity.dart';
-
 import '../../data/datasource/module_local_datasource.dart';
+import '../../data/datasource/task_local_datasource.dart';
+import '../../domain/entities/module_entity.dart';
+import '../../domain/entities/task_entity.dart';
 
+/// A repository class for managing module data.
+/// It abstracts the underlying data sources, providing a clean interface for the domain layer.
 class ModuleRepository {
   final ModuleLocalDataSource moduleLocalDataSource;
   final TaskLocalDataSource taskLocalDataSource;
 
-  ModuleRepository({required this.moduleLocalDataSource, required this.taskLocalDataSource});
+  ModuleRepository({
+    required this.moduleLocalDataSource,
+    required this.taskLocalDataSource,
+  });
 
-  // Create a Module
+  /// Creates a new module in the database.
+  /// Returns the ID of the newly created module or null in case of failure.
   Future<int?> createModule(ModuleEntity module) async {
     return await moduleLocalDataSource.create(module);
+  }
+
+  /// Retrieves a module by its ID, including its associated tasks.
+  /// Returns a [ModuleEntity] if found, or null otherwise.
+  Future<ModuleEntity?> getModuleWithTasks(int moduleId) async {
+    var module = await moduleLocalDataSource.getModuleById(moduleId);
+    if (module != null) {
+      var tasks = await taskLocalDataSource.listTasksByModuleId(moduleId);
+      module = module.copyWith(tasks: tasks); // Assuming copyWith method is implemented
+    }
+    return module;
+  }
+
+  /// Retrieves all modules from the database.
+  /// Returns a list of [ModuleEntity] or an empty list in case of failure or if no modules are found.
+  Future<List<ModuleEntity>> getAllModules() async {
+    return await moduleLocalDataSource.getAllModules();
+  }
+
+  /// Retrieves a module by its name.
+  /// Returns a [ModuleEntity] if found, or null otherwise.
+  Future<ModuleEntity?> getModuleByName(String name) async {
+    return await moduleLocalDataSource.getModuleByName(name);
+  }
+
+  /// Deletes a module by its ID.
+  /// Returns the number of rows affected (should be 1 if successful, 0 otherwise).
+  Future<int> deleteModule(int id) async {
+    return await moduleLocalDataSource.deleteModule(id);
+  }
+
+  /// Updates an existing module's information in the database.
+  /// Returns the number of rows affected (should be 1 if successful, 0 otherwise).
+  Future<int> updateModule(ModuleEntity module) async {
+    return await moduleLocalDataSource.updateModule(module);
+  }
+
+  /// Retrieves the total number of modules in the database.
+  /// Returns the count or null in case of failure.
+  Future<int?> getNumberOfModules() async {
+    return await moduleLocalDataSource.getNumberOfModules();
   }
 
   // Get a Module by ID
   Future<ModuleEntity?> getModule(int id) async {
     return await moduleLocalDataSource.getModuleById(id);
   }
-
-  // Delete a Module by ID
-  Future<int> deleteModule(int id) async {
-    return await moduleLocalDataSource.deleteModule(id);
-  }
-
-  // Update a Module
-  Future<int> updateModule(ModuleEntity module) async {
-    return await moduleLocalDataSource.updateModule(module);
-  }
-
-  // Get all Modules
-  Future<List<ModuleEntity>> getAllModules() async {
-    try {
-      return await moduleLocalDataSource.getAllModules();
-    } catch (e) {
-      print('Error fetching all modules: $e');
-      return [];
-    }
-  }
-
-  // Get a Module with its Tasks
-  Future<ModuleEntity?> getModuleWithTasks(int moduleId) async {
-    final module = await moduleLocalDataSource.getModuleById(moduleId);
-    print("Fetched module: $module");
-
-    if (module != null) {
-      final tasks = await taskLocalDataSource.getTasksForModule(moduleId);
-      print("Fetched tasks: $tasks");
-
-      module.tasks = tasks;
-    } else {
-      print("Module with ID $moduleId not found.");
-    }
-
-    return module;
-  }
-
-
-  // Get a Module by Name
-  Future<ModuleEntity?> getModuleByName(String name) async {
-    try {
-      return moduleLocalDataSource.getModuleByName(name);
-    } catch (ex) {
-      print(ex);
-      return null;
-    }
-  }
-
-  // Get the number of Modules
-  Future<int?> getNumberOfModules() async {
-    return await moduleLocalDataSource.getNumberOfModules();
-  }
-
-
-
-
 }

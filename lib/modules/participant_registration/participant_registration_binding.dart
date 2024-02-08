@@ -2,12 +2,6 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/modules/participant_registration/participant_registration_controller.dart';
 import 'package:novo_cogni/modules/participant_registration/participant_registration_service.dart';
 
-import '../../app/data/datasource/evaluation_local_datasource.dart';
-import '../../app/data/datasource/module_instance_local_datasource.dart';
-import '../../app/data/datasource/module_local_datasource.dart';
-import '../../app/data/datasource/participant_local_datasource.dart';
-import '../../app/data/datasource/task_instance_local_datasource.dart';
-import '../../app/data/datasource/task_local_datasource.dart';
 import '../../app/domain/repositories/evaluation_repository.dart';
 import '../../app/domain/repositories/module_instance_repository.dart';
 import '../../app/domain/repositories/module_repository.dart';

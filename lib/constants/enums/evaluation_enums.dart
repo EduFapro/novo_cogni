@@ -1,8 +1,22 @@
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get.dart';
 
 enum EvaluationStatus { pending, in_progress, completed }
 
-extension StatusDescription on EvaluationStatus {
+// Extension for EvaluationStatus
+extension EvaluationStatusExtension on EvaluationStatus {
+  int get numericValue {
+    switch (this) {
+      case EvaluationStatus.pending:
+        return 1;
+      case EvaluationStatus.in_progress:
+        return 2;
+      case EvaluationStatus.completed:
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
   String get description {
     switch (this) {
       case EvaluationStatus.pending:
@@ -12,28 +26,20 @@ extension StatusDescription on EvaluationStatus {
       case EvaluationStatus.completed:
         return 'completed_evaluation'.tr;
       default:
-        return 'unknown';
+        return 'unknown'.tr;
     }
   }
-}
 
-
-// Map that associates enum cases with custom integer values.
-const Map<EvaluationStatus, int> _statusValues = {
-  EvaluationStatus.pending: 1,
-  EvaluationStatus.in_progress: 2,
-  EvaluationStatus.completed: 3,
-};
-
-
-// Extension to get custom integer value from enum case.
-extension EvaluationStatusExtension on EvaluationStatus {
-  int get numericValue => _statusValues[this] ?? 0;
-
-  static EvaluationStatus fromValue(int numericValue) {
-    return _statusValues.entries
-        .firstWhere((element) => element.value == numericValue,
-        orElse: () => MapEntry(EvaluationStatus.pending, 0))
-        .key;
+  static EvaluationStatus fromNumericValue(int value) {
+    switch (value) {
+      case 1:
+        return EvaluationStatus.pending;
+      case 2:
+        return EvaluationStatus.in_progress;
+      case 3:
+        return EvaluationStatus.completed;
+      default:
+        return EvaluationStatus.pending;
+    }
   }
 }

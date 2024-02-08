@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../../../constants/enums/person_enums.dart';
+
+import '../../../constants/enums/person_enums/person_enums.dart';
 import '../../data/data_constants/evaluator_constants.dart';
 
 class EvaluatorEntity extends Equatable {
@@ -23,43 +24,55 @@ class EvaluatorEntity extends Equatable {
     required this.specialty,
     required this.cpfOrNif,
     required this.email,
-    required this.password,
-    required this.firstLogin});
+    this.password = '0000',
+    this.firstLogin = false,
+  });
+
 
   EvaluatorEntity.fromMap(Map<String, dynamic> map)
-      : evaluatorID = map[ID_EVALUATOR] as int?,
-        name = map[EVALUATOR_NAME] ?? '',
-        surname = map[EVALUATOR_SURNAME] ?? '',
-        birthDate = (map[BIRTH_DATE_EVALUATOR] != null)
-            ? DateTime.parse(map[BIRTH_DATE_EVALUATOR])
-            : DateTime.now(),
-        sex = (map[EVALUATOR_SEX] == 'Male') ? Sex.male : Sex.female,
-        specialty = map[SPECIALTY_EVALUATOR] ?? '',
-        cpfOrNif = map[CPF_OR_NIF_EVALUATOR] ?? '',
-        email = map[EMAIL_EVALUATOR] ?? '',
-        password = map[PASSWORD_EVALUATOR] ?? '0000',
-        firstLogin = map[FIRST_LOGIN] == 0 ? false : true;
+      : evaluatorID = map[ID_EVALUATOR],
+        name = map[EVALUATOR_NAME],
+        surname = map[EVALUATOR_SURNAME],
+        birthDate = DateTime.parse(map[BIRTH_DATE_EVALUATOR]),
+        sex = SexExtension.fromValue(map[EVALUATOR_SEX]),
+        specialty = map[SPECIALTY_EVALUATOR],
+        cpfOrNif = map[CPF_OR_NIF_EVALUATOR],
+        email = map[EMAIL_EVALUATOR],
+        password = map[PASSWORD_EVALUATOR],
+        firstLogin = map[FIRST_LOGIN] == 1;
 
-  Map<String, Object?> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       ID_EVALUATOR: evaluatorID,
       EVALUATOR_NAME: name,
       EVALUATOR_SURNAME: surname,
       BIRTH_DATE_EVALUATOR: birthDate.toIso8601String(),
-      EVALUATOR_SEX: sex == Sex.male ? 'Male' : 'Female',
+      EVALUATOR_SEX: sex.toInt(),
       SPECIALTY_EVALUATOR: specialty,
       CPF_OR_NIF_EVALUATOR: cpfOrNif,
       EMAIL_EVALUATOR: email,
       PASSWORD_EVALUATOR: password,
-      FIRST_LOGIN: firstLogin ? 1 : 0
+      FIRST_LOGIN: firstLogin ? 1 : 0,
     };
   }
 
   @override
-  String toString() {
-    return "Evaluator Name: $name $surname";
-  }
+  List<Object?> get props => [evaluatorID, name, surname, birthDate, sex, specialty, cpfOrNif, email, firstLogin];
 
   @override
-  List<Object?> get props => [evaluatorID];
+  String toString() {
+    return 'EvaluatorEntity{'
+        'ID: $evaluatorID, '
+        'Name: $name $surname, '
+        'Birth Date: ${birthDate.toIso8601String()}, '
+        'Sex: ${sex.description}, '
+        'Specialty: $specialty, '
+        'CPF/NIF: $cpfOrNif, '
+        'Email: $email, '
+        'First Login: ${firstLogin ? "Yes" : "No"}'
+        '}';
+  }
+
 }
+
+

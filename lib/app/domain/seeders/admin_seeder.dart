@@ -1,6 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../../constants/enums/person_enums.dart';
+import '../../../constants/enums/person_enums/person_enums.dart';
 import '../../data/data_constants/evaluator_constants.dart';
 import '../entities/evaluator_entity.dart';
 

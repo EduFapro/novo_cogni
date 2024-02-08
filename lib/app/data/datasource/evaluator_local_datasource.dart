@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../../constants/enums/person_enums.dart';
+import '../../../constants/enums/person_enums/person_enums.dart';
 import '../../domain/entities/evaluator_entity.dart';
 import '../data_constants/evaluator_constants.dart';
 import '../data_constants/database_constants.dart';
@@ -33,7 +33,7 @@ class EvaluatorLocalDataSource {
     try {
       final Database? database = await db;
 
-      final sexValue = evaluator.sex == Sex.male ? 'Male' : 'Female';
+      final sexValue = evaluator.sex.toInt();
 
       return await database!.insert(
         TABLE_EVALUATORS,
@@ -41,7 +41,7 @@ class EvaluatorLocalDataSource {
           EVALUATOR_NAME: evaluator.name,
           EVALUATOR_SURNAME: evaluator.surname,
           BIRTH_DATE_EVALUATOR: evaluator.birthDate.toIso8601String(),
-          EVALUATOR_SEX: sexValue,
+          EVALUATOR_SEX: sexValue, // Use int value
           CPF_OR_NIF_EVALUATOR: evaluator.cpfOrNif,
           EMAIL_EVALUATOR: evaluator.email,
           SPECIALTY_EVALUATOR: evaluator.specialty,
@@ -56,6 +56,7 @@ class EvaluatorLocalDataSource {
       return null;
     }
   }
+
 
   Future<EvaluatorEntity?> getEvaluator(int id) async {
     try {

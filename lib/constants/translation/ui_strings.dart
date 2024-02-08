@@ -91,4 +91,29 @@ class UiStrings extends Translations {
 
   static String get completedEvaluation => 'completed_evaluation'.tr;
 
+  static String get portugueseLanguage => 'portuguese_language'.tr;
+
+  static String get selectLanguage => 'select_language'.tr;
+
+  static String get spanishLanguage => 'spanish_language'.tr;
+
+  static String get englishLanguage => 'english_language'.tr;
+
+  static String get femaleSex => 'female_sex'.tr;
+
+  static String get maleSex => 'male_sex'.tr;
+
+  static String get pendingModule => 'pending_module'.tr;
+
+  static String get inProgressModule => 'in_progress_module'.tr;
+
+  static String get completedModule => 'completed_module'.tr;
+
+  static String get pendingTask => 'pending_task'.tr;
+
+  static String get doneTask => 'done_task'.tr;
+
+  static String get playMode => 'play_mode'.tr;
+
+  static String get recordMode => 'record_mode'.tr;
 }

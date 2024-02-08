@@ -32,7 +32,7 @@ class EvaluationEntity {
     return EvaluationEntity(
       evaluationID: map[ID_EVALUATION] as int?,
       evaluatorID: map[ID_EVALUATOR_FK] as int,
-      status: EvaluationStatusExtension.fromValue(map[EVALUATION_STATUS] as int),
+      status: EvaluationStatusExtension.fromNumericValue(map[EVALUATION_STATUS]),
       evaluationDate: map[EVALUATION_DATE] != null ? DateTime.parse(map[EVALUATION_DATE] as String) : null,
       participantID: map[ID_PARTICIPANT_FK] as int,
     );

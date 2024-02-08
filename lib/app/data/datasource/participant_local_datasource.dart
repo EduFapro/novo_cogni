@@ -1,5 +1,5 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import '../../../constants/enums/person_enums.dart';
+import '../../../constants/enums/person_enums/person_enums.dart';
 import '../data_constants/database_constants.dart';
 import '../data_constants/evaluation_constants.dart';
 import 'database_helper.dart';
@@ -20,7 +20,10 @@ class ParticipantLocalDataSource {
     try {
       final Database? database = await db;
 
-      final sexValue = participant.sex == Sex.male ? 'Male' : 'Female';
+      // Use the enum's numeric value directly
+      final sexValue = participant.sex.numericValue;
+      final educationLevelValue = participant.educationLevel.numericValue;
+      final handednessValue = participant.handedness.numericValue;
 
       return await database!.insert(
         TABLE_PARTICIPANTS,
@@ -29,8 +32,8 @@ class ParticipantLocalDataSource {
           PARTICIPANT_SURNAME: participant.surname,
           BIRTH_DATE_PARTICIPANT: participant.birthDate.toIso8601String(),
           PARTICIPANT_SEX: sexValue,
-          PARTICIPANT_EDUCATION_LEVEL
-              : participant.educationLevel.toString().split('.').last,
+          PARTICIPANT_EDUCATION_LEVEL: educationLevelValue,
+          PARTICIPANT_HANDEDNESS: handednessValue,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -39,6 +42,7 @@ class ParticipantLocalDataSource {
       return null;
     }
   }
+
 
   Future<ParticipantEntity?> getParticipant(int id) async {
     try {

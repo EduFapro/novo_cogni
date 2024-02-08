@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/module_instance_entity.dart';
 import 'package:novo_cogni/app/domain/repositories/module_instance_repository.dart';
 
@@ -134,7 +133,12 @@ class ParticipantRegistrationService {
   Future<List<int>> fetchModuleIds(List<String> selectedModules) async {
     List<Future<int>> futures = selectedModules.map((name) async {
       var module = await moduleRepository.getModuleByName(name);
-      return module!.moduleID!;
+      print("module: $module");
+      if (module != null && module.moduleID != null) {
+        return module.moduleID!;
+      } else {
+        throw Exception("Module or module ID is null for module: $name");
+      }
     }).toList();
 
     return await Future.wait(futures);

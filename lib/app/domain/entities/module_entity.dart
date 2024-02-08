@@ -3,9 +3,9 @@ import 'package:novo_cogni/app/domain/entities/task_entity.dart';
 import '../../data/data_constants/module_constants.dart';
 
 class ModuleEntity {
-  int? moduleID;
-  String? title;
-  List<TaskEntity> tasks;
+  final int? moduleID;
+  final String? title;
+  final List<TaskEntity> tasks;
 
   ModuleEntity({
     this.moduleID,
@@ -27,6 +27,21 @@ class ModuleEntity {
     );
   }
 
+  ModuleEntity copyWith({
+    int? moduleID,
+    String? title,
+    List<TaskEntity>? tasks,
+  }) {
+    return ModuleEntity(
+      moduleID: moduleID ?? this.moduleID,
+      title: title ?? this.title,
+      tasks: tasks ?? this.tasks,
+    );
+  }
 
 
+  @override
+  String toString() {
+    return 'ModuleEntity{moduleID: $moduleID, title: $title, tasks: $tasks}';
+  }
 }

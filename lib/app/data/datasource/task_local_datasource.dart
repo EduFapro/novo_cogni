@@ -1,94 +1,91 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
 import '../../domain/entities/task_entity.dart';
 import '../data_constants/database_constants.dart';
 import '../data_constants/task_constants.dart';
 import 'database_helper.dart';
+import '../../../constants/enums/task_enums.dart';
 
 class TaskLocalDataSource {
-  static final TaskLocalDataSource _instance = TaskLocalDataSource.internal();
+  static final TaskLocalDataSource _instance = TaskLocalDataSource._internal();
 
   factory TaskLocalDataSource() => _instance;
 
-  TaskLocalDataSource.internal();
+  TaskLocalDataSource._internal();
 
   final dbHelper = DatabaseHelper();
 
   Future<Database?> get db async => dbHelper.db;
 
+  // Create a new Task
   Future<int?> create(TaskEntity task) async {
     try {
       final Database? database = await db;
-
-      return await database!.insert(
-        TABLE_TASKS,
-        task.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+      final map = task.toMap();
+      map[MODE] = task.taskMode.numericValue;
+      return await database!.insert(TABLE_TASKS, map,
+          conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (ex) {
       print(ex);
       return null;
     }
   }
 
-  Future<TaskEntity?> getTask(int id) async {
-    try {
-      final Database? database = await db;
-
-      final List<Map<String, dynamic>> maps = await database!.query(
-        TABLE_TASKS,
-        where: '$ID_TASK = ?',
-        whereArgs: [id],
-      );
-
-      if (maps.isNotEmpty) {
-        return TaskEntity.fromMap(maps.first);
-      }
-
-      return null;
-    } catch (ex) {
-      print(ex);
-      return null;
-    }
-  }
-
-  Future<int> deleteTask(int id) async {
-    try {
-      final Database? database = await db;
-
-      return await database!.delete(
-        TABLE_TASKS,
-        where: "$ID_TASK = ?",
-        whereArgs: [id],
-      );
-    } catch (ex) {
-      print(ex);
-      return -1;
-    }
-  }
-
+  // Update a Task
   Future<int> updateTask(TaskEntity task) async {
     try {
       final Database? database = await db;
-
-      return await database!.update(
-        TABLE_TASKS,
-        task.toMap(),
-        where: "$ID_TASK = ?",
-        whereArgs: [task.taskID],
-      );
+      final map = task.toMap();
+      map[MODE] = task.taskMode.numericValue;
+      return await database!.update(TABLE_TASKS, map,
+          where: '$ID_TASK = ?', whereArgs: [task.taskID]);
     } catch (ex) {
       print(ex);
       return -1;
     }
   }
 
-  Future<List<TaskEntity>> getAllTasks() async {
+  // Delete a Task by ID
+  Future<int> deleteTask(int id) async {
     try {
       final Database? database = await db;
-      final List<Map<String, dynamic>> maps = await database!.query(TABLE_TASKS);
+      return await database!
+          .delete(TABLE_TASKS, where: '$ID_TASK = ?', whereArgs: [id]);
+    } catch (ex) {
+      print(ex);
+      return -1;
+    }
+  }
 
+  // Retrieve a Task by ID with proper casting
+  Future<TaskEntity?> getTask(int id) async {
+    try {
+      final Database? database = await db;
+      final maps = await database!
+          .query(TABLE_TASKS, where: '$ID_TASK = ?', whereArgs: [id]);
+      if (maps.isNotEmpty) {
+        final map = maps.first;
+        int modeValue = int.parse(map[MODE].toString()); // Correct casting
+        map[MODE] = TaskModeExtension.fromNumericValue(modeValue);
+        return TaskEntity.fromMap(map);
+      }
+      return null;
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
+  }
+
+  // List all Tasks with proper casting
+  Future<List<TaskEntity>> listTasks() async {
+    try {
+      final Database? database = await db;
+      final maps = await database!.query(TABLE_TASKS);
       return List.generate(maps.length, (i) {
-        return TaskEntity.fromMap(maps[i]);
+        final map = maps[i];
+        int modeValue = int.parse(map[MODE].toString()); // Correct casting
+        map[MODE] = TaskModeExtension.fromNumericValue(modeValue);
+        return TaskEntity.fromMap(map);
       });
     } catch (ex) {
       print(ex);
@@ -96,26 +93,21 @@ class TaskLocalDataSource {
     }
   }
 
-  Future<int?> getNumberOfTasks() async {
-    final Database? database = await db;
-    final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABLE_TASKS");
-    return result.first["count"] as int?;
-  }
-
-  Future<List<TaskEntity>> getTasksForModule(int moduleId) async {
-    final Database? database = await db;
-    final List<Map<String, dynamic>> maps = await database!.query(
-      TABLE_TASKS,
-      where: '$MODULE_ID = ?',
-      whereArgs: [moduleId],
-    );
-    return List.generate(maps.length, (i) {
-      return TaskEntity.fromMap(maps[i]);
-    });
-  }
-
-  Future<void> closeDatabase() async {
-    final Database? database = await db;
-    return database!.close();
+  // List tasks by Module ID with proper casting
+  Future<List<TaskEntity>> listTasksByModuleId(int moduleId) async {
+    try {
+      final Database? database = await db;
+      final maps = await database!
+          .query(TABLE_TASKS, where: '$MODULE_ID = ?', whereArgs: [moduleId]);
+      return List.generate(maps.length, (i) {
+        final map = maps[i];
+        int modeValue = int.parse(map[MODE].toString()); // Correct casting
+        map[MODE] = TaskModeExtension.fromNumericValue(modeValue);
+        return TaskEntity.fromMap(map);
+      });
+    } catch (ex) {
+      print(ex);
+      return [];
+    }
   }
 }
