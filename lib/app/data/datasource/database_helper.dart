@@ -75,7 +75,7 @@ class DatabaseHelper {
     for (var taskPrompt in tasksPromptsList) {
       await db.insert(TABLE_TASK_PROMPTS, taskPrompt.toMap());
     }
-    print(      "Config.adminMap: ${Config.adminMap}");
+    print("Config.adminMap: ${Config.adminMap}");
     try {
       await db.insert(TABLE_EVALUATORS, Config.adminMap);
     } catch (e) {

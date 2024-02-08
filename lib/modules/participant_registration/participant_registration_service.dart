@@ -112,6 +112,8 @@ class ParticipantRegistrationService {
 
     List<int> moduleIds = await fetchModuleIds(selectedModules);
 
+    print("evaluationID: $evaluationId");
+    print("moduleIds: $moduleIds");
     var moduleInstances =
         await linkEvaluationToModules(evaluationId, moduleIds);
 

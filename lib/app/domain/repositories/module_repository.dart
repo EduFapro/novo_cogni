@@ -26,7 +26,7 @@ class ModuleRepository {
     var module = await moduleLocalDataSource.getModuleById(moduleId);
     if (module != null) {
       var tasks = await taskLocalDataSource.listTasksByModuleId(moduleId);
-      module = module.copyWith(tasks: tasks); // Assuming copyWith method is implemented
+      module = module.copyWith(tasks: tasks);
     }
     return module;
   }
@@ -65,4 +65,6 @@ class ModuleRepository {
   Future<ModuleEntity?> getModule(int id) async {
     return await moduleLocalDataSource.getModuleById(id);
   }
+
+
 }

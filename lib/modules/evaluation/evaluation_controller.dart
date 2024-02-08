@@ -77,14 +77,15 @@ class EvaluationController extends GetxController {
 
   Future<void> fetchTaskInstancesForModuleInstances(
       List<ModuleInstanceEntity> moduleInstances) async {
-    for (var moduleInstances in moduleInstances) {
+    for (var moduleInstance in moduleInstances) {
+      print(moduleInstance);
       var tasks = await evaluationService
-          .getTasksByModuleId(moduleInstances.moduleInstanceID!);
+          .getTasksByModuleId(moduleInstance.moduleInstanceID!);
       if (tasks != null && tasks.isNotEmpty) {
-        print("Tasks for module ${moduleInstances.moduleID}: $tasks");
-        tasksListDetails.value.add({moduleInstances.moduleID!: tasks});
+        print("Tasks for module ${moduleInstance.moduleID}: $tasks");
+        tasksListDetails.value.add({moduleInstance.moduleID!: tasks});
       } else {
-        print("No tasks found for module ${moduleInstances.moduleInstanceID}");
+        print("No tasks found for module ${moduleInstance.moduleInstanceID}");
       }
     }
   }

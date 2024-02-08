@@ -45,7 +45,7 @@ class TaskEntity {
     return 'TaskEntity{'
         'task_id: $taskID, '
         'title: "$title", '
-        'taskMode: ${taskMode.description}, ' // Use description for readability
+        'taskMode: ${taskMode.description}, '
         'position: $position, '
         'image_path: "$image_path"'
         '}';

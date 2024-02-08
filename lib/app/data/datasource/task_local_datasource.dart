@@ -97,17 +97,19 @@ class TaskLocalDataSource {
   Future<List<TaskEntity>> listTasksByModuleId(int moduleId) async {
     try {
       final Database? database = await db;
-      final maps = await database!
-          .query(TABLE_TASKS, where: '$MODULE_ID = ?', whereArgs: [moduleId]);
+      final List<Map<String, dynamic>> maps = await database!.query(
+        TABLE_TASKS,
+        where: '\$MODULE_ID = ?',
+        whereArgs: [moduleId],
+      );
       return List.generate(maps.length, (i) {
-        final map = maps[i];
-        int modeValue = int.parse(map[MODE].toString()); // Correct casting
-        map[MODE] = TaskModeExtension.fromNumericValue(modeValue);
-        return TaskEntity.fromMap(map);
+        return TaskEntity.fromMap(maps[i]);
       });
-    } catch (ex) {
-      print(ex);
-      return [];
+    } catch (e) {
+      print('Error fetching tasks for module ID \$moduleId: \$e');
+      return []; // Returning an empty list in case of error
     }
   }
-}
+
+  }
+
