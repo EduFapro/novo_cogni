@@ -163,30 +163,25 @@ class TaskInstanceLocalDataSource {
 
   Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
     try {
-      final Database? database = await db;
-      print("Fetching the first pending task instance...");
-
-      final List<Map<String, dynamic>> maps = await database!.rawQuery('''
-      SELECT ti.*
-      FROM $TABLE_TASK_INSTANCES ti
-      JOIN $TABLE_TASKS t ON ti.$ID_TASK_FK = t.$ID_TASK
+      final Database? db = await this.db;
+      final List<Map<String, dynamic>> maps = await db!.rawQuery('''
+      SELECT ti.* FROM $TABLE_TASK_INSTANCES ti
+      INNER JOIN $TABLE_TASKS t ON ti.$ID_TASK_FK = t.$ID_TASK
       WHERE ti.$TASK_INSTANCE_STATUS = 0
       ORDER BY t.$POSITION ASC
       LIMIT 1
     ''');
 
       if (maps.isNotEmpty) {
-        Map<String, dynamic> editableMap = Map<String, dynamic>.from(maps.first);
-        print("Found 1 pending task instance(s). First task instance: $editableMap");
+        final editableMap = Map<String, dynamic>.from(maps.first); // Ensure a mutable copy is used
         return TaskInstanceEntity.fromMap(editableMap);
-      } else {
-        print("No pending task instances found.");
       }
-    } catch (ex) {
-      print("An error occurred while fetching the first pending task instance: $ex");
+    } catch (e) {
+      print("Error fetching first pending task instance: $e");
     }
-
     return null;
   }
+
+
 
 }

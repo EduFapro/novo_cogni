@@ -61,11 +61,10 @@ class TaskLocalDataSource {
   Future<TaskEntity?> getTask(int id) async {
     try {
       final Database? database = await db;
-      final maps = await database!
-          .query(TABLE_TASKS, where: '$ID_TASK = ?', whereArgs: [id]);
+      final maps = await database!.query(TABLE_TASKS, where: '$ID_TASK = ?', whereArgs: [id]);
       if (maps.isNotEmpty) {
-        final map = maps.first;
-        int modeValue = int.parse(map[MODE].toString()); // Correct casting
+        final map = Map<String, dynamic>.from(maps.first);
+        int modeValue = map[MODE] is int ? map[MODE] as int : 0;
         map[MODE] = TaskModeExtension.fromNumericValue(modeValue);
         return TaskEntity.fromMap(map);
       }
@@ -75,6 +74,7 @@ class TaskLocalDataSource {
       return null;
     }
   }
+
 
   // List all Tasks with proper casting
   Future<List<TaskEntity>> listTasks() async {

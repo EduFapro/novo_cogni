@@ -54,6 +54,7 @@ class TaskInstanceEntity {
   }
 
 
+
   void updateDuration(Duration duration) {
     completingTime = duration.inSeconds;
   }

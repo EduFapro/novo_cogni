@@ -167,11 +167,12 @@ class TaskController extends GetxController {
 
     // Fetch the next pending task instance
     final nextTaskInstance = await taskService.getFirstPendingTaskInstance();
-
+    print("meudeususus 1 task controller");
     if (nextTaskInstance != null) {
+      print("meudeususus 2 task controller");
       // Update the current task
       currentTask.value = nextTaskInstance;
-
+      print("meudeususus 3 task controller");
       // Fetch task entity for the next task
       var taskEntity = await taskService.getTask(nextTaskInstance.taskID);
       if (taskEntity != null) {
