@@ -28,9 +28,7 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
 
     return Container(
       decoration: BoxDecoration(
-          color: Color(0xFFA2A0A0),
-        borderRadius: BorderRadius.circular(20)
-      ),
+          color: Color(0xFFA2A0A0), borderRadius: BorderRadius.circular(20)),
       width: screenWidth * 0.5,
       height: screenHeight * 0.07,
       child: Row(

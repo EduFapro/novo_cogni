@@ -116,4 +116,6 @@ class UiStrings extends Translations {
   static String get playMode => 'play_mode'.tr;
 
   static String get recordMode => 'record_mode'.tr;
+
+  static String get start_task_button => 'start_task_button'.tr;
 }

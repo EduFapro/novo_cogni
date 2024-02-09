@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
 class ModuleButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -19,7 +20,7 @@ class ModuleButton extends StatelessWidget {
               width: 2.0,
             ),
           ),
-          child: Center(child: Text('Start')),
+          child: Center(child: Text(UiStrings.start_task_button)),
         ),
       ),
     );

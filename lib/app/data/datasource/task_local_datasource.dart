@@ -83,7 +83,7 @@ class TaskLocalDataSource {
       final maps = await database!.query(TABLE_TASKS);
       return List.generate(maps.length, (i) {
         final map = maps[i];
-        int modeValue = int.parse(map[MODE].toString()); // Correct casting
+        int modeValue = int.parse(map[MODE].toString());
         map[MODE] = TaskModeExtension.fromNumericValue(modeValue);
         return TaskEntity.fromMap(map);
       });

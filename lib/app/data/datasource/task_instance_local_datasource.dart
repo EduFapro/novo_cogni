@@ -6,7 +6,8 @@ import '../data_constants/task_instance_constants.dart';
 import 'database_helper.dart';
 
 class TaskInstanceLocalDataSource {
-  static final TaskInstanceLocalDataSource _instance = TaskInstanceLocalDataSource.internal();
+  static final TaskInstanceLocalDataSource _instance =
+      TaskInstanceLocalDataSource.internal();
 
   factory TaskInstanceLocalDataSource() => _instance;
 
@@ -92,7 +93,8 @@ class TaskInstanceLocalDataSource {
   Future<List<TaskInstanceEntity>> getAllTaskInstances() async {
     try {
       final Database? database = await db;
-      final List<Map<String, dynamic>> maps = await database!.query(TABLE_TASK_INSTANCES);
+      final List<Map<String, dynamic>> maps =
+          await database!.query(TABLE_TASK_INSTANCES);
 
       return List.generate(maps.length, (i) {
         return TaskInstanceEntity.fromMap(maps[i]);
@@ -105,7 +107,8 @@ class TaskInstanceLocalDataSource {
 
   Future<int?> getNumberOfTaskInstances() async {
     final Database? database = await db;
-    final List<Map<String, dynamic>> result = await database!.rawQuery("SELECT COUNT(*) AS count FROM $TABLE_TASK_INSTANCES");
+    final List<Map<String, dynamic>> result = await database!
+        .rawQuery("SELECT COUNT(*) AS count FROM $TABLE_TASK_INSTANCES");
     return result.first["count"] as int?;
   }
 
@@ -133,8 +136,11 @@ class TaskInstanceLocalDataSource {
       return null;
     }
   }
-  Future<List<TaskInstanceEntity>> getTaskInstancesForModuleInstance(int moduleInstanceId) async {
-    print(moduleInstanceId);
+
+  Future<List<TaskInstanceEntity>> getTaskInstancesForModuleInstance(
+      int moduleInstanceId) async {
+    print(
+        "Attempting to fetch task instances for module instance ID: $moduleInstanceId");
     try {
       final Database? database = await db;
       final List<Map<String, dynamic>> maps = await database!.query(
@@ -143,39 +149,44 @@ class TaskInstanceLocalDataSource {
         whereArgs: [moduleInstanceId],
       );
 
+      print(
+          "Successfully fetched ${maps.length} task instances for module instance ID: $moduleInstanceId");
       return List.generate(maps.length, (i) {
         return TaskInstanceEntity.fromMap(maps[i]);
       });
     } catch (ex) {
-      print(ex);
+      print(
+          "Error fetching task instances for module instance ID $moduleInstanceId: $ex");
       return [];
     }
   }
+
   Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
     try {
       final Database? database = await db;
+      print("Fetching the first pending task instance...");
 
       final List<Map<String, dynamic>> maps = await database!.rawQuery('''
       SELECT ti.*
       FROM $TABLE_TASK_INSTANCES ti
       JOIN $TABLE_TASKS t ON ti.$ID_TASK_FK = t.$ID_TASK
-      WHERE ti.$TASK_INSTANCE_STATUS = 'Pending'
+      WHERE ti.$TASK_INSTANCE_STATUS = 0
       ORDER BY t.$POSITION ASC
       LIMIT 1
     ''');
 
       if (maps.isNotEmpty) {
-        return TaskInstanceEntity.fromMap(maps.first);
+        Map<String, dynamic> editableMap = Map<String, dynamic>.from(maps.first);
+        print("Found 1 pending task instance(s). First task instance: $editableMap");
+        return TaskInstanceEntity.fromMap(editableMap);
       } else {
-        print("Couldn't find task for getFirstPendingTaskInstance");
+        print("No pending task instances found.");
       }
-
-      return null;
     } catch (ex) {
-      print(ex);
-      return null;
+      print("An error occurred while fetching the first pending task instance: $ex");
     }
-  }
 
+    return null;
+  }
 
 }

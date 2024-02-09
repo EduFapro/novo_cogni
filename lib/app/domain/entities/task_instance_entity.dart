@@ -36,10 +36,11 @@ class TaskInstanceEntity {
       taskInstanceID: map[ID_TASK_INSTANCE] as int?,
       taskID: map[ID_TASK_FK] as int,
       moduleInstanceID: map[ID_MODULE_INSTANCE_FK] as int,
-      status: TaskStatus.values.firstWhere((e) => e.description == map[TASK_INSTANCE_STATUS], orElse: () => TaskStatus.pending),
+      status: TaskStatusExtension.fromNumericValue(map[TASK_INSTANCE_STATUS] as int),
       completingTime: map[TASK_COMPLETING_TIME] as int?,
     );
   }
+
 
   Future<TaskEntity?> get task async {
     if (_task == null) {

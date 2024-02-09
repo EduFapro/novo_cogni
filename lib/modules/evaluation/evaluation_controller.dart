@@ -73,7 +73,6 @@ class EvaluationController extends GetxController {
   Future<void> fetchTaskInstancesForModuleInstances(
       List<ModuleInstanceEntity> moduleInstances) async {
     for (var moduleInstance in moduleInstances) {
-      print(moduleInstance);
       var tasks = await evaluationService
           .getTasksByModuleId(moduleInstance.moduleInstanceID!);
       if (tasks != null && tasks.isNotEmpty) {

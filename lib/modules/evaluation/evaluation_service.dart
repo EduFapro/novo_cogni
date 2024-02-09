@@ -41,8 +41,8 @@ class EvaluationService {
   }
 
   Future<List<TaskInstanceEntity>?> getTasksByModuleId(int moduleId) async {
+    print("moduleId in getTasksByModuleId in eval_service: $moduleId ");
     try {
-      print(moduleId);
       List<TaskInstanceEntity> taskInstanceList = await taskInstanceRepository.getTaskInstancesForModuleInstance(moduleId);
 
       return taskInstanceList;
