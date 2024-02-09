@@ -44,10 +44,15 @@ class TaskInstanceEntity {
 
   Future<TaskEntity?> get task async {
     if (_task == null) {
-      _task = await Get.find<TaskRepository>().getTask(taskID);
+      var fetchedTask = await Get.find<TaskRepository>().getTask(taskID);
+      if (fetchedTask != null) {
+        var taskMapCopy = Map<String, dynamic>.from(fetchedTask.toMap());
+        _task = TaskEntity.fromMap(taskMapCopy);
+      }
     }
     return _task;
   }
+
 
   void updateDuration(Duration duration) {
     completingTime = duration.inSeconds;

@@ -15,6 +15,7 @@ class TaskRepository {
   // Get a Task by ID
   Future<TaskEntity?> getTask(int id) async {
     var task = await _localDataSource.getTask(id);
+    // If needed to modify the task, ensure to return a modifiable copy
     if (task != null) {
       var modifiableMap = Map<String, dynamic>.from(task.toMap());
       return TaskEntity.fromMap(modifiableMap);
@@ -40,6 +41,7 @@ class TaskRepository {
   // List tasks by Module ID
   Future<List<TaskEntity>> getTasksForModule(int moduleId) async {
     var tasks = await _localDataSource.listTasksByModuleId(moduleId);
+    // If needed to modify the tasks, ensure to return a modifiable copy
     return tasks.map((task) {
       var modifiableMap = Map<String, dynamic>.from(task.toMap());
       return TaskEntity.fromMap(modifiableMap);

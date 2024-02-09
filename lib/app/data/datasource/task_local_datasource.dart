@@ -103,11 +103,11 @@ class TaskLocalDataSource {
         whereArgs: [moduleId],
       );
       return maps.map((map) {
-        // Assuming MODE is already an integer
         final newMap = Map<String, dynamic>.from(map);
         newMap[MODE] = TaskModeExtension.fromNumericValue(newMap[MODE] as int);
         return TaskEntity.fromMap(newMap);
       }).toList();
+
     } catch (e) {
       print('Error fetching tasks for module ID $moduleId: $e');
       return []; // Returning an empty list in case of error
