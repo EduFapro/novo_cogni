@@ -19,6 +19,12 @@ class TaskScreen extends GetView<TaskController> {
         return controller.currentTask.value != null
             ? Column(
                 children: [
+                  Obx(
+                    () => NumericProgressIndicator(
+                      current: controller.currentTaskIndex.value,
+                      total: controller.totalTasks.value,
+                    ),
+                  ),
                   SizedBox(height: windowSize.height * 0.1),
                   Text(
                       "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}"),
@@ -82,15 +88,13 @@ class TaskScreen extends GetView<TaskController> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        width: windowSize.width * 0.4,
-                        height: 80,
-                        child: MusicVisualizer(
-                          isPlaying: controller.isPlaying.value,
-                          barCount: 30, // Example: 30 bars
-                          barWidth: 3, // Example: Each bar is 3 pixels wide
-                        )
-
-                      ),
+                          width: windowSize.width * 0.4,
+                          height: 80,
+                          child: MusicVisualizer(
+                            isPlaying: controller.isPlaying.value,
+                            barCount: 30, // Example: 30 bars
+                            barWidth: 3, // Example: Each bar is 3 pixels wide
+                          )),
                     ),
                   ],
                 ),
@@ -200,8 +204,6 @@ class TaskScreen extends GetView<TaskController> {
               ),
             ),
           )
-
-
         ],
       ),
     );
@@ -268,5 +270,35 @@ class EdSkipButton extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           ),
         ));
+  }
+}
+
+class NumericProgressIndicator extends StatelessWidget {
+  final int current; // Current task index or count
+  final int total; // Total number of tasks
+
+  const NumericProgressIndicator({
+    Key? key,
+    required this.current,
+    required this.total,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        '$current / $total',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    );
   }
 }

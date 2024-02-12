@@ -25,6 +25,10 @@ class TaskController extends GetxController {
   var taskMode = Rx<TaskMode>(TaskMode.play);
   var currentTaskEntity = Rx<TaskEntity?>(null);
 
+  // Observables to keep track of the current task index and the total number of tasks.
+  var currentTaskIndex = 0.obs;
+  var totalTasks = 1.obs; // Make sure to set this when the tasks are loaded.
+
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
 
@@ -47,6 +51,47 @@ class TaskController extends GetxController {
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
     });
+
+    @override
+    Future<void> onInit() async {
+      super.onInit();
+      // ... existing initialization code ...
+
+      // Load all tasks from the service and set totalTasks.
+      try {
+        final tasks = await taskService.getAllTasks();
+        tasks.sort((a, b) => a.position.compareTo(b.position)); // Sort by position.
+        totalTasks.value = tasks.length;
+
+        // Find the current task index based on the task instance.
+        if (currentTask.value != null) {
+          final currentTaskEntity = await taskService.getTask(currentTask.value!.taskID);
+          if (currentTaskEntity != null) {
+            currentTaskIndex.value = tasks.indexWhere((task) => task.taskID == currentTaskEntity.taskID) + 1;
+          }
+        }
+      } catch (e) {
+        print("Error loading tasks: $e");
+      }
+    }
+
+  }
+
+  // Function to calculate progress
+  double get progress => totalTasks.value > 0 ? currentTaskIndex.value / totalTasks.value : 0.0;
+
+
+  // Function to proceed to the next task
+  void nextTask() {
+    if (currentTaskIndex.value < totalTasks.value - 1) {
+      currentTaskIndex.value++;
+      // Load the next task or handle it accordingly
+    }
+  }
+
+  // Function to reset the task progress
+  void resetProgress() {
+    currentTaskIndex.value = 0;
   }
 
   Future<void> updateCurrentTask(int taskInstanceId) async {
@@ -64,15 +109,16 @@ class TaskController extends GetxController {
           taskMode.value = TaskMode.play;
         }
 
-        var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskInstance.taskID);
-        audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+        var taskPrompt = await taskService
+            .getTaskPromptByTaskInstanceID(taskInstance.taskID);
+        audioPath.value =
+            taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
       }
     } catch (e) {
       print("Error updating current task: $e");
       audioPath.value = 'assets/audio/audio_placeholder.mp3';
     }
   }
-
 
   Future<void> togglePlay() async {
     if (!isPlaying.value) {
@@ -158,6 +204,19 @@ class TaskController extends GetxController {
       print('Error in concludeTaskInstance: $e');
     }
   }
+  void completeTask(TaskInstanceEntity taskInstance) async {
+    // Logic to mark the task as completed.
+    taskInstance.completeTask(Duration.zero);
+    await taskService.updateTaskInstance(taskInstance);
+
+    // Assuming that the position in TaskEntity is the order of the task.
+    final currentTaskEntity = await taskService.getTask(taskInstance.taskID);
+    if (currentTaskEntity != null) {
+      currentTaskIndex.value = currentTaskEntity.position;
+    }
+    // Load the next task or conclude if all tasks are completed.
+    // ...
+  }
 
   Future<void> launchNextTask() async {
     print("Launching next task");
@@ -180,8 +239,10 @@ class TaskController extends GetxController {
         taskMode.value = taskEntity.taskMode;
 
         // Fetch and set the audio path for the next task
-        var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(nextTaskInstance.taskID);
-        audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+        var taskPrompt = await taskService
+            .getTaskPromptByTaskInstanceID(nextTaskInstance.taskID);
+        audioPath.value =
+            taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
 
         // Reset audio player and recording states
         audioPlayed.value = false;
