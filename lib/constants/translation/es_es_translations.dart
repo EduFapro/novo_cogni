@@ -4,7 +4,7 @@ final Map<String, String> esEsTranslations = {
   'password': 'Contraseña',
   'forgot_your_password': '¿Olvidó su contraseña?',
   'login': 'Iniciar sesión',
-  'email': 'Correo electrónico',
+  'username': 'Username',
   'home': 'Inicio',
   'evaluators': 'Evaluadores',
   'total_projects': 'Proyectos Totales',

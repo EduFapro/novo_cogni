@@ -13,7 +13,7 @@ class Config {
 
   static String get adminCpfOrNif => dotenv.env['ADMIN_CPF_OR_NIF'] ?? '';
 
-  static String get adminEmail => dotenv.env['ADMIN_EMAIL'] ?? '';
+  static String get adminUsername => dotenv.env['ADMIN_USERNAME'] ?? '';
 
   static String get secretKey => dotenv.env['SECRET_KEY'] ?? '';
 
@@ -25,7 +25,7 @@ class Config {
       sex: _adminSex,
       specialty: adminSpecialty,
       cpfOrNif: adminCpfOrNif,
-      email: adminEmail,
+      username: adminUsername,
       password: secretKey,
       firstLogin: false,
     );

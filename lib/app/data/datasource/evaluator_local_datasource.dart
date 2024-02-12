@@ -41,9 +41,9 @@ class EvaluatorLocalDataSource {
           EVALUATOR_NAME: evaluator.name,
           EVALUATOR_SURNAME: evaluator.surname,
           BIRTH_DATE_EVALUATOR: evaluator.birthDate.toIso8601String(),
-          EVALUATOR_SEX: sexValue, // Use int value
+          EVALUATOR_SEX: sexValue,
           CPF_OR_NIF_EVALUATOR: evaluator.cpfOrNif,
-          EMAIL_EVALUATOR: evaluator.email,
+          USERNAME_EVALUATOR: evaluator.username,
           SPECIALTY_EVALUATOR: evaluator.specialty,
           PASSWORD_EVALUATOR: '0000',
           FIRST_LOGIN: 1,
@@ -135,14 +135,14 @@ class EvaluatorLocalDataSource {
     return database!.close();
   }
 
-  Future<EvaluatorEntity?> getEvaluatorByEmail(String email) async {
+  Future<EvaluatorEntity?> getEvaluatorByUsername(String username) async {
     try {
       final Database? database = await db;
 
       final List<Map<String, dynamic>> maps = await database!.query(
         TABLE_EVALUATORS,
-        where: '$EMAIL_EVALUATOR = ?',
-        whereArgs: [email],
+        where: '$USERNAME_EVALUATOR = ?',
+        whereArgs: [username],
       );
 
       if (maps.isNotEmpty) {

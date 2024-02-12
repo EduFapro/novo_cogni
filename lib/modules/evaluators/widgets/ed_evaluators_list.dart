@@ -44,7 +44,7 @@ class EdEvaluatorsList extends StatelessWidget {
                   columnSpacing: 16,
                   columns: [
                     DataColumn(label: Text(UiStrings.name)),
-                    DataColumn(label: Text(UiStrings.email)),
+                    DataColumn(label: Text(UiStrings.username)),
                     DataColumn(label: Text(UiStrings.dateOfBirth)),
                     DataColumn(label: Text(UiStrings.sex)),
                   ],
@@ -52,7 +52,7 @@ class EdEvaluatorsList extends StatelessWidget {
                     return DataRow(
                       cells: [
                         DataCell(Text('${evaluator.name} ${evaluator.surname}')),
-                        DataCell(Text(evaluator.email)),
+                        DataCell(Text(evaluator.username)),
                         DataCell(Text(DateFormat('dd/MM/yyyy').format(evaluator.birthDate))),
                         DataCell(Text(evaluator.sex == Sex.male ? 'Male' : 'Female')),
                       ],

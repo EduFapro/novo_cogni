@@ -18,9 +18,9 @@ class LoginController extends GetxController {
 
   LoginController(this.evaluatorRepository);
 
-  Future<bool> logAdmin(String email, String password) async {
-    // If the email is the admin's
-    if (email == Config.adminEmail ) {
+  Future<bool> logAdmin(String username, String password) async {
+    // If the username is the admin's
+    if (username == Config.adminUsername ) {
       // Hash the entered password
       var bytes = utf8.encode(password);
       var hashedEnteredPassword = sha256.convert(bytes).toString();
@@ -40,11 +40,11 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String username, String password) async {
     isLoading.value = true;
     try {
       EvaluatorEntity? user =
-          await evaluatorRepository.getEvaluatorByEmail(email);
+          await evaluatorRepository.getEvaluatorByUsername(username);
       currentEvaluatorFirstLogin.value = user!.firstLogin;
       if (user.password == password) {
         currentEvaluatorId.value = user.evaluatorID!;

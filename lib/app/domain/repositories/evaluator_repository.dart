@@ -20,10 +20,10 @@ class EvaluatorRepository {
     return await localDataSource.getEvaluator(id);
   }
 
-  /// Retrieves an evaluator by their email address.
+  /// Retrieves an evaluator by their username.
   /// Returns an [EvaluatorEntity] if found, or null otherwise.
-  Future<EvaluatorEntity?> getEvaluatorByEmail(String email) async {
-    return await localDataSource.getEvaluatorByEmail(email);
+  Future<EvaluatorEntity?> getEvaluatorByUsername(String username) async {
+    return await localDataSource.getEvaluatorByUsername(username);
   }
 
   /// Deletes an evaluator by their ID.

@@ -4,7 +4,7 @@ final Map<String, String> ptBrTranslations = {
   'password': 'Senha',
   'forgot_your_password': 'Esqueceu sua senha?',
   'login': 'Entrar',
-  'email': 'E-mail',
+  'username': 'Username',
   'home': 'Início',
   'evaluators': 'Avaliadores',
   'total_projects': 'Total de Projetos',

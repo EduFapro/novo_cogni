@@ -11,7 +11,7 @@ class EvaluatorEntity extends Equatable {
   final Sex sex;
   final String specialty;
   final String cpfOrNif;
-  final String email;
+  final String username;
   late String password;
   bool firstLogin;
 
@@ -23,7 +23,7 @@ class EvaluatorEntity extends Equatable {
     required this.sex,
     required this.specialty,
     required this.cpfOrNif,
-    required this.email,
+    required this.username,
     this.password = '0000',
     this.firstLogin = false,
   });
@@ -37,7 +37,7 @@ class EvaluatorEntity extends Equatable {
         sex = SexExtension.fromValue(map[EVALUATOR_SEX]),
         specialty = map[SPECIALTY_EVALUATOR],
         cpfOrNif = map[CPF_OR_NIF_EVALUATOR],
-        email = map[EMAIL_EVALUATOR],
+        username = map[USERNAME_EVALUATOR],
         password = map[PASSWORD_EVALUATOR],
         firstLogin = map[FIRST_LOGIN] == 1;
 
@@ -50,14 +50,14 @@ class EvaluatorEntity extends Equatable {
       EVALUATOR_SEX: sex.toInt(),
       SPECIALTY_EVALUATOR: specialty,
       CPF_OR_NIF_EVALUATOR: cpfOrNif,
-      EMAIL_EVALUATOR: email,
+      USERNAME_EVALUATOR: username,
       PASSWORD_EVALUATOR: password,
       FIRST_LOGIN: firstLogin ? 1 : 0,
     };
   }
 
   @override
-  List<Object?> get props => [evaluatorID, name, surname, birthDate, sex, specialty, cpfOrNif, email, firstLogin];
+  List<Object?> get props => [evaluatorID, name, surname, birthDate, sex, specialty, cpfOrNif, username, firstLogin];
 
   @override
   String toString() {
@@ -68,7 +68,7 @@ class EvaluatorEntity extends Equatable {
         'Sex: ${sex.description}, '
         'Specialty: $specialty, '
         'CPF/NIF: $cpfOrNif, '
-        'Email: $email, '
+        'Username: $username, '
         'First Login: ${firstLogin ? "Yes" : "No"}'
         '}';
   }

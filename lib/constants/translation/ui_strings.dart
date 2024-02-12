@@ -22,7 +22,7 @@ class UiStrings extends Translations {
 
   static String get login => 'login'.tr;
 
-  static String get email => 'email'.tr;
+  static String get username => 'username'.tr;
 
   static String get home => 'home'.tr;
 

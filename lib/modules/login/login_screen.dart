@@ -12,7 +12,7 @@ import 'login_controller.dart';
 class LoginScreen extends GetView<LoginController> with ValidationMixin {
   LoginScreen({Key? key}) : super(key: key);
   final formKey = GlobalKey<FormState>();
-  String email = '';
+  String username = '';
   String password = '';
 
   @override
@@ -40,8 +40,8 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                         const SizedBox(height: 10.0),
                         EdInputText(
                           placeholder: UiStrings.login,
-                          validator: validateEmail,
-                          onSaved: (value) => email = value ?? '',
+                          // validator: validateEmail,
+                          onSaved: (value) => username = value ?? '',
                         ),
                         const SizedBox(height: 10.0),
                         EdInputText(
@@ -77,15 +77,15 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              print("Email: $email, Password: $password");
+                              print("Username: $username, Password: $password");
                               var successfulAdminLogin =
-                                  await controller.logAdmin(email, password);
+                                  await controller.logAdmin(username, password);
                               if (successfulAdminLogin) {
-                                await controller.login(email, password);
+                                await controller.login(username, password);
                                 Get.toNamed(AppRoutes.home);
                               } else {
                                 var successfulLogin =
-                                    await controller.login(email, password);
+                                    await controller.login(username, password);
                                 if (successfulLogin) {
                                   if ((controller
                                           .currentEvaluatorFirstLogin.value ==

@@ -12,4 +12,23 @@ mixin ValidationMixin {
     return null;
   }
 
+  String? validateFullName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Full name is required';
+    }
+
+    // This regex allows letters, spaces, apostrophes, and hyphens
+    // which can occur in names like O'Neill or Anne-Marie.
+    if (!RegExp(r"^[a-zA-Z\s'-]+$").hasMatch(value)) {
+      return 'Name must only contain letters';
+    }
+
+    List<String> nameParts = value.trim().split(RegExp(r'\s+'));
+    if (nameParts.length < 2) {
+      return 'Please enter your full name';
+    }
+
+    return null;
+  }
+
 }

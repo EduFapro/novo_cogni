@@ -4,9 +4,10 @@ import 'package:intl/intl.dart';
 import '../../app/domain/entities/evaluator_entity.dart';
 import '../../app/domain/repositories/evaluator_repository.dart';
 import '../../constants/enums/person_enums/person_enums.dart';
+import '../../mixins/ValidationMixin.dart';
 import '../evaluators/evaluators_controller.dart';
 
-class EvaluatorRegistrationController extends GetxController {
+class EvaluatorRegistrationController extends GetxController with ValidationMixin {
   final EvaluatorRepository _repository;
   final EvaluatorsController _evaluatorsController;
 
@@ -16,10 +17,36 @@ class EvaluatorRegistrationController extends GetxController {
   final dateOfBirthController = TextEditingController();
   final specialtyController = TextEditingController();
   final cpfOrNifController = TextEditingController();
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final RxString username = ''.obs;
 
   var selectedSex = Rx<Sex?>(null);
   var selectedDate = Rx<DateTime?>(null);
+  var isGeneratingUsername = false.obs;
+  var isUsernameValid = false.obs;
+  final FocusNode fullNameFocusNode = FocusNode();
+  @override
+  void onInit() {
+    super.onInit();
+
+    fullNameFocusNode.addListener(() async {
+      if (!fullNameFocusNode.hasFocus) {
+        // Validation for fullName
+        final validationResult = validateFullName(fullNameController.text);
+        if (validationResult == null) {
+          // Generate a base username
+          String baseUsername = generateUsername(fullNameController.text, []);
+          // Check if username exists and update accordingly
+          await checkAndUpdateUsername(baseUsername);
+        } else {
+          // If validation fails
+          username.value = '';
+          isUsernameValid.value = false;
+        }
+      }
+    });
+  }
+
 
   void selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -62,7 +89,7 @@ class EvaluatorRegistrationController extends GetxController {
       sex: selectedSex.value!,
       specialty: specialtyController.text,
       cpfOrNif: cpfOrNifController.text,
-      email: emailController.text,
+      username: usernameController.text,
       password: '0000',
       firstLogin: true,
     );
@@ -77,13 +104,33 @@ class EvaluatorRegistrationController extends GetxController {
     }
   }
 
-  @override
+  String generateUsername(String fullName, List<String> existingUsernames) {
+    // Split the full name into words
+    List<String> words = fullName.split(' ');
+
+    // Take the first word and the last word to form the base username
+    String baseUsername = "${words.first.toLowerCase()}_${words.last.toLowerCase()}";
+
+    // Initialize the username with the base form
+    String username = baseUsername;
+    int counter = 1;
+
+    // If the username exists, append a number and increment until a unique username is found
+    while (existingUsernames.contains(username)) {
+      username = '${baseUsername}${counter++}';
+    }
+
+    return username;
+  }
+
+    @override
   void onClose() {
     fullNameController.dispose();
     dateOfBirthController.dispose();
     specialtyController.dispose();
     cpfOrNifController.dispose();
-    emailController.dispose();
+    usernameController.dispose();
+    fullNameFocusNode.dispose();
     super.onClose();
   }
 
@@ -93,6 +140,40 @@ class EvaluatorRegistrationController extends GetxController {
     print('Sex: ${selectedSex.value == Sex.male ? 'Male' : 'Female'}');
     print('Specialty: ${specialtyController.text}');
     print('CPF/NIF: ${cpfOrNifController.text}');
-    print('Email: ${emailController.text}');
+    print('Username: ${usernameController.text}');
   }
+
+  Future<void> checkAndUpdateUsername(String baseUsername) async {
+    int counter = 2; // Start from 2 since you want to append '2' if the base username exists
+    String currentUsername = baseUsername;
+    EvaluatorEntity? existingEvaluator;
+
+    // This pattern will match if the username ends with a number
+    final numberSuffixPattern = RegExp(r'(\d+)$');
+
+    while (true) {
+      existingEvaluator = await _repository.getEvaluatorByUsername(currentUsername);
+      if (existingEvaluator != null) {
+        // Check if the existing username ends with a number
+        final match = numberSuffixPattern.firstMatch(existingEvaluator.username);
+        if (match != null) {
+          // If it does, parse the number, increment it, and append to the base username
+          final number = int.parse(match.group(1)!);
+          currentUsername = '$baseUsername${number + 1}';
+        } else {
+          // If it doesn't end with a number, simply append '2' or increment counter
+          currentUsername = '$baseUsername$counter';
+        }
+        counter++; // Increment the counter for the next potential loop iteration
+      } else {
+        break; // Unique username found, exit the loop
+      }
+    }
+
+    // Found a unique username, update the observable
+    username.value = currentUsername;
+    isUsernameValid.value = true;
+  }
+
+
 }
