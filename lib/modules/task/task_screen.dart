@@ -11,9 +11,7 @@ class TaskScreen extends GetView<TaskController> {
 
   @override
   Widget build(BuildContext context) {
-    final Size windowSize = MediaQuery
-        .of(context)
-        .size;
+    final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
       body: Obx(() {
@@ -25,28 +23,25 @@ class TaskScreen extends GetView<TaskController> {
               Get.back();
             },
           );
-        } else if(controller.currentTask.value != null) {
+        } else if (controller.currentTask.value != null) {
           return Column(
             children: [
               Obx(
-                    () =>
-                    NumericProgressIndicator(
-                      current: controller.currentTaskIndex.value,
-                      total: controller.totalTasks.value,
-                    ),
+                () => NumericProgressIndicator(
+                  current: controller.currentTaskIndex.value,
+                  total: controller.totalTasks.value,
+                ),
               ),
-
               SizedBox(height: windowSize.height * 0.1),
               Text(
-                  "Current Task: ${controller.currentTaskEntity.value?.title ??
-                      'Unknown'}"),
+                  "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}"),
               Center(
                 child: buildInterfaceBasedOnMode(context, mode),
               ),
             ],
           );
-        }
-        else if (controller.currentTaskIndex.value >= controller.totalTasks.value) {
+        } else if (controller.currentTaskIndex.value >=
+            controller.totalTasks.value) {
           return TaskCompletedWidget(
             onNavigateBack: () {
               // Navigate back or perform any action you deem necessary
@@ -81,9 +76,7 @@ class TaskScreen extends GetView<TaskController> {
   }
 
   Widget buildGeneralInterface(BuildContext context) {
-    final Size windowSize = MediaQuery
-        .of(context)
-        .size;
+    final Size windowSize = MediaQuery.of(context).size;
     return Card(
       color: Color(0xFFD7D7D7),
       elevation: 0,
@@ -92,8 +85,7 @@ class TaskScreen extends GetView<TaskController> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Obx(() =>
-            Column(
+        child: Obx(() => Column(
               children: [
                 Text(
                   UiStrings.clickOnPlayToListenToTheTask,
@@ -129,15 +121,13 @@ class TaskScreen extends GetView<TaskController> {
   }
 
   Widget buildAudioPlayerInterface(BuildContext context) {
-    final Size windowSize = MediaQuery
-        .of(context)
-        .size;
+    final Size windowSize = MediaQuery.of(context).size;
     return Container(
       child: Padding(
           padding: const EdgeInsets.all(12.0),
           child:
-          // Obx(() =>
-          Column(
+              // Obx(() =>
+              Column(
             children: [
               SizedBox(
                 width: windowSize.width * 0.4,
@@ -170,9 +160,7 @@ class TaskScreen extends GetView<TaskController> {
   }
 
   Widget buildAudioRecorderInterface(BuildContext context) {
-    final Size windowSize = MediaQuery
-        .of(context)
-        .size;
+    final Size windowSize = MediaQuery.of(context).size;
     final TaskController controller = Get.find<TaskController>();
 
     return Padding(
@@ -199,7 +187,7 @@ class TaskScreen extends GetView<TaskController> {
                     controller.isRecording.value ? Icons.stop : Icons.mic,
                     size: 115.0,
                     color:
-                    controller.isRecording.value ? Colors.red : Colors.blue,
+                        controller.isRecording.value ? Colors.red : Colors.blue,
                   ),
                   onPressed: () async {
                     if (controller.isRecording.value) {
@@ -279,22 +267,21 @@ class EdSkipButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller =
-    Get.find<TaskController>(); // Ensure the controller is accessible
+        Get.find<TaskController>(); // Ensure the controller is accessible
 
-    return Obx(() =>
-        ElevatedButton(
+    return Obx(() => ElevatedButton(
           onPressed: controller.isPlaying.value ? null : onPressed,
           child: Text(text),
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.black,
             backgroundColor:
-            controller.isPlaying.value ? Colors.grey : Colors.white,
+                controller.isPlaying.value ? Colors.grey : Colors.white,
             elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
               side: BorderSide(
                   color:
-                  controller.isPlaying.value ? Colors.grey : Colors.black),
+                      controller.isPlaying.value ? Colors.grey : Colors.black),
             ),
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           ),
@@ -331,7 +318,6 @@ class NumericProgressIndicator extends StatelessWidget {
     );
   }
 }
-
 
 class TaskCompletedWidget extends StatelessWidget {
   final VoidCallback onNavigateBack;
