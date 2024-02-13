@@ -82,9 +82,12 @@ class TaskLocalDataSource {
       final Database? database = await db;
       final maps = await database!.query(TABLE_TASKS);
       return List.generate(maps.length, (i) {
-        final map = maps[i];
+        // Create a mutable copy of the map
+        final map = Map<String, dynamic>.from(maps[i]);
         int modeValue = int.parse(map[MODE].toString());
+        // Update the mutable copy with the converted TaskMode
         map[MODE] = TaskModeExtension.fromNumericValue(modeValue);
+        // Use the mutable copy to create the TaskEntity
         return TaskEntity.fromMap(map);
       });
     } catch (ex) {
@@ -92,6 +95,7 @@ class TaskLocalDataSource {
       return [];
     }
   }
+
 
   // List tasks by Module ID with proper casting
   Future<List<TaskEntity>> listTasksByModuleId(int moduleId) async {

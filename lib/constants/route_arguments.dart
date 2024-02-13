@@ -6,5 +6,5 @@ class RouteArguments {
   static final EVALUATOR_ID = 'evaluator_id';
   static final EVALUATION = 'evaluation';
   static final PARTICIPANT = 'participant';
-
+  static final MODULE_INSTANCE_ID = 'module_instance_id';
 }

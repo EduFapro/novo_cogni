@@ -27,7 +27,7 @@ class TaskService {
       // Retrieve the task prompt
       final taskPrompt = await taskPromptRepository
           .getTaskPromptByTaskInstanceID(taskInstanceId);
-
+      print("DENTRO TASK SERVICE");
       // Check if the task prompt was successfully retrieved
       if (taskPrompt != null) {
         // Log the successful retrieval
@@ -39,7 +39,6 @@ class TaskService {
         return null;
       }
     } catch (e) {
-      // Log any errors that occur during the operation
       print(
           'Error fetching task prompt for task instance ID: $taskInstanceId: $e');
       return null;
@@ -51,10 +50,9 @@ class TaskService {
     return await taskInstanceRepository.getTaskInstance(taskInstanceId);
   }
 
-  // New method to update a task instance
   Future<bool> updateTaskInstance(TaskInstanceEntity taskInstance) async {
     int result = await taskInstanceRepository.updateTaskInstance(taskInstance);
-    return result > 0; // Return true if update was successful
+    return result > 0;
   }
 
   Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
@@ -70,7 +68,6 @@ class TaskService {
         }
       }
 
-      // Return null if no pending task instances are found
       return null;
     } catch (e) {
       print("Error in getFirstPendingTaskInstance: $e");
@@ -82,7 +79,6 @@ class TaskService {
     return taskRepository.getAllTasks();
   }
 
-  // Method to get a task by its ID
   Future<TaskEntity?> getTask(int taskId) async {
     try {
       return await taskRepository.getTask(taskId);
@@ -91,4 +87,20 @@ class TaskService {
       return null;
     }
   }
+
+  // Inside TaskService class
+
+  Future<List<TaskInstanceEntity>> getTasksByModuleInstanceId(int moduleInstanceId) async {
+    try {
+      // Call the repository to fetch task instances by module instance ID
+      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstanceId);
+
+      return taskInstances;
+    } catch (e) {
+      // Log any errors for debugging
+      print('Error fetching task instances for module instance ID $moduleInstanceId: $e');
+      return []; // Return an empty list on error to prevent app crash
+    }
+  }
+
 }

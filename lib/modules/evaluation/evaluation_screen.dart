@@ -70,7 +70,7 @@ class EvaluationScreen extends GetView<EvaluationController> {
                               .getTasks(moduleInstance!.moduleInstanceID!);
                           return EdModuleInstanceItem(
                             moduleName: module!.title!,
-                            moduleId: moduleInstance.moduleID,
+                            moduleInstace: moduleInstance,
                             taskInstances: tasks,
                           );
                         }).toList() ??

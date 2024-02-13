@@ -6,6 +6,7 @@ import '../../app/domain/entities/module_instance_entity.dart';
 import '../../app/domain/repositories/module_instance_repository.dart';
 import '../../app/domain/repositories/module_repository.dart';
 import '../../app/domain/repositories/task_instance_repository.dart';
+import '../../constants/enums/task_enums.dart';
 
 class EvaluationService {
   final ModuleRepository moduleRepository;
@@ -100,4 +101,24 @@ class EvaluationService {
       return null;
     }
   }
+
+  Future<TaskInstanceEntity?> getNextPendingTaskInstanceForModule(int moduleInstanceId) async {
+    try {
+      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository.getTaskInstancesForModuleInstance(moduleInstanceId);
+      // Directly iterate through taskInstances to find the first with a pending status.
+      for (TaskInstanceEntity taskInstance in taskInstances) {
+        if (taskInstance.status == TaskStatus.pending) {
+          return taskInstance; // Immediately return the first pending task instance found.
+        }
+      }
+      // If no pending task instances are found, explicitly return null.
+      return null;
+    } catch (e) {
+      print('Error fetching next pending task instance for module instance ID $moduleInstanceId: $e');
+      return null; // Return null if there is an error or no pending tasks are found.
+    }
+  }
+
+
+
 }

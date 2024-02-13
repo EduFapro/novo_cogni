@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/domain/entities/evaluation_entity.dart';
 import 'package:novo_cogni/app/domain/entities/module_entity.dart';
@@ -56,26 +57,42 @@ class EvaluationController extends GetxController {
     }
   }
 
-  Future<void> launchNextTask() async {
-    final nextTaskInstance = await evaluationService.getFirstPendingTaskInstance();
+  Future<void> launchNextTask(int moduleInstanceId) async {
+    final nextTaskInstance = await evaluationService.getNextPendingTaskInstanceForModule(moduleInstanceId);
+    print("nextTaskInstance");
+    print(nextTaskInstance);
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
       if (taskEntity != null) {
-        navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!);
+        navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!, moduleInstanceId);
       }
+    } else {
+      // No more tasks available, show the completion notification
+      Get.snackbar(
+        'Module Completed', // Title
+        'You have completed all tasks in this module.', // Message
+        snackPosition: SnackPosition.BOTTOM, // Position of the snack bar
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        icon: Icon(Icons.check_circle_outline, color: Colors.white),
+        duration: Duration(seconds: 3), // Duration for how long it shows
+      );
     }
   }
 
-  void navigateToTask(TaskEntity taskEntity, int taskInstanceId) {
+
+  void navigateToTask(TaskEntity taskEntity, int taskInstanceId, int moduleInstanceId) {
     Get.toNamed(
       AppRoutes.task,
       arguments: {
         RouteArguments.TASK_NAME: taskEntity.title,
         RouteArguments.TASK_ID: taskEntity.taskID,
         RouteArguments.TASK_INSTANCE_ID: taskInstanceId,
+        RouteArguments.MODULE_INSTANCE_ID: moduleInstanceId,
       },
     );
   }
+
 
   // Getter for participant's age
   int get age {

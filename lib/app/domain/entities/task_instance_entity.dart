@@ -20,6 +20,7 @@ class TaskInstanceEntity {
     this.completingTime,
   });
 
+
   Map<String, dynamic> toMap() {
     return {
       ID_TASK_INSTANCE: taskInstanceID,
