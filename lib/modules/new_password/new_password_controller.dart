@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
 
-import '../../app/domain/repositories/evaluator_repository.dart';
+import '../../app/evaluator/evaluator_repository.dart';
 
 class NewPasswordController extends GetxController {
   late bool isFirstLogin;

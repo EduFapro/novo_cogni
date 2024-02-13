@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/routes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'app/data/datasource/database_helper.dart';
+import 'app/database_helper.dart';
 import 'constants/translation/ui_strings.dart';
 import 'global/global_binding.dart';
 

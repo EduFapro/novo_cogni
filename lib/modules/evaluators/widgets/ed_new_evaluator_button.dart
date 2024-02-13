@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../app/domain/entities/evaluator_entity.dart';
+
+import '../../../app/evaluator/evaluator_entity.dart';
 import '../../../constants/translation/ui_strings.dart';
 import '../../../routes.dart';
 import '../evaluators_controller.dart';

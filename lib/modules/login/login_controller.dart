@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/domain/repositories/evaluator_repository.dart';
 
-import '../../app/domain/entities/evaluator_entity.dart';
-import '../../app/domain/seeders/admin_seeder.dart';
+import '../../app/seeders/admin_seeder.dart';
+import '../../app/evaluator/evaluator_entity.dart';
+import '../../app/evaluator/evaluator_repository.dart';
 import '../../global/user_controller.dart';
 
 class LoginController extends GetxController {

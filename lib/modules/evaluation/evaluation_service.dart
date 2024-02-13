@@ -1,11 +1,10 @@
-import 'package:novo_cogni/app/domain/entities/task_instance_entity.dart';
-import 'package:novo_cogni/app/domain/repositories/task_repository.dart';
-
-import '../../app/domain/entities/module_entity.dart';
-import '../../app/domain/entities/module_instance_entity.dart';
-import '../../app/domain/repositories/module_instance_repository.dart';
-import '../../app/domain/repositories/module_repository.dart';
-import '../../app/domain/repositories/task_instance_repository.dart';
+import '../../app/module/module_entity.dart';
+import '../../app/module/module_repository.dart';
+import '../../app/module_instance/module_instance_entity.dart';
+import '../../app/module_instance/module_instance_repository.dart';
+import '../../app/task/task_repository.dart';
+import '../../app/task_instance/task_instance_entity.dart';
+import '../../app/task_instance/task_instance_repository.dart';
 import '../../constants/enums/task_enums.dart';
 
 class EvaluationService {

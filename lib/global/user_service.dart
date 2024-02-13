@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/domain/entities/module_entity.dart';
-import 'package:novo_cogni/app/domain/repositories/evaluation_repository.dart';
-import 'package:novo_cogni/app/domain/repositories/evaluator_repository.dart';
-import 'package:novo_cogni/app/domain/entities/evaluation_entity.dart';
-import 'package:novo_cogni/app/domain/entities/evaluator_entity.dart';
-import 'package:novo_cogni/app/domain/repositories/participant_repository.dart';
+import 'package:novo_cogni/app/participant/participant_repository.dart';
+
+import '../app/evaluation/evaluation_entity.dart';
+import '../app/evaluation/evaluation_repository.dart';
+import '../app/evaluator/evaluator_entity.dart';
+import '../app/evaluator/evaluator_repository.dart';
 
 class UserService {
 

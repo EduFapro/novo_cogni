@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/domain/repositories/evaluator_repository.dart';
+import '../../app/evaluator/evaluator_repository.dart';
 import 'login_controller.dart';
 
 class LoginBinding extends Bindings {

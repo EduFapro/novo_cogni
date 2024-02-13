@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../app/domain/entities/evaluator_entity.dart';
-import '../../app/domain/repositories/evaluator_repository.dart';
+import '../../app/evaluator/evaluator_entity.dart';
+import '../../app/evaluator/evaluator_repository.dart';
 import '../../constants/enums/person_enums/person_enums.dart';
 import '../../mixins/ValidationMixin.dart';
 import '../evaluators/evaluators_controller.dart';

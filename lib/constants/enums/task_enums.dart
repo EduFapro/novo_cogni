@@ -1,63 +1,39 @@
 import 'package:get/get.dart';
 
-enum TaskStatus { pending, done }
+enum TaskStatus {
+  pending(0, 'pending'),
+  done(1, 'done');
 
-extension TaskStatusExtension on TaskStatus {
-  int get numericValue {
-    switch (this) {
-      case TaskStatus.pending:
-        return 0;
-      case TaskStatus.done:
-        return 1;
-      default:
-        return 0;
-    }
-  }
+  final int numericValue;
+  final String descriptionKey;
 
-  String get description {
-    switch (this) {
-      case TaskStatus.pending:
-        return 'pending_task'.tr;
-      case TaskStatus.done:
-        return 'done_task'.tr;
-      default:
-        return 'unknown'.tr;
-    }
-  }
+  const TaskStatus(this.numericValue, this.descriptionKey);
+
+  String get description => descriptionKey.tr;
 
   static TaskStatus fromNumericValue(int value) {
-    if (value == 1) return TaskStatus.done;
-    return TaskStatus.pending;
+    return TaskStatus.values.firstWhere(
+          (status) => status.numericValue == value,
+      orElse: () => TaskStatus.pending,
+    );
   }
 }
 
-enum TaskMode { play, record }
+enum TaskMode {
+  play(0, 'play'),
+  record(1, 'record');
 
-extension TaskModeExtension on TaskMode {
-  int get numericValue {
-    switch (this) {
-      case TaskMode.play:
-        return 0;
-      case TaskMode.record:
-        return 1;
-      default:
-        return 0;
-    }
-  }
+  final int numericValue;
+  final String descriptionKey;
 
-  String get description {
-    switch (this) {
-      case TaskMode.play:
-        return 'play_mode'.tr;
-      case TaskMode.record:
-        return 'record_mode'.tr;
-      default:
-        return 'unknown'.tr;
-    }
-  }
+  const TaskMode(this.numericValue, this.descriptionKey);
+
+  String get description => descriptionKey.tr;
 
   static TaskMode fromNumericValue(int value) {
-    if (value == 1) return TaskMode.record;
-    return TaskMode.play; // Default to play
+    return TaskMode.values.firstWhere(
+          (mode) => mode.numericValue == value,
+      orElse: () => TaskMode.play,
+    );
   }
 }

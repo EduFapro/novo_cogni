@@ -1,17 +1,15 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:novo_cogni/app/domain/entities/module_instance_entity.dart';
-import 'package:novo_cogni/app/domain/repositories/module_instance_repository.dart';
-import 'package:novo_cogni/constants/enums/language_enums.dart';
-
-import '../../app/domain/entities/evaluation_entity.dart';
-import '../../app/domain/entities/module_entity.dart';
-import '../../app/domain/entities/participant_entity.dart';
-import '../../app/domain/entities/task_instance_entity.dart';
-import '../../app/domain/repositories/evaluation_repository.dart';
-import '../../app/domain/repositories/module_repository.dart';
-import '../../app/domain/repositories/participant_repository.dart';
-import '../../app/domain/repositories/task_instance_repository.dart';
-import '../../app/domain/repositories/task_repository.dart';
+import '../../app/participant/participant_entity.dart';
+import '../../app/participant/participant_repository.dart';
+import '../../app/task_instance/task_instance_entity.dart';
+import '../../app/task_instance/task_instance_repository.dart';
+import '../../app/task/task_repository.dart';
+import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/evaluation/evaluation_repository.dart';
+import '../../app/module/module_entity.dart';
+import '../../app/module/module_repository.dart';
+import '../../app/module_instance/module_instance_entity.dart';
+import '../../app/module_instance/module_instance_repository.dart';
+import '../../constants/enums/language_enums.dart';
 
 class ParticipantRegistrationService {
   final ParticipantRepository participantRepository;

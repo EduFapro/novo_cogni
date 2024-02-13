@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/domain/entities/evaluation_entity.dart';
-import 'package:novo_cogni/app/domain/entities/module_entity.dart';
-import 'package:novo_cogni/app/domain/entities/participant_entity.dart';
-import 'package:novo_cogni/constants/route_arguments.dart';
-import '../../app/domain/entities/module_instance_entity.dart';
-import '../../app/domain/entities/task_entity.dart';
-import '../../app/domain/entities/task_instance_entity.dart';
+import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/module/module_entity.dart';
+import '../../app/module_instance/module_instance_entity.dart';
+import '../../app/participant/participant_entity.dart';
+import '../../app/task/task_entity.dart';
+import '../../app/task_instance/task_instance_entity.dart';
+import '../../constants/route_arguments.dart';
 import '../../routes.dart';
 import 'evaluation_service.dart';
 

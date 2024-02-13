@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/enums/language_enums.dart';
-import '../../app/domain/entities/evaluation_entity.dart';
-import '../../app/domain/entities/evaluator_entity.dart';
-import '../../app/domain/entities/participant_entity.dart';
+import '../../app/participant/participant_entity.dart';
 import '../../../constants/enums/module_enums.dart';
+import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/evaluator/evaluator_entity.dart';
 import '../../global/user_controller.dart';
 
 class HomeController extends GetxController {

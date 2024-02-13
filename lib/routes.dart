@@ -14,8 +14,8 @@ import 'modules/new_password/new_password_binding.dart';
 import 'modules/new_password/new_password_screen.dart';
 import 'modules/participant_registration/participant_registration_binding.dart';
 import 'modules/participant_registration/participant_registration_screen.dart';
-import 'modules/task/task_binding.dart';
-import 'modules/task/task_screen.dart';
+import 'modules/task_screen/task_binding.dart';
+import 'modules/task_screen/task_screen.dart';
 
 class AppRoutes {
   static const login = '/login';
@@ -62,7 +62,7 @@ final routes = [
   GetPage(
     name: AppRoutes.task,
     page: () => TaskScreen(),
-    binding: TaskBinding(),
+    binding: TaskScreenBinding(),
   ),
   GetPage(
     name: AppRoutes.newPassword,

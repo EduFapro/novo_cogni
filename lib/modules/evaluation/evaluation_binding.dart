@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/domain/repositories/module_instance_repository.dart';
-import 'package:novo_cogni/app/domain/repositories/module_repository.dart';
-import 'package:novo_cogni/app/domain/repositories/task_instance_repository.dart';
-import 'package:novo_cogni/app/domain/repositories/task_repository.dart'; // Make sure to import TaskRepository
 import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 import 'package:novo_cogni/modules/evaluation/evaluation_service.dart';
+
+import '../../app/module/module_repository.dart';
+import '../../app/module_instance/module_instance_repository.dart';
+import '../../app/task/task_repository.dart';
+import '../../app/task_instance/task_instance_repository.dart';
 
 class EvaluationBinding extends Bindings {
   @override

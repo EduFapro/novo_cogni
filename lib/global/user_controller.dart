@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/global/user_service.dart';
-
-import '../app/domain/entities/evaluation_entity.dart';
-import '../app/domain/entities/evaluator_entity.dart';
-import '../app/domain/entities/participant_entity.dart';
-import '../app/domain/repositories/evaluator_repository.dart';
-import '../app/domain/repositories/participant_repository.dart';
+import '../app/participant/participant_entity.dart';
+import '../app/participant/participant_repository.dart';
+import '../app/evaluation/evaluation_entity.dart';
+import '../app/evaluator/evaluator_entity.dart';
+import '../app/evaluator/evaluator_repository.dart';
 
 class UserController extends GetxController {
   Rx<EvaluatorEntity?> user = Rxn<EvaluatorEntity>();

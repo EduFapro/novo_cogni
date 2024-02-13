@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/domain/entities/module_instance_entity.dart';
-import 'package:novo_cogni/app/domain/entities/task_instance_entity.dart';
 import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
-import 'package:novo_cogni/modules/evaluation/widgets/ed_task_button.dart';
-import 'package:novo_cogni/routes.dart';
 
-import '../../../app/domain/entities/task_entity.dart';
-import '../../../constants/route_arguments.dart';
+import '../../../app/module_instance/module_instance_entity.dart';
+import '../../../app/task_instance/task_instance_entity.dart';
 import 'ed_module_button.dart';
 
 class EdModuleInstanceItem extends GetView<EvaluationController> {

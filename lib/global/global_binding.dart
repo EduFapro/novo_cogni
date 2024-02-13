@@ -2,22 +2,24 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/global/user_controller.dart';
 import 'package:novo_cogni/global/user_service.dart';
 
-import '../app/data/datasource/evaluation_local_datasource.dart';
-import '../app/data/datasource/evaluator_local_datasource.dart';
-import '../app/data/datasource/module_instance_local_datasource.dart';
-import '../app/data/datasource/module_local_datasource.dart';
-import '../app/data/datasource/participant_local_datasource.dart';
-import '../app/data/datasource/task_instance_local_datasource.dart';
-import '../app/data/datasource/task_local_datasource.dart';
-import '../app/data/datasource/task_prompt_local_datasource.dart';
-import '../app/domain/repositories/evaluation_repository.dart';
-import '../app/domain/repositories/evaluator_repository.dart';
-import '../app/domain/repositories/module_instance_repository.dart';
-import '../app/domain/repositories/module_repository.dart';
-import '../app/domain/repositories/participant_repository.dart';
-import '../app/domain/repositories/task_instance_repository.dart';
-import '../app/domain/repositories/task_prompt_repository.dart';
-import '../app/domain/repositories/task_repository.dart';
+import '../app/participant/participant_local_datasource.dart';
+import '../app/record_file/record_file_datasource.dart';
+import '../app/task_instance/task_instance_local_datasource.dart';
+import '../app/participant/participant_repository.dart';
+import '../app/record_file/recording_file_repository.dart';
+import '../app/task/task_local_datasource.dart';
+import '../app/task_instance/task_instance_repository.dart';
+import '../app/task/task_repository.dart';
+import '../app/task_prompt/task_prompt_local_datasource.dart';
+import '../app/task_prompt/task_prompt_repository.dart';
+import '../app/evaluation/evaluation_local_datasource.dart';
+import '../app/evaluation/evaluation_repository.dart';
+import '../app/evaluator/evaluator_local_datasource.dart';
+import '../app/evaluator/evaluator_repository.dart';
+import '../app/module/module_local_datasource.dart';
+import '../app/module/module_repository.dart';
+import '../app/module_instance/module_instance_local_datasource.dart';
+import '../app/module_instance/module_instance_repository.dart';
 import 'language_controller.dart';
 
 class GlobalBinding extends Bindings {
@@ -40,8 +42,11 @@ class GlobalBinding extends Bindings {
     // Module and Task
     Get.lazyPut<ModuleLocalDataSource>(() => ModuleLocalDataSource(), fenix: true);
     Get.lazyPut<TaskLocalDataSource>(() => TaskLocalDataSource(), fenix: true);
+    Get.lazyPut<RecordingLocalDataSource>(() => RecordingLocalDataSource(), fenix: true);
     Get.lazyPut<ModuleRepository>(() => ModuleRepository(moduleLocalDataSource: Get.find(), taskLocalDataSource: Get.find()), fenix: true);
     Get.lazyPut<TaskRepository>(() => TaskRepository(localDataSource: Get.find()), fenix: true);
+    Get.lazyPut<RecordingRepository>(() => RecordingRepository(Get.find<RecordingLocalDataSource>()));
+
 
     // Module Instance
     Get.lazyPut<ModuleInstanceLocalDataSource>(() => ModuleInstanceLocalDataSource(), fenix: true);

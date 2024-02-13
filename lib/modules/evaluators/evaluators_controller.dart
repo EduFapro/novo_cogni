@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import '../../app/data/datasource/evaluator_local_datasource.dart';
-import '../../app/domain/entities/evaluator_entity.dart';
-import '../../app/domain/repositories/evaluator_repository.dart';
+
+import '../../app/evaluator/evaluator_entity.dart';
+import '../../app/evaluator/evaluator_local_datasource.dart';
+import '../../app/evaluator/evaluator_repository.dart';
 
 class EvaluatorsController extends GetxController {
   var evaluatorsList = <EvaluatorEntity>[].obs;
