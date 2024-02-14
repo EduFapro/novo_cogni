@@ -72,11 +72,6 @@ Future<String> saveAudioFile(ByteData data, String tempFileName, int evaluatorId
   return filePath;
 }
 
-
-
-
-
-
 Future<String> getSecureStoragePath() async {
   final userDirectory = Platform.environment['USERPROFILE'] ?? '';
   final secureDir = Directory('$userDirectory\\.MySecureAppData');

@@ -8,7 +8,7 @@ import '../home_controller.dart';
 import 'ed_main_sidebar_button.dart';
 import 'ed_square_button.dart';
 
-class EdSidebar extends StatelessWidget {
+class EdSidebar extends GetView<HomeController>  {
   const EdSidebar({Key? key}) : super(key: key);
 
   @override

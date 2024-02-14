@@ -4,6 +4,7 @@ import '../../app/participant/participant_entity.dart';
 import '../../../constants/enums/module_enums.dart';
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/evaluator/evaluator_entity.dart';
+import '../../file_management/evaluation_download.dart';
 import '../../global/user_controller.dart';
 
 class HomeController extends GetxController {
@@ -121,5 +122,9 @@ class HomeController extends GetxController {
   void refreshData() async {
     // Await the completion of fetchData()
     fetchData();
+  }
+
+  void createDownload(EvaluationEntity evaluation) {
+    createDownloadFolder(evaluation.evaluatorID.toString(), evaluation.participantID.toString());
   }
 }

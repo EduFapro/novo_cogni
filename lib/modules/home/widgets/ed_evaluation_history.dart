@@ -72,7 +72,7 @@ class EdEvaluationHistory extends GetView<HomeController>  {
     );
   }
 
-  Widget buildTable(HomeController homeController) {
+  Widget buildTable(HomeController homeController)  {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -134,6 +134,7 @@ class EdEvaluationHistory extends GetView<HomeController>  {
                                   : ''
                           ),
                         ),
+
                         GestureDetector(
                           onTap: () {
                             Get.toNamed(
@@ -147,6 +148,13 @@ class EdEvaluationHistory extends GetView<HomeController>  {
                           child: const Icon(Icons.create_rounded),
                         ),
                         const Icon(Icons.delete),
+                        GestureDetector(
+                          onTap: () {
+                            print('Download button tapped for evaluation ID: ${evaluation.evaluationID}');
+                            homeController.createDownload(evaluation!);
+                          },
+                          child: const Icon(Icons.download_rounded),
+                        ),
                       ],
                     ),
                   ),
