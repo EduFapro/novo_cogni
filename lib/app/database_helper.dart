@@ -1,4 +1,4 @@
-import 'package:novo_cogni/app/record_file/recording_file_constants.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_constants.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'seeders/admin_seeder.dart';

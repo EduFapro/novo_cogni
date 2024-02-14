@@ -1,4 +1,4 @@
-import 'package:novo_cogni/app/record_file/recording_file_constants.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_constants.dart';
 
 class RecordingFileEntity {
   final int? recordingId;

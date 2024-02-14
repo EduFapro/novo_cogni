@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../app/record_file/recording_file_entity.dart';
+import '../app/recording_file/recording_file_entity.dart';
 
 Future<String> renameAndSaveRecording({
   required String originalPath,

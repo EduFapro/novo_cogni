@@ -8,7 +8,7 @@ import '../../../routes.dart';
 import '../../widgets/ed_input_text.dart';
 import '../home_controller.dart';
 
-class EdEvaluationHistory extends GetView<HomeController>  {
+class EdEvaluationHistory extends GetView<HomeController> {
   EdEvaluationHistory({Key? key}) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class EdEvaluationHistory extends GetView<HomeController>  {
             Column(
               children: <Widget>[
                 Obx(
-                      () => buildIconLabel(
+                  () => buildIconLabel(
                     context,
                     Icons.folder_open,
                     UiStrings.totalProjects,
@@ -37,7 +37,7 @@ class EdEvaluationHistory extends GetView<HomeController>  {
                   ),
                 ),
                 Obx(
-                      () => buildIconLabel(
+                  () => buildIconLabel(
                     context,
                     Icons.hourglass_empty,
                     UiStrings.inProgress,
@@ -45,7 +45,7 @@ class EdEvaluationHistory extends GetView<HomeController>  {
                   ),
                 ),
                 Obx(
-                      () => buildIconLabel(
+                  () => buildIconLabel(
                     context,
                     Icons.check_circle_outline,
                     UiStrings.completed,
@@ -72,7 +72,7 @@ class EdEvaluationHistory extends GetView<HomeController>  {
     );
   }
 
-  Widget buildTable(HomeController homeController)  {
+  Widget buildTable(HomeController homeController) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -83,19 +83,23 @@ class EdEvaluationHistory extends GetView<HomeController>  {
             children: [
               Expanded(
                 flex: 2,
-                child: Text(UiStrings.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.name,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 2,
-                child: Text(UiStrings.status, style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.status,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 2,
-                child: Text(UiStrings.evaluator, style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.evaluator,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 2,
-                child: Text(UiStrings.date, style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(UiStrings.date,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -107,7 +111,8 @@ class EdEvaluationHistory extends GetView<HomeController>  {
               itemBuilder: (context, index) {
                 final evaluation = homeController.evaluations[index];
                 final dateFormat = DateFormat.yMd();
-                final participant = homeController.participantDetails[evaluation.evaluationID];
+                final participant =
+                    homeController.participantDetails[evaluation.evaluationID];
 
                 return Card(
                   child: Padding(
@@ -116,25 +121,20 @@ class EdEvaluationHistory extends GetView<HomeController>  {
                       children: [
                         Expanded(
                             flex: 2,
-                            child: Text(participant?.name ?? 'Unknown')
-                        ),
+                            child: Text(participant?.name ?? 'Unknown')),
                         Expanded(
                             flex: 2,
-                            child: Text(evaluation.status.description)
-                        ),
+                            child: Text(evaluation.status.description)),
                         Expanded(
                             flex: 2,
-                            child: Text(homeController.user.value?.name ?? 'Unknown')
-                        ),
+                            child: Text(
+                                homeController.user.value?.name ?? 'Unknown')),
                         Expanded(
                           flex: 2,
-                          child: Text(
-                              evaluation.evaluationDate != null
-                                  ? dateFormat.format(evaluation.evaluationDate!)
-                                  : ''
-                          ),
+                          child: Text(evaluation.evaluationDate != null
+                              ? dateFormat.format(evaluation.evaluationDate!)
+                              : ''),
                         ),
-
                         GestureDetector(
                           onTap: () {
                             Get.toNamed(
@@ -150,7 +150,12 @@ class EdEvaluationHistory extends GetView<HomeController>  {
                         const Icon(Icons.delete),
                         GestureDetector(
                           onTap: () {
-                            print('Download button tapped for evaluation ID: ${evaluation.evaluationID}');
+                            print(
+                                'Download button tapped for evaluation ID: ${evaluation.evaluationID}');
+                            homeController.handleDownload(
+                                evaluation.evaluationID!,
+                                evaluation.evaluatorID.toString(),
+                                evaluation.participantID.toString());
                             homeController.createDownload(evaluation!);
                           },
                           child: const Icon(Icons.download_rounded),
@@ -166,7 +171,6 @@ class EdEvaluationHistory extends GetView<HomeController>  {
       ),
     );
   }
-
 
   Widget buildIconLabel(
       BuildContext context, IconData icon, String label, int count) {

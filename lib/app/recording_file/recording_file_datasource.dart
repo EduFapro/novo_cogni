@@ -1,5 +1,5 @@
-import 'package:novo_cogni/app/record_file/recording_file_constants.dart';
-import 'package:novo_cogni/app/record_file/recording_file_entity.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_constants.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_entity.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../database_constants.dart';
@@ -88,7 +88,7 @@ class RecordingLocalDataSource {
       int taskInstanceId) async {
     final Database? database = await db;
     final List<Map<String, dynamic>> maps = await database!.query(
-      TABLE_TASK_PROMPTS,
+      TABLE_RECORDINGS,
       columns: [ID_RECORDING, ID_TASK_INSTANCE_FK, FILE_PATH],
       where: "$ID_TASK_INSTANCE_FK = ?",
       whereArgs: [taskInstanceId],

@@ -1,5 +1,5 @@
-import 'package:novo_cogni/app/record_file/record_file_datasource.dart';
-import 'package:novo_cogni/app/record_file/recording_file_entity.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_datasource.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_entity.dart';
 
 class RecordingRepository {
   final RecordingLocalDataSource _localDataSource;

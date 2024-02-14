@@ -3,10 +3,10 @@ import 'package:novo_cogni/global/user_controller.dart';
 import 'package:novo_cogni/global/user_service.dart';
 
 import '../app/participant/participant_local_datasource.dart';
-import '../app/record_file/record_file_datasource.dart';
+import '../app/recording_file/recording_file_datasource.dart';
 import '../app/task_instance/task_instance_local_datasource.dart';
 import '../app/participant/participant_repository.dart';
-import '../app/record_file/recording_file_repository.dart';
+import '../app/recording_file/recording_file_repository.dart';
 import '../app/task/task_local_datasource.dart';
 import '../app/task_instance/task_instance_repository.dart';
 import '../app/task/task_repository.dart';
@@ -45,7 +45,7 @@ class GlobalBinding extends Bindings {
     Get.lazyPut<RecordingLocalDataSource>(() => RecordingLocalDataSource(), fenix: true);
     Get.lazyPut<ModuleRepository>(() => ModuleRepository(moduleLocalDataSource: Get.find(), taskLocalDataSource: Get.find()), fenix: true);
     Get.lazyPut<TaskRepository>(() => TaskRepository(localDataSource: Get.find()), fenix: true);
-    Get.lazyPut<RecordingRepository>(() => RecordingRepository(Get.find<RecordingLocalDataSource>()));
+    Get.lazyPut<RecordingRepository>(() => RecordingRepository(Get.find<RecordingLocalDataSource>()), fenix: true);
 
 
     // Module Instance

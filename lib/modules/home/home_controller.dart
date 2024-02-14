@@ -1,11 +1,21 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import 'package:novo_cogni/constants/enums/language_enums.dart';
+import '../../app/module_instance/module_instance_entity.dart';
+import '../../app/module_instance/module_instance_repository.dart';
 import '../../app/participant/participant_entity.dart';
 import '../../../constants/enums/module_enums.dart';
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/evaluator/evaluator_entity.dart';
+import '../../app/recording_file/recording_file_entity.dart';
+import '../../app/task_instance/task_instance_entity.dart';
+import '../../app/task_instance/task_instance_repository.dart';
 import '../../file_management/evaluation_download.dart';
 import '../../global/user_controller.dart';
+import 'package:path/path.dart' as path;
+
 
 class HomeController extends GetxController {
   final UserController userController = Get.find<UserController>();
@@ -19,6 +29,10 @@ class HomeController extends GetxController {
   var numEvaluationsInProgress = 0.obs;
   var numEvaluationsFinished = 0.obs;
   var numEvaluationsTotal = 0.obs;
+
+  var moduleInstanceRepository = Get.find<ModuleInstanceRepository>();
+  var taskInstanceRepository = Get.find<TaskInstanceRepository>();
+  var recordingRepository = Get.find<RecordingRepository>();
 
   @override
   void onInit() {
@@ -124,7 +138,46 @@ class HomeController extends GetxController {
     fetchData();
   }
 
+
+  Future<void> handleDownload(int evaluationId, String evaluatorId, String participantId) async {
+    // 1. Fetch all task instances related to the evaluation
+    List<TaskInstanceEntity> taskInstances = await fetchTaskInstancesForEvaluation(evaluationId);
+
+    // 2. Fetch all recordings for these task instances
+    List<RecordingFileEntity> recordings = [];
+    for (var taskInstance in taskInstances) {
+      List<RecordingFileEntity> taskRecordings = await recordingRepository.getRecordingsByTaskInstanceId(taskInstance.taskInstanceID!);
+      recordings.addAll(taskRecordings);
+    }
+
+    // 3. Create the folder in the downloads directory
+    String downloadFolderPath = await createDownloadFolder(evaluatorId, participantId);
+
+    // 4. Copy the audio files to the new folder
+    for (var recording in recordings) {
+      File originalFile = File(recording.filePath);
+      String newFilePath = path.join(downloadFolderPath, path.basename(recording.filePath));
+      await originalFile.copy(newFilePath);
+    }
+  }
+
+
   void createDownload(EvaluationEntity evaluation) {
     createDownloadFolder(evaluation.evaluatorID.toString(), evaluation.participantID.toString());
+  }
+
+  Future<List<TaskInstanceEntity>> fetchTaskInstancesForEvaluation(int evaluationId) async {
+    List<TaskInstanceEntity> allTaskInstances = [];
+
+    // Get Module Instances by Evaluation ID
+    List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepository.getModuleInstancesByEvaluationId(evaluationId);
+
+    // Get Task Instances for each Module Instance
+    for (var moduleInstance in moduleInstances) {
+      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+      allTaskInstances.addAll(taskInstances);
+    }
+
+    return allTaskInstances;
   }
 }
