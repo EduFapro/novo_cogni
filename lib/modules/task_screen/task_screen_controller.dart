@@ -7,6 +7,7 @@ import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
 import 'package:encrypt/encrypt.dart';
+import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/task_enums.dart';
@@ -156,33 +157,65 @@ class TaskScreenController extends GetxController {
   }
 
   Future<void> stopRecording() async {
+    print('stopRecording called');
     final String? originalPath = await _recorder.stop();
     isRecording.value = false;
 
     if (originalPath != null) {
-      // Initialize your FileEncryptor with a secure key and IV
-      final key = encrypt.Key.fromUtf8('your_secure_key_here_32_chars');
-      final iv = encrypt.IV.fromLength(16); // Or use a secure IV
-      final fileEncryptor = FileEncryptor(key, iv);
+      final encryptedFilePath = await FileEncryptor.encryptRecording(originalPath);
 
-      // Define the path for the encrypted file
-      final encryptedFilePath = originalPath + '.enc'; // Example to denote encrypted files
+      final evaluationController = Get.find<EvaluationController>();
+      final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
+      final participantID = evaluationController.participant.value?.participantID ?? 0;
 
-      // Encrypt the file
-      await fileEncryptor.encryptFile(File(originalPath), encryptedFilePath);
+      final newFilePath = await renameAndSaveRecording(
+        originalPath: encryptedFilePath,
+        evaluatorId: evaluatorID,
+        participantId: participantID,
+        taskInstanceId: currentTask.value!.taskInstanceID!,
+        saveRecordingCallback: (RecordingFileEntity recording) async {
+          final recordingId = await recordingRepository.createRecording(recording);
+          print('Recording saved with ID: $recordingId at path: $recording.filePath');
+        },
+      );
 
-      // Optionally, delete the original file to ensure only the encrypted version remains
-      await File(originalPath).delete();
-
-      // Proceed with your logic, potentially updating the path to point to the encrypted file
-      audioPath.value = encryptedFilePath; // Update to use the encrypted file path
+      audioPath.value = newFilePath;
     } else {
       print('Recording was not stopped properly or path was null');
     }
   }
 
 
-
+  // Future<void> stopRecording() async {
+  //   print('stopRecording called');
+  //   final String? originalPath = await _recorder.stop();
+  //   isRecording.value = false;
+  //
+  //   if (originalPath != null) {
+  //     // Encrypt the recording first
+  //     final encryptedFilePath = await FileEncryptor.encryptRecording(originalPath);
+  //
+  //     final evaluationController = Get.find<EvaluationController>();
+  //     final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
+  //     final participantID = evaluationController.participant.value?.participantID ?? 0;
+  //
+  //     // Now proceed with the renaming and saving logic, but use the encrypted file path
+  //     final newFilePath = await renameAndSaveRecording(
+  //       originalPath: encryptedFilePath, // Use the encrypted file path here
+  //       evaluatorId: evaluatorID,
+  //       participantId: participantID,
+  //       taskInstanceId: currentTask.value!.taskInstanceID!,
+  //       saveRecordingCallback: (RecordingFileEntity recording) async {
+  //         final recordingId = await recordingRepository.createRecording(recording);
+  //         print('Recording saved with ID: $recordingId at path: $recording.filePath');
+  //       },
+  //     );
+  //
+  //     audioPath.value = newFilePath; // Update the observable path to the new (potentially renamed) encrypted file path
+  //   } else {
+  //     print('Recording was not stopped properly or path was null');
+  //   }
+  // }
 
 
   Future<void> saveAudio(ByteData data) async {

@@ -13,6 +13,7 @@ import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../app/task_instance/task_instance_repository.dart';
 import '../../file_management/evaluation_download.dart';
+import '../../file_management/file_encryptor.dart';
 import '../../global/user_controller.dart';
 import 'package:path/path.dart' as path;
 
@@ -167,15 +168,48 @@ class HomeController extends GetxController {
     }
   }
 
+  // Future<void> createDownload(EvaluationEntity evaluation) async {
+  //
+  //   final downloadFolderPath = await createDownloadFolder(
+  //       evaluation.evaluatorID.toString(), evaluation.participantID.toString());
+  //
+  //   generateParticipantRecordFile(
+  //       evaluation: evaluation, filePath: downloadFolderPath);
+  //
+  //
+  // }
   Future<void> createDownload(EvaluationEntity evaluation) async {
-
+    // Generate the download folder path
     final downloadFolderPath = await createDownloadFolder(
         evaluation.evaluatorID.toString(), evaluation.participantID.toString());
 
-    generateParticipantRecordFile(
-        evaluation: evaluation, filePath: downloadFolderPath);
+    // Fetch all task instances and recordings related to the evaluation
+    List<TaskInstanceEntity> taskInstances = await fetchTaskInstancesForEvaluation(evaluation.evaluationID!);
+    List<RecordingFileEntity> recordings = [];
+    for (var taskInstance in taskInstances) {
+      List<RecordingFileEntity> taskRecordings = await recordingRepository
+          .getRecordingsByTaskInstanceId(taskInstance.taskInstanceID!);
+      recordings.addAll(taskRecordings);
+    }
 
+    // Prepare a list of encrypted file paths to be decrypted
+    List<String> encryptedFilePaths = recordings.map((recording) => recording.filePath).toList();
 
+    // Decrypt the audio files directly into the download folder
+    await decryptAndServeFiles(encryptedFilePaths, downloadFolderPath);
+
+    // Additional steps to prepare the download, if any, such as generating a participant record file
+    generateParticipantRecordFile(evaluation: evaluation, filePath: downloadFolderPath);
+  }
+
+  Future<void> decryptAndServeFiles(List<String> encryptedFilePaths, String downloadFolderPath) async {
+    for (var encryptedFilePath in encryptedFilePaths) {
+      String originalFileName = path.basenameWithoutExtension(encryptedFilePath);
+      String decryptedFilePath = path.join(downloadFolderPath, "$originalFileName.aac");
+
+      // Decrypt the file back to its original form
+      await FileEncryptor.decryptFile(encryptedFilePath, decryptedFilePath);
+    }
   }
 
   Future<List<TaskInstanceEntity>> fetchTaskInstancesForEvaluation(
