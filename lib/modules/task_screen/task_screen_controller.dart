@@ -6,11 +6,12 @@ import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
-import '../../app/recording_file/recording_file_entity.dart';
+import 'package:encrypt/encrypt.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
+import '../../file_management/file_encryptor.dart';
 import '../evaluation/evaluation_controller.dart';
 import 'task_screen_service.dart';
 
@@ -154,34 +155,32 @@ class TaskScreenController extends GetxController {
     }
   }
 
-// Inside TaskScreenController
   Future<void> stopRecording() async {
-    print('stopRecording called');
     final String? originalPath = await _recorder.stop();
     isRecording.value = false;
 
     if (originalPath != null) {
-      final evaluationController = Get.find<EvaluationController>();
-      final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
-      final participantID = evaluationController.participant.value?.participantID ?? 0;
+      // Initialize your FileEncryptor with a secure key and IV
+      final key = encrypt.Key.fromUtf8('your_secure_key_here_32_chars');
+      final iv = encrypt.IV.fromLength(16); // Or use a secure IV
+      final fileEncryptor = FileEncryptor(key, iv);
 
-      // Delegate the renaming and saving logic to audio_management.dart
-      final newFilePath = await renameAndSaveRecording(
-        originalPath: originalPath,
-        evaluatorId: evaluatorID,
-        participantId: participantID,
-        taskInstanceId: currentTask.value!.taskInstanceID!,
-        saveRecordingCallback: (RecordingFileEntity recording) async {
-          final recordingId = await recordingRepository.createRecording(recording);
-          print('Recording saved with ID: $recordingId at path: $recording.filePath');
-        },
-      );
+      // Define the path for the encrypted file
+      final encryptedFilePath = originalPath + '.enc'; // Example to denote encrypted files
 
-      audioPath.value = newFilePath; // Update the observable path
+      // Encrypt the file
+      await fileEncryptor.encryptFile(File(originalPath), encryptedFilePath);
+
+      // Optionally, delete the original file to ensure only the encrypted version remains
+      await File(originalPath).delete();
+
+      // Proceed with your logic, potentially updating the path to point to the encrypted file
+      audioPath.value = encryptedFilePath; // Update to use the encrypted file path
     } else {
       print('Recording was not stopped properly or path was null');
     }
   }
+
 
 
 
