@@ -16,6 +16,7 @@ import '../../file_management/evaluation_download.dart';
 import '../../global/user_controller.dart';
 import 'package:path/path.dart' as path;
 
+import '../eval_data/eval_data_service.dart';
 
 class HomeController extends GetxController {
   final UserController userController = Get.find<UserController>();
@@ -33,6 +34,7 @@ class HomeController extends GetxController {
   var moduleInstanceRepository = Get.find<ModuleInstanceRepository>();
   var taskInstanceRepository = Get.find<TaskInstanceRepository>();
   var recordingRepository = Get.find<RecordingRepository>();
+  var evalDataService = Get.find<EvalDataService>();
 
   @override
   void onInit() {
@@ -138,46 +140,65 @@ class HomeController extends GetxController {
     fetchData();
   }
 
-
-  Future<void> handleDownload(int evaluationId, String evaluatorId, String participantId) async {
+  Future<void> handleDownload(
+      int evaluationId, String evaluatorId, String participantId) async {
     // 1. Fetch all task instances related to the evaluation
-    List<TaskInstanceEntity> taskInstances = await fetchTaskInstancesForEvaluation(evaluationId);
+    List<TaskInstanceEntity> taskInstances =
+        await fetchTaskInstancesForEvaluation(evaluationId);
 
     // 2. Fetch all recordings for these task instances
     List<RecordingFileEntity> recordings = [];
     for (var taskInstance in taskInstances) {
-      List<RecordingFileEntity> taskRecordings = await recordingRepository.getRecordingsByTaskInstanceId(taskInstance.taskInstanceID!);
+      List<RecordingFileEntity> taskRecordings = await recordingRepository
+          .getRecordingsByTaskInstanceId(taskInstance.taskInstanceID!);
       recordings.addAll(taskRecordings);
     }
 
     // 3. Create the folder in the downloads directory
-    String downloadFolderPath = await createDownloadFolder(evaluatorId, participantId);
+    String downloadFolderPath =
+        await createDownloadFolder(evaluatorId, participantId);
 
     // 4. Copy the audio files to the new folder
     for (var recording in recordings) {
       File originalFile = File(recording.filePath);
-      String newFilePath = path.join(downloadFolderPath, path.basename(recording.filePath));
+      String newFilePath =
+          path.join(downloadFolderPath, path.basename(recording.filePath));
       await originalFile.copy(newFilePath);
     }
   }
 
+  Future<void> createDownload(EvaluationEntity evaluation) async {
 
-  void createDownload(EvaluationEntity evaluation) {
-    createDownloadFolder(evaluation.evaluatorID.toString(), evaluation.participantID.toString());
+    final downloadFolderPath = await createDownloadFolder(
+        evaluation.evaluatorID.toString(), evaluation.participantID.toString());
+
+    generateParticipantRecordFile(
+        evaluation: evaluation, filePath: downloadFolderPath);
+
+
   }
 
-  Future<List<TaskInstanceEntity>> fetchTaskInstancesForEvaluation(int evaluationId) async {
+  Future<List<TaskInstanceEntity>> fetchTaskInstancesForEvaluation(
+      int evaluationId) async {
     List<TaskInstanceEntity> allTaskInstances = [];
 
     // Get Module Instances by Evaluation ID
-    List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepository.getModuleInstancesByEvaluationId(evaluationId);
+    List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepository
+        .getModuleInstancesByEvaluationId(evaluationId);
 
     // Get Task Instances for each Module Instance
     for (var moduleInstance in moduleInstances) {
-      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository
+          .getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
       allTaskInstances.addAll(taskInstances);
     }
 
     return allTaskInstances;
+  }
+
+  void generateParticipantRecordFile(
+      {required EvaluationEntity evaluation, required String filePath}) {
+    evalDataService.generateParticipantRecordFile(
+        evaluation: evaluation, filePath: filePath);
   }
 }

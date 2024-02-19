@@ -54,6 +54,15 @@ class TaskInstanceEntity {
   }
 
 
+  Map<String, dynamic> toJson() {
+    return {
+      'taskInstanceID': taskInstanceID,
+      'taskID': taskID,
+      'moduleInstanceID': moduleInstanceID,
+      'status': status.numericValue,
+      'completingTime': completingTime,
+    };
+  }
 
   void updateDuration(Duration duration) {
     completingTime = duration.inSeconds;

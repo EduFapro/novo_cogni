@@ -7,9 +7,13 @@ Future<String> getDownloadsFolderPath() async {
   return downloadsPath;
 }
 
+String generateFolderName(String evaluatorId, String participantId) {
+  return 'A${evaluatorId.padLeft(2, '0')}P${participantId.padLeft(2, '0')}';
+}
+
 Future<String> createDownloadFolder(String evaluatorId, String participantId) async {
   final downloadsPath = await getDownloadsFolderPath();
-  final folderName = 'A${evaluatorId.padLeft(2, '0')}P${participantId.padLeft(2, '0')}';
+  final folderName = generateFolderName(evaluatorId, participantId);
   final folderPath = path.join(downloadsPath, folderName);
   final directory = Directory(folderPath);
   if (!await directory.exists()) {
