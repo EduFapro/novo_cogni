@@ -21,6 +21,7 @@ import '../app/module/module_repository.dart';
 import '../app/module_instance/module_instance_local_datasource.dart';
 import '../app/module_instance/module_instance_repository.dart';
 import '../modules/eval_data/eval_data_service.dart';
+import '../modules/evaluation/evaluation_service.dart';
 import 'language_controller.dart';
 
 class GlobalBinding extends Bindings {
@@ -66,6 +67,7 @@ class GlobalBinding extends Bindings {
     Get.put<UserService>(UserService(), permanent: true);
     Get.put<UserController>(UserController(), permanent: true);
     Get.put(LanguageController());
+    Get.put(EvaluationService(moduleRepository: Get.find(), taskRepository: Get.find(), moduleInstanceRepository: Get.find(), taskInstanceRepository: Get.find()));
     Get.put<EvalDataService>(EvalDataService(), permanent: true);
   }
 }
