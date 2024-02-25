@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import 'package:novo_cogni/constants/enums/language_enums.dart';
@@ -38,6 +39,7 @@ class HomeController extends GetxController {
 
   var selectedStatus = Rxn<EvaluationStatus?>(null);
   var filteredEvaluations = RxList<EvaluationEntity>();
+  final searchController = TextEditingController();
 
   @override
   void onInit() {
@@ -47,9 +49,23 @@ class HomeController extends GetxController {
     fetchData();
     numEvaluationsTotal.value = evaluations.length;
 
-
     ever(selectedStatus, (_) => filterEvaluationsByStatus());
+    ever(evaluations, (_) => resetFilters());
+    searchController.addListener(() {
+      performSearch(searchController.text);
+    });
   }
+
+  void resetFilters() {
+    // Apply logic to reset filters to show all evaluations
+    if (selectedStatus.value == null && searchController.text.isEmpty) {
+      filteredEvaluations.assignAll(evaluations);
+    } else {
+      filterEvaluationsByStatus();
+    }
+    update(); // Update the UI
+  }
+
 
   void setupListeners() {
     listenToUserChanges();
@@ -89,18 +105,18 @@ class HomeController extends GetxController {
 
   void listenToParticipantsChanges() {
     ever(userController.participants,
-        (List<ParticipantEntity> newParticipants) {
-      participants.assignAll(newParticipants);
-      print("Participants updated: ${participants.length}");
-    });
+            (List<ParticipantEntity> newParticipants) {
+          participants.assignAll(newParticipants);
+          print("Participants updated: ${participants.length}");
+        });
   }
 
   void listenToParticipantDetailsChanges() {
     ever(userController.participantDetails,
-        (Map<int, ParticipantEntity> newDetails) {
-      participantDetails.assignAll(newDetails);
-      print("Participant details updated");
-    });
+            (Map<int, ParticipantEntity> newDetails) {
+          participantDetails.assignAll(newDetails);
+          print("Participant details updated");
+        });
   }
 
   void fetchData() async {
@@ -142,15 +158,14 @@ class HomeController extends GetxController {
   }
 
   void refreshData() async {
-    // Await the completion of fetchData()
     fetchData();
   }
 
-  Future<void> handleDownload(
-      int evaluationId, String evaluatorId, String participantId) async {
+  Future<void> handleDownload(int evaluationId, String evaluatorId,
+      String participantId) async {
     // 1. Fetch all task instances related to the evaluation
     List<TaskInstanceEntity> taskInstances =
-        await fetchTaskInstancesForEvaluation(evaluationId);
+    await fetchTaskInstancesForEvaluation(evaluationId);
 
     // 2. Fetch all recordings for these task instances
     List<RecordingFileEntity> recordings = [];
@@ -162,14 +177,16 @@ class HomeController extends GetxController {
 
     // 3. Create the folder in the downloads directory
     String downloadFolderPath =
-        await createDownloadFolder(evaluatorId, participantId);
+    await createDownloadFolder(evaluatorId, participantId);
 
     // 4. Copy the audio files to the new folder
     // Decrypt files and rename them back to .aac
     for (var recording in recordings) {
       String encryptedFilePath = recording.filePath;
-      String fileNameWithoutExtension = path.basenameWithoutExtension(encryptedFilePath);
-      String decryptedFilePath = path.join(downloadFolderPath, "$fileNameWithoutExtension");
+      String fileNameWithoutExtension = path.basenameWithoutExtension(
+          encryptedFilePath);
+      String decryptedFilePath = path.join(
+          downloadFolderPath, "$fileNameWithoutExtension");
 
       // Decrypt the file back to its original form
       await fileEncryptor.decryptFile(encryptedFilePath, decryptedFilePath);
@@ -179,14 +196,11 @@ class HomeController extends GetxController {
   }
 
   Future<void> createDownload(EvaluationEntity evaluation) async {
-
     final downloadFolderPath = await createDownloadFolder(
         evaluation.evaluatorID.toString(), evaluation.participantID.toString());
 
     generateParticipantRecordFile(
         evaluation: evaluation, filePath: downloadFolderPath);
-
-
   }
 
   Future<List<TaskInstanceEntity>> fetchTaskInstancesForEvaluation(
@@ -206,19 +220,39 @@ class HomeController extends GetxController {
 
     return allTaskInstances;
   }
+
   void filterEvaluationsByStatus() {
     if (selectedStatus.value != null) {
       filteredEvaluations.assignAll(
-        evaluations.where((evaluation) => evaluation.status == selectedStatus.value).toList(),
+        evaluations.where((evaluation) =>
+        evaluation.status == selectedStatus.value).toList(),
       );
     } else {
       filteredEvaluations.assignAll(evaluations);
     }
     update(); // This will update the UI if you are using Obx() or GetBuilder()
   }
+
   void generateParticipantRecordFile(
       {required EvaluationEntity evaluation, required String filePath}) {
     evalDataService.generateParticipantRecordFile(
         evaluation: evaluation, filePath: filePath);
   }
+
+  void performSearch(String query) {
+    if (query.isEmpty) {
+      resetFilters();
+    } else {
+      // Apply search filter
+      filteredEvaluations.assignAll(
+        evaluations.where((evaluation) {
+          final participant = participantDetails[evaluation.participantID];
+          return participant?.name.toLowerCase().contains(query.toLowerCase()) ?? false;
+        }).toList(),
+      );
+    }
+    update();
+  }
+
+
 }

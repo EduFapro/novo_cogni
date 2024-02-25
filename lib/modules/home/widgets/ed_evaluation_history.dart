@@ -10,6 +10,7 @@ import '../home_controller.dart';
 
 class EdEvaluationHistory extends GetView<HomeController> {
   EdEvaluationHistory({Key? key}) : super(key: key);
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +58,25 @@ class EdEvaluationHistory extends GetView<HomeController> {
             SizedBox(height: 20),
             Column(
               children: [
-                EdInputText(
-                  placeholder: "Search...",
-                  obscureText: false,
+                EdSearchBar(
+                  controller: searchController,
+                  onSearch: (query) {
+                    homeController.performSearch(query);
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: SizedBox(
-                      width: 380,
+                      width: 350,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey.withOpacity(0.5),
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.blueGrey.withOpacity(0.5),
+                            width: 2.0,
+                          ),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         child: Padding(
@@ -225,40 +232,47 @@ class StatusSwitchFilter extends GetView<HomeController> {
       return Row(
         mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
         children: [
-          Container(
-            height: 40,
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            decoration: BoxDecoration(
-              color: Colors.black87,
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<EvaluationStatus>(
-                value: controller.selectedStatus.value,
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-                iconSize: 24,
-                elevation: 16,
-                style: const TextStyle(color: Colors.white),
-                dropdownColor: Colors.black,
-                onChanged: (EvaluationStatus? newValue) {
-                  controller.selectedStatus.value = newValue;
-                  controller.filterEvaluationsByStatus();
-                },
-                items: EvaluationStatus.values
-                    .map<DropdownMenuItem<EvaluationStatus>>(
-                        (EvaluationStatus status) {
-                      return DropdownMenuItem<EvaluationStatus>(
-                        value: status,
-                        child: Text(status.description,
-                            style: TextStyle(color: Colors.white)),
-                      );
-                    }).toList(),
-                hint: controller.selectedStatus.value == null
-                    ? Text(
-                  "Select",
-                  style: TextStyle(color: Colors.white.withOpacity(0.7)),
-                )
-                    : null,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Container(
+              height: 35,
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<EvaluationStatus>(
+                  value: controller.selectedStatus.value,
+                  icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+                  iconSize: 20,
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.white),
+                  dropdownColor: Colors.black,
+                  onChanged: (EvaluationStatus? newValue) {
+                    controller.selectedStatus.value = newValue;
+                    if (newValue == null) {
+                      controller.resetFilters(); // Reset filters when status is set to null
+                    } else {
+                      controller.filterEvaluationsByStatus();
+                    }
+                  },
+                  items: EvaluationStatus.values
+                      .map<DropdownMenuItem<EvaluationStatus>>(
+                          (EvaluationStatus status) {
+                        return DropdownMenuItem<EvaluationStatus>(
+                          value: status,
+                          child: Text(status.description,
+                              style: TextStyle(color: Colors.white)),
+                        );
+                      }).toList(),
+                  hint: controller.selectedStatus.value == null
+                      ? Text(
+                    "Select",
+                    style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  )
+                      : null,
+                ),
               ),
             ),
           ),
@@ -266,9 +280,9 @@ class StatusSwitchFilter extends GetView<HomeController> {
             IconButton(
               onPressed: () {
                 controller.selectedStatus.value = null;
-                controller.filterEvaluationsByStatus(); // Assuming this resets the filter
+                controller.filterEvaluationsByStatus();
               },
-              icon: Icon(Icons.close, color: Colors.white),
+              icon: Icon(Icons.close, color: Colors.black),
             ),
         ],
       );
