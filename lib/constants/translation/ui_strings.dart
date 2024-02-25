@@ -18,8 +18,6 @@ class UiStrings extends Translations {
 
   static String get password => 'password'.tr;
 
-  static String get forgotYourPassword => 'forgot_your_password'.tr;
-
   static String get login => 'login'.tr;
 
   static String get username => 'username'.tr;

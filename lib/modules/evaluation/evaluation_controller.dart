@@ -67,7 +67,6 @@ class EvaluationController extends GetxController {
         navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!, moduleInstanceId);
       }
     } else {
-      // No more tasks available, show the completion notification
       Get.snackbar(
         'Module Completed', // Title
         'You have completed all tasks in this module.', // Message
@@ -111,5 +110,7 @@ class EvaluationController extends GetxController {
     List<TaskInstanceEntity>? tasks = await evaluationService.getTaskInstancesByModuleInstanceId(moduleInstanceId);
     return tasks ?? [];
   }
+
+
 
 }

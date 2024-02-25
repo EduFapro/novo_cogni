@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import 'package:novo_cogni/constants/enums/language_enums.dart';
@@ -12,6 +10,7 @@ import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../app/task_instance/task_instance_repository.dart';
+import '../../constants/enums/evaluation_enums.dart';
 import '../../file_management/evaluation_download.dart';
 import '../../file_management/file_encryptor.dart';
 import '../../global/user_controller.dart';
@@ -37,6 +36,9 @@ class HomeController extends GetxController {
   var recordingRepository = Get.find<RecordingRepository>();
   var evalDataService = Get.find<EvalDataService>();
 
+  var selectedStatus = Rxn<EvaluationStatus?>(null);
+  var filteredEvaluations = RxList<EvaluationEntity>();
+
   @override
   void onInit() {
     super.onInit();
@@ -44,6 +46,9 @@ class HomeController extends GetxController {
     setupListeners();
     fetchData();
     numEvaluationsTotal.value = evaluations.length;
+
+
+    ever(selectedStatus, (_) => filterEvaluationsByStatus());
   }
 
   void setupListeners() {
@@ -201,7 +206,16 @@ class HomeController extends GetxController {
 
     return allTaskInstances;
   }
-
+  void filterEvaluationsByStatus() {
+    if (selectedStatus.value != null) {
+      filteredEvaluations.assignAll(
+        evaluations.where((evaluation) => evaluation.status == selectedStatus.value).toList(),
+      );
+    } else {
+      filteredEvaluations.assignAll(evaluations);
+    }
+    update(); // This will update the UI if you are using Obx() or GetBuilder()
+  }
   void generateParticipantRecordFile(
       {required EvaluationEntity evaluation, required String filePath}) {
     evalDataService.generateParticipantRecordFile(

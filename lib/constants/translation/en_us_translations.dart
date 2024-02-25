@@ -2,7 +2,6 @@ final Map<String, String> enUsTranslations = {
   'hello': 'Hello',
   'new_participant': 'New Participant',
   'password': 'Password',
-  'forgot_your_password': 'Forgot your password?',
   'login': 'Login',
   'username': 'username',
   'home': 'Home',

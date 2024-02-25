@@ -233,7 +233,6 @@ class TaskScreenController extends GetxController {
 
   Future<void> onCheckButtonPressed() async {
     if (currentTask.value != null) {
-      // Complete the current task
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
       // Check if there are more tasks to fetch
@@ -241,14 +240,11 @@ class TaskScreenController extends GetxController {
         currentTaskIndex.value++;
         var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
         if (nextTaskInstance != null) {
-          // If there is a next task, update the current task
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
         } else {
-          // If there are no more pending tasks, mark module as completed
           isModuleCompleted.value = true;
         }
       } else {
-        // No more tasks to complete
         isModuleCompleted.value = true;
       }
     }

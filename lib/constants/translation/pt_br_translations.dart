@@ -2,7 +2,6 @@ final Map<String, String> ptBrTranslations = {
   'hello': 'Olá',
   'new_participant': 'Novo Participante',
   'password': 'Senha',
-  'forgot_your_password': 'Esqueceu sua senha?',
   'login': 'Entrar',
   'username': 'Username',
   'home': 'Início',

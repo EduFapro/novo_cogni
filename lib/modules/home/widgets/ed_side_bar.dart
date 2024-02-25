@@ -73,7 +73,14 @@ class EdSidebar extends GetView<HomeController>  {
             ],
           ),
         ),
-        EdLanguageDropdown (),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 24.0),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 200, maxHeight: 35),
+            child: EdLanguageDropdown(),
+          ),
+        )
+
       ],
     );
   }

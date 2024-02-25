@@ -36,6 +36,12 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: 200, maxHeight: 30),
+                              child: EdLanguageDropdown(),
+                            )),
                         FormTitle(title: UiStrings.login),
                         const SizedBox(height: 10.0),
                         EdInputText(
@@ -51,7 +57,6 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                           onSaved: (value) => password = value ?? '',
                         ),
                         const SizedBox(height: 20.0),
-                        EdEndText(text: UiStrings.forgotYourPassword),
                         const SizedBox(height: 20.0),
 
                         // Display login error
@@ -121,7 +126,6 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                         ),
                       ],
                     ),
-                    EdLanguageDropdown (),
                   ],
                 ),
               ),

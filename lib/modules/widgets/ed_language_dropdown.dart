@@ -6,22 +6,32 @@ import 'package:novo_cogni/global/language_controller.dart';
 class EdLanguageDropdown extends GetView<LanguageController> {
   @override
   Widget build(BuildContext context) {
-    return Obx(() => DropdownButton<Language>(
-      hint: Text(Language.portuguese.translationKey),
-      value: controller.currentLanguage.value,
-      onChanged: (Language? newValue) {
-        if (newValue != null) {
-          controller.changeLanguage(newValue);
-        }
-      },
-      items: Language.values
-          .where((language) => language != Language.english)
-          .map<DropdownMenuItem<Language>>((language) {
-        return DropdownMenuItem<Language>(
-          value: language,
-          child: Text(language.translationKey),
-        );
-      }).toList(),
-    ));
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10), // Adjusts internal padding
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color
+        borderRadius: BorderRadius.circular(10), // Rounded corners
+        border: Border.all(color: Colors.grey.shade300), // Border color
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<Language>(
+          hint: Text(Language.portuguese.translationKey),
+          value: controller.currentLanguage.value,
+          onChanged: (Language? newValue) {
+            if (newValue != null) {
+              controller.changeLanguage(newValue);
+            }
+          },
+          items: Language.values
+              .where((language) => language != Language.english)
+              .map<DropdownMenuItem<Language>>((language) {
+            return DropdownMenuItem<Language>(
+              value: language,
+              child: Text(language.translationKey),
+            );
+          }).toList(),
+        ),
+      ),
+    );
   }
 }
