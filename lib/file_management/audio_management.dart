@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../app/recording_file/recording_file_entity.dart';
+import 'file_encryptor.dart';
 
 Future<String> renameAndSaveRecording({
   required String originalPath,
@@ -13,21 +15,26 @@ Future<String> renameAndSaveRecording({
   required int taskInstanceId,
   required Function(RecordingFileEntity) saveRecordingCallback,
 }) async {
+  final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
   final dateString = DateFormat('ddMMyyyy').format(DateTime.now());
   final formattedFileName = 'A${evaluatorId.toString().padLeft(2, '0')}_P${participantId.toString().padLeft(2, '0')}_T${taskInstanceId}_$dateString.aac';
   final newPath = path.join(path.dirname(originalPath), formattedFileName);
-  final newFilePath = path.normalize(newPath);
 
-  await File(originalPath).rename(newFilePath);
+  // First, rename the original file
+  final renamedFilePath = await File(originalPath).rename(newPath).then((file) => file.path);
+
+  // Now, encrypt the renamed file and get the path with .enc
+  final encryptedFilePath = await fileEncryptor.encryptRecording(renamedFilePath);
 
   final recording = RecordingFileEntity(
     taskInstanceId: taskInstanceId,
-    filePath: newFilePath,
+    filePath: encryptedFilePath, // Make sure to save the path of the encrypted file
   );
 
   await saveRecordingCallback(recording);
-  return newFilePath;
+  return encryptedFilePath; // Return the path of the encrypted file
 }
+
 
 
 Future<String> getApplicationDocumentsPath() async {

@@ -154,7 +154,6 @@ class TaskScreenController extends GetxController {
     }
   }
 
-// Inside TaskScreenController
   Future<void> stopRecording() async {
     print('stopRecording called');
     final String? originalPath = await _recorder.stop();
@@ -165,8 +164,8 @@ class TaskScreenController extends GetxController {
       final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
       final participantID = evaluationController.participant.value?.participantID ?? 0;
 
-      // Delegate the renaming and saving logic to audio_management.dart
-      final newFilePath = await renameAndSaveRecording(
+      // Encrypt the recording, rename it and save the new path
+      final encryptedFilePath = await renameAndSaveRecording(
         originalPath: originalPath,
         evaluatorId: evaluatorID,
         participantId: participantID,
@@ -177,11 +176,13 @@ class TaskScreenController extends GetxController {
         },
       );
 
-      audioPath.value = newFilePath; // Update the observable path
+      // Update the observable path with the encrypted file's path
+      audioPath.value = encryptedFilePath;
     } else {
       print('Recording was not stopped properly or path was null');
     }
   }
+
 
 
 

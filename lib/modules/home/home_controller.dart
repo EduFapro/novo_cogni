@@ -13,6 +13,7 @@ import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../app/task_instance/task_instance_repository.dart';
 import '../../file_management/evaluation_download.dart';
+import '../../file_management/file_encryptor.dart';
 import '../../global/user_controller.dart';
 import 'package:path/path.dart' as path;
 
@@ -20,7 +21,7 @@ import '../eval_data/eval_data_service.dart';
 
 class HomeController extends GetxController {
   final UserController userController = Get.find<UserController>();
-
+  final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
   var isLoading = false.obs;
   var user = Rxn<EvaluatorEntity>();
   var evaluations = RxList<EvaluationEntity>();
@@ -159,11 +160,16 @@ class HomeController extends GetxController {
         await createDownloadFolder(evaluatorId, participantId);
 
     // 4. Copy the audio files to the new folder
+    // Decrypt files and rename them back to .aac
     for (var recording in recordings) {
-      File originalFile = File(recording.filePath);
-      String newFilePath =
-          path.join(downloadFolderPath, path.basename(recording.filePath));
-      await originalFile.copy(newFilePath);
+      String encryptedFilePath = recording.filePath;
+      String fileNameWithoutExtension = path.basenameWithoutExtension(encryptedFilePath);
+      String decryptedFilePath = path.join(downloadFolderPath, "$fileNameWithoutExtension");
+
+      // Decrypt the file back to its original form
+      await fileEncryptor.decryptFile(encryptedFilePath, decryptedFilePath);
+
+      print('Decrypted recording saved at path: $decryptedFilePath');
     }
   }
 

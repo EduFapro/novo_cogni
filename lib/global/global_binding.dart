@@ -1,7 +1,9 @@
+import 'package:encrypt/encrypt.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/file_management/file_encryptor.dart';
 import 'package:novo_cogni/global/user_controller.dart';
 import 'package:novo_cogni/global/user_service.dart';
-
+import 'package:encrypt/encrypt.dart' as encrypt;
 import '../app/participant/participant_local_datasource.dart';
 import '../app/recording_file/recording_file_datasource.dart';
 import '../app/task_instance/task_instance_local_datasource.dart';
@@ -69,6 +71,14 @@ class GlobalBinding extends Bindings {
     Get.put(LanguageController());
     Get.put(EvaluationService(moduleRepository: Get.find(), taskRepository: Get.find(), moduleInstanceRepository: Get.find(), taskInstanceRepository: Get.find()));
     Get.put<EvalDataService>(EvalDataService(), permanent: true);
+
+    final key = Key.fromUtf8('12345678901234567890123456789012'); // 32 bytes key
+    final iv = IV.fromLength(16); // AES block size is 16 bytes
+
+    final fileEncryptor = FileEncryptor(key, iv);
+
+
+    Get.put<FileEncryptor>(fileEncryptor, permanent: true);
   }
 }
 
