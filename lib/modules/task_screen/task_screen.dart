@@ -7,6 +7,7 @@ import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
+import 'countdownTimer.dart';
 
 class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
@@ -73,7 +74,13 @@ class TaskScreen extends GetView<TaskScreenController> {
     final Size windowSize = MediaQuery.of(context).size;
     return Column(
       children: [
-        CountdownTimer(initialDurationInSeconds: 30,),
+        CountdownTimer(
+          countdownTrigger: controller.countdownTrigger,
+          initialDurationInSeconds: 30,
+          onTimerComplete: () {
+            // Handle what happens when the timer completes
+          },
+        ),
         Card(
           color: Color(0xFFD7D7D7),
           elevation: 0,
@@ -352,61 +359,3 @@ class TaskCompletedWidget extends StatelessWidget {
     );
   }
 }
-
-class CountdownTimer extends StatefulWidget {
-  final int initialDurationInSeconds;
-  final VoidCallback? onTimerComplete;
-
-  const CountdownTimer({
-    Key? key,
-    required this.initialDurationInSeconds,
-    this.onTimerComplete,
-  }) : super(key: key);
-
-  @override
-  _CountdownTimerState createState() => _CountdownTimerState();
-}
-
-class _CountdownTimerState extends State<CountdownTimer> {
-  late int remainingTime;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    remainingTime = widget.initialDurationInSeconds;
-    startTimer();
-  }
-
-  void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (remainingTime > 0) {
-        setState(() {
-          remainingTime--;
-        });
-      } else {
-        timer.cancel();
-        if (widget.onTimerComplete != null) {
-          widget.onTimerComplete!();
-        }
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        '$remainingTime',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-

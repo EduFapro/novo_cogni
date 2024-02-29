@@ -31,7 +31,8 @@ class TaskScreenController extends GetxController {
   var totalTasks = 1.obs;
   var moduleInstanceId = Rxn<int>();
   var isModuleCompleted = false.obs;
-
+  var countdownStarted = false.obs;
+  var countdownTrigger = false.obs;
   var recordingRepository = Get.find<RecordingRepository>();
 
   DateTime? _audioStopTime;
@@ -42,6 +43,7 @@ class TaskScreenController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
 
@@ -60,7 +62,6 @@ class TaskScreenController extends GetxController {
     if (args[RouteArguments.TASK_INSTANCE_ID] != null) {
       await updateCurrentTask(args[RouteArguments.TASK_INSTANCE_ID]);
     } else {
-      // Fallback or error handling if task instance ID is not provided.
       print("Task instance ID not found in arguments.");
     }
 
@@ -72,6 +73,11 @@ class TaskScreenController extends GetxController {
 
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
+    });
+
+    _audioPlayer.onPlayerComplete.listen((event) async {
+      await Future.delayed(Duration(seconds: 1));
+      countdownTrigger.value = true;
     });
   }
 
@@ -160,8 +166,10 @@ class TaskScreenController extends GetxController {
 
     if (originalPath != null) {
       final evaluationController = Get.find<EvaluationController>();
-      final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
-      final participantID = evaluationController.participant.value?.participantID ?? 0;
+      final evaluatorID =
+          evaluationController.evaluation.value?.evaluatorID ?? 0;
+      final participantID =
+          evaluationController.participant.value?.participantID ?? 0;
 
       // Encrypt the recording, rename it and save the new path
       final encryptedFilePath = await renameAndSaveRecording(
@@ -170,8 +178,10 @@ class TaskScreenController extends GetxController {
         participantId: participantID,
         taskInstanceId: currentTask.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
-          final recordingId = await recordingRepository.createRecording(recording);
-          print('Recording saved with ID: $recordingId at path: $recording.filePath');
+          final recordingId =
+              await recordingRepository.createRecording(recording);
+          print(
+              'Recording saved with ID: $recordingId at path: $recording.filePath');
         },
       );
 
@@ -182,10 +192,6 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
-
-
-
   Future<void> saveAudio(ByteData data) async {
     print('saveAudio called');
     var evaluationController = Get.find<EvaluationController>();
@@ -193,7 +199,8 @@ class TaskScreenController extends GetxController {
     var participantID = evaluationController.participant.value?.participantID;
 
     if (evaluatorID != null && participantID != null) {
-      print('Saving audio for evaluator: $evaluatorID, participant: $participantID');
+      print(
+          'Saving audio for evaluator: $evaluatorID, participant: $participantID');
       // Create a unique file name for the temporary file
       final tempFileName = 'temp_recording.aac';
 
@@ -208,7 +215,6 @@ class TaskScreenController extends GetxController {
       // Handle the null case, perhaps by using a default name or notifying the user
     }
   }
-
 
   Future<String> _getRecordingPath() async {
     // Define the custom directory within the Documents folder
@@ -333,5 +339,13 @@ class TaskScreenController extends GetxController {
     final taskInstances =
         await taskService.getTasksByModuleInstanceId(moduleInstanceId);
     totalTasks.value = taskInstances.length;
+  }
+
+  void startCountdown() {
+    // Logic to start the countdown timer
+    // Ensure to set 'countdownStarted' to true to prevent multiple initiations
+    countdownStarted.value = true;
+    // Example: Trigger a countdown timer in the UI
+    update(); // Notify listeners to update the UI if needed
   }
 }
