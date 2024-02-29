@@ -83,7 +83,6 @@ class TaskScreenController extends GetxController {
   void nextTask() {
     if (currentTaskIndex.value < totalTasks.value - 1) {
       currentTaskIndex.value++;
-      // Load the next task or handle it accordingly
     }
   }
 
