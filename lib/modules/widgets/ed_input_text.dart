@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:novo_cogni/modules/home/home_controller.dart';
 
-class EdInputText extends GetView<HomeController> {
+class EdInputText extends StatelessWidget{
   final String placeholder;
   final bool obscureText;
   final FormFieldValidator<String>? validator;
@@ -70,14 +70,10 @@ class EdSearchBar extends StatelessWidget {
         ),
         suffixIcon: IconButton(
           icon: Icon(Icons.search),
-          onPressed: () {
-            onSearch(controller.text); // Perform the search operation
-          },
+          onPressed: () => onSearch(controller.text),
         ),
       ),
-      onFieldSubmitted: (value) {
-        onSearch(value); // Also perform search when enter is pressed
-      },
+      onFieldSubmitted: (value) => onSearch(value),
     );
   }
 }
