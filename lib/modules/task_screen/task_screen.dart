@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
@@ -69,46 +71,51 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
-    return Card(
-      color: Color(0xFFD7D7D7),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Text(
-              UiStrings.clickOnPlayToListenToTheTask,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                IconButton(
-                  iconSize: 48,
-                  icon: Icon(controller.isPlaying.value
-                      ? Icons.stop
-                      : Icons.play_arrow),
-                  onPressed: () => controller.togglePlay(),
+    return Column(
+      children: [
+        CountdownTimer(initialDurationInSeconds: 30,),
+        Card(
+          color: Color(0xFFD7D7D7),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Text(
+                  UiStrings.clickOnPlayToListenToTheTask,
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                      width: windowSize.width * 0.4,
-                      height: 80,
-                      child: MusicVisualizer(
-                        isPlaying: controller.isPlaying.value,
-                        barCount: 30, // Example: 30 bars
-                        barWidth: 3, // Example: Each bar is 3 pixels wide
-                      )),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    IconButton(
+                      iconSize: 48,
+                      icon: Icon(controller.isPlaying.value
+                          ? Icons.stop
+                          : Icons.play_arrow),
+                      onPressed: () => controller.togglePlay(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          width: windowSize.width * 0.4,
+                          height: 80,
+                          child: MusicVisualizer(
+                            isPlaying: controller.isPlaying.value,
+                            barCount: 30, // Example: 30 bars
+                            barWidth: 3, // Example: Each bar is 3 pixels wide
+                          )),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -345,3 +352,61 @@ class TaskCompletedWidget extends StatelessWidget {
     );
   }
 }
+
+class CountdownTimer extends StatefulWidget {
+  final int initialDurationInSeconds;
+  final VoidCallback? onTimerComplete;
+
+  const CountdownTimer({
+    Key? key,
+    required this.initialDurationInSeconds,
+    this.onTimerComplete,
+  }) : super(key: key);
+
+  @override
+  _CountdownTimerState createState() => _CountdownTimerState();
+}
+
+class _CountdownTimerState extends State<CountdownTimer> {
+  late int remainingTime;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    remainingTime = widget.initialDurationInSeconds;
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingTime > 0) {
+        setState(() {
+          remainingTime--;
+        });
+      } else {
+        timer.cancel();
+        if (widget.onTimerComplete != null) {
+          widget.onTimerComplete!();
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        '$remainingTime',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
