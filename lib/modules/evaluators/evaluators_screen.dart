@@ -4,13 +4,11 @@ import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/evaluators/widgets/ed_evaluators_list.dart';
 
 import 'evaluators_controller.dart';
-class EvaluatorsScreen extends StatelessWidget {
+class EvaluatorsScreen extends GetView<EvaluatorsController>  {
   const EvaluatorsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final evaluatorsController = Get.find<EvaluatorsController>();
-    // final evaluatorsList = evaluatorsController.evaluatorsList;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double bodyHeight = screenHeight * 0.85;

@@ -7,7 +7,7 @@ import '../evaluators_controller.dart';
 import '../../widgets/ed_input_text.dart';
 import 'ed_new_evaluator_button.dart';
 
-class EdEvaluatorsList extends StatelessWidget {
+class EdEvaluatorsList extends GetView<EvaluatorsController> {
   final String placeholder;
   final bool obscureText;
 
@@ -31,13 +31,14 @@ class EdEvaluatorsList extends StatelessWidget {
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 20),
-          EdInputText(
-            placeholder: placeholder,
-            obscureText: obscureText,
+          EdSearchBar(
+            controller: controller.searchController,
+            onSearch: controller.performSearch,
           ),
+
           Expanded(
             child: Obx(() {
-              var evaluatorsList = controller.evaluatorsList;
+              var evaluatorsList = controller.filteredEvaluatorsList;
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(

@@ -59,10 +59,8 @@ class EdEvaluationHistory extends GetView<HomeController> {
             Column(
               children: [
                 EdSearchBar(
-                  controller: searchController,
-                  onSearch: (query) {
-                    homeController.performSearch(query);
-                  },
+                  controller: controller.searchController,
+                  onSearch: controller.performSearch,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
