@@ -19,10 +19,13 @@ class EvaluationService {
       required this.moduleInstanceRepository,
       required this.taskInstanceRepository});
 
-  Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(int evaluationId) async {
+  Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(
+      int evaluationId) async {
     try {
       // Call the repository to fetch module instances by evaluation ID
-      List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepository.getModuleInstancesByEvaluationId(evaluationId);
+      List<ModuleInstanceEntity> moduleInstances =
+          await moduleInstanceRepository
+              .getModuleInstancesByEvaluationId(evaluationId);
 
       if (moduleInstances.isEmpty) {
         print("No module instances found for evaluation ID: $evaluationId");
@@ -31,7 +34,8 @@ class EvaluationService {
       return moduleInstances;
     } catch (e) {
       // Log any errors for debugging
-      print('Error fetching module instances for evaluation ID $evaluationId: $e');
+      print(
+          'Error fetching module instances for evaluation ID $evaluationId: $e');
       return []; // Return an empty list on error to prevent app crash
     }
   }
@@ -57,7 +61,8 @@ class EvaluationService {
     }
   }
 
-  Future<List<TaskInstanceEntity>?> getTaskInstancesByModuleInstanceId(int moduleId) async {
+  Future<List<TaskInstanceEntity>?> getTaskInstancesByModuleInstanceId(
+      int moduleId) async {
     print("moduleId in getTasksByModuleId in eval_service: $moduleId ");
     try {
       List<TaskInstanceEntity> taskInstanceList = await taskInstanceRepository
@@ -92,32 +97,28 @@ class EvaluationService {
     }
   }
 
-  Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
+  Future<TaskInstanceEntity?> getNextPendingTaskInstanceForModule(
+      int moduleInstanceId) async {
     try {
-      return await taskInstanceRepository.getFirstPendingTaskInstance();
-    } catch (ex) {
-      print(ex);
-      return null;
-    }
-  }
-
-  Future<TaskInstanceEntity?> getNextPendingTaskInstanceForModule(int moduleInstanceId) async {
-    try {
-      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository.getTaskInstancesForModuleInstance(moduleInstanceId);
-      // Directly iterate through taskInstances to find the first with a pending status.
+      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository
+          .getTaskInstancesForModuleInstance(moduleInstanceId);
+      TaskInstanceEntity? nextPendingTask;
+      // Check for the first task instance with a pending status.
       for (TaskInstanceEntity taskInstance in taskInstances) {
         if (taskInstance.status == TaskStatus.pending) {
-          return taskInstance; // Immediately return the first pending task instance found.
+          nextPendingTask = taskInstance;
+          break;
         }
       }
-      // If no pending task instances are found, explicitly return null.
-      return null;
+      return nextPendingTask;
     } catch (e) {
-      print('Error fetching next pending task instance for module instance ID $moduleInstanceId: $e');
-      return null; // Return null if there is an error or no pending tasks are found.
+      print(
+          'Error fetching next pending task instance for module instance ID $moduleInstanceId: $e');
+      return null;
     }
   }
 
-
-
+  Future<int> setModuleInstanceAsCompleted(int moduleInstanceId) {
+    return moduleInstanceRepository.setModuleInstanceAsCompleted(moduleInstanceId);
+  }
 }

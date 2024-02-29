@@ -12,9 +12,12 @@ import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
 import '../evaluation/evaluation_controller.dart';
+import '../evaluation/evaluation_service.dart';
 import 'task_screen_service.dart';
 
 class TaskScreenController extends GetxController {
+  final EvaluationService evaluationService = Get.find();
+
   final TaskScreenService taskService;
   late final AudioPlayer _audioPlayer;
   late final AudioRecorder _recorder;
@@ -161,8 +164,10 @@ class TaskScreenController extends GetxController {
 
     if (originalPath != null) {
       final evaluationController = Get.find<EvaluationController>();
-      final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
-      final participantID = evaluationController.participant.value?.participantID ?? 0;
+      final evaluatorID =
+          evaluationController.evaluation.value?.evaluatorID ?? 0;
+      final participantID =
+          evaluationController.participant.value?.participantID ?? 0;
 
       // Encrypt the recording, rename it and save the new path
       final encryptedFilePath = await renameAndSaveRecording(
@@ -171,8 +176,10 @@ class TaskScreenController extends GetxController {
         participantId: participantID,
         taskInstanceId: currentTask.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
-          final recordingId = await recordingRepository.createRecording(recording);
-          print('Recording saved with ID: $recordingId at path: $recording.filePath');
+          final recordingId =
+              await recordingRepository.createRecording(recording);
+          print(
+              'Recording saved with ID: $recordingId at path: $recording.filePath');
         },
       );
 
@@ -183,10 +190,6 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
-
-
-
   Future<void> saveAudio(ByteData data) async {
     print('saveAudio called');
     var evaluationController = Get.find<EvaluationController>();
@@ -194,7 +197,8 @@ class TaskScreenController extends GetxController {
     var participantID = evaluationController.participant.value?.participantID;
 
     if (evaluatorID != null && participantID != null) {
-      print('Saving audio for evaluator: $evaluatorID, participant: $participantID');
+      print(
+          'Saving audio for evaluator: $evaluatorID, participant: $participantID');
       // Create a unique file name for the temporary file
       final tempFileName = 'temp_recording.aac';
 
@@ -209,7 +213,6 @@ class TaskScreenController extends GetxController {
       // Handle the null case, perhaps by using a default name or notifying the user
     }
   }
-
 
   Future<String> _getRecordingPath() async {
     // Define the custom directory within the Documents folder
@@ -233,22 +236,36 @@ class TaskScreenController extends GetxController {
 
   Future<void> onCheckButtonPressed() async {
     if (currentTask.value != null) {
+      // Conclude the current task instance
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
-      // Check if there are more tasks to fetch
-      if (currentTaskIndex.value < totalTasks.value) {
-        currentTaskIndex.value++;
-        var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
-        if (nextTaskInstance != null) {
-          await updateCurrentTask(nextTaskInstance.taskInstanceID!);
-        } else {
-          isModuleCompleted.value = true;
-        }
+      // Prepare to fetch the next task instance
+      var nextTaskInstance = await taskService.getNextPendingTaskInstance(); // Assuming this method exists and fetches the next pending task if any
+
+      if (nextTaskInstance != null) {
+        // If there is a next task, update the current task
+        await updateCurrentTask(nextTaskInstance.taskInstanceID!);
       } else {
+        // If there are no more pending tasks, mark the module as completed
         isModuleCompleted.value = true;
+        await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId.value!);
+        // Show a message or perform additional actions as needed
       }
+    } else {
+      // Handle the case where currentTask is unexpectedly null
+      // Log an error or show a message as appropriate
+      print("Unexpected error: currentTask is null");
+    }
+
+    // This check is outside the main logic to ensure it always runs
+    // Check if the module should be marked as completed
+    if (isModuleCompleted.value) {
+      await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId.value!);
+      // Optionally, navigate away or show a completion message
     }
   }
+
+
 
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {

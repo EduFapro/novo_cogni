@@ -45,4 +45,8 @@ class ModuleInstanceRepository {
   Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(int evaluationId) async {
     return _moduleInstanceLocalDataSource.getModuleInstancesByEvaluationId(evaluationId);
   }
+
+  Future<int> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+    return _moduleInstanceLocalDataSource.setModuleInstanceAsCompleted(moduleInstanceId);
+  }
 }

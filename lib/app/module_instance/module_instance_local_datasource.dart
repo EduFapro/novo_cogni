@@ -1,4 +1,5 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import '../../constants/enums/module_enums.dart';
 import '../database_constants.dart';
 import '../database_helper.dart';
 import 'module_instance_entity.dart';
@@ -116,6 +117,22 @@ class ModuleInstanceLocalDataSource {
     } catch (ex) {
       print(ex);
       return [];
+    }
+  }
+  Future<int> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+    try {
+      final Database? database = await db;
+      int statusCompleted = ModuleStatus.completed.numericValue;
+
+      return await database!.update(
+        TABLE_MODULE_INSTANCES,
+        { MODULE_INSTANCE_STATUS: statusCompleted },
+        where: "$ID_MODULE_INSTANCE = ?",
+        whereArgs: [moduleInstanceId],
+      );
+    } catch (ex) {
+      print(ex);
+      return -1;
     }
   }
 

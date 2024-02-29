@@ -59,7 +59,7 @@ class EvaluationController extends GetxController {
 
   Future<void> launchNextTask(int moduleInstanceId) async {
     final nextTaskInstance = await evaluationService.getNextPendingTaskInstanceForModule(moduleInstanceId);
-    print("nextTaskInstance");
+    print("this nextTaskInstance É AH");
     print(nextTaskInstance);
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
@@ -68,13 +68,13 @@ class EvaluationController extends GetxController {
       }
     } else {
       Get.snackbar(
-        'Module Completed', // Title
-        'You have completed all tasks in this module.', // Message
-        snackPosition: SnackPosition.BOTTOM, // Position of the snack bar
+        'Module Completed',
+        'You have completed all tasks in this module.',
+        snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
         icon: Icon(Icons.check_circle_outline, color: Colors.white),
-        duration: Duration(seconds: 3), // Duration for how long it shows
+        duration: Duration(seconds: 3),
       );
     }
   }

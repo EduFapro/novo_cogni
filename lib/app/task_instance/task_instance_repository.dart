@@ -37,11 +37,6 @@ class TaskInstanceRepository {
     return await _localDataSource.getTaskInstancesForModuleInstance(moduleInstanceId);
   }
 
-  // Get the first pending Task Instance
-  Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
-    return await _localDataSource.getFirstPendingTaskInstance();
-  }
-
   Future<List<TaskInstanceEntity>> getTaskInstancesByModuleInstanceId(int moduleInstanceId) async {
     return await _localDataSource.getTaskInstancesForModuleInstance(moduleInstanceId);
   }

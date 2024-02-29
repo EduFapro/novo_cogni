@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class TasksButton extends StatelessWidget {
   final VoidCallback onPressed;
+
   const TasksButton({super.key, required this.onPressed});
 
   @override
@@ -19,7 +20,9 @@ class TasksButton extends StatelessWidget {
               width: 2.0,
             ),
           ),
-          child: Center(child: Text('Start')),
+          child: Center(
+            child: Text('Start'),
+          ),
         ),
       ),
     );
