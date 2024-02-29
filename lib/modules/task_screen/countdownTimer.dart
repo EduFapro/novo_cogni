@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
+
 class CountdownTimer extends StatefulWidget {
   final RxBool countdownTrigger;
   final int initialDurationInSeconds;
@@ -80,4 +79,6 @@ class _CountdownTimerState extends State<CountdownTimer> {
       ),
     );
   }
+
+
 }
