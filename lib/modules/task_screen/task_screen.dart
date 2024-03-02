@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
+import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 
 import '../../constants/enums/task_enums.dart';
@@ -18,6 +19,8 @@ class TaskScreen extends GetView<TaskScreenController> {
         if (controller.isModuleCompleted.isTrue) {
           return TaskCompletedWidget(
             onNavigateBack: () {
+              var evalController = Get.find<EvaluationController>();
+              evalController.markModuleAsCompleted(controller.moduleInstanceId.value!);
               Get.back();
             },
           );

@@ -59,7 +59,12 @@ class EvaluationRepository {
     return evaluations;
   }
 
-  Future<void> checkAndSetEvaluationAsCompleted(int evaluationId) async {
+  Future<void> setEvaluationAsCompleted(int evaluationId) async {
     await localDataSource.setEvaluationAsCompleted(evaluationId);
   }
+
+  Future<void> setEvaluationAsInProgress(int evaluationId) async {
+    await localDataSource.setEvaluationAsInProgress(evaluationId);
+  }
+
 }

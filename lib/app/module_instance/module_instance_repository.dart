@@ -4,11 +4,13 @@ import 'module_instance_local_datasource.dart';
 class ModuleInstanceRepository {
   final ModuleInstanceLocalDataSource _moduleInstanceLocalDataSource;
 
-  ModuleInstanceRepository({required ModuleInstanceLocalDataSource moduleInstanceLocalDataSource})
+  ModuleInstanceRepository(
+      {required ModuleInstanceLocalDataSource moduleInstanceLocalDataSource})
       : _moduleInstanceLocalDataSource = moduleInstanceLocalDataSource;
 
   // Create a Module Instance
-  Future<ModuleInstanceEntity?> createModuleInstance(ModuleInstanceEntity moduleInstance) async {
+  Future<ModuleInstanceEntity?> createModuleInstance(
+      ModuleInstanceEntity moduleInstance) async {
     int? id = await _moduleInstanceLocalDataSource.create(moduleInstance);
     if (id != null) {
       return _moduleInstanceLocalDataSource.getModuleInstanceById(id);
@@ -42,11 +44,19 @@ class ModuleInstanceRepository {
   }
 
   // Get Module Instances by Evaluation ID
-  Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(int evaluationId) async {
-    return _moduleInstanceLocalDataSource.getModuleInstancesByEvaluationId(evaluationId);
+  Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluationId(
+      int evaluationId) async {
+    return _moduleInstanceLocalDataSource
+        .getModuleInstancesByEvaluationId(evaluationId);
   }
 
   Future<int> setModuleInstanceAsCompleted(int moduleInstanceId) async {
-    return _moduleInstanceLocalDataSource.setModuleInstanceAsCompleted(moduleInstanceId);
+    return _moduleInstanceLocalDataSource
+        .setModuleInstanceAsCompleted(moduleInstanceId);
+  }
+
+  Future<int> setModuleInstanceAsInProgress(int moduleInstanceId) {
+    return _moduleInstanceLocalDataSource
+        .setModuleInstanceAsInProgress(moduleInstanceId);
   }
 }

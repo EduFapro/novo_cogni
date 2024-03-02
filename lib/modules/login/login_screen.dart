@@ -39,7 +39,8 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                         Align(
                             alignment: Alignment.topRight,
                             child: ConstrainedBox(
-                              constraints: BoxConstraints(maxWidth: 200, maxHeight: 30),
+                              constraints:
+                                  BoxConstraints(maxWidth: 200, maxHeight: 30),
                               child: EdLanguageDropdown(),
                             )),
                         FormTitle(title: UiStrings.login),
@@ -82,33 +83,23 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              print("Username: $username, Password: $password");
-                              var successfulAdminLogin =
-                                  await controller.logAdmin(username, password);
-                              if (successfulAdminLogin) {
-                                await controller.login(username, password);
-                                Get.toNamed(AppRoutes.home);
-                              } else {
-                                var successfulLogin =
-                                    await controller.login(username, password);
-                                if (successfulLogin) {
-                                  if ((controller
-                                          .currentEvaluatorFirstLogin.value ==
-                                      false)) {
-                                    print(controller
-                                        .currentEvaluatorFirstLogin.value);
-                                    Get.toNamed(AppRoutes.home);
-                                  } else {
-                                    Get.toNamed(
-                                      AppRoutes.newPassword,
-                                      arguments: {
-                                        RouteArguments.FIRST_LOGIN: controller
-                                            .currentEvaluatorFirstLogin.value,
-                                        RouteArguments.EVALUATOR_ID:
-                                            controller.currentEvaluatorId.value,
-                                      },
-                                    );
-                                  }
+                              print("Username: $username");
+                              var successfulLogin =
+                                  await controller.login(username, password);
+                              if (successfulLogin) {
+                                if (!controller
+                                    .currentEvaluatorFirstLogin.value) {
+                                  Get.toNamed(AppRoutes.home);
+                                } else {
+                                  Get.toNamed(
+                                    AppRoutes.newPassword,
+                                    arguments: {
+                                      RouteArguments.FIRST_LOGIN: controller
+                                          .currentEvaluatorFirstLogin.value,
+                                      RouteArguments.EVALUATOR_ID:
+                                          controller.currentEvaluatorId.value,
+                                    },
+                                  );
                                 }
                               }
                             }

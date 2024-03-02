@@ -136,4 +136,20 @@ class ModuleInstanceLocalDataSource {
     }
   }
 
+  Future<int> setModuleInstanceAsInProgress(int moduleInstanceId) async {
+    try {
+      final Database? database = await db;
+      int statusInProgress = ModuleStatus.in_progress.numericValue;
+
+      return await database!.update(
+        TABLE_MODULE_INSTANCES,
+        { MODULE_INSTANCE_STATUS: statusInProgress },
+        where: "$ID_MODULE_INSTANCE = ?",
+        whereArgs: [moduleInstanceId],
+      );
+    } catch (ex) {
+      print(ex);
+      return -1;
+    }
+  }
 }

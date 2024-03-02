@@ -41,10 +41,10 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
             ),
           ),
           ModuleButton(
-            onPressed: () {
-              controller.launchNextTask(moduleInstace.moduleInstanceID!);
-            }, isCompleted: controller.isModuleCompleted(moduleInstace.moduleInstanceID!),
-          )
+              onPressed: () {
+                controller.launchNextTask(moduleInstace);
+              },
+              moduleStatus: moduleInstace.status),
         ],
       ),
     );

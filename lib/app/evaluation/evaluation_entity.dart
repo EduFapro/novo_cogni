@@ -35,8 +35,9 @@ class EvaluationEntity {
     int evaluatorID = map[ID_EVALUATOR_FK] as int;
     int participantID = map[ID_PARTICIPANT_FK] as int;
     int language = map[LANGUAGE] as int;
-    EvaluationStatus status = EvaluationStatusExtension.fromNumericValue(
-        map[EVALUATION_STATUS] as int? ?? 0);
+    int statusValue = map[EVALUATION_STATUS] ?? 1;
+    EvaluationStatus status = EvaluationStatusExtension.fromNumericValue(statusValue);
+
     DateTime evaluationDate = DateTime.now();
 
     // Check if the date string is not null before parsing

@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:get/get.dart';
 
-import '../../app/seeders/admin_seeder.dart';
 import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/evaluator/evaluator_repository.dart';
 import '../../global/user_controller.dart';
@@ -18,27 +15,6 @@ class LoginController extends GetxController {
 
   LoginController(this.evaluatorRepository);
 
-  Future<bool> logAdmin(String username, String password) async {
-    // If the username is the admin's
-    if (username == Config.adminUsername ) {
-      // Hash the entered password
-      var bytes = utf8.encode(password);
-      var hashedEnteredPassword = sha256.convert(bytes).toString();
-
-      // Hash the stored secret key
-      var secretBytes = utf8.encode(Config.secretKey!);
-      var hashedStoredPassword = sha256.convert(secretBytes).toString();
-
-      if (hashedEnteredPassword == hashedStoredPassword) {
-        return true;
-      } else {
-        loginError.value = "Invalid admin password";
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
 
   Future<bool> login(String username, String password) async {
     isLoading.value = true;

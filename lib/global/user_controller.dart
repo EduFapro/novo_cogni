@@ -23,57 +23,34 @@ class UserController extends GetxController {
   }
 
   Future<void> fetchUserData() async {
-    int? currentUserId;
-
-    try {
-      currentUserId = user.value?.evaluatorID;
-    } catch (e) {
-      print("Error retrieving evaluator ID: $e");
-      return;
-    }
-
+    int? currentUserId = user.value?.evaluatorID;
     if (currentUserId == null) {
-      print("Current user ID is null");
       return;
     }
-
-    EvaluatorEntity? fetchedUser;
+    print("mimimi");
     try {
-      fetchedUser = await userService.getUser(currentUserId);
-      print("fetched user: $fetchedUser");
+      print("user: $user");
+      var fetchedUser = await userService.getUser(currentUserId);
+      if (fetchedUser != null) {
+        user.value = fetchedUser;
+
+        var fetchedEvaluations =
+            await userService.getEvaluationsByUser(fetchedUser);
+        evaluations.assignAll(fetchedEvaluations);
+
+        for (var evaluation in fetchedEvaluations) {
+          var participant = await participantRepo
+              .getParticipantByEvaluation(evaluation.evaluationID!);
+          if (participant != null) {
+            participants.add(participant);
+            participantDetails[evaluation.evaluationID!] = participant;
+          }
+        }
+      } else {
+        print("Fetched user is null");
+      }
     } catch (e) {
       print("Error fetching user data: $e");
-      return;
-    }
-
-    if (fetchedUser == null) {
-      print("Fetched user is null");
-      return;
-    }
-
-    user.value = fetchedUser;
-    List<EvaluationEntity> fetchedEvaluations;
-    try {
-      print("fetched user: $fetchedUser");
-      fetchedEvaluations = await userService.getEvaluationsByUser(fetchedUser);
-      evaluations.assignAll(fetchedEvaluations);
-    } catch (e) {
-      print("Error fetching evaluations: $e");
-      return;
-    }
-
-    for (var evaluation in fetchedEvaluations) {
-      try {
-        var participant = await participantRepo
-            .getParticipantByEvaluation(evaluation.evaluationID!);
-        if (participant != null) {
-          participants.add(participant);
-          participantDetails[evaluation.evaluationID!] = participant;
-        }
-      } catch (e) {
-        print(
-            "Error linking participant to evaluation ID ${evaluation.evaluationID}: $e");
-      }
     }
   }
 

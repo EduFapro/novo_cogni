@@ -38,18 +38,22 @@ class EvaluationLocalDataSource {
       TABLE_EVALUATIONS,
       columns: [
         ID_EVALUATION,
+        EVALUATION_DATE,
         ID_EVALUATOR_FK,
         ID_PARTICIPANT_FK,
+        EVALUATION_STATUS,
+        LANGUAGE
       ],
       where: "$ID_EVALUATION = ?",
       whereArgs: [id],
     );
 
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       return EvaluationEntity.fromMap(maps.first);
     }
     return null;
   }
+
 
   Future<int> deleteEvaluation(int id) async {
     final Database? database = await db;
@@ -92,26 +96,41 @@ class EvaluationLocalDataSource {
     return result.first["count"] as int?;
   }
 
-  Future<List<EvaluationEntity>> getEvaluationsByEvaluatorID(
-      int evaluatorID) async {
+  Future<List<EvaluationEntity>> getEvaluationsByEvaluatorID(int evaluatorID) async {
     final Database? database = await db;
     List<Map<String, dynamic>> maps = await database!.query(
       TABLE_EVALUATIONS,
-      columns: [ID_EVALUATION, ID_EVALUATOR_FK, ID_PARTICIPANT_FK, LANGUAGE],
+      columns: [
+        ID_EVALUATION,
+        EVALUATION_DATE,
+        ID_EVALUATOR_FK,
+        ID_PARTICIPANT_FK,
+        EVALUATION_STATUS,
+        LANGUAGE
+      ],
       where: "$ID_EVALUATOR_FK = ?",
       whereArgs: [evaluatorID],
     );
-    if (maps.isNotEmpty) {
-      return maps.map((map) => EvaluationEntity.fromMap(map)).toList();
-    }
-    return [];
+
+    return maps.isNotEmpty ? maps.map((map) => EvaluationEntity.fromMap(map)).toList() : [];
   }
+
 
   Future<int> setEvaluationAsCompleted(int evaluationId) async {
     final Database? database = await db;
     return await database!.update(
       TABLE_EVALUATIONS,
       {EVALUATION_STATUS: EvaluationStatus.completed.numericValue},
+      where: "$ID_EVALUATION = ?",
+      whereArgs: [evaluationId],
+    );
+  }
+
+  Future<int> setEvaluationAsInProgress(int evaluationId) async {
+    final Database? database = await db;
+    return await database!.update(
+      TABLE_EVALUATIONS,
+      {EVALUATION_STATUS: EvaluationStatus.in_progress.numericValue},
       where: "$ID_EVALUATION = ?",
       whereArgs: [evaluationId],
     );

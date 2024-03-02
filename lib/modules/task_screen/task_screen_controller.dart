@@ -365,7 +365,8 @@ class TaskScreenController extends GetxController {
     bool allModulesCompleted = await evaluationService.areAllModulesCompleted(evaluationID);
     if (allModulesCompleted) {
       print("All modules completed. Evaluation can be marked as completed.");
-      evaluationRepository.checkAndSetEvaluationAsCompleted(evaluationID);
+      evaluationRepository.setEvaluationAsCompleted(evaluationID);
     }
   }
+
 }

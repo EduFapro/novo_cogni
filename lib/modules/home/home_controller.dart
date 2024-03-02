@@ -55,7 +55,12 @@ class HomeController extends GetxController {
       performSearch(searchController.text);
     });
   }
-
+  @override
+  void onReady() {
+    super.onReady();
+    print("É foda man");
+    refreshEvaluations();
+  }
   void resetFilters() {
     // Apply logic to reset filters to show all evaluations
     if (selectedStatus.value == null && searchController.text.isEmpty) {
@@ -119,7 +124,7 @@ class HomeController extends GetxController {
         });
   }
 
-  void fetchData() async {
+  Future<void> fetchData() async {
     isLoading.value = true;
     await userController.fetchUserData();
     var currentUser = await userController.getCurrentUserOrFetch();
@@ -129,11 +134,12 @@ class HomeController extends GetxController {
     updateLoadingState();
   }
 
+
+
   void updateLoadingState() {
-    isLoading.value = !(user.value != null &&
-        evaluations.isNotEmpty &&
-        participants.isNotEmpty);
+    isLoading.value = !(user.value != null && evaluations.isNotEmpty && participants.isNotEmpty);
   }
+
 
   void addNewParticipant(ParticipantEntity newParticipant,
       Map<String, int> newParticipantMap, Language language) {
@@ -254,5 +260,28 @@ class HomeController extends GetxController {
     update();
   }
 
+  void refreshEvaluations() async {
+    isLoading.value = true;
 
+    // Clear existing data to ensure fresh data is fetched
+    evaluations.clear();
+    participants.clear();
+    participantDetails.clear();
+
+    // Fetch new data
+    await userController.fetchUserData(); // Assumes this fetches all related data again
+
+    isLoading.value = false;
+    update(); // Trigger UI update
+  }
+
+  void setEvaluationInProgress(int evaluationId) {
+    var index = evaluations.indexWhere((eval) => eval.evaluationID == evaluationId);
+    if (index != -1) {
+      var evaluation = evaluations[index];
+      evaluation.status = EvaluationStatus.in_progress;
+      evaluations[index] = evaluation;
+      evaluations.refresh();
+    }
+  }
 }

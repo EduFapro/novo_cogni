@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
+import 'package:novo_cogni/modules/home/home_controller.dart';
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/module/module_entity.dart';
 import '../../app/module_instance/module_instance_entity.dart';
@@ -27,8 +29,13 @@ class EvaluationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    isLoading(true);
+    // Existing initialization logic
     _initialize();
+
+    // Add a listener to refresh UI when coming back to the screen
+    ever(modulesInstanceList, (_) {
+      _refreshModuleCompletionStatus();
+    });
   }
 
 // Modify the _initialize method to check completion status of modules
@@ -65,16 +72,31 @@ class EvaluationController extends GetxController {
     }
   }
 
-  Future<void> launchNextTask(int moduleInstanceId) async {
-    final nextTaskInstance = await evaluationService.getNextPendingTaskInstanceForModule(moduleInstanceId);
-    print("this nextTaskInstance É AH");
+  Future<void> launchNextTask(ModuleInstanceEntity moduleInstance) async {
+    final nextTaskInstance = await evaluationService.getNextPendingTaskInstanceForModule(moduleInstance.moduleInstanceID!);
     print(nextTaskInstance);
+
+    // If this is the first task of the evaluation, set the evaluation to in progress
+    if (evaluation.value?.status == EvaluationStatus.pending) {
+      evaluation.value?.status = EvaluationStatus.in_progress;
+      evaluation.refresh(); // This will trigger UI update if `evaluation` is an Rx type
+      await evaluationService.setEvaluationAsInProgress(evaluation.value!.evaluationID!);
+      Get.find<HomeController>().setEvaluationInProgress(evaluation.value!.evaluationID!);
+    }
+
+    // Update the module instance status if necessary
+    if (moduleInstance.status == ModuleStatus.pending) {
+      moduleInstance.status = ModuleStatus.in_progress;
+      await evaluationService.setModuleInstanceAsInProgress(moduleInstance.moduleInstanceID!);
+      updateModuleInstanceInList(moduleInstance.moduleInstanceID!, ModuleStatus.in_progress);
+    }
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
       if (taskEntity != null) {
-        navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!, moduleInstanceId);
+        navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!, moduleInstance.moduleInstanceID!);
       }
     } else {
+      markModuleAsCompleted(moduleInstance.moduleInstanceID!);
       Get.snackbar(
         'Module Completed',
         'You have completed all tasks in this module.',
@@ -86,6 +108,15 @@ class EvaluationController extends GetxController {
       );
     }
   }
+
+  void updateModuleInstanceInList(int moduleInstanceId, ModuleStatus newStatus) {
+    final index = modulesInstanceList.value?.indexWhere((element) => element.moduleInstanceID == moduleInstanceId) ?? -1;
+    if (index != -1) {
+      modulesInstanceList.value![index].status = newStatus;
+      modulesInstanceList.refresh();
+    }
+  }
+
 
 
   void navigateToTask(TaskEntity taskEntity, int taskInstanceId, int moduleInstanceId) {
@@ -120,7 +151,24 @@ class EvaluationController extends GetxController {
   }
 
 
+  void markModuleAsCompleted(int moduleInstanceId) {
+    moduleCompletionStatus[moduleInstanceId] = true;
+    updateModuleInstanceInList(moduleInstanceId, ModuleStatus.completed);
+    update(); // Update the UI after marking the module as completed
+  }
+
   bool isModuleCompleted(int moduleId) {
     return moduleCompletionStatus[moduleId] ?? false;
   }
+  void _refreshModuleCompletionStatus() {
+    // Logic to refresh the completion status of modules
+    modulesInstanceList.value?.forEach((moduleInstance) {
+      // Update each module's completion status
+      moduleCompletionStatus[moduleInstance.moduleInstanceID!] = moduleInstance.status == ModuleStatus.completed;
+    });
+    update(); // Trigger UI update
+  }
+
+
 }
+

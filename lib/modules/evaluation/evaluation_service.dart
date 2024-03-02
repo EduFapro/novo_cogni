@@ -1,3 +1,4 @@
+import '../../app/evaluation/evaluation_repository.dart';
 import '../../app/module/module_entity.dart';
 import '../../app/module/module_repository.dart';
 import '../../app/module_instance/module_instance_entity.dart';
@@ -9,6 +10,7 @@ import '../../constants/enums/module_enums.dart';
 import '../../constants/enums/task_enums.dart';
 
 class EvaluationService {
+  final EvaluationRepository evaluationRepository;
   final ModuleRepository moduleRepository;
   final TaskRepository taskRepository;
   final TaskInstanceRepository taskInstanceRepository;
@@ -16,6 +18,7 @@ class EvaluationService {
 
   EvaluationService(
       {required this.moduleRepository,
+      required this.evaluationRepository,
       required this.taskRepository,
       required this.moduleInstanceRepository,
       required this.taskInstanceRepository});
@@ -120,16 +123,31 @@ class EvaluationService {
   }
 
   Future<int> setModuleInstanceAsCompleted(int moduleInstanceId) {
-    return moduleInstanceRepository.setModuleInstanceAsCompleted(moduleInstanceId);
+    return moduleInstanceRepository
+        .setModuleInstanceAsCompleted(moduleInstanceId);
+  }
 
+  Future<int> setModuleInstanceAsInProgress(int moduleInstanceId) {
+    return moduleInstanceRepository
+        .setModuleInstanceAsInProgress(moduleInstanceId);
+  }
 
+  Future<void> setEvaluationAsCompleted(int evaluationId) {
+    return evaluationRepository.setEvaluationAsCompleted(evaluationId);
+  }
+
+  Future<void> setEvaluationAsInProgress(int evaluationId) {
+    return evaluationRepository.setEvaluationAsInProgress(evaluationId);
   }
 
   Future<bool> areAllModulesCompleted(int evaluationId) async {
     try {
-      List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepository.getModuleInstancesByEvaluationId(evaluationId);
+      List<ModuleInstanceEntity> moduleInstances =
+          await moduleInstanceRepository
+              .getModuleInstancesByEvaluationId(evaluationId);
       // Check if every module instance associated with the evaluation is completed
-      return moduleInstances.every((moduleInstance) => moduleInstance.status == ModuleStatus.completed);
+      return moduleInstances.every(
+          (moduleInstance) => moduleInstance.status == ModuleStatus.completed);
     } catch (e) {
       print('Error checking if all modules are completed: $e');
       return false;

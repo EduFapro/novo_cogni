@@ -32,53 +32,86 @@ class GlobalBinding extends Bindings {
     // Data Sources and Repositories
 
     // Evaluator
-    Get.lazyPut<EvaluatorLocalDataSource>(() => EvaluatorLocalDataSource(), fenix: true);
-    Get.lazyPut<EvaluatorRepository>(() => EvaluatorRepository(localDataSource: Get.find()), fenix: true);
+    Get.lazyPut<EvaluatorLocalDataSource>(() => EvaluatorLocalDataSource(),
+        fenix: true);
+    Get.lazyPut<EvaluatorRepository>(
+        () => EvaluatorRepository(localDataSource: Get.find()),
+        fenix: true);
 
     // Evaluation
-    Get.lazyPut<EvaluationLocalDataSource>(() => EvaluationLocalDataSource(), fenix: true);
-    Get.lazyPut<EvaluationRepository>(() => EvaluationRepository(localDataSource: Get.find()), fenix: true);
+    Get.lazyPut<EvaluationLocalDataSource>(() => EvaluationLocalDataSource(),
+        fenix: true);
+    Get.lazyPut<EvaluationRepository>(
+        () => EvaluationRepository(localDataSource: Get.find()),
+        fenix: true);
 
     // Participant
-    Get.lazyPut<ParticipantLocalDataSource>(() => ParticipantLocalDataSource(), fenix: true);
-    Get.lazyPut<ParticipantRepository>(() => ParticipantRepository(localDataSource: Get.find()), fenix: true);
+    Get.lazyPut<ParticipantLocalDataSource>(() => ParticipantLocalDataSource(),
+        fenix: true);
+    Get.lazyPut<ParticipantRepository>(
+        () => ParticipantRepository(localDataSource: Get.find()),
+        fenix: true);
 
     // Module and Task
-    Get.lazyPut<ModuleLocalDataSource>(() => ModuleLocalDataSource(), fenix: true);
+    Get.lazyPut<ModuleLocalDataSource>(() => ModuleLocalDataSource(),
+        fenix: true);
     Get.lazyPut<TaskLocalDataSource>(() => TaskLocalDataSource(), fenix: true);
-    Get.lazyPut<RecordingLocalDataSource>(() => RecordingLocalDataSource(), fenix: true);
-    Get.lazyPut<ModuleRepository>(() => ModuleRepository(moduleLocalDataSource: Get.find(), taskLocalDataSource: Get.find()), fenix: true);
-    Get.lazyPut<TaskRepository>(() => TaskRepository(localDataSource: Get.find()), fenix: true);
-    Get.lazyPut<RecordingRepository>(() => RecordingRepository(Get.find<RecordingLocalDataSource>()), fenix: true);
-
+    Get.lazyPut<RecordingLocalDataSource>(() => RecordingLocalDataSource(),
+        fenix: true);
+    Get.lazyPut<ModuleRepository>(
+        () => ModuleRepository(
+            moduleLocalDataSource: Get.find(), taskLocalDataSource: Get.find()),
+        fenix: true);
+    Get.lazyPut<TaskRepository>(
+        () => TaskRepository(localDataSource: Get.find()),
+        fenix: true);
+    Get.lazyPut<RecordingRepository>(
+        () => RecordingRepository(Get.find<RecordingLocalDataSource>()),
+        fenix: true);
 
     // Module Instance
-    Get.lazyPut<ModuleInstanceLocalDataSource>(() => ModuleInstanceLocalDataSource(), fenix: true);
-    Get.lazyPut<ModuleInstanceRepository>(() => ModuleInstanceRepository(moduleInstanceLocalDataSource: Get.find()), fenix: true);
+    Get.lazyPut<ModuleInstanceLocalDataSource>(
+        () => ModuleInstanceLocalDataSource(),
+        fenix: true);
+    Get.lazyPut<ModuleInstanceRepository>(
+        () =>
+            ModuleInstanceRepository(moduleInstanceLocalDataSource: Get.find()),
+        fenix: true);
 
     // Task Instance
-    Get.lazyPut<TaskInstanceLocalDataSource>(() => TaskInstanceLocalDataSource(), fenix: true);
-    Get.lazyPut<TaskInstanceRepository>(() => TaskInstanceRepository(localDataSource: Get.find()), fenix: true);
+    Get.lazyPut<TaskInstanceLocalDataSource>(
+        () => TaskInstanceLocalDataSource(),
+        fenix: true);
+    Get.lazyPut<TaskInstanceRepository>(
+        () => TaskInstanceRepository(localDataSource: Get.find()),
+        fenix: true);
 
     // Task Prompt
-    Get.lazyPut<TaskPromptLocalDataSource>(() => TaskPromptLocalDataSource(), fenix: true);
-    Get.lazyPut<TaskPromptRepository>(() => TaskPromptRepository(localDataSource: Get.find()), fenix: true);
+    Get.lazyPut<TaskPromptLocalDataSource>(() => TaskPromptLocalDataSource(),
+        fenix: true);
+    Get.lazyPut<TaskPromptRepository>(
+        () => TaskPromptRepository(localDataSource: Get.find()),
+        fenix: true);
 
     // Core Services
     // User-related Services
     Get.put<UserService>(UserService(), permanent: true);
     Get.put<UserController>(UserController(), permanent: true);
     Get.put(LanguageController());
-    Get.put(EvaluationService(moduleRepository: Get.find(), taskRepository: Get.find(), moduleInstanceRepository: Get.find(), taskInstanceRepository: Get.find()));
+    Get.put(EvaluationService(
+        moduleRepository: Get.find(),
+        taskRepository: Get.find(),
+        moduleInstanceRepository: Get.find(),
+        taskInstanceRepository: Get.find(),
+        evaluationRepository: Get.find()));
     Get.put<EvalDataService>(EvalDataService(), permanent: true);
 
-    final key = Key.fromUtf8('12345678901234567890123456789012'); // 32 bytes key
+    final key =
+        Key.fromUtf8('12345678901234567890123456789012'); // 32 bytes key
     final iv = IV.fromLength(16); // AES block size is 16 bytes
 
     final fileEncryptor = FileEncryptor(key, iv);
 
-
     Get.put<FileEncryptor>(fileEncryptor, permanent: true);
   }
 }
-
