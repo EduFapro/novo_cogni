@@ -6,6 +6,7 @@ import '../../app/module_instance/module_instance_entity.dart';
 import '../../app/participant/participant_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
+import '../../constants/enums/module_enums.dart';
 import '../../constants/route_arguments.dart';
 import '../../routes.dart';
 import 'evaluation_service.dart';
@@ -20,6 +21,9 @@ class EvaluationController extends GetxController {
 
   var isLoading = false.obs;
 
+  var moduleCompletionStatus = <int, bool>{}.obs;
+
+
   @override
   void onInit() {
     super.onInit();
@@ -27,6 +31,7 @@ class EvaluationController extends GetxController {
     _initialize();
   }
 
+// Modify the _initialize method to check completion status of modules
   Future<void> _initialize() async {
     final arguments = Get.arguments as Map<String, dynamic>?;
     if (arguments != null) {
@@ -37,13 +42,16 @@ class EvaluationController extends GetxController {
         List<ModuleInstanceEntity>? modules = await evaluationService.getModuleInstancesByEvaluationId(evaluation.value!.evaluationID!);
         if (modules.isNotEmpty) {
           modulesInstanceList.value = modules;
+          // Update moduleCompletionStatus based on the status of each module
+          for (var module in modules) {
+            moduleCompletionStatus[module.moduleInstanceID!] = module.status == ModuleStatus.completed;
+          }
           await fetchTaskInstancesForModuleInstances(modules);
         }
       }
     }
     isLoading(false);
   }
-
   Future<List<ModuleEntity>?> getModulesByEvaluationId(int evaluationId) async => await evaluationService.getModulesByEvaluationId(evaluationId);
 
   Future<void> fetchTaskInstancesForModuleInstances(List<ModuleInstanceEntity> moduleInstances) async {
@@ -112,5 +120,7 @@ class EvaluationController extends GetxController {
   }
 
 
-
+  bool isModuleCompleted(int moduleId) {
+    return moduleCompletionStatus[moduleId] ?? false;
+  }
 }

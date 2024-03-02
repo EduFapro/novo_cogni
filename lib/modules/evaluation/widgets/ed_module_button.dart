@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 
-class ModuleButton extends GetView<EvaluationController> {
-  final VoidCallback onPressed;
-  const ModuleButton({super.key, required this.onPressed});
+class ModuleButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final bool isCompleted;
+
+  const ModuleButton({Key? key, this.onPressed, required this.isCompleted})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +16,23 @@ class ModuleButton extends GetView<EvaluationController> {
         width: 100,
         height: 50,
         child: Card(
+          color: isCompleted ? Colors.green : Colors.white,
+          // Change color based on completion status
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4.0),
             side: BorderSide(
-              color: Colors.blue,
+              color: isCompleted ? Colors.grey : Colors.blue,
+              // Change border color based on status
               width: 2.0,
             ),
           ),
-          child: Center(child: Text(UiStrings.start_task_button)),
+          child: Center(
+            child: Text(
+              isCompleted ? "COMPLETO" : UiStrings.start_task_button,
+              style: TextStyle(
+                  color: isCompleted ? Colors.white : Colors.black),
+            ),
+          ),
         ),
       ),
     );
