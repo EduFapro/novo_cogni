@@ -5,6 +5,7 @@ import '../../app/module_instance/module_instance_repository.dart';
 import '../../app/task/task_repository.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../app/task_instance/task_instance_repository.dart';
+import '../../constants/enums/module_enums.dart';
 import '../../constants/enums/task_enums.dart';
 
 class EvaluationService {
@@ -120,5 +121,18 @@ class EvaluationService {
 
   Future<int> setModuleInstanceAsCompleted(int moduleInstanceId) {
     return moduleInstanceRepository.setModuleInstanceAsCompleted(moduleInstanceId);
+
+
+  }
+
+  Future<bool> areAllModulesCompleted(int evaluationId) async {
+    try {
+      List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepository.getModuleInstancesByEvaluationId(evaluationId);
+      // Check if every module instance associated with the evaluation is completed
+      return moduleInstances.every((moduleInstance) => moduleInstance.status == ModuleStatus.completed);
+    } catch (e) {
+      print('Error checking if all modules are completed: $e');
+      return false;
+    }
   }
 }

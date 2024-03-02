@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:novo_cogni/app/evaluation/evaluation_repository.dart';
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:record/record.dart';
@@ -36,6 +37,7 @@ class TaskScreenController extends GetxController {
   var isModuleCompleted = false.obs;
 
   var recordingRepository = Get.find<RecordingRepository>();
+  var evaluationRepository = Get.find<EvaluationRepository>();
 
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
@@ -252,12 +254,12 @@ class TaskScreenController extends GetxController {
         } else {
           // If there are no more tasks, mark the module as completed
           isModuleCompleted.value = true;
-          await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId.value!);
+          await setModuleInstanceAsCompleted(moduleInstanceId.value!);
         }
       } else {
         // If we've reached or passed the last task, mark the module as completed
         isModuleCompleted.value = true;
-        await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId.value!);
+        await setModuleInstanceAsCompleted(moduleInstanceId.value!);
       }
     } else {
       // If for some reason there's no current task, log an error or handle it
@@ -342,6 +344,8 @@ class TaskScreenController extends GetxController {
     }
   }
 
+
+
   @override
   void onClose() {
     _audioPlayer.dispose();
@@ -353,5 +357,15 @@ class TaskScreenController extends GetxController {
     final taskInstances =
         await taskService.getTasksByModuleInstanceId(moduleInstanceId);
     totalTasks.value = taskInstances.length;
+  }
+
+  Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+    await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
+    var evaluationID = Get.find<EvaluationController>().evaluation.value!.evaluationID!;
+    bool allModulesCompleted = await evaluationService.areAllModulesCompleted(evaluationID);
+    if (allModulesCompleted) {
+      print("All modules completed. Evaluation can be marked as completed.");
+      evaluationRepository.checkAndSetEvaluationAsCompleted(evaluationID);
+    }
   }
 }

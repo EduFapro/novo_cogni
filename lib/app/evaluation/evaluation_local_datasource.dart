@@ -1,4 +1,5 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import '../../constants/enums/evaluation_enums.dart';
 import '../database_constants.dart';
 import '../database_helper.dart';
 import 'evaluation_entity.dart';
@@ -105,4 +106,16 @@ class EvaluationLocalDataSource {
     }
     return [];
   }
+
+  Future<int> setEvaluationAsCompleted(int evaluationId) async {
+    final Database? database = await db;
+    return await database!.update(
+      TABLE_EVALUATIONS,
+      {EVALUATION_STATUS: EvaluationStatus.completed.numericValue},
+      where: "$ID_EVALUATION = ?",
+      whereArgs: [evaluationId],
+    );
+  }
+
+
 }
