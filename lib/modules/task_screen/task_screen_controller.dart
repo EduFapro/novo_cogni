@@ -235,35 +235,37 @@ class TaskScreenController extends GetxController {
   }
 
   Future<void> onCheckButtonPressed() async {
+    // Ensure there is a current task to conclude
     if (currentTask.value != null) {
-      // Conclude the current task instance
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
-      // Prepare to fetch the next task instance
-      var nextTaskInstance = await taskService.getNextPendingTaskInstance(); // Assuming this method exists and fetches the next pending task if any
+      // Move to next task only if more tasks are remaining
+      // Note: We use <= because currentTaskIndex starts from 1 and totalTasks is a count
+      if (currentTaskIndex.value < totalTasks.value) {
+        currentTaskIndex.value++; // Move to the next task
 
-      if (nextTaskInstance != null) {
-        // If there is a next task, update the current task
-        await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+        // Attempt to fetch the next pending task instance
+        var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
+        if (nextTaskInstance != null) {
+          // If there's a next task, update current task to this new task
+          await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+        } else {
+          // If there are no more tasks, mark the module as completed
+          isModuleCompleted.value = true;
+          await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId.value!);
+        }
       } else {
-        // If there are no more pending tasks, mark the module as completed
+        // If we've reached or passed the last task, mark the module as completed
         isModuleCompleted.value = true;
         await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId.value!);
-        // Show a message or perform additional actions as needed
       }
     } else {
-      // Handle the case where currentTask is unexpectedly null
-      // Log an error or show a message as appropriate
-      print("Unexpected error: currentTask is null");
-    }
-
-    // This check is outside the main logic to ensure it always runs
-    // Check if the module should be marked as completed
-    if (isModuleCompleted.value) {
-      await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId.value!);
-      // Optionally, navigate away or show a completion message
+      // If for some reason there's no current task, log an error or handle it
+      print("Error: No current task found.");
     }
   }
+
+
 
 
 
