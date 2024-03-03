@@ -2,11 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:novo_cogni/app/evaluation/evaluation_repository.dart';
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
-import 'package:novo_cogni/app/task_instance/task_instance_repository.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
-import 'package:novo_cogni/modules/home/home_controller.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
 import '../../app/recording_file/recording_file_entity.dart';
@@ -15,12 +12,9 @@ import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
 import '../evaluation/evaluation_controller.dart';
-import '../evaluation/evaluation_service.dart';
 import 'task_screen_service.dart';
 
 class TaskScreenController extends GetxController {
-  final EvaluationService evaluationService = Get.find();
-
   final TaskScreenService taskService;
   late final AudioPlayer _audioPlayer;
   late final AudioRecorder _recorder;
@@ -37,25 +31,19 @@ class TaskScreenController extends GetxController {
   var totalTasks = 1.obs;
   var moduleInstanceId = Rxn<int>();
   var isModuleCompleted = false.obs;
-
+  var countdownStarted = false.obs;
+  var countdownTrigger = false.obs;
   var recordingRepository = Get.find<RecordingRepository>();
-  var evaluationRepository = Get.find<EvaluationRepository>();
-  var taskInstanceRepository = Get.find<TaskInstanceRepository>();
 
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
 
   TaskScreenController({required this.taskService});
 
-  Future<void> refreshProgress() async {
-    final taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstanceId.value!);
-    final completedTasksCount = taskInstances.where((taskInst) => taskInst.status == TaskStatus.done).length;
-    currentTaskIndex.value = completedTasksCount + 1;
-  }
-
   @override
   Future<void> onInit() async {
     super.onInit();
+
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
 
@@ -74,7 +62,6 @@ class TaskScreenController extends GetxController {
     if (args[RouteArguments.TASK_INSTANCE_ID] != null) {
       await updateCurrentTask(args[RouteArguments.TASK_INSTANCE_ID]);
     } else {
-      // Fallback or error handling if task instance ID is not provided.
       print("Task instance ID not found in arguments.");
     }
 
@@ -88,15 +75,26 @@ class TaskScreenController extends GetxController {
       print("Task mode changed to: $mode");
     });
 
-    refreshProgress();
+    _audioPlayer.onPlayerComplete.listen((event) async {
+      await Future.delayed(Duration(seconds: 1));
+      countdownTrigger.value = true;
+    });
   }
+
+  // Function to calculate progress
+  double get progress =>
+      totalTasks.value > 0 ? currentTaskIndex.value / totalTasks.value : 0.0;
 
   // Function to proceed to the next task
   void nextTask() {
     if (currentTaskIndex.value < totalTasks.value - 1) {
       currentTaskIndex.value++;
-      // Load the next task or handle it accordingly
     }
+  }
+
+  // Function to reset the task progress
+  void resetProgress() {
+    currentTaskIndex.value = 0;
   }
 
   Future<void> updateCurrentTask(int taskInstanceId) async {
@@ -239,37 +237,23 @@ class TaskScreenController extends GetxController {
   }
 
   Future<void> onCheckButtonPressed() async {
-    // Ensure there is a current task to conclude
     if (currentTask.value != null) {
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
+      // Check if there are more tasks to fetch
       if (currentTaskIndex.value < totalTasks.value) {
-        currentTaskIndex.value++; // Move to the next task
-
-        // Attempt to fetch the next pending task instance
+        currentTaskIndex.value++;
         var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
         if (nextTaskInstance != null) {
-          // If there's a next task, update current task to this new task
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
         } else {
-          // If there are no more tasks, mark the module as completed
           isModuleCompleted.value = true;
-          await setModuleInstanceAsCompleted(moduleInstanceId.value!);
         }
       } else {
-        // If we've reached or passed the last task, mark the module as completed
         isModuleCompleted.value = true;
-        await setModuleInstanceAsCompleted(moduleInstanceId.value!);
       }
-    } else {
-      // If for some reason there's no current task, log an error or handle it
-      print("Error: No current task found.");
     }
   }
-
-
-
-
 
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
@@ -344,8 +328,6 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
-
   @override
   void onClose() {
     _audioPlayer.dispose();
@@ -359,17 +341,11 @@ class TaskScreenController extends GetxController {
     totalTasks.value = taskInstances.length;
   }
 
-  Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
-    await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
-    var evaluationID = Get.find<EvaluationController>().evaluation.value!.evaluationID!;
-    bool allModulesCompleted = await evaluationService.areAllModulesCompleted(evaluationID);
-    if (allModulesCompleted) {
-      print("All modules completed. Evaluation can be marked as completed.");
-      evaluationRepository.setEvaluationAsCompleted(evaluationID);
-      Get.find<HomeController>().refreshEvaluations();
-      Get.find<HomeController>().refreshEvaluationCounts();
-
-    }
+  void startCountdown() {
+    // Logic to start the countdown timer
+    // Ensure to set 'countdownStarted' to true to prevent multiple initiations
+    countdownStarted.value = true;
+    // Example: Trigger a countdown timer in the UI
+    update(); // Notify listeners to update the UI if needed
   }
-
 }
