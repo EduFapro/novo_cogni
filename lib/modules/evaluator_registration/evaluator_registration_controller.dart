@@ -90,9 +90,11 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
       specialty: specialtyController.text,
       cpfOrNif: cpfOrNifController.text,
       username: username.value,
-      password: '0000',
       firstLogin: true,
     );
+
+    newEvaluator.password = newEvaluator.cpfOrNif;
+
 
     try {
       await _repository.createEvaluator(newEvaluator);
