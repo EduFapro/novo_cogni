@@ -250,7 +250,7 @@ class StatusSwitchFilter extends GetView<HomeController> {
                   onChanged: (EvaluationStatus? newValue) {
                     controller.selectedStatus.value = newValue;
                     if (newValue == null) {
-                      controller.resetFilters(); // Reset filters when status is set to null
+                      controller.resetFilters();
                     } else {
                       controller.filterEvaluationsByStatus();
                     }

@@ -27,7 +27,7 @@ class UserController extends GetxController {
     if (currentUserId == null) {
       return;
     }
-    print("mimimi");
+
     try {
       print("user: $user");
       var fetchedUser = await userService.getUser(currentUserId);

@@ -25,7 +25,6 @@ class EvaluationController extends GetxController {
 
   var moduleCompletionStatus = <int, bool>{}.obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -38,6 +37,12 @@ class EvaluationController extends GetxController {
     });
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    // checkAndFinalizeEvaluation();
+  }
+
 // Modify the _initialize method to check completion status of modules
   Future<void> _initialize() async {
     final arguments = Get.arguments as Map<String, dynamic>?;
@@ -46,12 +51,14 @@ class EvaluationController extends GetxController {
       evaluation.value = arguments[RouteArguments.EVALUATION];
 
       if (evaluation.value != null) {
-        List<ModuleInstanceEntity>? modules = await evaluationService.getModuleInstancesByEvaluationId(evaluation.value!.evaluationID!);
+        List<ModuleInstanceEntity>? modules = await evaluationService
+            .getModuleInstancesByEvaluationId(evaluation.value!.evaluationID!);
         if (modules.isNotEmpty) {
           modulesInstanceList.value = modules;
           // Update moduleCompletionStatus based on the status of each module
           for (var module in modules) {
-            moduleCompletionStatus[module.moduleInstanceID!] = module.status == ModuleStatus.completed;
+            moduleCompletionStatus[module.moduleInstanceID!] =
+                module.status == ModuleStatus.completed;
           }
           await fetchTaskInstancesForModuleInstances(modules);
         }
@@ -59,11 +66,16 @@ class EvaluationController extends GetxController {
     }
     isLoading(false);
   }
-  Future<List<ModuleEntity>?> getModulesByEvaluationId(int evaluationId) async => await evaluationService.getModulesByEvaluationId(evaluationId);
 
-  Future<void> fetchTaskInstancesForModuleInstances(List<ModuleInstanceEntity> moduleInstances) async {
+  Future<List<ModuleEntity>?> getModulesByEvaluationId(
+          int evaluationId) async =>
+      await evaluationService.getModulesByEvaluationId(evaluationId);
+
+  Future<void> fetchTaskInstancesForModuleInstances(
+      List<ModuleInstanceEntity> moduleInstances) async {
     for (var moduleInstance in moduleInstances) {
-      var tasks = await evaluationService.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+      var tasks = await evaluationService
+          .getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
       if (tasks != null && tasks.isNotEmpty) {
         tasksListDetails.update((val) {
           val?.add({moduleInstance.moduleID: tasks});
@@ -73,27 +85,37 @@ class EvaluationController extends GetxController {
   }
 
   Future<void> launchNextTask(ModuleInstanceEntity moduleInstance) async {
-    final nextTaskInstance = await evaluationService.getNextPendingTaskInstanceForModule(moduleInstance.moduleInstanceID!);
+    final nextTaskInstance = await evaluationService
+        .getNextPendingTaskInstanceForModule(moduleInstance.moduleInstanceID!);
     print(nextTaskInstance);
 
     // If this is the first task of the evaluation, set the evaluation to in progress
     if (evaluation.value?.status == EvaluationStatus.pending) {
       evaluation.value?.status = EvaluationStatus.in_progress;
-      evaluation.refresh(); // This will trigger UI update if `evaluation` is an Rx type
-      await evaluationService.setEvaluationAsInProgress(evaluation.value!.evaluationID!);
-      Get.find<HomeController>().setEvaluationInProgress(evaluation.value!.evaluationID!);
+      evaluation
+          .refresh(); // This will trigger UI update if `evaluation` is an Rx type
+      await evaluationService
+          .setEvaluationAsInProgress(evaluation.value!.evaluationID!);
+      Get.find<HomeController>()
+          .setEvaluationInProgress(evaluation.value!.evaluationID!);
     }
 
     // Update the module instance status if necessary
     if (moduleInstance.status == ModuleStatus.pending) {
       moduleInstance.status = ModuleStatus.in_progress;
-      await evaluationService.setModuleInstanceAsInProgress(moduleInstance.moduleInstanceID!);
-      updateModuleInstanceInList(moduleInstance.moduleInstanceID!, ModuleStatus.in_progress);
+      await evaluationService
+          .setModuleInstanceAsInProgress(moduleInstance.moduleInstanceID!);
+      updateModuleInstanceInList(
+          moduleInstance.moduleInstanceID!, ModuleStatus.in_progress);
     }
+
+    Get.find<HomeController>().refreshEvaluationCounts();
+
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
       if (taskEntity != null) {
-        navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!, moduleInstance.moduleInstanceID!);
+        navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!,
+            moduleInstance.moduleInstanceID!);
       }
     } else {
       markModuleAsCompleted(moduleInstance.moduleInstanceID!);
@@ -109,17 +131,19 @@ class EvaluationController extends GetxController {
     }
   }
 
-  void updateModuleInstanceInList(int moduleInstanceId, ModuleStatus newStatus) {
-    final index = modulesInstanceList.value?.indexWhere((element) => element.moduleInstanceID == moduleInstanceId) ?? -1;
+  void updateModuleInstanceInList(
+      int moduleInstanceId, ModuleStatus newStatus) {
+    final index = modulesInstanceList.value?.indexWhere(
+            (element) => element.moduleInstanceID == moduleInstanceId) ??
+        -1;
     if (index != -1) {
       modulesInstanceList.value![index].status = newStatus;
       modulesInstanceList.refresh();
     }
   }
 
-
-
-  void navigateToTask(TaskEntity taskEntity, int taskInstanceId, int moduleInstanceId) {
+  void navigateToTask(
+      TaskEntity taskEntity, int taskInstanceId, int moduleInstanceId) {
     Get.toNamed(
       AppRoutes.task,
       arguments: {
@@ -131,14 +155,14 @@ class EvaluationController extends GetxController {
     );
   }
 
-
   // Getter for participant's age
   int get age {
     if (participant.value?.birthDate == null) return 0;
     final birthDate = participant.value!.birthDate;
     final today = DateTime.now();
     int age = today.year - birthDate.year;
-    if (birthDate.month > today.month || (birthDate.month == today.month && birthDate.day > today.day)) {
+    if (birthDate.month > today.month ||
+        (birthDate.month == today.month && birthDate.day > today.day)) {
       age--;
     }
     return age;
@@ -146,10 +170,10 @@ class EvaluationController extends GetxController {
 
   // Method to fetch tasks for a given module instance ID
   Future<List<TaskInstanceEntity>> getTasks(int moduleInstanceId) async {
-    List<TaskInstanceEntity>? tasks = await evaluationService.getTaskInstancesByModuleInstanceId(moduleInstanceId);
+    List<TaskInstanceEntity>? tasks = await evaluationService
+        .getTaskInstancesByModuleInstanceId(moduleInstanceId);
     return tasks ?? [];
   }
-
 
   void markModuleAsCompleted(int moduleInstanceId) {
     moduleCompletionStatus[moduleInstanceId] = true;
@@ -160,15 +184,36 @@ class EvaluationController extends GetxController {
   bool isModuleCompleted(int moduleId) {
     return moduleCompletionStatus[moduleId] ?? false;
   }
+
   void _refreshModuleCompletionStatus() {
     // Logic to refresh the completion status of modules
     modulesInstanceList.value?.forEach((moduleInstance) {
       // Update each module's completion status
-      moduleCompletionStatus[moduleInstance.moduleInstanceID!] = moduleInstance.status == ModuleStatus.completed;
+      moduleCompletionStatus[moduleInstance.moduleInstanceID!] =
+          moduleInstance.status == ModuleStatus.completed;
     });
     update(); // Trigger UI update
   }
-
-
+  //
+  // void checkAndFinalizeEvaluation() {
+  //   print("HOIHOHO");
+  //   bool allModulesCompleted = modulesInstanceList.value?.every((module) {
+  //         print(module);
+  //         print(module.status);
+  //         return module.status == ModuleStatus.completed;
+  //       }) ??
+  //       false;
+  //   print("ASDSAD");
+  //   if (allModulesCompleted) {
+  //     var evalId = evaluation.value?.evaluationID;
+  //     if (evalId != null) {
+  //       evaluationService.setEvaluationAsCompleted(evalId).then((_) {
+  //         evaluation.value?.status = EvaluationStatus.completed;
+  //         evaluation.refresh();
+  //         Get.find<HomeController>().refreshEvaluations();
+  //         Get.find<HomeController>().refreshEvaluationCounts();
+  //       });
+  //     }
+  //   }
+  // }
 }
-

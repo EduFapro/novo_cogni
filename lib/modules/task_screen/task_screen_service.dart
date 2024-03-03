@@ -26,7 +26,6 @@ class TaskScreenService {
       // Retrieve the task prompt
       final taskPrompt = await taskPromptRepository
           .getTaskPromptByTaskInstanceID(taskInstanceId);
-      print("DENTRO TASK SERVICE");
       // Check if the task prompt was successfully retrieved
       if (taskPrompt != null) {
         // Log the successful retrieval

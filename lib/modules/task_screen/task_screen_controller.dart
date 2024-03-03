@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:novo_cogni/app/evaluation/evaluation_repository.dart';
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
+import 'package:novo_cogni/app/task_instance/task_instance_repository.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
+import 'package:novo_cogni/modules/home/home_controller.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
 import '../../app/recording_file/recording_file_entity.dart';
@@ -38,11 +40,18 @@ class TaskScreenController extends GetxController {
 
   var recordingRepository = Get.find<RecordingRepository>();
   var evaluationRepository = Get.find<EvaluationRepository>();
+  var taskInstanceRepository = Get.find<TaskInstanceRepository>();
 
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
 
   TaskScreenController({required this.taskService});
+
+  Future<void> refreshProgress() async {
+    final taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstanceId.value!);
+    final completedTasksCount = taskInstances.where((taskInst) => taskInst.status == TaskStatus.done).length;
+    currentTaskIndex.value = completedTasksCount + 1;
+  }
 
   @override
   Future<void> onInit() async {
@@ -78,11 +87,9 @@ class TaskScreenController extends GetxController {
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
     });
-  }
 
-  // Function to calculate progress
-  double get progress =>
-      totalTasks.value > 0 ? currentTaskIndex.value / totalTasks.value : 0.0;
+    refreshProgress();
+  }
 
   // Function to proceed to the next task
   void nextTask() {
@@ -90,11 +97,6 @@ class TaskScreenController extends GetxController {
       currentTaskIndex.value++;
       // Load the next task or handle it accordingly
     }
-  }
-
-  // Function to reset the task progress
-  void resetProgress() {
-    currentTaskIndex.value = 0;
   }
 
   Future<void> updateCurrentTask(int taskInstanceId) async {
@@ -241,8 +243,6 @@ class TaskScreenController extends GetxController {
     if (currentTask.value != null) {
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
-      // Move to next task only if more tasks are remaining
-      // Note: We use <= because currentTaskIndex starts from 1 and totalTasks is a count
       if (currentTaskIndex.value < totalTasks.value) {
         currentTaskIndex.value++; // Move to the next task
 
@@ -366,6 +366,9 @@ class TaskScreenController extends GetxController {
     if (allModulesCompleted) {
       print("All modules completed. Evaluation can be marked as completed.");
       evaluationRepository.setEvaluationAsCompleted(evaluationID);
+      Get.find<HomeController>().refreshEvaluations();
+      Get.find<HomeController>().refreshEvaluationCounts();
+
     }
   }
 
