@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/person_enums/person_enums.dart';
+import '../../../global/user_controller.dart';
 import '../evaluators_controller.dart';
 import '../../widgets/ed_input_text.dart';
 import 'ed_new_evaluator_button.dart';
@@ -35,7 +36,6 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
             controller: controller.searchController,
             onSearch: controller.performSearch,
           ),
-
           Expanded(
             child: Obx(() {
               var evaluatorsList = controller.filteredEvaluatorsList;
@@ -52,10 +52,13 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
                   rows: evaluatorsList.map((evaluator) {
                     return DataRow(
                       cells: [
-                        DataCell(Text('${evaluator.name} ${evaluator.surname}')),
+                        DataCell(
+                            Text('${evaluator.name} ${evaluator.surname}')),
                         DataCell(Text(evaluator.username)),
-                        DataCell(Text(DateFormat('dd/MM/yyyy').format(evaluator.birthDate))),
-                        DataCell(Text(evaluator.sex == Sex.male ? 'Male' : 'Female')),
+                        DataCell(Text(DateFormat('dd/MM/yyyy')
+                            .format(evaluator.birthDate))),
+                        DataCell(Text(
+                            evaluator.sex == Sex.male ? 'Male' : 'Female')),
                       ],
                     );
                   }).toList(),
@@ -63,10 +66,11 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
               );
             }),
           ),
-          SizedBox(
-            width: 900,
-            child: EdNewEvaluatorButton(),
-          ),
+          if (Get.find<UserController>().isUserAdmin)
+            SizedBox(
+              width: 900,
+              child: EdNewEvaluatorButton(),
+            ),
         ],
       ),
     );

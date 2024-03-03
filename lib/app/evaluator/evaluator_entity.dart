@@ -14,6 +14,7 @@ class EvaluatorEntity extends Equatable {
   final String username;
   late String password;
   bool firstLogin;
+  bool isAdmin = false;
 
   EvaluatorEntity({
     this.evaluatorID,
@@ -28,7 +29,6 @@ class EvaluatorEntity extends Equatable {
     this.firstLogin = false,
   });
 
-
   EvaluatorEntity.fromMap(Map<String, dynamic> map)
       : evaluatorID = map[ID_EVALUATOR],
         name = map[EVALUATOR_NAME],
@@ -39,7 +39,8 @@ class EvaluatorEntity extends Equatable {
         cpfOrNif = map[CPF_OR_NIF_EVALUATOR],
         username = map[USERNAME_EVALUATOR],
         password = map[PASSWORD_EVALUATOR],
-        firstLogin = map[FIRST_LOGIN] == 1;
+        firstLogin = map[FIRST_LOGIN] == 1,
+        isAdmin = map[IS_ADMIN] == 1;
 
   Map<String, dynamic> toMap() {
     return {
@@ -53,11 +54,23 @@ class EvaluatorEntity extends Equatable {
       USERNAME_EVALUATOR: username,
       PASSWORD_EVALUATOR: password,
       FIRST_LOGIN: firstLogin ? 1 : 0,
+      IS_ADMIN: isAdmin ? 1 : 0,
     };
   }
 
   @override
-  List<Object?> get props => [evaluatorID, name, surname, birthDate, sex, specialty, cpfOrNif, username, firstLogin];
+  List<Object?> get props => [
+        evaluatorID,
+        name,
+        surname,
+        birthDate,
+        sex,
+        specialty,
+        cpfOrNif,
+        username,
+        firstLogin,
+        isAdmin
+      ];
 
   @override
   String toString() {
@@ -70,9 +83,7 @@ class EvaluatorEntity extends Equatable {
         'CPF/NIF: $cpfOrNif, '
         'Username: $username, '
         'First Login: ${firstLogin ? "Yes" : "No"}'
+        'Is Admin: ${isAdmin ? "Yes" : "No"}'
         '}';
   }
-
 }
-
-
