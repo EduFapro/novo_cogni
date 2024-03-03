@@ -90,7 +90,7 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
       specialty: specialtyController.text,
       cpfOrNif: cpfOrNifController.text,
       username: username.value,
-      firstLogin: true,
+      firstLogin: true, password: cpfOrNifController.text,
     );
 
     newEvaluator.password = newEvaluator.cpfOrNif;

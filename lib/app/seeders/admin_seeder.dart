@@ -17,7 +17,7 @@ class Config {
 
   static String get secretKey => dotenv.env['SECRET_KEY'] ?? '';
 
-  static var newAdmin = EvaluatorEntity(
+  static get admin => EvaluatorEntity(
     name: adminName,
     surname: adminSurname,
     birthDate: _adminBirthDate,
@@ -25,15 +25,10 @@ class Config {
     specialty: adminSpecialty,
     cpfOrNif: adminCpfOrNif,
     username: adminUsername,
+    password: secretKey,
     firstLogin: false,
   );
 
-
-
-  static EvaluatorEntity get admin {
-    newAdmin.password = secretKey;
-    return newAdmin;
-  }
 
 
   static Sex get _adminSex {

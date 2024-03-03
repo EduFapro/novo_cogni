@@ -12,7 +12,7 @@ class EvaluatorEntity extends Equatable {
   final String specialty;
   final String cpfOrNif;
   final String username;
-  late String _password;
+  late String password;
   bool firstLogin;
   bool isAdmin = false;
 
@@ -26,6 +26,7 @@ class EvaluatorEntity extends Equatable {
     required this.cpfOrNif,
     required this.username,
     this.firstLogin = false,
+    required this.password,
   });
 
   EvaluatorEntity.fromMap(Map<String, dynamic> map)
@@ -37,7 +38,7 @@ class EvaluatorEntity extends Equatable {
         specialty = map[SPECIALTY_EVALUATOR],
         cpfOrNif = map[CPF_OR_NIF_EVALUATOR],
         username = map[USERNAME_EVALUATOR],
-        _password = map[PASSWORD_EVALUATOR],
+        password = map[PASSWORD_EVALUATOR],
         firstLogin = map[FIRST_LOGIN] == 1,
         isAdmin = map[IS_ADMIN] == 1;
 
@@ -51,16 +52,10 @@ class EvaluatorEntity extends Equatable {
       SPECIALTY_EVALUATOR: specialty,
       CPF_OR_NIF_EVALUATOR: cpfOrNif,
       USERNAME_EVALUATOR: username,
-      PASSWORD_EVALUATOR: _password,
+      PASSWORD_EVALUATOR: password,
       FIRST_LOGIN: firstLogin ? 1 : 0,
       IS_ADMIN: isAdmin ? 1 : 0,
     };
-  }
-
-  String get password => _password;
-
-  set password(String value) {
-    _password = value;
   }
 
   @override

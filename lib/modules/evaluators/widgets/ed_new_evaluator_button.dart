@@ -16,9 +16,7 @@ class EdNewEvaluatorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
-        // Navigate and wait for the result
         var result = await Get.toNamed(AppRoutes.evaluatorRegistration);
-        // If the result is a new Evaluator, add it to the list
         if (result is EvaluatorEntity) {
           final EvaluatorsController controller = Get.find();
           controller.addEvaluator(result);

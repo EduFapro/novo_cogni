@@ -26,13 +26,13 @@ class EvaluatorsController extends GetxController {
     searchController.dispose();
     super.onClose();
   }
-
   void fetchEvaluators() async {
-    var evaluators = await EvaluatorRepository(
-        localDataSource: EvaluatorLocalDataSource()).getAllEvaluators();
+    var evaluators = await EvaluatorRepository(localDataSource: EvaluatorLocalDataSource()).getAllEvaluators();
     evaluatorsList.assignAll(evaluators);
-    filteredEvaluatorsList.assignAll(
-        evaluators); // Initialize with all evaluators
+
+    // Ensure filteredEvaluatorsList is initialized correctly.
+    // This is crucial for the initial UI state.
+    performSearch(""); // This will populate filteredEvaluatorsList with all evaluators.
   }
 
   void performSearch(String query) {
@@ -46,11 +46,13 @@ class EvaluatorsController extends GetxController {
         }).toList(),
       );
     }
-    update(); // Notify listeners to update UI
+    // This method already calls update(), triggering UI refresh.
   }
+
 
   void addEvaluator(EvaluatorEntity newEvaluator) {
     evaluatorsList.add(newEvaluator);
+    performSearch(searchController.text);
     update();
   }
 }
