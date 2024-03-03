@@ -4,8 +4,7 @@ class EdSkipButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  EdSkipButton({Key? key, required this.text, required this.onPressed})
-      : super(key: key);
+  EdSkipButton({Key? key, required this.text, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,17 +12,14 @@ class EdSkipButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(text),
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        // Text color
-        elevation: 2,
-        // Elevation
+        primary: Colors.white, // Background color
+        onPrimary: Colors.black, // Text color
+        elevation: 2, // Elevation
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.0), // Rounded corners
           side: BorderSide(color: Colors.black), // Border color and width
         ),
-        padding:
-            EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Padding
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Padding
       ),
     );
   }

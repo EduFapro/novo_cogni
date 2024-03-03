@@ -37,8 +37,7 @@ class TaskScreenController extends GetxController {
   var totalTasks = 1.obs;
   var moduleInstanceId = Rxn<int>();
   var isModuleCompleted = false.obs;
-  var countdownStarted = false.obs;
-  var countdownTrigger = false.obs;
+
   var recordingRepository = Get.find<RecordingRepository>();
   var evaluationRepository = Get.find<EvaluationRepository>();
   var taskInstanceRepository = Get.find<TaskInstanceRepository>();
@@ -57,7 +56,6 @@ class TaskScreenController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
 
@@ -76,6 +74,7 @@ class TaskScreenController extends GetxController {
     if (args[RouteArguments.TASK_INSTANCE_ID] != null) {
       await updateCurrentTask(args[RouteArguments.TASK_INSTANCE_ID]);
     } else {
+      // Fallback or error handling if task instance ID is not provided.
       print("Task instance ID not found in arguments.");
     }
 
@@ -89,12 +88,6 @@ class TaskScreenController extends GetxController {
       print("Task mode changed to: $mode");
     });
 
-    _audioPlayer.onPlayerComplete.listen((event) async {
-      await Future.delayed(Duration(seconds: 1));
-      countdownTrigger.value = true;
-    });
-  }
-
     refreshProgress();
   }
 
@@ -102,6 +95,7 @@ class TaskScreenController extends GetxController {
   void nextTask() {
     if (currentTaskIndex.value < totalTasks.value - 1) {
       currentTaskIndex.value++;
+      // Load the next task or handle it accordingly
     }
   }
 
@@ -378,11 +372,4 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  void startCountdown() {
-    // Logic to start the countdown timer
-    // Ensure to set 'countdownStarted' to true to prevent multiple initiations
-    countdownStarted.value = true;
-    // Example: Trigger a countdown timer in the UI
-    update(); // Notify listeners to update the UI if needed
-  }
 }

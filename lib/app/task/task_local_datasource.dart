@@ -60,8 +60,7 @@ class TaskLocalDataSource {
   Future<TaskEntity?> getTask(int id) async {
     try {
       final Database? database = await db;
-      final maps = await database!
-          .query(TABLE_TASKS, where: '$ID_TASK = ?', whereArgs: [id]);
+      final maps = await database!.query(TABLE_TASKS, where: '$ID_TASK = ?', whereArgs: [id]);
       if (maps.isNotEmpty) {
         final map = Map<String, dynamic>.from(maps.first);
         return TaskEntity.fromMap(map);
@@ -73,6 +72,7 @@ class TaskLocalDataSource {
     }
   }
 
+
   Future<List<TaskEntity>> listTasks() async {
     try {
       final Database? database = await db;
@@ -83,6 +83,7 @@ class TaskLocalDataSource {
       return [];
     }
   }
+
 
   Future<List<TaskEntity>> listTasksByModuleId(int moduleId) async {
     try {
@@ -98,4 +99,10 @@ class TaskLocalDataSource {
       return [];
     }
   }
+
+
+
+
+
 }
+

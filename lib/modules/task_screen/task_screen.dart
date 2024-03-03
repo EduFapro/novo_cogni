@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
@@ -7,7 +6,6 @@ import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
-import 'countdownTimer.dart';
 
 class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
@@ -74,55 +72,46 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        CountdownTimer(
-            countdownTrigger: controller.countdownTrigger,
-            initialDurationInSeconds: 4,
-            onTimerComplete: _onTimeCompleted,
-        ),
-        Card(
-          color: Color(0xFFD7D7D7),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Text(
-                  UiStrings.clickOnPlayToListenToTheTask,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+    return Card(
+      color: Color(0xFFD7D7D7),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            Text(
+              UiStrings.clickOnPlayToListenToTheTask,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                IconButton(
+                  iconSize: 48,
+                  icon: Icon(controller.isPlaying.value
+                      ? Icons.stop
+                      : Icons.play_arrow),
+                  onPressed: () => controller.togglePlay(),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    IconButton(
-                      iconSize: 48,
-                      icon: Icon(controller.isPlaying.value
-                          ? Icons.stop
-                          : Icons.play_arrow),
-                      onPressed: () => controller.togglePlay(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                          width: windowSize.width * 0.4,
-                          height: 80,
-                          child: MusicVisualizer(
-                            isPlaying: controller.isPlaying.value,
-                            barCount: 30, // Example: 30 bars
-                            barWidth: 3, // Example: Each bar is 3 pixels wide
-                          )),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                      width: windowSize.width * 0.4,
+                      height: 80,
+                      child: MusicVisualizer(
+                        isPlaying: controller.isPlaying.value,
+                        barCount: 30, // Example: 30 bars
+                        barWidth: 3, // Example: Each bar is 3 pixels wide
+                      )),
                 ),
               ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -227,46 +216,6 @@ class TaskScreen extends GetView<TaskScreenController> {
       ),
     );
   }
-
-  void _onTimeCompleted() async {
-    // Play time up sound
-    final audioPlayer = AudioPlayer();
-    await audioPlayer.play(AssetSource('assets/sounds/time_up.mp3'));
-
-    // Show time up dialog
-    Get.dialog(
-      Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'Time Up!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'You have completed the time for this task.',
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Get.back(); // Close the dialog
-                  audioPlayer.stop(); // Stop the sound if needed
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        ),
-      ),
-      barrierDismissible: false, // Disables popup to close by tapping outside
-    );
-  }
-
-
 }
 
 class EdCheckIconButton extends StatelessWidget {
