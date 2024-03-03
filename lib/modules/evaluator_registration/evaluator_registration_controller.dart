@@ -123,7 +123,7 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
     return username;
   }
 
-    @override
+  @override
   void onClose() {
     fullNameController.dispose();
     dateOfBirthController.dispose();
