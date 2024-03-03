@@ -108,6 +108,7 @@ class HomeController extends GetxController {
   Future<void> fetchData() async {
     isLoading.value = true;
     await userController.fetchUserData();
+    user.value = userController.user.value;
     isLoading.value = false;
     update();
   }
