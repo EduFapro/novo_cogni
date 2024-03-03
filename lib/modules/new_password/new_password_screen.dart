@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/modules/new_password/new_password_controller.dart';
 import '../../mixins/ValidationMixin.dart';
 
+import '../../routes.dart';
 import '../widgets/ed_form_title.dart';
 import '../widgets/ed_input_text.dart';
 
@@ -49,16 +50,35 @@ class NewPasswordScreen extends GetView<NewPasswordController>
                             placeholder: "Confirm Password",
                             obscureText: true,
                             validator: (value) {
-                              return validateSecondPassword(value, firstPassword);
+                              return validateSecondPassword(
+                                  value, firstPassword);
                             },
                             onSaved: (value) => secondPassword = value ?? '',
                           ),
+                          const SizedBox(height: 20.0),
                           TextButton(
                             onPressed: () async {
-                              // Button logic
+                              if (formKey.currentState!.validate()) {
+                                formKey.currentState!.save();
+
+                                if (firstPassword == secondPassword) {
+                                  await controller
+                                      .changePassword(firstPassword);
+                                  Get.toNamed(AppRoutes.home);
+                                }
+                                // else {
+                                //   // Show an error message that passwords don't match
+                                // }
+                              }
                             },
                             style: TextButton.styleFrom(
-                              // Button style
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.all(20),
+                              textStyle: const TextStyle(fontSize: 16),
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                             child: const Text("Confirm"),
                           ),

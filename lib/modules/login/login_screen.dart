@@ -58,7 +58,6 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                           onSaved: (value) => password = value ?? '',
                         ),
                         const SizedBox(height: 20.0),
-                        const SizedBox(height: 20.0),
 
                         // Display login error
                         Obx(() {
