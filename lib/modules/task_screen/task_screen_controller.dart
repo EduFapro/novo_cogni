@@ -60,7 +60,7 @@ class TaskScreenController extends GetxController {
 
     // Update the current task based on the task instance ID passed in the arguments.
     if (args[RouteArguments.TASK_INSTANCE_ID] != null) {
-      await updateCurrentTask(args[RouteArguments.TASK_INSTANCE_ID]);
+      await updateDisplayedTask(args[RouteArguments.TASK_INSTANCE_ID]);
     } else {
       print("Task instance ID not found in arguments.");
     }
@@ -89,6 +89,11 @@ class TaskScreenController extends GetxController {
   void nextTask() {
     if (currentTaskIndex.value < totalTasks.value - 1) {
       currentTaskIndex.value++;
+
+      isPlaying.value = false;
+      isRecording.value = false;
+      audioPlayed.value = false;
+
     }
   }
 
@@ -97,7 +102,7 @@ class TaskScreenController extends GetxController {
     currentTaskIndex.value = 0;
   }
 
-  Future<void> updateCurrentTask(int taskInstanceId) async {
+  Future<void> updateDisplayedTask(int taskInstanceId) async {
     try {
       var taskInstance = await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
@@ -245,7 +250,7 @@ class TaskScreenController extends GetxController {
         currentTaskIndex.value++;
         var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
         if (nextTaskInstance != null) {
-          await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+          await updateDisplayedTask(nextTaskInstance.taskInstanceID!);
         } else {
           isModuleCompleted.value = true;
         }
