@@ -7,6 +7,7 @@ import '../evaluators_controller.dart';
 import '../../widgets/ed_input_text.dart';
 import 'ed_new_evaluator_button.dart';
 
+
 class EdEvaluatorsList extends GetView<EvaluatorsController> {
   final String placeholder;
   final bool obscureText;

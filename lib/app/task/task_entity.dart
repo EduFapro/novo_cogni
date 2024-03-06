@@ -8,6 +8,7 @@ class TaskEntity {
   TaskMode taskMode;
   int position;
   String? image_path;
+  int timeForCompletion;
 
   TaskEntity({
     this.taskID,
@@ -16,6 +17,7 @@ class TaskEntity {
     required this.taskMode,
     required this.position,
     this.image_path,
+    this.timeForCompletion = 30,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,14 +25,15 @@ class TaskEntity {
       ID_TASK: taskID,
       TITLE: title,
       MODULE_ID: moduleID,
-      MODE: taskMode.numericValue, // Store as numeric value
+      MODE: taskMode.numericValue,
       POSITION: position,
       IMAGE_PATH: image_path,
+      TIME_FOR_COMPLETION: timeForCompletion,
     };
   }
 
   static TaskEntity fromMap(Map<String, dynamic> map) {
-    // No need for additional checks here if the data is guaranteed to be int
+
     final mode = TaskMode.fromNumericValue(map[MODE] as int);
     return TaskEntity(
       taskID: map[ID_TASK] as int?,
@@ -39,6 +42,7 @@ class TaskEntity {
       taskMode: mode,
       position: map[POSITION] as int,
       image_path: map[IMAGE_PATH] as String?,
+      timeForCompletion: map[TIME_FOR_COMPLETION],
     );
   }
 
@@ -51,7 +55,8 @@ class TaskEntity {
         'title: "$title", '
         'taskMode: ${taskMode.description}, '
         'position: $position, '
-        'image_path: "$image_path"'
+        'image_path: "$image_path,'
+        'imeForCompletion: $timeForCompletion'
         '}';
   }
 }

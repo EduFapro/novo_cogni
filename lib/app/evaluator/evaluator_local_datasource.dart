@@ -45,7 +45,7 @@ class EvaluatorLocalDataSource {
           CPF_OR_NIF_EVALUATOR: evaluator.cpfOrNif,
           USERNAME_EVALUATOR: evaluator.username,
           SPECIALTY_EVALUATOR: evaluator.specialty,
-          PASSWORD_EVALUATOR: '0000',
+          PASSWORD_EVALUATOR: evaluator.password,
           FIRST_LOGIN: 1,
           IS_ADMIN: 0,
         },

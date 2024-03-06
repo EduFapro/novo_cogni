@@ -65,4 +65,9 @@ class UserController extends GetxController {
     }
     return user.value;
   }
+
+  bool get isUserAdmin {
+    return user.value!.isAdmin;
+  }
+
 }

@@ -17,20 +17,18 @@ class Config {
 
   static String get secretKey => dotenv.env['SECRET_KEY'] ?? '';
 
-  static EvaluatorEntity get admin {
-    return EvaluatorEntity(
-      name: adminName,
-      surname: adminSurname,
-      birthDate: _adminBirthDate,
-      sex: _adminSex,
-      specialty: adminSpecialty,
-      cpfOrNif: adminCpfOrNif,
-      username: adminUsername,
-      password: secretKey,
-      firstLogin: false,
-    );
-  }
 
+  static get admin => EvaluatorEntity(
+    name: adminName,
+    surname: adminSurname,
+    birthDate: _adminBirthDate,
+    sex: _adminSex,
+    specialty: adminSpecialty,
+    cpfOrNif: adminCpfOrNif,
+    username: adminUsername,
+    password: secretKey,
+    firstLogin: false,
+  );
 
   static Sex get _adminSex {
     final sexString = dotenv.env['ADMIN_SEX']?.toLowerCase() ?? '';

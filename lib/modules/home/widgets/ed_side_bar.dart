@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../constants/translation/ui_strings.dart';
+import '../../../global/user_controller.dart';
 import '../../../routes.dart';
 import '../../widgets/ed_language_dropdown.dart';
 import '../home_controller.dart';
@@ -38,6 +39,7 @@ class EdSidebar extends GetView<HomeController>  {
             },
           ),
         ),
+        if (Get.find<UserController>().isUserAdmin)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: EdMainSidebarButton(

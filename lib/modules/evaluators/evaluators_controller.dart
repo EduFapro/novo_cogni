@@ -32,7 +32,10 @@ class EvaluatorsController extends GetxController {
         localDataSource: EvaluatorLocalDataSource()).getAllEvaluators();
     evaluatorsList.assignAll(evaluators);
     filteredEvaluatorsList.assignAll(
-        evaluators); // Initialize with all evaluators
+        evaluators);
+
+    // performSearch("");
+
   }
 
   void performSearch(String query) {
@@ -46,11 +49,12 @@ class EvaluatorsController extends GetxController {
         }).toList(),
       );
     }
-    update(); // Notify listeners to update UI
+    update();
   }
 
   void addEvaluator(EvaluatorEntity newEvaluator) {
     evaluatorsList.add(newEvaluator);
+    // performSearch(searchController.text);
     update();
   }
 }
