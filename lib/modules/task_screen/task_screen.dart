@@ -156,10 +156,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                     ),
                     EdSkipButton(
                       text: 'Skip',
-                      onPressed: () {
-                        // Handle the skip button press
-                      },
-                    ),
+                                ),
                     EdCheckIconButton(
                       iconData: Icons.check,
                       onPressed: () {
@@ -313,9 +310,8 @@ class EdCheckIconButton extends StatelessWidget {
 
 class EdSkipButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
 
-  EdSkipButton({Key? key, required this.text, required this.onPressed})
+  EdSkipButton({Key? key, required this.text,})
       : super(key: key);
 
   @override
@@ -324,7 +320,7 @@ class EdSkipButton extends StatelessWidget {
     Get.find<TaskScreenController>(); // Ensure the controller is accessible
 
     return Obx(() => ElevatedButton(
-      onPressed: controller.isPlaying.value ? null : onPressed,
+      onPressed: controller.launchNextTaskWithoutCompletingCurrent,
       child: Text(text),
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,

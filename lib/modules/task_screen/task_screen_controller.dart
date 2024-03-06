@@ -417,4 +417,22 @@ class TaskScreenController extends GetxController {
     totalTasks.value = taskInstances.length;
   }
 
+  Future<void> launchNextTaskWithoutCompletingCurrent() async {
+    if (currentTaskIndex.value < totalTasks.value) {
+
+      currentTaskIndex.value++;
+
+      // Fetch the next task instance
+      var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
+      if (nextTaskInstance != null) {
+
+        await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+      } else {
+        Get.back();
+      }
+    } else {        Get.back();
+    }
+  }
+
+
 }
