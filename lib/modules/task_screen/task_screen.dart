@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_strings.dart';
+
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 import 'package:novo_cogni/modules/task_screen/widgets/countdown_timer.dart';
 import 'package:novo_cogni/modules/task_screen/widgets/task_deadline_banner.dart';
@@ -8,12 +10,12 @@ import 'package:novo_cogni/modules/task_screen/widgets/task_deadline_banner.dart
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
 
+
 class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -75,34 +77,66 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
-    return
-
-      SizedBox(
-        width: 880,
-        child: Column(
+    return SizedBox(
+      width: 880,
+      child: Column(
         children: [
-        Align(
-        alignment: Alignment.centerRight,
-        child: TaskDeadlineBanner(
-        deadlineText:
-        "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",),),
-
-
-
-    CountdownTimer(
-    countdownTrigger: controller.countdownTrigger,
-    initialDurationInSeconds: 4,
-    onTimerComplete: _onTimeCompleted,
-    ),
-    Card(
-    color: Color(0xFFD7D7D7),
-    elevation: 0,
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(20.0),),)]));
-
-
-
-
+          Align(
+            alignment: Alignment.centerRight,
+            child: TaskDeadlineBanner(
+              deadlineText:
+              "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
+            ),
+          ),
+          CountdownTimer(
+            countdownTrigger: controller.countdownTrigger,
+            initialDurationInSeconds: 4,
+            onTimerComplete: _onTimeCompleted,
+          ),
+          Card(
+            color: Color(0xFFD7D7D7),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Text(
+                    UiStrings.clickOnPlayToListenToTheTask,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                        iconSize: 48,
+                        icon: Icon(controller.isPlaying.value
+                            ? Icons.stop
+                            : Icons.play_arrow),
+                        onPressed: () => controller.togglePlay(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                            width: windowSize.width * 0.4,
+                            height: 80,
+                            child: MusicVisualizer(
+                              isPlaying: controller.isPlaying.value,
+                              barCount: 30, // Example: 30 bars
+                              barWidth: 3, // Example: Each bar is 3 pixels wide
+                            )),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildAudioPlayerInterface(BuildContext context) {
@@ -169,7 +203,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                     controller.isRecording.value ? Icons.stop : Icons.mic,
                     size: 115.0,
                     color:
-                        controller.isRecording.value ? Colors.red : Colors.blue,
+                    controller.isRecording.value ? Colors.red : Colors.blue,
                   ),
                   onPressed: () async {
                     if (controller.isRecording.value) {
@@ -287,25 +321,25 @@ class EdSkipButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller =
-        Get.find<TaskScreenController>(); // Ensure the controller is accessible
+    Get.find<TaskScreenController>(); // Ensure the controller is accessible
 
     return Obx(() => ElevatedButton(
-          onPressed: controller.isPlaying.value ? null : onPressed,
-          child: Text(text),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.black,
-            backgroundColor:
-                controller.isPlaying.value ? Colors.grey : Colors.white,
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              side: BorderSide(
-                  color:
-                      controller.isPlaying.value ? Colors.grey : Colors.black),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          ),
-        ));
+      onPressed: controller.isPlaying.value ? null : onPressed,
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black,
+        backgroundColor:
+        controller.isPlaying.value ? Colors.grey : Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          side: BorderSide(
+              color:
+              controller.isPlaying.value ? Colors.grey : Colors.black),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      ),
+    ));
   }
 }
 

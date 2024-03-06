@@ -82,11 +82,15 @@ class TaskScreenController extends GetxController {
       print("Task instance ID not found in arguments.");
     }
 
-    _audioPlayer.onPlayerComplete.listen((event) {
+    _audioPlayer.onPlayerComplete.listen((event) async {
       isPlaying.value = false;
       audioPlayed.value = true;
       _audioStopTime = DateTime.now();
+
+      await Future.delayed(Duration(seconds: 1));
+      countdownTrigger.value = true;
     });
+
 
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
