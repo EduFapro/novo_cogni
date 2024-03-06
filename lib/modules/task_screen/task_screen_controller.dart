@@ -12,6 +12,7 @@ import 'package:path/path.dart' as path;
 import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
+import '../../constants/enums/module_enums.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
 import '../evaluation/evaluation_controller.dart';
@@ -406,6 +407,7 @@ class TaskScreenController extends GetxController {
       evaluationRepository.setEvaluationAsCompleted(evaluationID);
       Get.find<HomeController>().refreshEvaluations();
       Get.find<HomeController>().refreshEvaluationCounts();
+      Get.find<EvaluationController>().refreshModuleCompletionStatus(moduleInstanceId, ModuleStatus.completed);
     }
   }
 

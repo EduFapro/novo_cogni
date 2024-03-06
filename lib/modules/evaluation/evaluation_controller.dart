@@ -194,6 +194,25 @@ class EvaluationController extends GetxController {
     });
     update(); // Trigger UI update
   }
+
+
+  void refreshModuleCompletionStatus(int moduleInstanceId, ModuleStatus newStatus) {
+
+    final moduleIndex = modulesInstanceList.value?.indexWhere(
+          (module) => module.moduleInstanceID == moduleInstanceId,
+    );
+
+    if (moduleIndex != null && moduleIndex >= 0) {
+      modulesInstanceList.value![moduleIndex].status = newStatus;
+      moduleCompletionStatus[moduleInstanceId] = (newStatus == ModuleStatus.completed);
+    }
+
+
+    update();
+
+
+  }
+
   //
   // void checkAndFinalizeEvaluation() {
   //   print("HOIHOHO");
