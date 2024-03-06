@@ -67,7 +67,7 @@ class TaskScreen extends GetView<TaskScreenController> {
         return Column(
           children: [
             buildGeneralInterface(context),
-            // buildAudioRecorderInterface(context),
+            buildAudioRecorderInterface(context),
           ],
         );
       default:
@@ -194,7 +194,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                     // Stop the recording
                     controller.stopRecording();
                   },
-                  isActive: controller.isRecording.value,
+                  isActive: true.obs,
                 ),
                 IconButton(
                   icon: Icon(
@@ -217,7 +217,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                   onPressed: () {
                     controller.onCheckButtonPressed();
                   },
-                  isActive: !controller.isRecording.value,
+                  isActive:  controller.isCheckButtonEnabled,
                 ),
               ],
             );
