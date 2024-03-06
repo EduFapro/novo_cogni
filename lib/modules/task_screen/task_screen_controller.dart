@@ -6,16 +6,21 @@ import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
+import '../../app/evaluation/evaluation_repository.dart';
 import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
+import '../../app/task_instance/task_instance_repository.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
 import '../evaluation/evaluation_controller.dart';
+import '../evaluation/evaluation_service.dart';
+import '../home/home_controller.dart';
 import 'task_screen_service.dart';
 
 class TaskScreenController extends GetxController {
   final TaskScreenService taskService;
+  final EvaluationService evaluationService = Get.find();
   late final AudioPlayer _audioPlayer;
   late final AudioRecorder _recorder;
 
@@ -34,6 +39,8 @@ class TaskScreenController extends GetxController {
   var countdownStarted = false.obs;
   var countdownTrigger = false.obs;
   var recordingRepository = Get.find<RecordingRepository>();
+  var evaluationRepository = Get.find<EvaluationRepository>();
+  var taskInstanceRepository = Get.find<TaskInstanceRepository>();
 
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
@@ -79,6 +86,17 @@ class TaskScreenController extends GetxController {
       await Future.delayed(Duration(seconds: 1));
       countdownTrigger.value = true;
     });
+
+    refreshProgress();
+  }
+
+  Future<void> refreshProgress() async {
+    final taskInstances = await taskInstanceRepository
+        .getTaskInstancesByModuleInstanceId(moduleInstanceId.value!);
+    final completedTasksCount = taskInstances
+        .where((taskInst) => taskInst.status == TaskStatus.done)
+        .length;
+    currentTaskIndex.value = completedTasksCount + 1;
   }
 
   // Function to calculate progress
@@ -342,10 +360,22 @@ class TaskScreenController extends GetxController {
   }
 
   void startCountdown() {
-    // Logic to start the countdown timer
-    // Ensure to set 'countdownStarted' to true to prevent multiple initiations
     countdownStarted.value = true;
     // Example: Trigger a countdown timer in the UI
     update(); // Notify listeners to update the UI if needed
+  }
+
+  Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+    await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
+    var evaluationID =
+        Get.find<EvaluationController>().evaluation.value!.evaluationID!;
+    bool allModulesCompleted =
+        await evaluationService.areAllModulesCompleted(evaluationID);
+    if (allModulesCompleted) {
+      print("All modules completed. Evaluation can be marked as completed.");
+      evaluationRepository.setEvaluationAsCompleted(evaluationID);
+      Get.find<HomeController>().refreshEvaluations();
+      Get.find<HomeController>().refreshEvaluationCounts();
+    }
   }
 }
