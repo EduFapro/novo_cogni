@@ -58,13 +58,11 @@ class NewPasswordScreen extends GetView<NewPasswordController>
                         const SizedBox(height: 20.0),
                         TextButton(
                           onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
+                            formKey.currentState!.save();
 
-                              if (firstPassword == secondPassword) {
-                                await controller.changePassword(firstPassword);
-                                Get.toNamed(AppRoutes.home);
-                              }
+                            if (firstPassword == secondPassword) {
+                              await controller.changePassword(firstPassword);
+                              Get.toNamed(AppRoutes.home);
                             }
                           },
                           style: TextButton.styleFrom(
