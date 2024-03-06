@@ -32,7 +32,8 @@ class TaskScreenController extends GetxController {
   var currentTask = Rx<TaskInstanceEntity?>(null);
   var taskMode = Rx<TaskMode>(TaskMode.record);
   var currentTaskEntity = Rx<TaskEntity?>(null);
-
+  var countdownStarted = false.obs;
+  var countdownTrigger = false.obs;
   var currentTaskIndex = 1.obs;
   var totalTasks = 1.obs;
   var moduleInstanceId = Rxn<int>();
@@ -48,8 +49,11 @@ class TaskScreenController extends GetxController {
   TaskScreenController({required this.taskService});
 
   Future<void> refreshProgress() async {
-    final taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstanceId.value!);
-    final completedTasksCount = taskInstances.where((taskInst) => taskInst.status == TaskStatus.done).length;
+    final taskInstances = await taskInstanceRepository
+        .getTaskInstancesByModuleInstanceId(moduleInstanceId.value!);
+    final completedTasksCount = taskInstances
+        .where((taskInst) => taskInst.status == TaskStatus.done)
+        .length;
     currentTaskIndex.value = completedTasksCount + 1;
   }
 
@@ -181,7 +185,7 @@ class TaskScreenController extends GetxController {
         taskInstanceId: currentTask.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
           final recordingId =
-              await recordingRepository.createRecording(recording);
+          await recordingRepository.createRecording(recording);
           print(
               'Recording saved with ID: $recordingId at path: $recording.filePath');
         },
@@ -229,7 +233,10 @@ class TaskScreenController extends GetxController {
     }
 
     // Define a custom file name, for example using a timestamp
-    final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final timestamp = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
     final fileName = 'recording_$timestamp.aac'; // Or set your custom file name
 
     // Combine the directory path and the file name to create a full file path
@@ -268,13 +275,10 @@ class TaskScreenController extends GetxController {
   }
 
 
-
-
-
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
       TaskInstanceEntity? taskInstance =
-          await taskService.getTaskInstance(taskInstanceId);
+      await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
         taskInstance.status = TaskStatus.done;
         if (_audioStopTime != null) {
@@ -344,32 +348,67 @@ class TaskScreenController extends GetxController {
     }
   }
 
+  void startCountdown() {
+    countdownStarted.value = true;
+    update();
+
+    void resetProgress() {
+      currentTaskIndex.value = 0;
+    }
 
 
-  @override
-  void onClose() {
-    _audioPlayer.dispose();
-    _recorder.dispose();
-    super.onClose();
-  }
+    @override
+    void onClose() {
+      _audioPlayer.dispose();
+      _recorder.dispose();
+      super.onClose();
+    }
 
-  Future<void> _calculateTotalTasks(int moduleInstanceId) async {
-    final taskInstances =
-        await taskService.getTasksByModuleInstanceId(moduleInstanceId);
-    totalTasks.value = taskInstances.length;
+    Future<void> _calculateTotalTasks(int moduleInstanceId) async {
+      final taskInstances =
+      await taskService.getTasksByModuleInstanceId(moduleInstanceId);
+      totalTasks.value = taskInstances.length;
+    }
+
+    Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+      await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
+      var evaluationID = Get
+          .find<EvaluationController>()
+          .evaluation
+          .value!
+          .evaluationID!;
+      bool allModulesCompleted = await evaluationService.areAllModulesCompleted(
+          evaluationID);
+      if (allModulesCompleted) {
+        print("All modules completed. Evaluation can be marked as completed.");
+        evaluationRepository.setEvaluationAsCompleted(evaluationID);
+        Get.find<HomeController>().refreshEvaluations();
+        Get.find<HomeController>().refreshEvaluationCounts();
+      }
+    }
   }
 
   Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
     await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
-    var evaluationID = Get.find<EvaluationController>().evaluation.value!.evaluationID!;
-    bool allModulesCompleted = await evaluationService.areAllModulesCompleted(evaluationID);
+    var evaluationID = Get
+        .find<EvaluationController>()
+        .evaluation
+        .value!
+        .evaluationID!;
+    bool allModulesCompleted = await evaluationService.areAllModulesCompleted(
+        evaluationID);
     if (allModulesCompleted) {
       print("All modules completed. Evaluation can be marked as completed.");
       evaluationRepository.setEvaluationAsCompleted(evaluationID);
       Get.find<HomeController>().refreshEvaluations();
       Get.find<HomeController>().refreshEvaluationCounts();
-
     }
+  }
+
+  Future<void> _calculateTotalTasks(int moduleInstanceId) async {
+    final taskInstances =
+    await taskService.getTasksByModuleInstanceId(moduleInstanceId);
+    totalTasks.value = taskInstances.length;
   }
 
 }

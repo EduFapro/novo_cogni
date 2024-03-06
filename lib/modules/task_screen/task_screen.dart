@@ -1,8 +1,9 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
+import 'package:novo_cogni/modules/task_screen/widgets/countdown_timer.dart';
+import 'package:novo_cogni/modules/task_screen/widgets/task_deadline_banner.dart';
 
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
@@ -15,37 +16,39 @@ class TaskScreen extends GetView<TaskScreenController> {
     final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
-      body: Obx(() {
-        if (controller.isModuleCompleted.isTrue) {
-          return TaskCompletedWidget(
-            onNavigateBack: () {
-              var evalController = Get.find<EvaluationController>();
-              evalController.markModuleAsCompleted(controller.moduleInstanceId.value!);
-              Get.back();
-            },
-          );
-        } else if (controller.currentTask.value != null) {
-          var mode = controller.taskMode.value;
-          return Column(
-            children: [
-              NumericProgressIndicator(
-                current: controller.currentTaskIndex.value,
-                total: controller.totalTasks.value,
-              ),
-              SizedBox(height: windowSize.height * 0.1),
-              Text(
-                "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
-                style: TextStyle(fontSize: 18),
-              ),
-              Center(
-                child: buildInterfaceBasedOnMode(context, mode),
-              ),
-            ],
-          );
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      }),
+      body: Column(
+        children: [
+          // Top Row for the banner
+
+          // Content
+          Expanded(
+            child: Obx(() {
+              if (controller.isModuleCompleted.isTrue) {
+                return TaskCompletedWidget(onNavigateBack: () => Get.back());
+              } else if (controller.currentTask.value != null) {
+                var mode = controller.taskMode.value;
+                return Column(
+                  children: [
+                    NumericProgressIndicator(
+                      current: controller.currentTaskIndex.value,
+                      total: controller.totalTasks.value,
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    Text(
+                      "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
+                      style: TextStyle(fontSize: 18),
+                    ),
+
+                    Center(child: buildInterfaceBasedOnMode(context, mode)),
+                  ],
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }),
+          ),
+        ],
+      ),
     );
   }
 
@@ -72,47 +75,34 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
-    return Card(
-      color: Color(0xFFD7D7D7),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
+    return
+
+      SizedBox(
+        width: 880,
         child: Column(
-          children: [
-            Text(
-              UiStrings.clickOnPlayToListenToTheTask,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                IconButton(
-                  iconSize: 48,
-                  icon: Icon(controller.isPlaying.value
-                      ? Icons.stop
-                      : Icons.play_arrow),
-                  onPressed: () => controller.togglePlay(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                      width: windowSize.width * 0.4,
-                      height: 80,
-                      child: MusicVisualizer(
-                        isPlaying: controller.isPlaying.value,
-                        barCount: 30, // Example: 30 bars
-                        barWidth: 3, // Example: Each bar is 3 pixels wide
-                      )),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+        children: [
+        Align(
+        alignment: Alignment.centerRight,
+        child: TaskDeadlineBanner(
+        deadlineText:
+        "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",),),
+
+
+
+    CountdownTimer(
+    countdownTrigger: controller.countdownTrigger,
+    initialDurationInSeconds: 4,
+    onTimerComplete: _onTimeCompleted,
+    ),
+    Card(
+    color: Color(0xFFD7D7D7),
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20.0),),)]));
+
+
+
+
   }
 
   Widget buildAudioPlayerInterface(BuildContext context) {
@@ -214,6 +204,44 @@ class TaskScreen extends GetView<TaskScreenController> {
           )
         ],
       ),
+    );
+  }
+
+  void _onTimeCompleted() async {
+    // Play time up sound
+    final audioPlayer = AudioPlayer();
+    await audioPlayer.play(AssetSource('audio/climbing_fast_sound_effect.mp3'));
+
+    // Show time up dialog
+    Get.dialog(
+      Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Time Up!',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'You have completed the time for this task.',
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Get.back(); // Close the dialog
+                  audioPlayer.stop(); // Stop the sound if needed
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false, // Disables popup to close by tapping outside
     );
   }
 }
