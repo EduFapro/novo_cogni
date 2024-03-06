@@ -255,23 +255,34 @@ class TaskScreenController extends GetxController {
   }
 
   Future<void> onCheckButtonPressed() async {
+    // Ensure there is a current task to conclude
     if (currentTask.value != null) {
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
-      // Check if there are more tasks to fetch
       if (currentTaskIndex.value < totalTasks.value) {
-        currentTaskIndex.value++;
+        currentTaskIndex.value++; // Move to the next task
+
+        // Attempt to fetch the next pending task instance
         var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
         if (nextTaskInstance != null) {
+          // If there's a next task, update current task to this new task
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
         } else {
+          // If there are no more tasks, mark the module as completed
           isModuleCompleted.value = true;
+          await setModuleInstanceAsCompleted(moduleInstanceId.value!);
         }
       } else {
+        // If we've reached or passed the last task, mark the module as completed
         isModuleCompleted.value = true;
+        await setModuleInstanceAsCompleted(moduleInstanceId.value!);
       }
+    } else {
+      // If for some reason there's no current task, log an error or handle it
+      print("Error: No current task found.");
     }
   }
+
 
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
