@@ -40,6 +40,9 @@ class TaskScreenController extends GetxController {
   var moduleInstanceId = Rxn<int>();
   var isModuleCompleted = false.obs;
 
+  var isCheckButtonEnabled = false.obs;
+
+
   var recordingRepository = Get.find<RecordingRepository>();
   var evaluationRepository = Get.find<EvaluationRepository>();
   var taskInstanceRepository = Get.find<TaskInstanceRepository>();
@@ -87,11 +90,11 @@ class TaskScreenController extends GetxController {
       isPlaying.value = false;
       audioPlayed.value = true;
       _audioStopTime = DateTime.now();
-
+      isCheckButtonEnabled.value = true;
       await Future.delayed(Duration(seconds: 1));
+
       countdownTrigger.value = true;
     });
-
 
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
@@ -108,6 +111,17 @@ class TaskScreenController extends GetxController {
     }
   }
 
+  void startCountdown() {
+    countdownStarted.value = true;
+
+    // Simulate countdown using Future.delayed
+    Future.delayed(Duration(seconds: 5), () {
+      // Countdown completed
+      isCheckButtonEnabled.value =
+      true; // Enable the check button after countdown
+    });
+  }
+
   Future<void> updateCurrentTask(int taskInstanceId) async {
     try {
       var taskInstance = await taskService.getTaskInstance(taskInstanceId);
@@ -121,6 +135,12 @@ class TaskScreenController extends GetxController {
         } else {
           taskMode.value = TaskMode.play;
         }
+        isCheckButtonEnabled.value = false;
+
+
+        countdownStarted.value = false;
+        countdownTrigger.value = false;
+        audioPlayed.value = false;
 
         var taskPrompt = await taskService
             .getTaskPromptByTaskInstanceID(taskInstance.taskID);
@@ -279,7 +299,6 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
       TaskInstanceEntity? taskInstance =
@@ -353,62 +372,20 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  void startCountdown() {
-    countdownStarted.value = true;
-    update();
+  // void startCountdown() {
+  //   countdownStarted.value = true;
+  //   update();
+  // }
 
-    void resetProgress() {
-      currentTaskIndex.value = 0;
-    }
-
-
-    @override
-    void onClose() {
-      _audioPlayer.dispose();
-      _recorder.dispose();
-      super.onClose();
-    }
-
-    Future<void> _calculateTotalTasks(int moduleInstanceId) async {
-      final taskInstances =
-      await taskService.getTasksByModuleInstanceId(moduleInstanceId);
-      totalTasks.value = taskInstances.length;
-    }
-
-    Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
-      await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
-      var evaluationID = Get
-          .find<EvaluationController>()
-          .evaluation
-          .value!
-          .evaluationID!;
-      bool allModulesCompleted = await evaluationService.areAllModulesCompleted(
-          evaluationID);
-      if (allModulesCompleted) {
-        print("All modules completed. Evaluation can be marked as completed.");
-        evaluationRepository.setEvaluationAsCompleted(evaluationID);
-        Get.find<HomeController>().refreshEvaluations();
-        Get.find<HomeController>().refreshEvaluationCounts();
-      }
-    }
+  void resetProgress() {
+    currentTaskIndex.value = 0;
   }
 
-  Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
-    await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
-    var evaluationID = Get
-        .find<EvaluationController>()
-        .evaluation
-        .value!
-        .evaluationID!;
-    bool allModulesCompleted = await evaluationService.areAllModulesCompleted(
-        evaluationID);
-    if (allModulesCompleted) {
-      print("All modules completed. Evaluation can be marked as completed.");
-      evaluationRepository.setEvaluationAsCompleted(evaluationID);
-      Get.find<HomeController>().refreshEvaluations();
-      Get.find<HomeController>().refreshEvaluationCounts();
-      Get.find<EvaluationController>().refreshModuleCompletionStatus(moduleInstanceId, ModuleStatus.completed);
-    }
+  @override
+  void onClose() {
+    _audioPlayer.dispose();
+    _recorder.dispose();
+    super.onClose();
   }
 
   Future<void> _calculateTotalTasks(int moduleInstanceId) async {
@@ -417,22 +394,77 @@ class TaskScreenController extends GetxController {
     totalTasks.value = taskInstances.length;
   }
 
-  Future<void> launchNextTaskWithoutCompletingCurrent() async {
-    if (currentTaskIndex.value < totalTasks.value) {
 
-      currentTaskIndex.value++;
+  // Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+  //   await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
+  //   var evaluationID =
+  //   Get
+  //       .find<EvaluationController>()
+  //       .evaluation
+  //       .value!
+  //       .evaluationID!;
+  //   bool allModulesCompleted =
+  //   await evaluationService.areAllModulesCompleted(evaluationID);
+  //   if (allModulesCompleted) {
+  //     print("All modules completed. Evaluation can be marked as completed.");
+  //     evaluationRepository.setEvaluationAsCompleted(evaluationID);
+  //     Get.find<HomeController>().refreshEvaluations();
+  //     Get.find<HomeController>().refreshEvaluationCounts();
+  //   }
+  // }
 
-      // Fetch the next task instance
-      var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
-      if (nextTaskInstance != null) {
 
-        await updateCurrentTask(nextTaskInstance.taskInstanceID!);
-      } else {
-        Get.back();
-      }
-    } else {        Get.back();
-    }
+Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+  await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
+  var evaluationID =
+  Get
+      .find<EvaluationController>()
+      .evaluation
+      .value!
+      .evaluationID!;
+  bool allModulesCompleted =
+  await evaluationService.areAllModulesCompleted(evaluationID);
+  if (allModulesCompleted) {
+    print("All modules completed. Evaluation can be marked as completed.");
+    evaluationRepository.setEvaluationAsCompleted(evaluationID);
+    Get.find<HomeController>().refreshEvaluations();
+    Get.find<HomeController>().refreshEvaluationCounts();
+    Get.find<EvaluationController>().refreshModuleCompletionStatus(
+        moduleInstanceId, ModuleStatus.completed);
   }
+}
+
+
+
+Future<void> launchNextTaskWithoutCompletingCurrent() async {
+  if (currentTaskIndex.value < totalTasks.value) {
+    currentTaskIndex.value++;
+
+    // Fetch the next task instance
+    var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
+    if (nextTaskInstance != null) {
+      await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+    } else {
+      Get.back();
+    }
+  } else {
+    Get.back();
+  }
+}
+
+void manageButtonStates(
+    {required bool isAudioPlaying, required bool isAudioCompleted}) {
+  if (isAudioPlaying) {
+    // Disable the check button while audio is playing
+    isCheckButtonEnabled.value = false;
+  }
+
+  if (isAudioCompleted) {
+    // When the audio has finished playing, start the countdown
+    // The countdown itself will enable the check button upon completion
+    startCountdown();
+  }
+}
 
 
 }

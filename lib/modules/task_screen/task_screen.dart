@@ -67,7 +67,7 @@ class TaskScreen extends GetView<TaskScreenController> {
         return Column(
           children: [
             buildGeneralInterface(context),
-            buildAudioRecorderInterface(context),
+            // buildAudioRecorderInterface(context),
           ],
         );
       default:
@@ -162,8 +162,9 @@ class TaskScreen extends GetView<TaskScreenController> {
                       onPressed: () {
                         controller.onCheckButtonPressed();
                       },
-                      isActive: controller.audioPlayed.value,
-                    ),
+                      isActive: controller.isCheckButtonEnabled, // Pass the RxBool directly
+                    )
+
                   ],
                 ),
               )
@@ -280,7 +281,7 @@ class TaskScreen extends GetView<TaskScreenController> {
 class EdCheckIconButton extends StatelessWidget {
   final IconData iconData;
   final VoidCallback onPressed;
-  final bool isActive;
+  final RxBool isActive;
 
   EdCheckIconButton({
     Key? key,
@@ -291,22 +292,26 @@ class EdCheckIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color borderColor = isActive ? Colors.black : Colors.grey;
-    Color iconColor = iconData == Icons.check ? Colors.green : Colors.red;
+    // Use Obx here to listen to changes in isActive
+    return Obx(() {
+      Color borderColor = isActive.value ? Colors.black : Colors.grey;
+      Color iconColor = iconData == Icons.check ? Colors.green : Colors.red;
 
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: borderColor, width: 2.0),
-      ),
-      child: IconButton(
-        icon: Icon(iconData),
-        color: iconColor,
-        onPressed: isActive ? onPressed : null,
-      ),
-    );
+      return Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: borderColor, width: 2.0),
+        ),
+        child: IconButton(
+          icon: Icon(iconData),
+          color: iconColor,
+          onPressed: isActive.value ? onPressed : null,
+        ),
+      );
+    });
   }
 }
+
 
 class EdSkipButton extends StatelessWidget {
   final String text;
