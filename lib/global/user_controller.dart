@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/global/user_service.dart';
+import '../app/module_instance/module_instance_entity.dart';
 import '../app/participant/participant_entity.dart';
 import '../app/participant/participant_repository.dart';
 import '../app/evaluation/evaluation_entity.dart';
@@ -16,6 +17,8 @@ class UserController extends GetxController {
   var evaluations = <EvaluationEntity>[].obs;
   var participants = <ParticipantEntity>[].obs;
   var participantDetails = <int, ParticipantEntity>{}.obs;
+  var modules =
+      <int, List<ModuleInstanceEntity>>{}.obs;
 
   @override
   void onInit() {
@@ -27,30 +30,46 @@ class UserController extends GetxController {
     if (currentUserId == null) {
       return;
     }
+    await _fetchAndSetUser(currentUserId);
+    await _fetchAndSetEvaluations();
+    await _getModuleMapsForEvaluations();
+  }
 
+  Future<void> _fetchAndSetUser(int currentUserId) async {
     try {
-      print("user: $user");
       var fetchedUser = await userService.getUser(currentUserId);
       if (fetchedUser != null) {
         user.value = fetchedUser;
-
-        var fetchedEvaluations =
-            await userService.getEvaluationsByUser(fetchedUser);
-        evaluations.assignAll(fetchedEvaluations);
-
-        for (var evaluation in fetchedEvaluations) {
-          var participant = await participantRepo
-              .getParticipantByEvaluation(evaluation.evaluationID!);
-          if (participant != null) {
-            participants.add(participant);
-            participantDetails[evaluation.evaluationID!] = participant;
-          }
-        }
       } else {
         print("Fetched user is null");
       }
     } catch (e) {
       print("Error fetching user data: $e");
+    }
+  }
+
+  Future<void> _fetchAndSetEvaluations() async {
+    if (user.value == null) return;
+
+    try {
+      var fetchedEvaluations =
+          await userService.getEvaluationsByUser(user.value!);
+      evaluations.assignAll(fetchedEvaluations);
+      await _fetchAndSetParticipants(fetchedEvaluations);
+    } catch (e) {
+      print("Error fetching evaluations: $e");
+    }
+  }
+
+  Future<void> _fetchAndSetParticipants(
+      List<EvaluationEntity> evaluations) async {
+    for (var evaluation in evaluations) {
+      var participant = await participantRepo
+          .getParticipantByEvaluation(evaluation.evaluationID!);
+      if (participant != null) {
+        participants.add(participant);
+        participantDetails[evaluation.evaluationID!] = participant;
+      }
     }
   }
 
@@ -67,7 +86,30 @@ class UserController extends GetxController {
   }
 
   bool get isUserAdmin {
-    return user.value!.isAdmin;
+    return user.value?.isAdmin ?? false;
   }
+
+  Future<void> _getModuleMapsForEvaluations() async {
+    var tempModules = <int, List<ModuleInstanceEntity>>{};
+
+    for (var evaluation in evaluations) {
+      var moduleMap = await userService.getModuleMapsForEvaluation(evaluation);
+
+      // Iterate over each entry in the moduleMap and add it to the tempModules map
+      moduleMap.forEach((moduleId, moduleInstances) {
+        // If the moduleId already exists in tempModules, append the moduleInstances to the existing list
+        if (tempModules.containsKey(moduleId)) {
+          tempModules[moduleId]!.addAll(moduleInstances);
+        } else {
+          // If the moduleId doesn't exist, simply add the new entry
+          tempModules[moduleId] = moduleInstances;
+        }
+      });
+    }
+
+    // Since `modules` is an observable, update it with the accumulated tempModules
+    modules.value = tempModules;
+  }
+
 
 }

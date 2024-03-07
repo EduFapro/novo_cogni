@@ -123,6 +123,7 @@ class ModuleLocalDataSource {
     }
   }
 
+
   Future<void> closeDatabase() async {
     final Database? database = await db;
     return database!.close();
