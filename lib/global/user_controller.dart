@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/global/typedefs.dart';
 import 'package:novo_cogni/global/user_service.dart';
 import '../app/module_instance/module_instance_entity.dart';
 import '../app/participant/participant_entity.dart';
@@ -30,9 +31,28 @@ class UserController extends GetxController {
     if (currentUserId == null) {
       return;
     }
-    await _fetchAndSetUser(currentUserId);
-    await _fetchAndSetEvaluations();
-    await _getModuleMapsForEvaluations();
+    await _organizeDataStructure();
+  }
+
+  Future<void> _organizeDataStructure() async {
+    var userEvaluations = await userService.getEvaluationsByUser(user.value!);
+    evaluations.assignAll(userEvaluations);
+
+    EvaluationMap evaluationMap = {};
+
+    for (var evaluation in userEvaluations) {
+      ModuleInstanceMap moduleInstanceMap = {};
+
+      List<ModuleInstanceEntity> moduleInstances = await userService
+          .getModuleInstancesByEvaluation(evaluation);
+      for (var moduleInstance in moduleInstances) {
+        TaskInstanceList taskInstances = await userService
+            .getTaskInstancesForModuleInstance(moduleInstance);
+        moduleInstanceMap[moduleInstance] = taskInstances;
+      }
+
+      evaluationMap[evaluation] = moduleInstanceMap;
+    }
   }
 
   Future<void> _fetchAndSetUser(int currentUserId) async {

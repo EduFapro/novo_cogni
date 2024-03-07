@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:novo_cogni/app/module_instance/module_instance_entity.dart';
 import 'package:novo_cogni/app/participant/participant_repository.dart';
+import 'package:novo_cogni/global/typedefs.dart';
 
 import '../app/evaluation/evaluation_entity.dart';
 import '../app/evaluation/evaluation_repository.dart';
@@ -8,6 +9,7 @@ import '../app/evaluator/evaluator_entity.dart';
 import '../app/evaluator/evaluator_repository.dart';
 import '../app/module/module_repository.dart';
 import '../app/module_instance/module_instance_repository.dart';
+import '../app/task_instance/task_instance_repository.dart';
 
 class UserService {
   var evaluatorRepo = Get.find<EvaluatorRepository>();
@@ -16,6 +18,8 @@ class UserService {
 
   var moduleRepo = Get.find<ModuleRepository>();
   var moduleInstanceRepo = Get.find<ModuleInstanceRepository>();
+
+  var taskInstanceRepo = Get.find<TaskInstanceRepository>();
 
   Future<EvaluatorEntity?> getUser(int id) async {
     return await evaluatorRepo.getEvaluator(id);
@@ -45,6 +49,16 @@ class UserService {
     }
 
     return modulesMap;
+  }
+
+  Future<List<ModuleInstanceEntity>> getModuleInstancesByEvaluation(EvaluationEntity evaluation) async {
+    return await moduleInstanceRepo.getModuleInstancesByEvaluationId(evaluation.evaluationID!);
+  }
+
+
+  Future<TaskInstanceList> getTaskInstancesForModuleInstance(ModuleInstanceEntity moduleInstance) async {
+  return await taskInstanceRepo.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+
   }
 
 
