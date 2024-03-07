@@ -21,6 +21,12 @@ class UserService extends GetxController {
   var taskInstanceRepo = Get.find<TaskInstanceRepository>();
 
   Rx<EvaluatorEntity?> user = Rxn<EvaluatorEntity>();
+  Rx<EvaluationMap> evaluationMap = Rx<EvaluationMap>({});
+
+  Rx<TaskInstanceList> taskInstanceList = Rx<TaskInstanceList>([]);
+  Rx<ModuleInstanceMap> moduleInstanceMap= Rx<ModuleInstanceMap>({});
+
+
   var evaluations = <EvaluationEntity>[].obs;
   var participants = <ParticipantEntity>[].obs;
   var participantDetails = <int, ParticipantEntity>{}.obs;
@@ -35,32 +41,67 @@ class UserService extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchUserData(int? currentUserId) async {
-    print("PIRIPIPI PÓRÓPÓPÓ");
-    if (currentUserId == null) {
-      return;
-    }
 
-    var fetchedUser = await getUser(currentUserId);
-    if (fetchedUser != null) {
-      user.value = fetchedUser;
-      var userEvaluations = await getEvaluationsByUser(fetchedUser);
-      evaluations.assignAll(userEvaluations);
+  // Fetch user data and organize the data structure
+  Future<void> fetchUserData(int? userId) async {
+    if (userId == null) return;
 
-      organizeDataStructure(currentUserId);
+    try {
+      EvaluatorEntity? fetchedUser = await evaluatorRepo.getEvaluator(userId);
+      if (fetchedUser != null) {
+        user.value = fetchedUser;
+        await fetchAndOrganizeEvaluations(fetchedUser);
+      }
+    } catch (e) {
+      // Handle error, log it or show a message to the user
+      print("Error fetching user data: $e");
     }
   }
+
+  // Fetch evaluations and organize them into the map
+  Future<void> fetchAndOrganizeEvaluations(EvaluatorEntity userEntity) async {
+    evaluations.value = await evaluationRepo.getEvaluationsByEvaluatorID(userEntity.evaluatorID!);
+    await organizeEvaluationMap();
+  }
+
+  // Organize evaluations, module instances, and task instances into the map
+  Future<void> organizeEvaluationMap() async {
+    EvaluationMap tempMap = {};
+
+    for (var evaluation in evaluations) {
+      tempMap[evaluation] = await fetchModuleInstanceMap(evaluation);
+    }
+
+    evaluationMap.value = tempMap;
+  }
+
+  // Fetch module instances and their corresponding task instances for a given evaluation
+  Future<ModuleInstanceMap> fetchModuleInstanceMap(EvaluationEntity evaluation) async {
+    ModuleInstanceMap tempModuleInstanceMap = {};
+
+    List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepo.getModuleInstancesByEvaluationId(evaluation.evaluationID!);
+    for (var moduleInstance in moduleInstances) {
+      tempModuleInstanceMap[moduleInstance] = await taskInstanceRepo.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+    }
+
+    return tempModuleInstanceMap;
+  }
+
 
   Future<EvaluatorEntity?> getUser(int id) async {
     return await evaluatorRepo.getEvaluator(id);
   }
 
 
-  Future<EvaluationMap> organizeDataStructure(int userId) async {
-    EvaluationMap evaluationMap = {};
+  Future<void> organizeDataStructure(int userId) async {
+    // Temporary local map to organize data
+    EvaluationMap tempEvaluationMap = {};
 
     var user = await getUser(userId);
-    if (user == null) return evaluationMap;
+    if (user == null) {
+      evaluationMap.value = {};
+      return;
+    }
 
     var userEvaluations = await getEvaluationsByUser(user);
     for (var evaluation in userEvaluations) {
@@ -72,11 +113,14 @@ class UserService extends GetxController {
         moduleInstanceMap[moduleInstance] = taskInstances;
       }
 
-      evaluationMap[evaluation] = moduleInstanceMap;
+      tempEvaluationMap[evaluation] = moduleInstanceMap;
     }
 
-    return evaluationMap;
+    // Update the observable map with the new data
+    evaluationMap.value = tempEvaluationMap;
+    print("evaluation.map: ${evaluationMap.value}");
   }
+
 
 
   Future<List<EvaluationEntity>> getEvaluationsByUser(
@@ -103,6 +147,7 @@ class UserService extends GetxController {
       // Add the module instance to the list corresponding to its module ID.
       modulesMap[instance.moduleID]!.add(instance);
     }
+
 
     return modulesMap;
   }
