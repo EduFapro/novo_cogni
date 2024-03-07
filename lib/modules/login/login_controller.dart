@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/global/user_service.dart';
 
 import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/evaluator/evaluator_repository.dart';
@@ -9,9 +10,9 @@ class LoginController extends GetxController {
 
   var isLoading = false.obs;
   var loginError = RxString('');
-  var currentEvaluatorId = RxInt(0);
+  var currentEvaluator = Rx<EvaluatorEntity?>(null);
   var currentEvaluatorFirstLogin = RxBool(false);
-  var userController = Get.find<UserController>();
+  var userService = Get.find<UserService>();
 
   LoginController(this.evaluatorRepository);
 
@@ -21,11 +22,13 @@ class LoginController extends GetxController {
     try {
       EvaluatorEntity? user =
           await evaluatorRepository.getEvaluatorByUsername(username);
+      // print("Resultado evaluatorRepository.getEvaluatorByUsername: $username");
       currentEvaluatorFirstLogin.value = user!.firstLogin;
       if (user.password == password) {
-        currentEvaluatorId.value = user.evaluatorID!;
+        currentEvaluator.value = user;
         isLoading.value = false;
-        userController.updateUser(user);
+        // print("chamando userService.updateUser com $user");
+        userService.updateUser(user);
         return true;
       } else {
         loginError.value = "Invalid credentials";

@@ -3,13 +3,14 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../constants/translation/ui_strings.dart';
 import '../../../global/user_controller.dart';
+import '../../../global/user_service.dart';
 import '../../../routes.dart';
 import '../../widgets/ed_language_dropdown.dart';
 import '../home_controller.dart';
 import 'ed_main_sidebar_button.dart';
 import 'ed_square_button.dart';
 
-class EdSidebar extends GetView<HomeController>  {
+class EdSidebar extends GetView<HomeController> {
   const EdSidebar({Key? key}) : super(key: key);
 
   @override
@@ -39,17 +40,17 @@ class EdSidebar extends GetView<HomeController>  {
             },
           ),
         ),
-        if (Get.find<UserController>().isUserAdmin)
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: EdMainSidebarButton(
-            icon: Icons.person_3,
-            text: UiStrings.evaluators,
-            onPressed: () {
-              Get.toNamed(AppRoutes.evaluators);
-            },
+        if (Get.find<UserService>().isUserAdmin)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: EdMainSidebarButton(
+              icon: Icons.person_3,
+              text: UiStrings.evaluators,
+              onPressed: () {
+                Get.toNamed(AppRoutes.evaluators);
+              },
+            ),
           ),
-        ),
         Spacer(),
         EdProfileAvatar(),
         Padding(
@@ -82,11 +83,11 @@ class EdSidebar extends GetView<HomeController>  {
             child: EdLanguageDropdown(),
           ),
         )
-
       ],
     );
   }
 }
+
 class EdProfileAvatar extends StatelessWidget {
   const EdProfileAvatar({Key? key}) : super(key: key);
 
@@ -101,23 +102,28 @@ class EdProfileAvatar extends StatelessWidget {
           return CircularProgressIndicator(); // Or some placeholder
         }
 
-        return Column(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.blue,
-              radius: 50.0,
-              child: Image.asset('assets/profile-placeholder.png',
-                  width: 300, height: 300),
-            ),
-            Text(
-              user.name ?? 'Unknown Name',
-              style: TextStyle(color: Colors.white),
-            ),
-            Text(
-              user.specialty ?? 'Unknown Specialty',
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
+        return GestureDetector(
+          onTap: () {
+            Get.toNamed(AppRoutes.userProfileScreen);
+          },
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.blue,
+                radius: 50.0,
+                child: Image.asset('assets/profile-placeholder.png',
+                    width: 300, height: 300),
+              ),
+              Text(
+                user.name ?? 'Unknown Name',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                user.specialty ?? 'Unknown Specialty',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
         );
       }),
     );
