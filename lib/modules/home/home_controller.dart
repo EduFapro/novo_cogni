@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:novo_cogni/constants/enums/language_enums.dart';
-import 'package:novo_cogni/constants/enums/module_enums.dart';
 import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
 import 'package:novo_cogni/app/module_instance/module_instance_entity.dart';
 import 'package:novo_cogni/app/module_instance/module_instance_repository.dart';
@@ -24,6 +23,7 @@ class HomeController extends GetxController {
   final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
   var isLoading = false.obs;
   var user = Rxn<EvaluatorEntity>();
+
   var evaluations = RxList<EvaluationEntity>();
   var participants = RxList<ParticipantEntity>();
   var participantDetails = RxMap<int, ParticipantEntity>();
@@ -47,7 +47,7 @@ class HomeController extends GetxController {
     print("HomeController initialized");
     setupListeners();
     fetchData().then((_) {
-      // Initialize filteredEvaluations with all evaluations after fetching them
+
       filteredEvaluations.assignAll(evaluations);
     });
     numEvaluationsTotal.value = evaluations.length;
@@ -97,12 +97,6 @@ class HomeController extends GetxController {
       update();
     });
 
-    ever(userService.participantDetails,
-        (Map<int, ParticipantEntity> newDetails) {
-      participantDetails.assignAll(newDetails);
-      update();
-    });
-
     searchController.addListener(() {
       performSearch(searchController.text);
     });
@@ -110,7 +104,6 @@ class HomeController extends GetxController {
 
   Future<void> fetchData() async {
     isLoading.value = true;
-    print("aff: ${userService.user.value}");
 
     user.value = userService.user.value;
 
@@ -145,7 +138,13 @@ class HomeController extends GetxController {
   }
 
   Future<void> refreshData() async {
-    await fetchData();
+    isLoading.value = true;
+
+    var updatedParticipants = await userService.fetchUpdatedParticipants();
+    participants.assignAll(updatedParticipants);
+
+    isLoading.value = false;
+    update(); // Notify listeners to rebuild the UI
   }
 
   Future<void> handleDownload(

@@ -29,7 +29,6 @@ class UserService extends GetxController {
 
   var evaluations = <EvaluationEntity>[].obs;
   var participants = <ParticipantEntity>[].obs;
-  var participantDetails = <int, ParticipantEntity>{}.obs;
   var modules = <int, List<ModuleInstanceEntity>>{}.obs;
 
   bool get isUserAdmin {
@@ -61,6 +60,7 @@ class UserService extends GetxController {
   // Fetch evaluations and organize them into the map
   Future<void> fetchAndOrganizeEvaluations(EvaluatorEntity userEntity) async {
     evaluations.value = await evaluationRepo.getEvaluationsByEvaluatorID(userEntity.evaluatorID!);
+    await fetchParticipantsForEvaluations(evaluations);
     await organizeEvaluationMap();
   }
 
@@ -190,4 +190,27 @@ class UserService extends GetxController {
     user.value = newUser;
     await fetchUserData(newUser.evaluatorID);
   }
+
+  Future<void> fetchParticipantsForEvaluations(List<EvaluationEntity> evaluationsList) async {
+    List<ParticipantEntity> fetchedParticipants = [];
+    for (var evaluation in evaluationsList) {
+      try {
+        ParticipantEntity? participant = await participantRepo.getParticipantByEvaluation(evaluation.evaluationID!);
+        if (participant != null) {
+          fetchedParticipants.add(participant);
+        }
+      } catch (e) {
+        print("Error fetching participant data for evaluation ${evaluation.evaluationID}: $e");
+      }
+    }
+    participants.assignAll(fetchedParticipants);
+  }
+
+  // UserService
+  Future<List<ParticipantEntity>> fetchUpdatedParticipants() async {
+    var updatedParticipants = await participantRepo.getAllParticipants();
+    return updatedParticipants;
+  }
+
+
 }
