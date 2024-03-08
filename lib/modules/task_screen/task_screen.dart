@@ -10,7 +10,6 @@ import 'package:novo_cogni/modules/task_screen/widgets/task_deadline_banner.dart
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
 
-
 class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
 
@@ -40,7 +39,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                       "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
                       style: TextStyle(fontSize: 18),
                     ),
-
                     Center(child: buildInterfaceBasedOnMode(context, mode)),
                   ],
                 );
@@ -49,6 +47,12 @@ class TaskScreen extends GetView<TaskScreenController> {
               }
             }),
           ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.4,
+                child: buildAccordion(context)),
+          )
         ],
       ),
     );
@@ -85,7 +89,7 @@ class TaskScreen extends GetView<TaskScreenController> {
             alignment: Alignment.centerRight,
             child: TaskDeadlineBanner(
               deadlineText:
-              "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
+                  "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
             ),
           ),
           CountdownTimer(
@@ -156,15 +160,15 @@ class TaskScreen extends GetView<TaskScreenController> {
                     ),
                     EdSkipButton(
                       text: 'Skip',
-                                ),
+                    ),
                     EdCheckIconButton(
                       iconData: Icons.check,
                       onPressed: () {
                         controller.onCheckButtonPressed();
                       },
-                      isActive: controller.isCheckButtonEnabled, // Pass the RxBool directly
+                      isActive: controller
+                          .isCheckButtonEnabled, // Pass the RxBool directly
                     )
-
                   ],
                 ),
               )
@@ -201,7 +205,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                     controller.isRecording.value ? Icons.stop : Icons.mic,
                     size: 115.0,
                     color:
-                    controller.isRecording.value ? Colors.red : Colors.blue,
+                        controller.isRecording.value ? Colors.red : Colors.blue,
                   ),
                   onPressed: () async {
                     if (controller.isRecording.value) {
@@ -217,7 +221,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                   onPressed: () {
                     controller.onCheckButtonPressed();
                   },
-                  isActive:  controller.isCheckButtonEnabled,
+                  isActive: controller.isCheckButtonEnabled,
                 ),
               ],
             );
@@ -276,6 +280,35 @@ class TaskScreen extends GetView<TaskScreenController> {
       barrierDismissible: false, // Disables popup to close by tapping outside
     );
   }
+
+  Widget buildAccordion(BuildContext context) {
+    var controller = Get.find<TaskScreenController>();
+    return ExpansionTile(
+      shape: Border(),
+      initiallyExpanded: false,
+      // Set to true if you want the accordion to be expanded initially
+      title:
+          Text("Task Details", style: TextStyle(fontWeight: FontWeight.bold)),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Evaluator: ${'controller.evaluatorName'}",
+                  style: TextStyle(fontSize: 16)),
+              SizedBox(height: 8),
+              Text("Participant: ${'controller.participantName'}",
+                  style: TextStyle(fontSize: 16)),
+              SizedBox(height: 8),
+              Text("Module: ${'controller.moduleName'}",
+                  style: TextStyle(fontSize: 16)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class EdCheckIconButton extends StatelessWidget {
@@ -312,35 +345,35 @@ class EdCheckIconButton extends StatelessWidget {
   }
 }
 
-
 class EdSkipButton extends StatelessWidget {
   final String text;
 
-  EdSkipButton({Key? key, required this.text,})
-      : super(key: key);
+  EdSkipButton({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller =
-    Get.find<TaskScreenController>(); // Ensure the controller is accessible
+    final controller = Get.find<TaskScreenController>();
 
     return Obx(() => ElevatedButton(
-      onPressed: controller.launchNextTaskWithoutCompletingCurrent,
-      child: Text(text),
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        backgroundColor:
-        controller.isPlaying.value ? Colors.grey : Colors.white,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          side: BorderSide(
-              color:
-              controller.isPlaying.value ? Colors.grey : Colors.black),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      ),
-    ));
+          onPressed: controller.launchNextTaskWithoutCompletingCurrent,
+          child: Text(text),
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.black,
+            backgroundColor:
+                controller.isPlaying.value ? Colors.grey : Colors.white,
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              side: BorderSide(
+                  color:
+                      controller.isPlaying.value ? Colors.grey : Colors.black),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          ),
+        ));
   }
 }
 
