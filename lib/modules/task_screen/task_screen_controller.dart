@@ -9,6 +9,8 @@ import 'package:novo_cogni/constants/route_arguments.dart';
 import 'package:novo_cogni/modules/home/home_controller.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
+import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/participant/participant_entity.dart';
 import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
@@ -26,6 +28,14 @@ class TaskScreenController extends GetxController {
   late final AudioPlayer _audioPlayer;
   late final AudioRecorder _recorder;
 
+  var participant = Rxn<ParticipantEntity>();
+  var evaluation = Rxn<EvaluationEntity>();
+  var evaluatorId = RxInt(0);
+  var taskName = RxString("");
+  var taskId = RxInt(0);
+  var taskInstanceId = RxInt(0);
+  var moduleInstanceId = Rxn<int>();
+
   var audioPath = ''.obs;
   var isPlaying = false.obs;
   var isRecording = false.obs;
@@ -37,7 +47,7 @@ class TaskScreenController extends GetxController {
   var countdownTrigger = false.obs;
   var currentTaskIndex = 1.obs;
   var totalTasks = 1.obs;
-  var moduleInstanceId = Rxn<int>();
+
   var isModuleCompleted = false.obs;
 
   var isCheckButtonEnabled = false.obs;
@@ -67,20 +77,30 @@ class TaskScreenController extends GetxController {
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
 
-    final args = Get.arguments as Map<String, dynamic>;
-    moduleInstanceId.value = args[RouteArguments.MODULE_INSTANCE_ID];
+    final arguments = Get.arguments as Map<String, dynamic>?;
 
-    if (moduleInstanceId.value != null) {
-      // Calculate total tasks for the module instance.
-      await _calculateTotalTasks(moduleInstanceId.value!);
-    } else {
-      // Fallback or error handling if moduleInstanceId is not provided.
-      print("Module instance ID not found in arguments.");
+
+    if (arguments != null) {
+      participant.value = arguments[RouteArguments.PARTICIPANT];
+      evaluation.value = arguments[RouteArguments.EVALUATION];
+      evaluatorId.value = arguments[RouteArguments.EVALUATOR_ID];
+
+      taskName.value = arguments[RouteArguments.TASK_NAME];
+      taskId.value = arguments[RouteArguments.TASK_ID];
+      taskInstanceId.value = arguments[RouteArguments.TASK_INSTANCE_ID];
+
+      moduleInstanceId.value = arguments[RouteArguments.MODULE_INSTANCE_ID];
+      if (moduleInstanceId.value != null) {
+        // Calculate total tasks for the module instance.
+        await _calculateTotalTasks(moduleInstanceId.value!);
+      } else {
+        // Fallback or error handling if moduleInstanceId is not provided.
+        print("Module instance ID not found in arguments.");
+      }
     }
-
     // Update the current task based on the task instance ID passed in the arguments.
-    if (args[RouteArguments.TASK_INSTANCE_ID] != null) {
-      await updateCurrentTask(args[RouteArguments.TASK_INSTANCE_ID]);
+    if (taskInstanceId.value != null) {
+      await updateCurrentTask(taskInstanceId.value);
     } else {
       // Fallback or error handling if task instance ID is not provided.
       print("Task instance ID not found in arguments.");
