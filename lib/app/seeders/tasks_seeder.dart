@@ -16,10 +16,44 @@ TaskEntity whatsYourNameTask = TaskEntity(
     mayRepeatPrompt: true,
     position: 1);
 
+// TASKS VERIFICAÇÃO
+int cincoPatinhos = 5;
+int umPassaroNaMao = 6;
+int nemTudoQueReluz = 7;
 
+List<String> testingOnlyAudioTasksTitles = [
+  "Cinco Patinhos",
+  "Um Pássaro na Mão",
+  "Nem Tudo Que Reluz"
+];
+
+TaskEntity cincoPatinhosTask = TaskEntity(
+  taskID: cincoPatinhos,
+  title: testingOnlyAudioTasksTitles[0],
+  moduleID: testingOnlyAudioModuleId,
+  taskMode: TaskMode.play,
+  position: 1,
+);
+TaskEntity umPassaroTask = TaskEntity(
+  taskID: umPassaroNaMao,
+  title: testingOnlyAudioTasksTitles[1],
+  moduleID: testingOnlyAudioModuleId,
+  taskMode: TaskMode.play,
+  position: 2,
+);
+TaskEntity nemTudoTask = TaskEntity(
+  taskID: nemTudoQueReluz,
+  title: testingOnlyAudioTasksTitles[2],
+  moduleID: testingOnlyAudioModuleId,
+  taskMode: TaskMode.play,
+  position: 3,
+);
 
 List<TaskEntity> tasksList = [
   whatsYourNameTask,
+  cincoPatinhosTask,
+  umPassaroTask,
+  nemTudoTask
 ];
 
 

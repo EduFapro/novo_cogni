@@ -5,38 +5,38 @@ import '../task_prompt/task_prompt_entity.dart';
 var whatsYourNameTaskPromptID = 1;
 
 final whatsYourNamePrompt = TaskPromptEntity(
-    promptID: whatsYourNameTaskPromptID,
-    taskID: whatsYourNameTask.taskID!,
-    filePath: AudioFilePaths.cincoPatinhos,
-    transcription: "Qual o seu nome?",
+  promptID: whatsYourNameTaskPromptID,
+  taskID: whatsYourNameTask.taskID!,
+  filePath: AudioFilePaths.qual_o_seu_nome,
+  transcription: "Qual o seu nome?",
 );
 
+final cincoPatinhosTaskPromptID = 9001;
+final umPassaroTaskPromptID = 9002;
+final nemTudoTaskPromptID = 99033;
+
+final cincoPatinhosTaskPrompt = TaskPromptEntity(
+    promptID: cincoPatinhosTaskPromptID,
+    taskID: cincoPatinhosTask.taskID!,
+    filePath: AudioFilePaths.cincoPatinhos);
+
+final umPassaroTaskPrompt = TaskPromptEntity(
+    promptID: umPassaroTaskPromptID,
+    taskID: umPassaroTask.taskID!,
+    filePath: AudioFilePaths.ehMelhorUmPassaro);
+
+final nemTudoTaskPrompt = TaskPromptEntity(
+    promptID: nemTudoTaskPromptID,
+    taskID: nemTudoTask.taskID!,
+    filePath: AudioFilePaths.nemTudoQueReluz);
+
 List<TaskPromptEntity> tasksPromptsList = [
-  whatsYourNamePrompt
+  whatsYourNamePrompt,
+  cincoPatinhosTaskPrompt,
+  umPassaroTaskPrompt,
+  nemTudoTaskPrompt
 ];
 
-// final cincoPatinhosTaskPromptID = 1;
-// final umPassaroTaskPromptID = 2;
-// final nemTudoTaskPromptID = 3;
-// final cincoPatinhosWithRecordingTaskPromptID = 4;
-// final umPassaroWithRecordingTaskPromptID = 5;
-// final nemTudoWithRecordingTaskPromptID = 6;
-//
-// final cincoPatinhosTaskPrompt = TaskPromptEntity(
-//     promptID: cincoPatinhosTaskPromptID,
-//     taskID: cincoPatinhosTask.taskID!,
-//     filePath: AudioFilePaths.cincoPatinhos);
-//
-// final umPassaroTaskPrompt = TaskPromptEntity(
-//     promptID: umPassaroTaskPromptID,
-//     taskID: umPassaroTask.taskID!,
-//     filePath: AudioFilePaths.ehMelhorUmPassaro);
-//
-// final nemTudoTaskPrompt = TaskPromptEntity(
-//     promptID: nemTudoTaskPromptID,
-//     taskID: nemTudoTask.taskID!,
-//     filePath: AudioFilePaths.nemTudoQueReluz);
-//
 // final cincoPatinhosWithRecordingTaskPrompt = TaskPromptEntity(
 //     promptID: cincoPatinhosWithRecordingTaskPromptID,
 //     taskID: cincoPatinhosTaskWithRecording.taskID!,
@@ -60,4 +60,3 @@ List<TaskPromptEntity> tasksPromptsList = [
 //   // umPassaroWithRecordingTaskPrompt,
 //   // nemTudoWithRecordingTaskPrompt
 // ];
-
