@@ -39,4 +39,5 @@ flutter:
     - assets/abstract-user.svg
     - assets/profile-placeholder.png
     - assets/audio/
+    - assets/task_prompts/
     - .env

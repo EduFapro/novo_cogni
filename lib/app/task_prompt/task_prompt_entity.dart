@@ -4,11 +4,13 @@ class TaskPromptEntity {
   int? promptID;
   int taskID;
   String filePath;
+  String? transcription;
 
   TaskPromptEntity({
     this.promptID,
     required this.taskID,
     required this.filePath,
+    this.transcription
   });
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class TaskPromptEntity {
       ID_TASK_PROMPT: promptID,
       ID_TASK_FK: taskID,
       FILE_PATH: filePath,
+      TRANSCRIPTION: transcription ?? "",
     };
   }
 
@@ -24,6 +27,7 @@ class TaskPromptEntity {
       promptID: map[ID_TASK_PROMPT] as int?,
       taskID: map[ID_TASK_FK] as int,
       filePath: map[FILE_PATH] as String,
+      transcription: map[TRANSCRIPTION],
     );
   }
 

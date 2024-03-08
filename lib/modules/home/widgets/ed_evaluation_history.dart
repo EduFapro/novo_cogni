@@ -178,6 +178,7 @@ class EdEvaluationHistory extends GetView<HomeController> {
                             Get.toNamed(
                               AppRoutes.evaluation,
                               arguments: {
+                                RouteArguments.EVALUATOR_ID: controller.user.value!.evaluatorID,
                                 RouteArguments.PARTICIPANT: participant,
                                 RouteArguments.EVALUATION: evaluation,
                               },

@@ -9,6 +9,7 @@ class TaskEntity {
   int position;
   String? image_path;
   int timeForCompletion;
+  bool mayRepeatPrompt;
 
   TaskEntity({
     this.taskID,
@@ -18,6 +19,7 @@ class TaskEntity {
     required this.position,
     this.image_path,
     this.timeForCompletion = 30,
+    this.mayRepeatPrompt = true,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,11 +31,11 @@ class TaskEntity {
       POSITION: position,
       IMAGE_PATH: image_path,
       TIME_FOR_COMPLETION: timeForCompletion,
+      MAY_REPEAT_PROMPT: mayRepeatPrompt ? 1 : 0
     };
   }
 
   static TaskEntity fromMap(Map<String, dynamic> map) {
-
     final mode = TaskMode.fromNumericValue(map[MODE] as int);
     return TaskEntity(
       taskID: map[ID_TASK] as int?,
@@ -43,10 +45,9 @@ class TaskEntity {
       position: map[POSITION] as int,
       image_path: map[IMAGE_PATH] as String?,
       timeForCompletion: map[TIME_FOR_COMPLETION],
+      mayRepeatPrompt: map[MAY_REPEAT_PROMPT] == 1? true : false
     );
   }
-
-
 
   @override
   String toString() {
