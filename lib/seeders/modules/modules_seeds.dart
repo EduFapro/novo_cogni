@@ -1,11 +1,9 @@
-import '../module/module_entity.dart';
+library module_seeds;
 
-// MODULES
-String way2AgeTitle = 'Way2Age';
-int way2AgeModuleId = 1;
+import '../../app/module/module_entity.dart';
 
-String testsModuleTitle = 'Tests';
-int testModuleId = 2;
+part "modules_seeds_constants.dart";
+
 
 ModuleEntity way2AgeModule = ModuleEntity(
     moduleID: way2AgeModuleId,
@@ -15,14 +13,10 @@ ModuleEntity testsModule = ModuleEntity(
     moduleID: testModuleId,
     title: testsModuleTitle);
 
-// MÓDULOS P VERIFICAÇÃO
-
-String testingOnlyAudioTitle = 'Testando Audio';
-int testingOnlyAudioModuleId = 9001;
-
 ModuleEntity testingOnlyAudioModule = ModuleEntity(
     moduleID: testingOnlyAudioModuleId,
     title: testingOnlyAudioTitle);
+
 
 List<ModuleEntity> modulesList = [
   testsModule,
@@ -30,18 +24,8 @@ List<ModuleEntity> modulesList = [
   testingOnlyAudioModule
 ];
 
-
-
 void printModules() {
   for (var i = 1; i < modulesList.length; i++) {
     print('Module $i: ${modulesList[i].title}');
   }
 }
-
-
-//
-// ModuleEntity testingRecordingModule = ModuleEntity(
-//   moduleID: testingRecordingId,
-//   title: moduleTitles[3]);
-
-

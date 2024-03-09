@@ -1,10 +1,10 @@
 import 'package:novo_cogni/app/recording_file/recording_file_constants.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'seeders/admin_seeder.dart';
-import 'seeders/modules_seeder.dart';
-import 'seeders/prompts_seeder.dart';
-import 'seeders/tasks_seeder.dart';
+import '../seeders/admin_seeder.dart';
+import '../seeders/modules/modules_seeds.dart';
+import '../seeders/prompts_seeder/prompts_seeds.dart';
+import '../seeders/tasks/task_seeds.dart';
 import 'database_constants.dart';
 import 'participant/participant_constants.dart';
 import 'task/task_constants.dart';

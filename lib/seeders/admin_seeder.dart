@@ -1,8 +1,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../../constants/enums/person_enums/person_enums.dart';
-import '../evaluator/evaluator_constants.dart';
-import '../evaluator/evaluator_entity.dart';
+import '../../constants/enums/person_enums/person_enums.dart';
+import '../app/evaluator/evaluator_constants.dart';
+import '../app/evaluator/evaluator_entity.dart';
 
 class Config {
   static String get adminName => dotenv.env['ADMIN_NAME'] ?? '';

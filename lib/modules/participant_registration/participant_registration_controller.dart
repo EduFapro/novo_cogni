@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/participant/participant_entity.dart';
-import '../../app/seeders/modules_seeder.dart';
 import '../../constants/enums/person_enums/person_enums.dart';
 import '../../constants/enums/language_enums.dart';
+import '../../seeders/modules/modules_seeds.dart';
 import '../home/home_controller.dart';
 import 'participant_registration_service.dart';
 
