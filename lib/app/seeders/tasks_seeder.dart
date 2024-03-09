@@ -3,9 +3,45 @@ import '../task/task_entity.dart';
 import 'modules_seeder.dart';
 
 // TASKS
-String whatsYourNameTaskTitle = "what_is_your_name";
-int whatsYourNameTaskId = 1;
+String helloHowAreYouTaskTitle = "hello_how_are_you";
+int helloHowAreYouTaskId = 1;
 
+String whatsYourNameTaskTitle = "what_is_your_name";
+int whatsYourNameTaskId = 2;
+
+String whatsYourDOBTitle = "what_is_dob";
+int whatsYourDOBTaskId = 3;
+
+String whatsYourEducationLevelTitle = "what_is_your_education_level";
+int whatsYourEducationLevelTaskId = 4;
+
+String whatsYourProfessionTitle = "what_is_your_profession";
+int whatsYourProfessionTaskId = 5;
+
+String whoDoYouLiveWithTitle = "who_do_you_live_with";
+int whoDoYouLiveWithTaskId = 6;
+
+String doYouExerciseFrequentlyTitle = "do_you_exercise_frequently";
+int doYouExerciseFrequentlyTaskId = 7;
+
+String doYouReadFrequentlyTitle = "do_you_read_frequently";
+int doYouReadFrequentlyTaskId = 8;
+
+String doYouPlayPuzzlesOrVideoGamesFrequentlyTitle = "do_you_play_puzzles_or_video_games_frequently";
+int doYouPlayPuzzlesOrVideoGamesFrequentlyTaskId = 9;
+
+String doYouHaveAnyDiseasesTitle = "do_you_have_any_diseases";
+int doYouHaveAnyDiseasesTaskId = 10;
+
+TaskEntity helloHowAreYouTask = TaskEntity(
+  taskID: helloHowAreYouTaskId,
+  title: helloHowAreYouTaskTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 1,
+);
 
 TaskEntity whatsYourNameTask = TaskEntity(
     taskID: whatsYourNameTaskId,
@@ -14,12 +50,93 @@ TaskEntity whatsYourNameTask = TaskEntity(
     taskMode: TaskMode.record,
     timeForCompletion: 40,
     mayRepeatPrompt: true,
-    position: 1);
+    position: 2);
+
+TaskEntity whatsYourDOBTask = TaskEntity(
+  taskID: whatsYourDOBTaskId,
+  title: whatsYourDOBTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 3,
+);
+
+TaskEntity whatsYourEducationLevelTask = TaskEntity(
+  taskID: whatsYourEducationLevelTaskId,
+  title: whatsYourEducationLevelTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 4,
+);
+
+TaskEntity whatsYourProfessionTask = TaskEntity(
+  taskID: whatsYourProfessionTaskId,
+  title: whatsYourProfessionTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 5,
+);
+
+TaskEntity whoDoYouLiveWithTask = TaskEntity(
+  taskID: whoDoYouLiveWithTaskId,
+  title: whoDoYouLiveWithTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 6,
+);
+
+TaskEntity doYouExerciseFrequentlyTask = TaskEntity(
+  taskID: doYouExerciseFrequentlyTaskId,
+  title: doYouExerciseFrequentlyTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 7,
+);
+
+TaskEntity doYouReadFrequentlyTask = TaskEntity(
+  taskID: doYouReadFrequentlyTaskId,
+  title: doYouReadFrequentlyTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 8,
+);
+
+TaskEntity doYouPlayPuzzlesOrVideoGamesFrequentlyTask = TaskEntity(
+  taskID: doYouPlayPuzzlesOrVideoGamesFrequentlyTaskId,
+  title: doYouPlayPuzzlesOrVideoGamesFrequentlyTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 9,
+);
+
+TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
+  taskID: doYouHaveAnyDiseasesTaskId,
+  title: doYouHaveAnyDiseasesTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 10,
+);
+
 
 // TASKS VERIFICAÇÃO
-int cincoPatinhos = 5;
-int umPassaroNaMao = 6;
-int nemTudoQueReluz = 7;
+int cincoPatinhos = 9005;
+int umPassaroNaMao = 9006;
+int nemTudoQueReluz = 9007;
 
 List<String> testingOnlyAudioTasksTitles = [
   "Cinco Patinhos",
@@ -50,34 +167,20 @@ TaskEntity nemTudoTask = TaskEntity(
 );
 
 List<TaskEntity> tasksList = [
+  helloHowAreYouTask,
   whatsYourNameTask,
+  whatsYourDOBTask,
+  whatsYourEducationLevelTask,
+  whatsYourProfessionTask,
+  whoDoYouLiveWithTask,
+  doYouExerciseFrequentlyTask,
+  doYouReadFrequentlyTask,
+  doYouPlayPuzzlesOrVideoGamesFrequentlyTask,
+  doYouHaveAnyDiseasesTask,
   cincoPatinhosTask,
   umPassaroTask,
   nemTudoTask
 ];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
