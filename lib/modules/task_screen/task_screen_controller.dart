@@ -267,26 +267,30 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  Future<String> _getRecordingPath() async {
-    // Define the custom directory within the Documents folder
-    final String dirPath = await getApplicationDocumentsPath();
-    final mySubDir = Directory('$dirPath/Cognivoice');
 
-    // Ensure the 'Cognivoice' directory exists
+  Future<String> _getRecordingPath() async {
+    // Obtain the directory path for the application's documents directory.
+    final String dirPath = await getApplicationDocumentsPath();
+
+    // Create a Directory object using the documents directory path and appending the 'Cognivoice' subdirectory.
+    final Directory mySubDir = Directory(path.join(dirPath, 'Cognivoice'));
+
+    // Check if the 'Cognivoice' directory exists, and if not, create it recursively.
     if (!await mySubDir.exists()) {
       await mySubDir.create(recursive: true);
     }
 
-    // Define a custom file name, for example using a timestamp
-    final timestamp = DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString();
-    final fileName = 'recording_$timestamp.aac'; // Or set your custom file name
+    // Generate a timestamp string based on the current date and time for use in the file name.
+    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // Combine the directory path and the file name to create a full file path
-    final filePath = path.join(mySubDir.path, fileName);
+    // Construct a file name using the evaluator and participant ID, along with the timestamp, to ensure uniqueness.
+    final String fileName = 'recording_$timestamp.aac';
 
+    // Use the path package's join method to concatenate the directory path and file name,
+    // ensuring the correct path separators are used for the platform.
+    final String filePath = path.join(mySubDir.path, fileName);
+
+    // Return the full file path where the recording will be saved.
     return filePath;
   }
 

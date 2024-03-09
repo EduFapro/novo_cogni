@@ -47,45 +47,75 @@ Future<String> getTemporaryDirectoryPath() async {
   return directory.path;
 }
 
+
 Future<String> saveAudioFile(ByteData data, String tempFileName, int evaluatorId,
     int participantId, int taskInstanceId) async {
+  // Log the invocation of the function with the temporary file name.
   print('saveAudioFile called with tempFileName: $tempFileName');
-  final String dirPath = await getApplicationDocumentsPath();
-  final Directory mySubDir = Directory('$dirPath/Cognivoice');
 
+  // Obtain the directory path for the application's documents directory.
+  final String dirPath = await getApplicationDocumentsPath();
+
+  // Create a Directory object pointing to 'Cognivoice' subdirectory within the documents directory.
+  final Directory mySubDir = Directory(path.join(dirPath, 'Cognivoice'));
+
+  // Check if the 'Cognivoice' directory exists, and if not, create it along with any non-existent parent directories.
   if (!await mySubDir.exists()) {
     await mySubDir.create(recursive: true);
   }
 
+  // Format evaluatorId and participantId to have at least 2 digits with leading zeros if necessary.
   final String formattedEvaluatorId = evaluatorId.toString().padLeft(2, '0');
   final String formattedParticipantId = participantId.toString().padLeft(2, '0');
 
-  // Use DateFormat to format the date
+  // Format the current date as a string in 'ddMMyyyy' format.
   final String recordingDate = DateFormat('ddMMyyyy').format(DateTime.now());
+
+  // Construct a unique file name using the formatted evaluator and participant IDs, task instance ID, and the current date.
   final String fileName = 'A${formattedEvaluatorId}_P${formattedParticipantId}_AT${taskInstanceId}_$recordingDate.aac';
 
+  // Use the path package's join method to concatenate the directory path and file name,
+  // ensuring the correct path separators are used for the platform.
   final String filePath = path.join(mySubDir.path, fileName);
-  final File file = File(filePath);
 
+  // Create a File object pointing to the intended file path and use it to write the audio data.
+  final File file = File(filePath);
   print('Saving audio file at: $filePath');
   await file.writeAsBytes(data.buffer.asUint8List());
 
-  // Optional: delete the temporary file
+  // Optionally, check if a temporary file exists and delete it if it does.
   final File tempFile = File(path.join(mySubDir.path, tempFileName));
   if (await tempFile.exists()) {
     await tempFile.delete();
+    print('Deleted temporary file: $tempFileName');
   }
 
+  // Return the full file path where the audio file was saved.
   return filePath;
 }
 
-Future<String> getSecureStoragePath() async {
-  final userDirectory = Platform.environment['USERPROFILE'] ?? '';
-  final secureDir = Directory('$userDirectory\\.MySecureAppData');
 
+Future<String> getSecureStoragePath() async {
+  // Retrieve the user profile directory path from the system environment variables.
+  final String userDirectory = Platform.environment['USERPROFILE'] ?? '';
+
+  // If the 'USERPROFILE' environment variable is not found, userDirectory will default to an empty string.
+
+  // Use the path package's join method to construct the path for '.MySecureAppData' directory
+  // within the user profile directory, ensuring the use of correct directory separators.
+  final secureDirPath = path.join(userDirectory, '.MySecureAppData');
+
+  // Create a Directory object pointing to the path for '.MySecureAppData'.
+  final Directory secureDir = Directory(secureDirPath);
+
+  // Check if the '.MySecureAppData' directory exists in the user's profile directory.
+  // If it does not exist, create it.
   if (!await secureDir.exists()) {
     await secureDir.create();
+    // The 'create' method will create the directory if it doesn't exist.
   }
 
+  // Return the path to the '.MySecureAppData' directory.
   return secureDir.path;
 }
+
