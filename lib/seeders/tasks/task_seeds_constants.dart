@@ -13,8 +13,8 @@ int whatsYourDOBTaskId = 3;
 String whatsYourEducationLevelTitle = "what_is_your_education_level";
 int whatsYourEducationLevelTaskId = 4;
 
-String whatsYourProfessionTitle = "what_is_your_profession";
-int whatsYourProfessionTaskId = 5;
+String whatWasYourProfessionTitle = "what_was_your_profession";
+int whatWasYourProfessionTaskId = 5;
 
 String whoDoYouLiveWithTitle = "who_do_you_live_with";
 int whoDoYouLiveWithTaskId = 6;

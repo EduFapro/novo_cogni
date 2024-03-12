@@ -46,9 +46,9 @@ TaskEntity whatsYourEducationLevelTask = TaskEntity(
   position: 4,
 );
 
-TaskEntity whatsYourProfessionTask = TaskEntity(
-  taskID: whatsYourProfessionTaskId,
-  title: whatsYourProfessionTitle,
+TaskEntity whatWasYourProfessionTask = TaskEntity(
+  taskID: whatWasYourProfessionTaskId,
+  title: whatWasYourProfessionTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
@@ -116,7 +116,7 @@ TaskEntity payCloseAttentionTask = TaskEntity(
   position: 11,
 );
 
-TaskEntity subtracting3AndAgain = TaskEntity(
+TaskEntity subtracting3AndAgainTask = TaskEntity(
   taskID: subtracting3AndAgainTaskId,
   title: subtracting3AndAgainTitle,
   moduleID: way2AgeModuleId,

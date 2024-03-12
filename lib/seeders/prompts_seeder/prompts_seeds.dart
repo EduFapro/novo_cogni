@@ -38,9 +38,9 @@ final whatsYourEducationLevelPrompt = TaskPromptEntity(
 );
 
 
-final whatsYourProfessionPrompt = TaskPromptEntity(
-  promptID: whatsYourProfessionTaskPromptID,
-  taskID: whatsYourProfessionTask.taskID!,
+final whatWasYourProfessionPrompt = TaskPromptEntity(
+  promptID: whatWasYourProfessionTaskPromptID,
+  taskID: whatWasYourProfessionTask.taskID!,
   filePath: AudioFilePaths.qual_era_a_sua_profissao,
   transcription: "Qual era a sua profissão?",
 );
@@ -111,7 +111,7 @@ List<TaskPromptEntity> tasksPromptsList = [
   whatsYourNamePrompt,
   whatsYourDOBPrompt,
   whatsYourEducationLevelPrompt,
-  whatsYourProfessionPrompt,
+  whatWasYourProfessionPrompt,
   whoDoYouLiveWithPrompt,
   doYouExerciseFrequentlyPrompt,
   doYouReadFrequentlyPrompt,
