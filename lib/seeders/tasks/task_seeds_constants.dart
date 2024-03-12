@@ -25,23 +25,24 @@ int doYouExerciseFrequentlyTaskId = 7;
 String doYouReadFrequentlyTitle = "do_you_read_frequently";
 int doYouReadFrequentlyTaskId = 8;
 
-String doYouPlayPuzzlesOrVideoGamesFrequentlyTitle = "do_you_play_puzzles_or_video_games_frequently";
+String doYouPlayPuzzlesOrVideoGamesFrequentlyTitle =
+    "do_you_play_puzzles_or_video_games_frequently";
 int doYouPlayPuzzlesOrVideoGamesFrequentlyTaskId = 9;
 
 String doYouHaveAnyDiseasesTitle = "do_you_have_any_diseases";
 int doYouHaveAnyDiseasesTaskId = 10;
 
-String canYouRememberWordsListTitle = "can_you_remember_words_list";
-int canYouRememberWordsListTaskId = 11;
+String payCloseAttentionTitle = "pay_close_attention";
+int payCloseAttentionTaskId = 11;
 
-String canYouDoSubtractionTitle = "can_you_do_subtraction";
-int canYouDoSubtractionTaskId = 12;
+String subtracting3AndAgainTitle = "subtracting_3_and_again";
+int subtracting3AndAgainTaskId = 12;
 
-String whatYearIsItTitle = "what_year_is_it";
-int whatYearIsItTaskId = 13;
+String whatYearAreWeInTitle = "what_year_are_we_in";
+int whatYearAreWeInTaskId = 13;
 
-String whatMonthIsItTitle = "what_month_is_it";
-int whatMonthIsItTaskId = 14;
+String whatMonthAreWeInTitle = "what_month_are_we_in";
+int whatMonthAreWeInTaskId = 14;
 
 String whatDayOfTheMonthIsItTitle = "what_day_of_the_month_is_it";
 int whatDayOfTheMonthIsItTaskId = 15;
@@ -49,231 +50,128 @@ int whatDayOfTheMonthIsItTaskId = 15;
 String whatDayOfTheWeekIsItTitle = "what_day_of_the_week_is_it";
 int whatDayOfTheWeekIsItTaskId = 16;
 
-String howOldAreYouTitle = "how_old_are_you";
 int howOldAreYouTaskId = 17;
+String howOldAreYouTitle = "how_old_are_you";
 
-String whereAreWeNowTitle = "where_are_we_now";
 int whereAreWeNowTaskId = 18;
+String whereAreWeNowTitle = "where_are_we_now_title";
 
-String currentPresidentOfBrazilTitle = "current_president_of_brazil";
 int currentPresidentOfBrazilTaskId = 19;
+String currentPresidentOfBrazilTitle = "current_president_of_Brazil";
 
-String formerPresidentOfBrazilTitle = "former_president_of_brazil";
 int formerPresidentOfBrazilTaskId = 20;
+String formerPresidentOfBrazilTitle = "former_president_of_Brazil";
 
-String repeatWordsAfterListeningTitle = "repeat_words_after_listening";
-int repeatWordsAfterListeningTaskId = 21;
+int repeatWordsAfterListeningFirstTimeTaskId = 21;
+String repeatWordsAfterListeningFirstTimeTitle =
+    "repeat_words_after_listening_first_time";
 
-String recallWordsFromListTitle = "recall_words_from_list";
-int recallWordsFromListTaskId = 22;
+int recallWordsFromListFirstTimeTaskId = 22;
+String recallWordsFromListFirstTimeTitle = "recall_words_from_list_first_time";
 
-String whatDidYouDoYesterdayTitle = "what_did_you_do_yesterday";
-int whatDidYouDoYesterdayTaskId = 23;
+int repeatWordsAfterListeningSecondTimeTaskId = 23;
+String repeatWordsAfterListeningSecondTimeTitle =
+    "repeat_words_after_listening_second_time";
 
+int recallWordsFromListSecondTimeTaskId = 24;
+String recallWordsFromListSecondTimeTitle =
+    "recall_words_from_list_title_second_time";
+
+int repeatWordsAfterListeningThirdTimeTaskId = 25;
+String repeatWordsAfterListeningThirdTimeTitle =
+    "repeat_words_after_listening_third_time";
+
+int recallWordsFromListThirdTimeTaskId = 26;
+String recallWordsFromListThirdTimeTitle =
+    "recall_words_from_list_title_third_time";
+
+int whatDidYouDoYesterdayTaskId = 27;
+String whatDidYouDoYesterdayTitle = "what_di_you_do_yesterday";
+
+int favoriteChildhoodGameTaskId = 28;
 String favoriteChildhoodGameTitle = "favorite_childhood_game";
-int favoriteChildhoodGameTaskId = 24;
 
-String retellStoryHeardBeforeTitle = "retell_story_heard_before";
-int retellStoryHeardBeforeTaskId = 25;
+int retellWordsHeardBeforeTaskId = 29;
+String retellWordsHeardBeforeTitle = "retell_story_heard_before_title";
 
-String nameAsManyAnimalsAsYouCanTitle = "name_as_many_animals_as_you_can";
-int nameAsManyAnimalsAsYouCanTaskId = 26;
+int payCloseAttentionToTheStoryTaskId = 30;
+String payCloseAttentionToTheStoryTitle =
+    "pay_close_attention_to_the_story_title";
 
+int anasCatStoryTaskId = 31;
+String anasCatStoryTitle = "ana's_cat_story";
+
+int howManyAnimalsCanYouThinkOfTaskId = 32;
+String howManyAnimalsCanYouThinkOfTitle = "how_many_animals_can_you_think_of";
+
+int wordsStartingWithFTaskId = 33;
 String wordsStartingWithFTitle = "words_starting_with_F";
-int wordsStartingWithFTaskId = 27;
 
+int wordsStartingWithATaskId = 34;
 String wordsStartingWithATitle = "words_starting_with_A";
-int wordsStartingWithATaskId = 28;
 
+int wordsStartingWithSTaskId = 35;
 String wordsStartingWithSTitle = "words_starting_with_S";
-int wordsStartingWithSTaskId = 29;
 
+int describeWhatYouSeeTaskId = 36;
 String describeWhatYouSeeTitle = "describe_what_you_see";
-int describeWhatYouSeeTaskId = 30;
 
-String retellStoryTitle = "retell_story";
-int retellStoryTaskId = 31;
+int retellStoryTaskId = 37;
+String retellStoryTitle = "retellStory";
 
+int yesOrNoQuestionsTaskId = 38;
 String yesOrNoQuestionsTitle = "yes_or_no_questions";
-int yesOrNoQuestionsTaskId = 32;
 
+int canYouBatheAloneTaskId = 39;
 String canYouBatheAloneTitle = "can_you_bathe_alone";
-int canYouBatheAloneTaskId = 33;
 
+int canYouDressAloneTaskId = 40;
 String canYouDressAloneTitle = "can_you_dress_alone";
-int canYouDressAloneTaskId = 34;
 
+int canYouUseToiletAloneTaskId = 41;
 String canYouUseToiletAloneTitle = "can_you_use_toilet_alone";
-int canYouUseToiletAloneTaskId = 35;
 
+int canYouUsePhoneAloneTaskId = 42;
 String canYouUsePhoneAloneTitle = "can_you_use_phone_alone";
-int canYouUsePhoneAloneTaskId = 36;
 
-String canYouShopAloneTitle = "can_you_shop_alone";
-int canYouShopAloneTaskId = 37;
+int canYouShopAloneTaskId = 43;
+String canYouShopAloneTitle = "can_you_shop_alone_alone";
 
+int canYouHandleMoneyAloneTaskId = 44;
 String canYouHandleMoneyAloneTitle = "can_you_handle_money_alone";
-int canYouHandleMoneyAloneTaskId = 38;
 
+int canYouManageMedicationAloneTaskId = 45;
 String canYouManageMedicationAloneTitle = "can_you_manage_medication_alone";
-int canYouManageMedicationAloneTaskId = 39;
 
+int canYouUseTransportAloneTaskId = 46;
 String canYouUseTransportAloneTitle = "can_you_use_transport_alone";
-int canYouUseTransportAloneTaskId = 40;
 
+int feelingsInPastTwoWeeksTaskId = 47;
 String feelingsInPastTwoWeeksTitle = "feelings_in_past_two_weeks";
-int feelingsInPastTwoWeeksTaskId = 41;
 
+int feelingSadFrequentlyTaskId = 48;
 String feelingSadFrequentlyTitle = "feeling_sad_frequently";
-int feelingSadFrequentlyTaskId = 42;
 
+int feelingTiredOrLackingEnergyTaskId = 49;
 String feelingTiredOrLackingEnergyTitle = "feeling_tired_or_lacking_energy";
-int feelingTiredOrLackingEnergyTaskId = 43;
 
+int troubleSleepingTaskId = 50;
 String troubleSleepingTitle = "trouble_sleeping";
-int troubleSleepingTaskId = 44;
 
-String preferringToStayHomeTitle = "preferring_to_stay_home";
-int preferringToStayHomeTaskId = 45;
-
-String feelingUselessOrGuiltyTitle = "feeling_useless_or_guilty";
-int feelingUselessOrGuiltyTaskId = 46;
-
-String lostInterestInActivitiesTitle = "lost_interest_in_activities";
-int lostInterestInActivitiesTaskId = 47;
-
-String hopefulAboutFutureTitle = "hopeful_about_future";
-int hopefulAboutFutureTaskId = 48;
-
-String feelingLifeIsWorthLivingTitle = "feeling_life_is_worth_living";
-int feelingLifeIsWorthLivingTaskId = 49;
-
-String thankingForParticipationTitle = "thanking_for_participation";
-int thankingForParticipationTaskId = 50;
-
-
-String preferringToStayHomeTitle = "na_maior_parte_das_vezes_você_preferiu_ficar_em_casa_ao_inves_de_sair_sim_ou_nao";
 int preferringToStayHomeTaskId = 51;
+String preferringToStayHomeTitle = "preferring_to_stay_home";
 
-String feelingUselessOrGuiltyTitle = "você_se_sentiu_inutil_ou_com_sentimento_de_culpa_sim_ou_nao";
 int feelingUselessOrGuiltyTaskId = 52;
+String feelingUselessOrGuiltyTitle = "feeling_useless_or_guilty";
 
-String lostInterestInActivitiesTitle = "você_sentiu_que_perdeu_o_interesse_ou_prazer_por_coisas_que_antes_você_gostava_sim_ou_nao";
 int lostInterestInActivitiesTaskId = 53;
+String lostInterestInActivitiesTitle = "lost_interest_in_activities";
 
-String hopefulAboutFutureTitle = "você_tem_esperanca_sobre_o_seu_futuro_sim_ou_nao";
 int hopefulAboutFutureTaskId = 54;
+String hopefulAboutFutureTitle = "hopeful_about_future";
 
-String feelingLifeIsWorthLivingTitle = "você_acha_que_vale_a_pena_continuar_vivendo_sim_ou_nao";
 int feelingLifeIsWorthLivingTaskId = 55;
+String feelingLifeIsWorthLivingTitle = "feeling_life_is_worth_living";
 
-String thankingForParticipationTitle = "obrigado_pela_sua_participacao";
 int thankingForParticipationTaskId = 56;
-
-
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// TaskEntity introduceTask = TaskEntity(
-//     taskID: tellUsYourNameId,
-//     title: taskTitles[1],
-//     moduleID: testModuleId,
-//     taskMode: TaskMode.record,
-//     position: 1);
-//
-// TaskEntity tellStoryTask = TaskEntity(
-//     taskID: tellUsAStoryId,
-//     title: taskTitles[2],
-//     moduleID: way2AgeModuleId,
-//     taskMode: TaskMode.play,
-//     position: 0);
-//
-// // TaskEntity countToTenTask = TaskEntity(
-// //     taskID: countUpTo10,
-// //     title: taskTitles[3],
-// //     moduleID: way2AgeModuleId,
-// //     taskMode: TaskMode.play,
-// //     position: 1);
-// //
-// // int cincoPatinhos = 5;
-// // int umPassaroNaMao = 6;
-// // int nemTudoQueReluz = 7;
-// // int cincoPatinhosWithRecording = 8;
-// // int umPassaroNaMaoWithRecording = 9;
-// // int nemTudoQueReluzWithRecording = 10;
-// //
-// // List<String> testingOnlyAudioTasksTitles = [
-// //   "Cinco Patinhos",
-// //   "Um Passaro na Mão",
-// //   "Nem Tudo Que Reluz"
-// // ];
-// // List<String> testingAudioWithRecordingTasksTitles = [
-// //   "Cinco Patinhos With Recording",
-// //   "Um Passaro na Mão With Recording",
-// //   "Nem Tudo Que Reluz With Recording"
-// // ];
-// // TaskEntity cincoPatinhosTask = TaskEntity(
-// //   taskID: cincoPatinhos,
-// //   title: testingOnlyAudioTasksTitles[0],
-// //   moduleID: testingOnlyAudioId,
-// //   taskMode: TaskMode.play,
-// //   position: 0,
-// // );
-// // TaskEntity umPassaroTask = TaskEntity(
-// //   taskID: umPassaroNaMao,
-// //   title: testingOnlyAudioTasksTitles[1],
-// //   moduleID: testingOnlyAudioId,
-// //   taskMode: TaskMode.play,
-// //   position: 1,
-// // );
-// // TaskEntity nemTudoTask = TaskEntity(
-// //   taskID: nemTudoQueReluz,
-// //   title: testingOnlyAudioTasksTitles[2],
-// //   moduleID: testingOnlyAudioId,
-// //   taskMode: TaskMode.play,
-// //   position: 2,
-// // );
-// //
-// // TaskEntity cincoPatinhosTaskWithRecording = TaskEntity(
-// //   taskID: cincoPatinhosWithRecording,
-// //   title: testingAudioWithRecordingTasksTitles[0],
-// //   moduleID: testingRecordingId,
-// //   taskMode: TaskMode.record,
-// //   position: 0,
-// // );
-// // TaskEntity umPassaroTaskWithRecording = TaskEntity(
-// //   taskID: umPassaroNaMaoWithRecording,
-// //   title: testingAudioWithRecordingTasksTitles[1],
-// //   moduleID: testingRecordingId,
-// //   taskMode: TaskMode.record,
-// //   position: 1,
-// // );
-// // TaskEntity nemTudoTaskWithRecording = TaskEntity(
-// //   taskID: nemTudoQueReluzWithRecording,
-// //   title: testingAudioWithRecordingTasksTitles[2],
-// //   moduleID: testingRecordingId,
-// //   taskMode: TaskMode.record,
-// //   position: 2,
-// // );
-//
-// List<TaskEntity> tasksList = [
-//   listenTask,
-//   introduceTask,
-//   tellStoryTask,
-//   // countToTenTask,
-//   // cincoPatinhosTask,
-//   // umPassaroTask,
-//   // nemTudoTask,
-//   // cincoPatinhosTaskWithRecording,
-//   // umPassaroTaskWithRecording,
-//   // nemTudoTaskWithRecording,
-// ];
+String thankingForParticipationTitle = "thanking_for_participation";

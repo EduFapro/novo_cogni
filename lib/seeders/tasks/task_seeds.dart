@@ -106,9 +106,9 @@ TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
   position: 10,
 );
 
-TaskEntity canYouRememberWordsListTask = TaskEntity(
-  taskID: canYouRememberWordsListTaskId,
-  title: canYouRememberWordsListTitle,
+TaskEntity payCloseAttentionTask = TaskEntity(
+  taskID: payCloseAttentionTaskId,
+  title: payCloseAttentionTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
@@ -116,9 +116,9 @@ TaskEntity canYouRememberWordsListTask = TaskEntity(
   position: 11,
 );
 
-TaskEntity canYouDoSubtractionTask = TaskEntity(
-  taskID: canYouDoSubtractionTaskId,
-  title: canYouDoSubtractionTitle,
+TaskEntity subtracting3AndAgain = TaskEntity(
+  taskID: subtracting3AndAgainTaskId,
+  title: subtracting3AndAgainTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
@@ -126,19 +126,19 @@ TaskEntity canYouDoSubtractionTask = TaskEntity(
   position: 12,
 );
 
-TaskEntity whatYearIsItTask = TaskEntity(
-  taskID: whatYearIsItTaskId,
-  title: whatYearIsItTitle,
+TaskEntity whatYearAreWeInTask = TaskEntity(
+  taskID: whatYearAreWeInTaskId,
+  title: whatYearAreWeInTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 13,
+  position: whatYearAreWeInTaskId,
 );
 
-TaskEntity whatMonthIsItTask = TaskEntity(
-  taskID: whatMonthIsItTaskId,
-  title: whatMonthIsItTitle,
+TaskEntity whatMonthAreWeInTask = TaskEntity(
+  taskID: whatMonthAreWeInTaskId,
+  title: whatMonthAreWeInTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
@@ -206,9 +206,9 @@ TaskEntity formerPresidentOfBrazilTask = TaskEntity(
   position: 20,
 );
 
-TaskEntity repeatWordsAfterListeningTask = TaskEntity(
-  taskID: repeatWordsAfterListeningTaskId,
-  title: repeatWordsAfterListeningTitle,
+TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
+  taskID: repeatWordsAfterListeningFirstTimeTaskId,
+  title: repeatWordsAfterListeningFirstTimeTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
@@ -216,15 +216,57 @@ TaskEntity repeatWordsAfterListeningTask = TaskEntity(
   position: 21,
 );
 
-TaskEntity recallWordsFromListTask = TaskEntity(
-  taskID: recallWordsFromListTaskId,
-  title: recallWordsFromListTitle,
+TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
+  taskID: recallWordsFromListFirstTimeTaskId,
+  title: recallWordsFromListFirstTimeTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 22,
 );
+
+
+TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
+  taskID: repeatWordsAfterListeningSecondTimeTaskId,
+  title: repeatWordsAfterListeningSecondTimeTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 23,
+);
+
+TaskEntity recallWordsFromListSecondTimeTask = TaskEntity(
+  taskID: recallWordsFromListSecondTimeTaskId,
+  title: recallWordsFromListSecondTimeTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 24,
+);
+
+TaskEntity repeatWordsAfterListeningThirdTimeTask = TaskEntity(
+  taskID: repeatWordsAfterListeningThirdTimeTaskId,
+  title: repeatWordsAfterListeningThirdTimeTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 25,
+);
+
+TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
+  taskID: recallWordsFromListThirdTimeTaskId,
+  title: recallWordsFromListThirdTimeTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 26,
+);
+
 
 TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
   taskID: whatDidYouDoYesterdayTaskId,
@@ -233,7 +275,7 @@ TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 23,
+  position: 27,
 );
 
 TaskEntity favoriteChildhoodGameTask = TaskEntity(
@@ -243,27 +285,48 @@ TaskEntity favoriteChildhoodGameTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 24,
+  position: 28,
 );
 
-TaskEntity retellStoryHeardBeforeTask = TaskEntity(
-  taskID: retellStoryHeardBeforeTaskId,
-  title: retellStoryHeardBeforeTitle,
+TaskEntity retellWordsHeardBeforeTask = TaskEntity(
+  taskID: retellWordsHeardBeforeTaskId,
+  title: retellWordsHeardBeforeTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 25,
+  position: 29,
 );
 
-TaskEntity nameAsManyAnimalsAsYouCanTask = TaskEntity(
-  taskID: nameAsManyAnimalsAsYouCanTaskId,
-  title: nameAsManyAnimalsAsYouCanTitle,
+TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
+  taskID: payCloseAttentionToTheStoryTaskId,
+  title: payCloseAttentionToTheStoryTitle,
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 26,
+  position: 30,
+);
+
+
+TaskEntity anasCatStoryTask = TaskEntity(
+  taskID: anasCatStoryTaskId,
+  title: anasCatStoryTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 31,
+);
+
+TaskEntity howManyAnimalsCanYouThinkOfTask = TaskEntity(
+taskID: howManyAnimalsCanYouThinkOfTaskId,
+title: howManyAnimalsCanYouThinkOfTitle,
+moduleID: way2AgeModuleId,
+taskMode: TaskMode.record,
+timeForCompletion: 40,
+mayRepeatPrompt: true,
+position: 32,
 );
 
 TaskEntity wordsStartingWithFTask = TaskEntity(
@@ -273,7 +336,7 @@ TaskEntity wordsStartingWithFTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 27,
+  position: 33,
 );
 
 TaskEntity wordsStartingWithATask = TaskEntity(
@@ -283,7 +346,7 @@ TaskEntity wordsStartingWithATask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 28,
+  position: 34,
 );
 
 TaskEntity wordsStartingWithSTask = TaskEntity(
@@ -293,7 +356,7 @@ TaskEntity wordsStartingWithSTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 29,
+  position: 35,
 );
 
 TaskEntity describeWhatYouSeeTask = TaskEntity(
@@ -303,7 +366,7 @@ TaskEntity describeWhatYouSeeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 30,
+  position: 36,
 );
 
 TaskEntity retellStoryTask = TaskEntity(
@@ -313,7 +376,7 @@ TaskEntity retellStoryTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 31,
+  position: 37,
 );
 
 TaskEntity yesOrNoQuestionsTask = TaskEntity(
@@ -323,7 +386,7 @@ TaskEntity yesOrNoQuestionsTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 32,
+  position: 38,
 );
 
 TaskEntity canYouBatheAloneTask = TaskEntity(
@@ -333,7 +396,7 @@ TaskEntity canYouBatheAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 33,
+  position: 39,
 );
 
 TaskEntity canYouDressAloneTask = TaskEntity(
@@ -343,7 +406,7 @@ TaskEntity canYouDressAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 34,
+  position: 40,
 );
 
 TaskEntity canYouUseToiletAloneTask = TaskEntity(
@@ -353,7 +416,7 @@ TaskEntity canYouUseToiletAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 35,
+  position: 41,
 );
 
 TaskEntity canYouUsePhoneAloneTask = TaskEntity(
@@ -363,8 +426,10 @@ TaskEntity canYouUsePhoneAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 36,
+  position: 42,
 );
+
+
 
 TaskEntity canYouShopAloneTask = TaskEntity(
   taskID: canYouShopAloneTaskId,
@@ -373,7 +438,7 @@ TaskEntity canYouShopAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 37,
+  position: 43,
 );
 
 TaskEntity canYouHandleMoneyAloneTask = TaskEntity(
@@ -383,7 +448,7 @@ TaskEntity canYouHandleMoneyAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 38,
+  position: 44,
 );
 
 TaskEntity canYouManageMedicationAloneTask = TaskEntity(
@@ -393,7 +458,7 @@ TaskEntity canYouManageMedicationAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 39,
+  position: 45,
 );
 
 TaskEntity canYouUseTransportAloneTask = TaskEntity(
@@ -403,7 +468,7 @@ TaskEntity canYouUseTransportAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 40,
+  position: 46,
 );
 
 TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
@@ -413,7 +478,7 @@ TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 41,
+  position: 47,
 );
 
 TaskEntity feelingSadFrequentlyTask = TaskEntity(
@@ -423,7 +488,7 @@ TaskEntity feelingSadFrequentlyTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 42,
+  position: 48,
 );
 
 TaskEntity feelingTiredOrLackingEnergyTask = TaskEntity(
