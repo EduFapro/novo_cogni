@@ -28,25 +28,36 @@ class EdModuleInstanceItem extends GetView<EvaluationController> {
           color: Color(0xFFA2A0A0), borderRadius: BorderRadius.circular(20)),
       width: screenWidth * 0.5,
       height: screenHeight * 0.09,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            moduleName,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 38.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0), // Add some padding
+                child: Text(
+                  moduleName,
+                  maxLines: 1, // Ensures the text does not wrap and affect the layout
+                  overflow: TextOverflow.ellipsis, // Use ellipsis for overflowed text
+                  textAlign: TextAlign.left, // Align text to the start
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
             ),
-          ),
-          ModuleButton(
+            ModuleButton(
               onPressed: () {
                 controller.launchNextTask(moduleInstace);
               },
-              moduleStatus: moduleInstace.status),
-        ],
+              moduleStatus: moduleInstace.status,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+

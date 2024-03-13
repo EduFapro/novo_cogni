@@ -117,8 +117,8 @@ class EvaluationController extends GetxController {
     if (nextTaskInstance != null) {
       final taskEntity = await nextTaskInstance.task;
       if (taskEntity != null) {
-        navigateToTask(taskEntity, nextTaskInstance.taskInstanceID!,
-            moduleInstance.moduleInstanceID!);
+        navigateToTask(taskEntity, nextTaskInstance,
+            moduleInstance);
       }
     } else {
       markModuleAsCompleted(moduleInstance.moduleInstanceID!);
@@ -146,12 +146,12 @@ class EvaluationController extends GetxController {
   }
 
   void navigateToTask(
-      TaskEntity taskEntity, int taskInstanceId, int moduleInstanceId) {
+      TaskEntity taskEntity, TaskInstanceEntity taskInstance, ModuleInstanceEntity moduleInstance) {
     print("RouteArguments.EVALUATOR_ID: ${evaluatorId.value}");
     print("RouteArguments.TASK_NAME: ${taskEntity.title}");
     print("RouteArguments.TASK_ID: ${taskEntity.taskID}");
-    print("RouteArguments.TASK_INSTANCE_ID: ${taskInstanceId}");
-    print("RouteArguments.MODULE_INSTANCE_ID: ${moduleInstanceId}");
+    print("RouteArguments.TASK_INSTANCE: ${taskInstance}");
+    print("RouteArguments.MODULE_INSTANCE: ${moduleInstance}");
     Get.toNamed(
       AppRoutes.task,
       arguments: {
@@ -159,8 +159,8 @@ class EvaluationController extends GetxController {
         RouteArguments.PARTICIPANT: participant.value,
         RouteArguments.TASK_NAME: taskEntity.title,
         RouteArguments.TASK_ID: taskEntity.taskID,
-        RouteArguments.TASK_INSTANCE_ID: taskInstanceId,
-        RouteArguments.MODULE_INSTANCE_ID: moduleInstanceId,
+        RouteArguments.TASK_INSTANCE: taskInstance,
+        RouteArguments.MODULE_INSTANCE: moduleInstance,
       },
     );
   }

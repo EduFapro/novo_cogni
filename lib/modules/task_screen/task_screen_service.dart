@@ -54,25 +54,25 @@ class TaskScreenService {
     return result > 0;
   }
 
-  Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
-    try {
-      // Assuming 'getAllTaskInstances' returns all task instances
-      List<TaskInstanceEntity> taskInstances =
-          await taskInstanceRepository.getAllTaskInstances();
-
-      // Find the first task instance with a 'pending' status
-      for (var taskInstance in taskInstances) {
-        if (taskInstance.status == TaskStatus.pending) {
-          return taskInstance;
-        }
-      }
-
-      return null;
-    } catch (e) {
-      print("Error in getFirstPendingTaskInstance: $e");
-      return null;
-    }
-  }
+  // Future<TaskInstanceEntity?> getFirstPendingTaskInstance() async {
+  //   try {
+  //     // Assuming 'getAllTaskInstances' returns all task instances
+  //     List<TaskInstanceEntity> taskInstances =
+  //         await taskInstanceRepository.getAllTaskInstances();
+  //
+  //     // Find the first task instance with a 'pending' status
+  //     for (var taskInstance in taskInstances) {
+  //       if (taskInstance.status == TaskStatus.pending) {
+  //         return taskInstance;
+  //       }
+  //     }
+  //
+  //     return null;
+  //   } catch (e) {
+  //     print("Error in getFirstPendingTaskInstance: $e");
+  //     return null;
+  //   }
+  // }
 
   Future<List<TaskEntity>> getAllTasks() async {
     return taskRepository.getAllTasks();
