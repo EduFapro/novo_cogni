@@ -13,6 +13,31 @@ class ModuleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Custom painter to draw the button with a border
+    Widget buttonWithCustomPainter(Color backgroundColor, Color borderColor) {
+      return CustomPaint(
+        painter: _ButtonBorderPainter(borderColor: borderColor),
+        child: Container(
+          width: 120,
+          height: 40,
+          decoration: BoxDecoration(
+            color: backgroundColor, // The background color goes inside the border.
+            borderRadius: BorderRadius.circular(8.0), // The border radius.
+          ),
+          child: Center(
+            child: Text(
+              moduleStatus.description,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: moduleStatus == ModuleStatus.completed ? Colors.white : Colors.black,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     Color getBackgroundColor() {
       switch (moduleStatus) {
         case ModuleStatus.pending:
@@ -30,41 +55,42 @@ class ModuleButton extends StatelessWidget {
       switch (moduleStatus) {
         case ModuleStatus.pending:
           return Colors.blue;
-        case ModuleStatus.in_progress:
-          return Colors.orange;
-        case ModuleStatus.completed:
-          return Colors.grey;
         default:
-          return Colors.blue;
+          return Colors.black;
       }
     }
 
     return InkWell(
       onTap: onPressed,
-      child: SizedBox(
-        width: 100,
-        height: 50,
-        child: Card(
-          color: getBackgroundColor(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-            side: BorderSide(
-              color: getBorderColor(),
-              width: 2.0,
-            ),
-          ),
-          child: Center(
-            child: Text(
-              moduleStatus.description,
-              style: TextStyle(
-                color: moduleStatus == ModuleStatus.completed
-                    ? Colors.white
-                    : Colors.black,
-              ),
-            ),
-          ),
-        ),
-      ),
+      borderRadius: BorderRadius.circular(8.0),
+      child: buttonWithCustomPainter(getBackgroundColor(), getBorderColor()),
     );
+  }
+}
+
+
+class _ButtonBorderPainter extends CustomPainter {
+  final Color borderColor;
+
+  _ButtonBorderPainter({required this.borderColor});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0;
+
+    final RRect borderRect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      Radius.circular(8.0),
+    );
+
+    canvas.drawRRect(borderRect, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
