@@ -56,6 +56,7 @@ TaskEntity whatWasYourProfessionTask = TaskEntity(
   position: 5,
 );
 
+
 TaskEntity whoDoYouLiveWithTask = TaskEntity(
   taskID: whoDoYouLiveWithTaskId,
   title: whoDoYouLiveWithTitle,
@@ -105,6 +106,9 @@ TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 10,
 );
+
+
+
 
 TaskEntity payCloseAttentionTask = TaskEntity(
   taskID: payCloseAttentionTaskId,
@@ -156,6 +160,9 @@ TaskEntity whatDayOfTheMonthIsItTask = TaskEntity(
   position: 15,
 );
 
+
+
+
 TaskEntity whatDayOfTheWeekIsItTask = TaskEntity(
   taskID: whatDayOfTheWeekIsItTaskId,
   title: whatDayOfTheWeekIsItTitle,
@@ -205,6 +212,13 @@ TaskEntity formerPresidentOfBrazilTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 20,
 );
+
+
+
+
+
+
+
 
 TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningFirstTimeTaskId,
@@ -471,6 +485,7 @@ TaskEntity canYouUseTransportAloneTask = TaskEntity(
   position: 46,
 );
 
+
 TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
   taskID: feelingsInPastTwoWeeksTaskId,
   title: feelingsInPastTwoWeeksTitle,
@@ -498,7 +513,7 @@ TaskEntity feelingTiredOrLackingEnergyTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 43,
+  position: 49,
 );
 
 TaskEntity troubleSleepingTask = TaskEntity(
@@ -508,7 +523,7 @@ TaskEntity troubleSleepingTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 44,
+  position: 50,
 );
 
 TaskEntity preferringToStayHomeTask = TaskEntity(
@@ -518,7 +533,7 @@ TaskEntity preferringToStayHomeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 45,
+  position: 51,
 );
 
 TaskEntity feelingUselessOrGuiltyTask = TaskEntity(
@@ -528,7 +543,7 @@ TaskEntity feelingUselessOrGuiltyTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 46,
+  position: 52,
 );
 
 TaskEntity lostInterestInActivitiesTask = TaskEntity(
@@ -538,7 +553,7 @@ TaskEntity lostInterestInActivitiesTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 47,
+  position: 53,
 );
 
 TaskEntity hopefulAboutFutureTask = TaskEntity(
@@ -548,7 +563,7 @@ TaskEntity hopefulAboutFutureTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 48,
+  position: 54,
 );
 
 TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
@@ -558,7 +573,7 @@ TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 49,
+  position: 55
 );
 
 
@@ -569,7 +584,7 @@ TaskEntity thankingForParticipationTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 50,
+  position: 56,
 );
 
 

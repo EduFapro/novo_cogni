@@ -10,7 +10,7 @@ var whoDoYouLiveWithTaskPromptID = 6;
 var doYouExerciseFrequentlyTaskPromptID = 7;
 var doYouReadFrequentlyTaskPromptID = 8;
 var doYouPlayPuzzlesOrVideoGamesFrequentlyTaskPromptID = 9;
-var doYouHaveAnyDiseasesPromptID = 10;
+var doYouHaveAnyDiseaseTaskPromptID = 10;
 
 var payCloseAttentionTaskPromptID = 11;
 var subtracting3AndAgainTaskPromptID = 12;
