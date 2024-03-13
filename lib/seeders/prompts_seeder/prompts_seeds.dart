@@ -4,14 +4,15 @@ import '../../app/task_prompt/task_prompt_entity.dart';
 import '../../constants/assets_file_paths.dart';
 import '../tasks/task_seeds.dart';
 
-
 part "prompts_seeds_constants.dart";
+part "prompts_seeds_list.dart";
 
 final helloHowAreYouPrompt = TaskPromptEntity(
   promptID: helloHowAreYouTaskPromptID,
   taskID: helloHowAreYouTask.taskID!,
   filePath: AudioFilePaths.hello_how_are_you,
-  transcription: "Ola, tudo bem! Agora vou fazer algumas perguntas para conhecer você melhor.",
+  transcription:
+      "Ola, tudo bem! Agora vou fazer algumas perguntas para conhecer você melhor.",
 );
 
 final whatsYourNamePrompt = TaskPromptEntity(
@@ -65,19 +66,20 @@ final doYouReadFrequentlyPrompt = TaskPromptEntity(
   transcription: "Você costuma ler com frequência?",
 );
 
-
 final doYouPlayPuzzlesOrVideoGamesFrequentlyPrompt = TaskPromptEntity(
   promptID: doYouPlayPuzzlesOrVideoGamesFrequentlyTaskPromptID,
   taskID: doYouPlayPuzzlesOrVideoGamesFrequentlyTask.taskID!,
   filePath: AudioFilePaths.do_you_play_puzzles_or_video_games_frequently,
-  transcription: "Você costuma jogar palavras-cruzadas, caça-palavras ou jogos eletrônicos com frequência?",
+  transcription:
+      "Você costuma jogar palavras-cruzadas, caça-palavras ou jogos eletrônicos com frequência?",
 );
 
 final doYouHaveAnyDiseasesPrompt = TaskPromptEntity(
   promptID: doYouHaveAnyDiseaseTaskPromptID,
   taskID: doYouHaveAnyDiseasesTask.taskID!,
   filePath: AudioFilePaths.do_you_have_any_diseases,
-  transcription: "Algum médico ja disse que você tem alguma doença? Me diga quais são essas doenças:",
+  transcription:
+      "Algum médico ja disse que você tem alguma doença? Me diga quais são essas doenças:",
 );
 
 /////////////////////////////////////////////////////////////
@@ -86,14 +88,16 @@ final payCloseAttentionPrompt = TaskPromptEntity(
   promptID: payCloseAttentionTaskPromptID,
   taskID: payCloseAttentionTask.taskID!,
   filePath: AudioFilePaths.pay_close_attention,
-  transcription: "Posso ver como está sua memória? Peço que preste muita atenção e responda o melhor que conseguir!",
+  transcription:
+      "Posso ver como está sua memória? Peço que preste muita atenção e responda o melhor que conseguir!",
 );
 
 final subtracting3AndAgainPrompt = TaskPromptEntity(
   promptID: subtracting3AndAgainTaskPromptID,
   taskID: subtracting3AndAgainTask.taskID!,
   filePath: AudioFilePaths.subtracting_3_and_again,
-  transcription: "Agora vamos fazer um cálculo, 33 menos 3 é igual a 30, 30 menos 3 é igual a 27. Agora continue diminuindo 3 de 27 até chegar a 12. Pode começar!",
+  transcription:
+      "Agora vamos fazer um cálculo, 33 menos 3 é igual a 30, 30 menos 3 é igual a 27. Agora continue diminuindo 3 de 27 até chegar a 12. Pode começar!",
 );
 
 final whatYearAreWeInPrompt = TaskPromptEntity(
@@ -154,9 +158,7 @@ final formerPresidentOfBrazilPrompt = TaskPromptEntity(
   transcription: "Qual é o nome do ex-presidente do Brasil?",
 );
 
-
 /////////////////////////////////////////////////////////////
-
 
 final repeatWordsAfterListeningFirstTimePrompt = TaskPromptEntity(
   promptID: repeatWordsAfterListeningFirstTimeTaskPromptID,
@@ -183,7 +185,8 @@ final recallWordsFromListSecondTimePrompt = TaskPromptEntity(
   promptID: recallWordsFromListSecondTimeTaskPromptID,
   taskID: recallWordsFromListSecondTimeTask.taskID!,
   filePath: AudioFilePaths.recall_words_from_list_second_time,
-  transcription: "Perna, jardim, conta, mulher, apartamento, carro, jornal, chá, moto, lâmpada. Pode começar!",
+  transcription:
+      "Perna, jardim, conta, mulher, apartamento, carro, jornal, chá, moto, lâmpada. Pode começar!",
 );
 
 final repeatWordsAfterListeningThirdTimePrompt = TaskPromptEntity(
@@ -218,7 +221,8 @@ final retellWordsHeardBeforePrompt = TaskPromptEntity(
   promptID: retellWordsHeardBeforeTaskPromptID,
   taskID: retellWordsHeardBeforeTask.taskID!,
   filePath: AudioFilePaths.retell_words_heard_before,
-  transcription: "Agora você deverá falar todas as palavras que puder se lembrar da lista que você ouviu antes.",
+  transcription:
+      "Agora você deverá falar todas as palavras que puder se lembrar da lista que você ouviu antes.",
 );
 
 final payCloseAttentionToTheStoryPrompt = TaskPromptEntity(
@@ -228,42 +232,46 @@ final payCloseAttentionToTheStoryPrompt = TaskPromptEntity(
   transcription: "Agora você ouvirá uma pequena história.",
 );
 
-
 /////////////////////////////////////////////////////////////
 
 final anasCatStoryPrompt = TaskPromptEntity(
   promptID: anasCatStoryTaskPromptID,
   taskID: anasCatStoryTask.taskID!,
   filePath: AudioFilePaths.anas_cat_story,
-  transcription: "Ana estava preocupada porque seu gato Mingau tinha desaparecido.",
+  transcription:
+      "Ana estava preocupada porque seu gato Mingau tinha desaparecido.",
 );
 
 final howManyAnimalsCanYouThinkOfPrompt = TaskPromptEntity(
   promptID: howManyAnimalsCanYouThinkOfTaskPromptID,
   taskID: howManyAnimalsCanYouThinkOfTask.taskID!,
   filePath: AudioFilePaths.how_many_animals_can_you_think_of,
-  transcription: "Agora você terá um minuto para falar o maior número de nome de animais que você conhece.",
+  transcription:
+      "Agora você terá um minuto para falar o maior número de nome de animais que você conhece.",
 );
 
 final wordsStartingWithFPrompt = TaskPromptEntity(
   promptID: wordsStartingWithFTaskPromptID,
   taskID: wordsStartingWithFTask.taskID!,
   filePath: AudioFilePaths.words_starting_with_f,
-  transcription: "Agora você terá um minuto para falar o maior número de palavras que comecem com a letra F.",
+  transcription:
+      "Agora você terá um minuto para falar o maior número de palavras que comecem com a letra F.",
 );
 
 final wordsStartingWithAPrompt = TaskPromptEntity(
   promptID: wordsStartingWithATaskPromptID,
   taskID: wordsStartingWithATask.taskID!,
   filePath: AudioFilePaths.words_starting_with_a,
-  transcription: "Agora você terá um minuto para falar o maior número de palavras que comecem com a letra A.",
+  transcription:
+      "Agora você terá um minuto para falar o maior número de palavras que comecem com a letra A.",
 );
 
 final wordsStartingWithSPrompt = TaskPromptEntity(
   promptID: wordsStartingWithSTaskPromptID,
   taskID: wordsStartingWithSTask.taskID!,
   filePath: AudioFilePaths.words_starting_with_s,
-  transcription: "Agora você terá um minuto para falar o maior número de palavras que comecem com a letra S.",
+  transcription:
+      "Agora você terá um minuto para falar o maior número de palavras que comecem com a letra S.",
 );
 /////////////////////////////////////////////////////////////
 final describeWhatYouSeePrompt = TaskPromptEntity(
@@ -277,7 +285,8 @@ final retellStoryPrompt = TaskPromptEntity(
   promptID: retellStoryTaskPromptID,
   taskID: retellStoryTask.taskID!,
   filePath: AudioFilePaths.retell_story,
-  transcription: "Agora conte qualquer coisa que você puder se lembrar sobre a história que você ouviu antes.",
+  transcription:
+      "Agora conte qualquer coisa que você puder se lembrar sobre a história que você ouviu antes.",
 );
 
 final yesOrNoQuestionsPrompt = TaskPromptEntity(
@@ -307,14 +316,16 @@ final canYouUseToiletAlonePrompt = TaskPromptEntity(
   promptID: canYouUseToiletAloneTaskPromptID,
   taskID: canYouUseToiletAloneTask.taskID!,
   filePath: AudioFilePaths.can_you_use_toilet_alone,
-  transcription: "Você consegue usar o vaso sanitário sozinho, sem receber ajuda?",
+  transcription:
+      "Você consegue usar o vaso sanitário sozinho, sem receber ajuda?",
 );
 
 final canYouUsePhoneAlonePrompt = TaskPromptEntity(
   promptID: canYouUsePhoneAloneTaskPromptID,
   taskID: canYouUsePhoneAloneTask.taskID!,
   filePath: AudioFilePaths.can_you_use_phone_alone,
-  transcription: "Você consegue usar o celular ou o telefone fixo sozinho, sem receber ajuda?",
+  transcription:
+      "Você consegue usar o celular ou o telefone fixo sozinho, sem receber ajuda?",
 );
 
 final canYouShopAlonePrompt = TaskPromptEntity(
@@ -328,21 +339,24 @@ final canYouHandleMoneyAlonePrompt = TaskPromptEntity(
   promptID: canYouHandleMoneyAloneTaskPromptID,
   taskID: canYouHandleMoneyAloneTask.taskID!,
   filePath: AudioFilePaths.can_you_handle_money_alone,
-  transcription: "Você consegue administrar o seu próprio dinheiro sozinho, sem receber ajuda?",
+  transcription:
+      "Você consegue administrar o seu próprio dinheiro sozinho, sem receber ajuda?",
 );
 
 final canYouManageMedicationAlonePrompt = TaskPromptEntity(
   promptID: canYouManageMedicationAloneTaskPromptID,
   taskID: canYouManageMedicationAloneTask.taskID!,
   filePath: AudioFilePaths.can_you_manage_medication_alone,
-  transcription: "Você consegue administrar os seus medicamentos sozinho, sem receber ajuda?",
+  transcription:
+      "Você consegue administrar os seus medicamentos sozinho, sem receber ajuda?",
 );
 
 final canYouUseTransportAlonePrompt = TaskPromptEntity(
   promptID: canYouUseTransportAloneTaskPromptID,
   taskID: canYouUseTransportAloneTask.taskID!,
   filePath: AudioFilePaths.can_you_use_transport_alone,
-  transcription: "Você consegue usar transporte para se deslocar sozinho, sem receber ajuda?",
+  transcription:
+      "Você consegue usar transporte para se deslocar sozinho, sem receber ajuda?",
 );
 
 final feelingsInPastTwoWeeksPrompt = TaskPromptEntity(
@@ -370,17 +384,18 @@ final troubleSleepingPrompt = TaskPromptEntity(
   promptID: troubleSleepingTaskPromptID,
   taskID: troubleSleepingTask.taskID!,
   filePath: AudioFilePaths.trouble_sleeping,
-  transcription: "Você teve dificuldade para dormir ou dormiu mais do que o habitual?",
+  transcription:
+      "Você teve dificuldade para dormir ou dormiu mais do que o habitual?",
 );
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-
 
 final preferringToStayHomePrompt = TaskPromptEntity(
   promptID: preferringToStayHomeTaskPromptID,
   taskID: preferringToStayHomeTask.taskID!,
   filePath: AudioFilePaths.preferring_to_stay_home,
-  transcription: "Na maior parte das vezes, você preferiu ficar em casa ao invés de sair?",
+  transcription:
+      "Na maior parte das vezes, você preferiu ficar em casa ao invés de sair?",
 );
 
 final feelingUselessOrGuiltyPrompt = TaskPromptEntity(
@@ -394,7 +409,8 @@ final lostInterestInActivitiesPrompt = TaskPromptEntity(
   promptID: lostInterestInActivitiesTaskPromptID,
   taskID: lostInterestInActivitiesTask.taskID!,
   filePath: AudioFilePaths.lost_interest_in_activities,
-  transcription: "Você sentiu que perdeu o interesse ou prazer por coisas que antes você gostava?",
+  transcription:
+      "Você sentiu que perdeu o interesse ou prazer por coisas que antes você gostava?",
 );
 
 final hopefulAboutFuturePrompt = TaskPromptEntity(
@@ -418,10 +434,7 @@ final thankingForParticipationPrompt = TaskPromptEntity(
   transcription: "Obrigado pela sua participação.",
 );
 
-
-
 /////// PARA VALIDAÇÃO
-
 
 final cincoPatinhosTaskPrompt = TaskPromptEntity(
     promptID: cincoPatinhosTaskPromptID,
@@ -437,20 +450,3 @@ final nemTudoTaskPrompt = TaskPromptEntity(
     promptID: nemTudoTaskPromptID,
     taskID: nemTudoTask.taskID!,
     filePath: AudioFilePaths.nemTudoQueReluz);
-
-
-List<TaskPromptEntity> tasksPromptsList = [
-  helloHowAreYouPrompt,
-  whatsYourNamePrompt,
-  whatsYourDOBPrompt,
-  whatsYourEducationLevelPrompt,
-  whatWasYourProfessionPrompt,
-  whoDoYouLiveWithPrompt,
-  doYouExerciseFrequentlyPrompt,
-  doYouReadFrequentlyPrompt,
-  doYouPlayPuzzlesOrVideoGamesFrequentlyPrompt,
-  doYouHaveAnyDiseasesPrompt,
-  cincoPatinhosTaskPrompt,
-  umPassaroTaskPrompt,
-  nemTudoTaskPrompt,
-];

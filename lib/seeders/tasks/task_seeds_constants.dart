@@ -86,17 +86,17 @@ String recallWordsFromListThirdTimeTitle =
     "recall_words_from_list_title_third_time";
 
 int whatDidYouDoYesterdayTaskId = 27;
-String whatDidYouDoYesterdayTitle = "what_di_you_do_yesterday";
+String whatDidYouDoYesterdayTitle = "what_did_you_do_yesterday";
 
 int favoriteChildhoodGameTaskId = 28;
 String favoriteChildhoodGameTitle = "favorite_childhood_game";
 
 int retellWordsHeardBeforeTaskId = 29;
-String retellWordsHeardBeforeTitle = "retell_story_heard_before_title";
+String retellWordsHeardBeforeTitle = "retell_story_heard_before_";
 
 int payCloseAttentionToTheStoryTaskId = 30;
 String payCloseAttentionToTheStoryTitle =
-    "pay_close_attention_to_the_story_title";
+    "pay_close_attention_to_the_story_";
 
 int anasCatStoryTaskId = 31;
 String anasCatStoryTitle = "ana's_cat_story";
