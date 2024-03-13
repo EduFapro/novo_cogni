@@ -1,5 +1,5 @@
 final Map<String, String> ptBrTranslations = {
-  'hello': 'Olá',
+  'hello': 'Ola',
   'new_participant': 'Novo Participante',
   'password': 'Senha',
   'login': 'Entrar',
@@ -33,7 +33,7 @@ final Map<String, String> ptBrTranslations = {
   'cpf_nif': 'CPF/NIF',
   'evaluation': 'Avaliação',
   'list_of_activities': 'Lista de Atividades',
-  'click_on_play_to_listen_to_audio': 'Clique no play para ouvir o áudio',
+  'click_on_play_to_listen_to_audio': 'Clique no play para ouvir o audio',
   'pending_evaluation': 'Pendente',
   'in_progress_evaluation': 'Em Andamento',
   'completed_evaluation': "Concluído",

@@ -2,22 +2,39 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:novo_cogni/app/evaluation/evaluation_repository.dart';
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
+import 'package:novo_cogni/app/task_instance/task_instance_repository.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
+import 'package:novo_cogni/modules/home/home_controller.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
+import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/participant/participant_entity.dart';
 import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
+import '../../constants/enums/module_enums.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
 import '../evaluation/evaluation_controller.dart';
+import '../evaluation/evaluation_service.dart';
 import 'task_screen_service.dart';
 
 class TaskScreenController extends GetxController {
+  final EvaluationService evaluationService = Get.find();
+
   final TaskScreenService taskService;
   late final AudioPlayer _audioPlayer;
   late final AudioRecorder _recorder;
+
+  var participant = Rxn<ParticipantEntity>();
+  var evaluation = Rxn<EvaluationEntity>();
+  var evaluatorId = RxInt(0);
+  var taskName = RxString("");
+  var taskId = RxInt(0);
+  var taskInstanceId = RxInt(0);
+  var moduleInstanceId = Rxn<int>();
 
   var audioPath = ''.obs;
   var isPlaying = false.obs;
@@ -26,75 +43,103 @@ class TaskScreenController extends GetxController {
   var currentTask = Rx<TaskInstanceEntity?>(null);
   var taskMode = Rx<TaskMode>(TaskMode.record);
   var currentTaskEntity = Rx<TaskEntity?>(null);
-
-  var currentTaskIndex = 1.obs;
-  var totalTasks = 1.obs;
-  var moduleInstanceId = Rxn<int>();
-  var isModuleCompleted = false.obs;
   var countdownStarted = false.obs;
   var countdownTrigger = false.obs;
+  var currentTaskIndex = 1.obs;
+  var totalTasks = 1.obs;
+
+  var isModuleCompleted = false.obs;
+
+  var isCheckButtonEnabled = false.obs;
+
+
   var recordingRepository = Get.find<RecordingRepository>();
+  var evaluationRepository = Get.find<EvaluationRepository>();
+  var taskInstanceRepository = Get.find<TaskInstanceRepository>();
 
   DateTime? _audioStopTime;
   DateTime? _buttonClickTime;
 
   TaskScreenController({required this.taskService});
 
+  Future<void> refreshProgress() async {
+    final taskInstances = await taskInstanceRepository
+        .getTaskInstancesByModuleInstanceId(moduleInstanceId.value!);
+    final completedTasksCount = taskInstances
+        .where((taskInst) => taskInst.status == TaskStatus.done)
+        .length;
+    currentTaskIndex.value = completedTasksCount + 1;
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
-
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
 
-    final args = Get.arguments as Map<String, dynamic>;
-    moduleInstanceId.value = args[RouteArguments.MODULE_INSTANCE_ID];
+    final arguments = Get.arguments as Map<String, dynamic>?;
 
-    if (moduleInstanceId.value != null) {
-      // Calculate total tasks for the module instance.
-      await _calculateTotalTasks(moduleInstanceId.value!);
-    } else {
-      // Fallback or error handling if moduleInstanceId is not provided.
-      print("Module instance ID not found in arguments.");
+
+    if (arguments != null) {
+      participant.value = arguments[RouteArguments.PARTICIPANT];
+      evaluation.value = arguments[RouteArguments.EVALUATION];
+      evaluatorId.value = arguments[RouteArguments.EVALUATOR_ID];
+
+      taskName.value = arguments[RouteArguments.TASK_NAME];
+      taskId.value = arguments[RouteArguments.TASK_ID];
+      taskInstanceId.value = arguments[RouteArguments.TASK_INSTANCE_ID];
+
+      moduleInstanceId.value = arguments[RouteArguments.MODULE_INSTANCE_ID];
+      if (moduleInstanceId.value != null) {
+        // Calculate total tasks for the module instance.
+        await _calculateTotalTasks(moduleInstanceId.value!);
+      } else {
+        // Fallback or error handling if moduleInstanceId is not provided.
+        print("Module instance ID not found in arguments.");
+      }
     }
-
     // Update the current task based on the task instance ID passed in the arguments.
-    if (args[RouteArguments.TASK_INSTANCE_ID] != null) {
-      await updateCurrentTask(args[RouteArguments.TASK_INSTANCE_ID]);
+    if (taskInstanceId.value != null) {
+      await updateCurrentTask(taskInstanceId.value);
     } else {
+      // Fallback or error handling if task instance ID is not provided.
       print("Task instance ID not found in arguments.");
     }
 
-    _audioPlayer.onPlayerComplete.listen((event) {
+    _audioPlayer.onPlayerComplete.listen((event) async {
       isPlaying.value = false;
       audioPlayed.value = true;
       _audioStopTime = DateTime.now();
+      isCheckButtonEnabled.value = true;
+      await Future.delayed(Duration(seconds: 1));
+
+      countdownTrigger.value = true;
     });
 
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
     });
 
-    _audioPlayer.onPlayerComplete.listen((event) async {
-      await Future.delayed(Duration(seconds: 1));
-      countdownTrigger.value = true;
-    });
+    refreshProgress();
   }
-
-  // Function to calculate progress
-  double get progress =>
-      totalTasks.value > 0 ? currentTaskIndex.value / totalTasks.value : 0.0;
 
   // Function to proceed to the next task
   void nextTask() {
     if (currentTaskIndex.value < totalTasks.value - 1) {
       currentTaskIndex.value++;
+      // Load the next task or handle it accordingly
     }
   }
 
-  // Function to reset the task progress
-  void resetProgress() {
-    currentTaskIndex.value = 0;
+  void startCountdown() {
+    countdownStarted.value = true;
+
+    // Simulate countdown using Future.delayed
+    Future.delayed(Duration(seconds: 5), () {
+      // Countdown completed
+      isCheckButtonEnabled.value =
+      true; // Enable the check button after countdown
+    });
   }
 
   Future<void> updateCurrentTask(int taskInstanceId) async {
@@ -110,6 +155,12 @@ class TaskScreenController extends GetxController {
         } else {
           taskMode.value = TaskMode.play;
         }
+        isCheckButtonEnabled.value = false;
+
+
+        countdownStarted.value = false;
+        countdownTrigger.value = false;
+        audioPlayed.value = false;
 
         var taskPrompt = await taskService
             .getTaskPromptByTaskInstanceID(taskInstance.taskID);
@@ -179,7 +230,7 @@ class TaskScreenController extends GetxController {
         taskInstanceId: currentTask.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
           final recordingId =
-              await recordingRepository.createRecording(recording);
+          await recordingRepository.createRecording(recording);
           print(
               'Recording saved with ID: $recordingId at path: $recording.filePath');
         },
@@ -216,49 +267,66 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  Future<String> _getRecordingPath() async {
-    // Define the custom directory within the Documents folder
-    final String dirPath = await getApplicationDocumentsPath();
-    final mySubDir = Directory('$dirPath/Cognivoice');
 
-    // Ensure the 'Cognivoice' directory exists
+  Future<String> _getRecordingPath() async {
+    // Obtain the directory path for the application's documents directory.
+    final String dirPath = await getApplicationDocumentsPath();
+
+    // Create a Directory object using the documents directory path and appending the 'Cognivoice' subdirectory.
+    final Directory mySubDir = Directory(path.join(dirPath, 'Cognivoice'));
+
+    // Check if the 'Cognivoice' directory exists, and if not, create it recursively.
     if (!await mySubDir.exists()) {
       await mySubDir.create(recursive: true);
     }
 
-    // Define a custom file name, for example using a timestamp
-    final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final fileName = 'recording_$timestamp.aac'; // Or set your custom file name
+    // Generate a timestamp string based on the current date and time for use in the file name.
+    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // Combine the directory path and the file name to create a full file path
-    final filePath = path.join(mySubDir.path, fileName);
+    // Construct a file name using the evaluator and participant ID, along with the timestamp, to ensure uniqueness.
+    final String fileName = 'recording_$timestamp.aac';
 
+    // Use the path package's join method to concatenate the directory path and file name,
+    // ensuring the correct path separators are used for the platform.
+    final String filePath = path.join(mySubDir.path, fileName);
+
+    // Return the full file path where the recording will be saved.
     return filePath;
   }
 
   Future<void> onCheckButtonPressed() async {
+    // Ensure there is a current task to conclude
     if (currentTask.value != null) {
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
-      // Check if there are more tasks to fetch
       if (currentTaskIndex.value < totalTasks.value) {
-        currentTaskIndex.value++;
+        currentTaskIndex.value++; // Move to the next task
+
+        // Attempt to fetch the next pending task instance
         var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
         if (nextTaskInstance != null) {
+          // If there's a next task, update current task to this new task
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
         } else {
+          // If there are no more tasks, mark the module as completed
           isModuleCompleted.value = true;
+          await setModuleInstanceAsCompleted(moduleInstanceId.value!);
         }
       } else {
+        // If we've reached or passed the last task, mark the module as completed
         isModuleCompleted.value = true;
+        await setModuleInstanceAsCompleted(moduleInstanceId.value!);
       }
+    } else {
+      // If for some reason there's no current task, log an error or handle it
+      print("Error: No current task found.");
     }
   }
 
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
       TaskInstanceEntity? taskInstance =
-          await taskService.getTaskInstance(taskInstanceId);
+      await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
         taskInstance.status = TaskStatus.done;
         if (_audioStopTime != null) {
@@ -328,6 +396,15 @@ class TaskScreenController extends GetxController {
     }
   }
 
+  // void startCountdown() {
+  //   countdownStarted.value = true;
+  //   update();
+  // }
+
+  void resetProgress() {
+    currentTaskIndex.value = 0;
+  }
+
   @override
   void onClose() {
     _audioPlayer.dispose();
@@ -337,15 +414,81 @@ class TaskScreenController extends GetxController {
 
   Future<void> _calculateTotalTasks(int moduleInstanceId) async {
     final taskInstances =
-        await taskService.getTasksByModuleInstanceId(moduleInstanceId);
+    await taskService.getTasksByModuleInstanceId(moduleInstanceId);
     totalTasks.value = taskInstances.length;
   }
 
-  void startCountdown() {
-    // Logic to start the countdown timer
-    // Ensure to set 'countdownStarted' to true to prevent multiple initiations
-    countdownStarted.value = true;
-    // Example: Trigger a countdown timer in the UI
-    update(); // Notify listeners to update the UI if needed
+
+  // Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+  //   await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
+  //   var evaluationID =
+  //   Get
+  //       .find<EvaluationController>()
+  //       .evaluation
+  //       .value!
+  //       .evaluationID!;
+  //   bool allModulesCompleted =
+  //   await evaluationService.areAllModulesCompleted(evaluationID);
+  //   if (allModulesCompleted) {
+  //     print("All modules completed. Evaluation can be marked as completed.");
+  //     evaluationRepository.setEvaluationAsCompleted(evaluationID);
+  //     Get.find<HomeController>().refreshEvaluations();
+  //     Get.find<HomeController>().refreshEvaluationCounts();
+  //   }
+  // }
+
+
+Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
+  await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
+  var evaluationID =
+  Get
+      .find<EvaluationController>()
+      .evaluation
+      .value!
+      .evaluationID!;
+  bool allModulesCompleted =
+  await evaluationService.areAllModulesCompleted(evaluationID);
+  if (allModulesCompleted) {
+    print("All modules completed. Evaluation can be marked as completed.");
+    evaluationRepository.setEvaluationAsCompleted(evaluationID);
+    Get.find<HomeController>().refreshEvaluations();
+    Get.find<HomeController>().refreshEvaluationCounts();
+    Get.find<EvaluationController>().refreshModuleCompletionStatus(
+        moduleInstanceId, ModuleStatus.completed);
   }
+}
+
+
+
+Future<void> launchNextTaskWithoutCompletingCurrent() async {
+  if (currentTaskIndex.value < totalTasks.value) {
+    currentTaskIndex.value++;
+
+    // Fetch the next task instance
+    var nextTaskInstance = await taskService.getFirstPendingTaskInstance();
+    if (nextTaskInstance != null) {
+      await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+    } else {
+      Get.back();
+    }
+  } else {
+    Get.back();
+  }
+}
+
+void manageButtonStates(
+    {required bool isAudioPlaying, required bool isAudioCompleted}) {
+  if (isAudioPlaying) {
+    // Disable the check button while audio is playing
+    isCheckButtonEnabled.value = false;
+  }
+
+  if (isAudioCompleted) {
+    // When the audio has finished playing, start the countdown
+    // The countdown itself will enable the check button upon completion
+    startCountdown();
+  }
+}
+
+
 }

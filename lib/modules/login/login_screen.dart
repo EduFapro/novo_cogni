@@ -58,7 +58,6 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                           onSaved: (value) => password = value ?? '',
                         ),
                         const SizedBox(height: 20.0),
-                        const SizedBox(height: 20.0),
 
                         // Display login error
                         Obx(() {
@@ -96,8 +95,8 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                                     arguments: {
                                       RouteArguments.FIRST_LOGIN: controller
                                           .currentEvaluatorFirstLogin.value,
-                                      RouteArguments.EVALUATOR_ID:
-                                          controller.currentEvaluatorId.value,
+                                      RouteArguments.EVALUATOR_ID: controller
+                                          .currentEvaluator.value!.evaluatorID!,
                                     },
                                   );
                                 }

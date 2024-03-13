@@ -1,9 +1,7 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/file_management/file_encryptor.dart';
-import 'package:novo_cogni/global/user_controller.dart';
 import 'package:novo_cogni/global/user_service.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import '../app/participant/participant_local_datasource.dart';
 import '../app/recording_file/recording_file_datasource.dart';
 import '../app/task_instance/task_instance_local_datasource.dart';
@@ -96,7 +94,6 @@ class GlobalBinding extends Bindings {
     // Core Services
     // User-related Services
     Get.put<UserService>(UserService(), permanent: true);
-    Get.put<UserController>(UserController(), permanent: true);
     Get.put(LanguageController());
     Get.put(EvaluationService(
         moduleRepository: Get.find(),

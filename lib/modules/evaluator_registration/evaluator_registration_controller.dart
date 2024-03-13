@@ -89,9 +89,9 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
       sex: selectedSex.value!,
       specialty: specialtyController.text,
       cpfOrNif: cpfOrNifController.text,
-      username: usernameController.text,
-      password: '0000',
+      username: username.value,
       firstLogin: true,
+      password: cpfOrNifController.text,
     );
 
     try {

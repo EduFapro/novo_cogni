@@ -147,8 +147,10 @@ class EdEvaluationHistory extends GetView<HomeController> {
               itemBuilder: (context, index) {
                 final evaluation = homeController.filteredEvaluations[index];
                 final dateFormat = DateFormat.yMd();
-                final participant =
-                    homeController.participantDetails[evaluation.evaluationID];
+                final participant = controller.participants.firstWhere(
+                  (element) =>
+                      element.participantID! == (evaluation.participantID),
+                );
 
                 return Card(
                   child: Padding(
@@ -176,6 +178,7 @@ class EdEvaluationHistory extends GetView<HomeController> {
                             Get.toNamed(
                               AppRoutes.evaluation,
                               arguments: {
+                                RouteArguments.EVALUATOR_ID: controller.user.value!.evaluatorID,
                                 RouteArguments.PARTICIPANT: participant,
                                 RouteArguments.EVALUATION: evaluation,
                               },
@@ -258,17 +261,18 @@ class StatusSwitchFilter extends GetView<HomeController> {
                   items: EvaluationStatus.values
                       .map<DropdownMenuItem<EvaluationStatus>>(
                           (EvaluationStatus status) {
-                        return DropdownMenuItem<EvaluationStatus>(
-                          value: status,
-                          child: Text(status.description,
-                              style: TextStyle(color: Colors.white)),
-                        );
-                      }).toList(),
+                    return DropdownMenuItem<EvaluationStatus>(
+                      value: status,
+                      child: Text(status.description,
+                          style: TextStyle(color: Colors.white)),
+                    );
+                  }).toList(),
                   hint: controller.selectedStatus.value == null
                       ? Text(
-                    "Select",
-                    style: TextStyle(color: Colors.white.withOpacity(0.7)),
-                  )
+                          "Select",
+                          style:
+                              TextStyle(color: Colors.white.withOpacity(0.7)),
+                        )
                       : null,
                 ),
               ),
@@ -287,5 +291,3 @@ class StatusSwitchFilter extends GetView<HomeController> {
     });
   }
 }
-
-

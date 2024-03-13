@@ -2,12 +2,13 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/task_screen/task_deadline_banner.dart';
+
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
+import 'package:novo_cogni/modules/task_screen/widgets/countdown_timer.dart';
+import 'package:novo_cogni/modules/task_screen/widgets/task_deadline_banner.dart';
 
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
-import 'countdown_timer.dart';
 
 class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
@@ -18,9 +19,6 @@ class TaskScreen extends GetView<TaskScreenController> {
       appBar: AppBar(),
       body: Column(
         children: [
-          // Top Row for the banner
-
-          // Content
           Expanded(
             child: Obx(() {
               if (controller.isModuleCompleted.isTrue) {
@@ -33,12 +31,13 @@ class TaskScreen extends GetView<TaskScreenController> {
                       current: controller.currentTaskIndex.value,
                       total: controller.totalTasks.value,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                    ),
                     Text(
                       "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
                       style: TextStyle(fontSize: 18),
                     ),
-
                     Center(child: buildInterfaceBasedOnMode(context, mode)),
                   ],
                 );
@@ -47,6 +46,12 @@ class TaskScreen extends GetView<TaskScreenController> {
               }
             }),
           ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.4,
+                child: buildAccordion(context)),
+          )
         ],
       ),
     );
@@ -76,21 +81,21 @@ class TaskScreen extends GetView<TaskScreenController> {
   Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
     return SizedBox(
- width: 880,
+      width: 880,
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: TaskDeadlineBanner(
-              deadlineText:
-              "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
-            ),
-          ),
-          CountdownTimer(
-            countdownTrigger: controller.countdownTrigger,
-            initialDurationInSeconds: 4,
-            onTimerComplete: _onTimeCompleted,
-          ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: TaskDeadlineBanner(
+          //     deadlineText:
+          //         "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
+          //   ),
+          // ),
+          // CountdownTimer(
+          //   countdownTrigger: controller.countdownTrigger,
+          //   initialDurationInSeconds: 4,
+          //   onTimerComplete: _onTimeCompleted,
+          // ),
           Card(
             color: Color(0xFFD7D7D7),
             elevation: 0,
@@ -154,17 +159,15 @@ class TaskScreen extends GetView<TaskScreenController> {
                     ),
                     EdSkipButton(
                       text: 'Skip',
-                      onPressed: () {
-                        // Handle the skip button press
-                      },
                     ),
                     EdCheckIconButton(
                       iconData: Icons.check,
                       onPressed: () {
                         controller.onCheckButtonPressed();
                       },
-                      isActive: controller.audioPlayed.value,
-                    ),
+                      isActive: controller
+                          .isCheckButtonEnabled, // Pass the RxBool directly
+                    )
                   ],
                 ),
               )
@@ -175,66 +178,90 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildAudioRecorderInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
+    final recorderInterfaceHeight = windowSize.height * 0.40;
     final TaskScreenController controller = Get.find<TaskScreenController>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 400.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 20), // Add some spacing if needed
-          Obx(() {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Close button
-                EdCheckIconButton(
-                  iconData: Icons.close,
-                  onPressed: () {
-                    // Stop the recording
-                    controller.stopRecording();
-                  },
-                  isActive: controller.isRecording.value,
-                ),
-                IconButton(
-                  icon: Icon(
-                    controller.isRecording.value ? Icons.stop : Icons.mic,
-                    size: 115.0,
-                    color:
-                        controller.isRecording.value ? Colors.red : Colors.blue,
-                  ),
-                  onPressed: () async {
-                    if (controller.isRecording.value) {
-                      await controller.stopRecording();
-                    } else {
-                      await controller.startRecording();
-                    }
-                  },
-                ),
-                // Check button (active when not recording)
-                EdCheckIconButton(
-                  iconData: Icons.check,
-                  onPressed: () {
-                    controller.onCheckButtonPressed();
-                  },
-                  isActive: !controller.isRecording.value,
-                ),
-              ],
-            );
-          }),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: SizedBox(
-              width: 300,
-              child: MusicVisualizer(
-                isPlaying: controller.isRecording.value,
-                barCount: 30,
-                barWidth: 2,
-                activeColor: Colors.red,
+      child: Container(
+        height: recorderInterfaceHeight,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(height: 20,),
+            Flexible(
+              flex: 5,
+              child: Container(
+                child: Obx(() {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      EdCheckIconButton(
+                        iconData: Icons.close,
+                        onPressed: () {
+                          controller.stopRecording();
+                        },
+                        isActive: true.obs,
+                      ),
+                      // This Container wraps the middle button and gives it a bigger size
+                      Container(
+                        decoration: BoxDecoration(
+
+                            color: controller.isRecording.value
+                                ? Colors.redAccent.shade100
+                                : Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(50)),
+                        width: 100,
+                        height: 100,
+                        child: IconButton(
+                          icon: Icon(
+                            controller.isRecording.value
+                                ? Icons.stop
+                                : Icons.mic,
+                            size:
+                                80, // Adjust the size of the icon if necessary
+                          ),
+                          color: controller.isRecording.value
+                              ? Colors.red
+                              : Colors.blue,
+                          onPressed: () async {
+                            if (controller.isRecording.value) {
+                              await controller.stopRecording();
+                            } else {
+                              await controller.startRecording();
+                            }
+                          },
+                        ),
+                      ),
+                      EdCheckIconButton(
+                        iconData: Icons.check,
+                        onPressed: () {
+                          controller.onCheckButtonPressed();
+                        },
+                        isActive: controller.isCheckButtonEnabled,
+                      ),
+                    ],
+                  );
+                }),
               ),
             ),
-          )
-        ],
+            Flexible(
+              flex: 6,
+              child: Container(
+                width: 300,
+                child: SizedBox(
+                  height: 200,
+                  child: MusicVisualizer(
+                    isPlaying: controller.isRecording.value,
+                    barCount: 30,
+                    barWidth: 2,
+                    activeColor: Colors.red,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -276,12 +303,41 @@ class TaskScreen extends GetView<TaskScreenController> {
       barrierDismissible: false, // Disables popup to close by tapping outside
     );
   }
+
+  Widget buildAccordion(BuildContext context) {
+    var controller = Get.find<TaskScreenController>();
+    return ExpansionTile(
+      shape: Border(),
+      initiallyExpanded: false,
+      // Set to true if you want the accordion to be expanded initially
+      title:
+          Text("Task Details", style: TextStyle(fontWeight: FontWeight.bold)),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Evaluator: ${'controller.evaluatorName'}",
+                  style: TextStyle(fontSize: 16)),
+              SizedBox(height: 8),
+              Text("Participant: ${'controller.participantName'}",
+                  style: TextStyle(fontSize: 16)),
+              SizedBox(height: 8),
+              Text("Module: ${'controller.moduleName'}",
+                  style: TextStyle(fontSize: 16)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class EdCheckIconButton extends StatelessWidget {
   final IconData iconData;
   final VoidCallback onPressed;
-  final bool isActive;
+  final RxBool isActive;
 
   EdCheckIconButton({
     Key? key,
@@ -292,37 +348,40 @@ class EdCheckIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color borderColor = isActive ? Colors.black : Colors.grey;
-    Color iconColor = iconData == Icons.check ? Colors.green : Colors.red;
+    // Use Obx here to listen to changes in isActive
+    return Obx(() {
+      Color borderColor = isActive.value ? Colors.black : Colors.grey;
+      Color iconColor = iconData == Icons.check ? Colors.green : Colors.red;
 
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: borderColor, width: 2.0),
-      ),
-      child: IconButton(
-        icon: Icon(iconData),
-        color: iconColor,
-        onPressed: isActive ? onPressed : null,
-      ),
-    );
+      return Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: borderColor, width: 2.0),
+        ),
+        child: IconButton(
+          icon: Icon(iconData),
+          color: iconColor,
+          onPressed: isActive.value ? onPressed : null,
+        ),
+      );
+    });
   }
 }
 
 class EdSkipButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
 
-  EdSkipButton({Key? key, required this.text, required this.onPressed})
-      : super(key: key);
+  EdSkipButton({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller =
-        Get.find<TaskScreenController>(); // Ensure the controller is accessible
+    final controller = Get.find<TaskScreenController>();
 
     return Obx(() => ElevatedButton(
-          onPressed: controller.isPlaying.value ? null : onPressed,
+          onPressed: controller.launchNextTaskWithoutCompletingCurrent,
           child: Text(text),
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.black,

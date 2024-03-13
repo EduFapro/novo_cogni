@@ -11,7 +11,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
   @override
   Widget build(BuildContext context) {
     final loginController = Get.find<LoginController>();
-    int? evaluatorId = loginController.currentEvaluatorId.value;
+    var evaluator = loginController.currentEvaluator.value!;
     double screenWidth = MediaQuery.of(context).size.width;
     double formWidth = screenWidth * 0.8;
     const double spacingWidth = 16.0;
@@ -248,7 +248,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                       // Call the method to handle participant and modules creation
                       bool success =
                           await controller.createParticipantAndModules(
-                              evaluatorId, selectedModules);
+                              evaluator.evaluatorID!, selectedModules);
 
                       if (success) {
                         var homeCtrller = Get.find<HomeController>();

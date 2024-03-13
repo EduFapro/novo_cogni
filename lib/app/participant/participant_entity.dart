@@ -45,4 +45,9 @@ class ParticipantEntity {
       PARTICIPANT_HANDEDNESS: handedness.numericValue,
     };
   }
+
+  @override
+  String toString() {
+    return 'ParticipantEntity{participantID: $participantID, name: $name, surname: $surname, sex: $sex}';
+  }
 }

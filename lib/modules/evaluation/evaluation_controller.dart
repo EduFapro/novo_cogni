@@ -18,6 +18,7 @@ class EvaluationController extends GetxController {
 
   var participant = Rxn<ParticipantEntity>();
   var evaluation = Rxn<EvaluationEntity>();
+  var evaluatorId = RxInt(0);
   var modulesInstanceList = Rx<List<ModuleInstanceEntity>?>(null);
   var tasksListDetails = Rx<List<Map<int, List<TaskInstanceEntity>>>>([]);
 
@@ -49,6 +50,8 @@ class EvaluationController extends GetxController {
     if (arguments != null) {
       participant.value = arguments[RouteArguments.PARTICIPANT];
       evaluation.value = arguments[RouteArguments.EVALUATION];
+      evaluatorId.value = arguments[RouteArguments.EVALUATOR_ID];
+
 
       if (evaluation.value != null) {
         List<ModuleInstanceEntity>? modules = await evaluationService
@@ -144,9 +147,16 @@ class EvaluationController extends GetxController {
 
   void navigateToTask(
       TaskEntity taskEntity, int taskInstanceId, int moduleInstanceId) {
+    print("RouteArguments.EVALUATOR_ID: ${evaluatorId.value}");
+    print("RouteArguments.TASK_NAME: ${taskEntity.title}");
+    print("RouteArguments.TASK_ID: ${taskEntity.taskID}");
+    print("RouteArguments.TASK_INSTANCE_ID: ${taskInstanceId}");
+    print("RouteArguments.MODULE_INSTANCE_ID: ${moduleInstanceId}");
     Get.toNamed(
       AppRoutes.task,
       arguments: {
+        RouteArguments.EVALUATOR_ID: evaluatorId.value,
+        RouteArguments.PARTICIPANT: participant.value,
         RouteArguments.TASK_NAME: taskEntity.title,
         RouteArguments.TASK_ID: taskEntity.taskID,
         RouteArguments.TASK_INSTANCE_ID: taskInstanceId,
@@ -194,6 +204,25 @@ class EvaluationController extends GetxController {
     });
     update(); // Trigger UI update
   }
+
+
+  void refreshModuleCompletionStatus(int moduleInstanceId, ModuleStatus newStatus) {
+
+    final moduleIndex = modulesInstanceList.value?.indexWhere(
+          (module) => module.moduleInstanceID == moduleInstanceId,
+    );
+
+    if (moduleIndex != null && moduleIndex >= 0) {
+      modulesInstanceList.value![moduleIndex].status = newStatus;
+      moduleCompletionStatus[moduleInstanceId] = (newStatus == ModuleStatus.completed);
+    }
+
+
+    update();
+
+
+  }
+
   //
   // void checkAndFinalizeEvaluation() {
   //   print("HOIHOHO");

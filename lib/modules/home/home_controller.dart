@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:novo_cogni/constants/enums/language_enums.dart';
-import 'package:novo_cogni/constants/enums/module_enums.dart';
 import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
 import 'package:novo_cogni/app/module_instance/module_instance_entity.dart';
 import 'package:novo_cogni/app/module_instance/module_instance_repository.dart';
@@ -14,15 +13,17 @@ import 'package:novo_cogni/app/task_instance/task_instance_entity.dart';
 import 'package:novo_cogni/app/task_instance/task_instance_repository.dart';
 import 'package:novo_cogni/file_management/evaluation_download.dart';
 import 'package:novo_cogni/file_management/file_encryptor.dart';
-import 'package:novo_cogni/global/user_controller.dart';
+
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
+import '../../global/user_service.dart';
 import '../eval_data/eval_data_service.dart';
 
 class HomeController extends GetxController {
-  final UserController userController = Get.find<UserController>();
+  final UserService userService = Get.find<UserService>();
   final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
   var isLoading = false.obs;
   var user = Rxn<EvaluatorEntity>();
+
   var evaluations = RxList<EvaluationEntity>();
   var participants = RxList<ParticipantEntity>();
   var participantDetails = RxMap<int, ParticipantEntity>();
@@ -46,21 +47,22 @@ class HomeController extends GetxController {
     print("HomeController initialized");
     setupListeners();
     fetchData().then((_) {
-      // Initialize filteredEvaluations with all evaluations after fetching them
+
       filteredEvaluations.assignAll(evaluations);
     });
     numEvaluationsTotal.value = evaluations.length;
 
     ever(selectedStatus, (_) => filterEvaluationsByStatus());
-    ever(evaluations, (_) => {
-      // Ensure filteredEvaluations is updated whenever evaluations list changes
-      filterEvaluationsByStatus()
-    });
+    ever(
+        evaluations,
+        (_) => {
+              // Ensure filteredEvaluations is updated whenever evaluations list changes
+              filterEvaluationsByStatus()
+            });
     searchController.addListener(() {
       performSearch(searchController.text);
     });
   }
-
 
   @override
   void onReady() {
@@ -78,25 +80,20 @@ class HomeController extends GetxController {
   }
 
   void setupListeners() {
-    ever(userController.user, (EvaluatorEntity? newUser) {
+    ever(userService.user, (EvaluatorEntity? newUser) {
       user.value = newUser;
       update();
     });
 
-    ever(userController.evaluations, (List<EvaluationEntity> newEvaluations) {
+    ever(userService.evaluations, (List<EvaluationEntity> newEvaluations) {
       evaluations.assignAll(newEvaluations);
       numEvaluationsTotal.value = newEvaluations.length;
       refreshEvaluationCounts();
       update();
     });
 
-    ever(userController.participants, (List<ParticipantEntity> newParticipants) {
+    ever(userService.participants, (List<ParticipantEntity> newParticipants) {
       participants.assignAll(newParticipants);
-      update();
-    });
-
-    ever(userController.participantDetails, (Map<int, ParticipantEntity> newDetails) {
-      participantDetails.assignAll(newDetails);
       update();
     });
 
@@ -107,18 +104,22 @@ class HomeController extends GetxController {
 
   Future<void> fetchData() async {
     isLoading.value = true;
-    await userController.fetchUserData();
-    user.value = userController.user.value;
+
+    user.value = userService.user.value;
+
     isLoading.value = false;
     update();
   }
 
   void updateLoadingState() {
-    isLoading.value = !(user.value != null && evaluations.isNotEmpty && participants.isNotEmpty);
+    isLoading.value = !(user.value != null &&
+        evaluations.isNotEmpty &&
+        participants.isNotEmpty);
     update();
   }
 
-  void addNewParticipant(ParticipantEntity newParticipant, Map<String, int> newParticipantMap, Language language) {
+  void addNewParticipant(ParticipantEntity newParticipant,
+      Map<String, int> newParticipantMap, Language language) {
     var newParticipantID = newParticipantMap["participantId"];
     var newEvaluationID = newParticipantMap["evaluationId"];
     var evaluatorID = user.value!.evaluatorID;
@@ -137,15 +138,20 @@ class HomeController extends GetxController {
   }
 
   Future<void> refreshData() async {
-    await fetchData();
+    isLoading.value = true;
+
+    var updatedParticipants = await userService.fetchUpdatedParticipants();
+    participants.assignAll(updatedParticipants);
+
+    isLoading.value = false;
+    update(); // Notify listeners to rebuild the UI
   }
 
-
-  Future<void> handleDownload(int evaluationId, String evaluatorId,
-      String participantId) async {
+  Future<void> handleDownload(
+      int evaluationId, String evaluatorId, String participantId) async {
     // 1. Fetch all task instances related to the evaluation
     List<TaskInstanceEntity> taskInstances =
-    await fetchTaskInstancesForEvaluation(evaluationId);
+        await fetchTaskInstancesForEvaluation(evaluationId);
 
     // 2. Fetch all recordings for these task instances
     List<RecordingFileEntity> recordings = [];
@@ -157,16 +163,16 @@ class HomeController extends GetxController {
 
     // 3. Create the folder in the downloads directory
     String downloadFolderPath =
-    await createDownloadFolder(evaluatorId, participantId);
+        await createDownloadFolder(evaluatorId, participantId);
 
     // 4. Copy the audio files to the new folder
     // Decrypt files and rename them back to .aac
     for (var recording in recordings) {
       String encryptedFilePath = recording.filePath;
-      String fileNameWithoutExtension = path.basenameWithoutExtension(
-          encryptedFilePath);
-      String decryptedFilePath = path.join(
-          downloadFolderPath, "$fileNameWithoutExtension");
+      String fileNameWithoutExtension =
+          path.basenameWithoutExtension(encryptedFilePath);
+      String decryptedFilePath =
+          path.join(downloadFolderPath, "$fileNameWithoutExtension");
 
       // Decrypt the file back to its original form
       await fileEncryptor.decryptFile(encryptedFilePath, decryptedFilePath);
@@ -204,8 +210,9 @@ class HomeController extends GetxController {
   void filterEvaluationsByStatus() {
     if (selectedStatus.value != null) {
       filteredEvaluations.assignAll(
-        evaluations.where((evaluation) =>
-        evaluation.status == selectedStatus.value).toList(),
+        evaluations
+            .where((evaluation) => evaluation.status == selectedStatus.value)
+            .toList(),
       );
     } else {
       filteredEvaluations.assignAll(evaluations);
@@ -227,7 +234,10 @@ class HomeController extends GetxController {
       filteredEvaluations.assignAll(
         evaluations.where((evaluation) {
           final participant = participantDetails[evaluation.participantID];
-          return participant?.name.toLowerCase().contains(query.toLowerCase()) ?? false;
+          return participant?.name
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ??
+              false;
         }).toList(),
       );
     }
@@ -235,7 +245,8 @@ class HomeController extends GetxController {
   }
 
   void setEvaluationInProgress(int evaluationId) {
-    var index = evaluations.indexWhere((eval) => eval.evaluationID == evaluationId);
+    var index =
+        evaluations.indexWhere((eval) => eval.evaluationID == evaluationId);
     if (index != -1) {
       var evaluation = evaluations[index];
       evaluation.status = EvaluationStatus.in_progress;
@@ -245,8 +256,11 @@ class HomeController extends GetxController {
   }
 
   void refreshEvaluationCounts() {
-    int inProgressCount = evaluations.where((e) => e.status == EvaluationStatus.in_progress).length;
-    int finishedCount = evaluations.where((e) => e.status == EvaluationStatus.completed).length;
+    int inProgressCount = evaluations
+        .where((e) => e.status == EvaluationStatus.in_progress)
+        .length;
+    int finishedCount =
+        evaluations.where((e) => e.status == EvaluationStatus.completed).length;
 
     numEvaluationsInProgress.value = inProgressCount;
     numEvaluationsFinished.value = finishedCount;
@@ -254,10 +268,12 @@ class HomeController extends GetxController {
 
   void refreshEvaluations() async {
     isLoading.value = true;
-    await userController.fetchUserData();
-    refreshEvaluationCounts();
+
+    if (user.value != null) {
+      await userService.fetchUserData(user.value!.evaluatorID);
+      refreshEvaluationCounts();
+    }
     isLoading.value = false;
     update();
   }
-
 }
