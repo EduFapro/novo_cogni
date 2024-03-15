@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:novo_cogni/app/evaluation/evaluation_repository.dart';
@@ -130,7 +131,10 @@ class TaskScreenController extends GetxController {
       // Load the next task or handle it accordingly
     }
   }
-
+  Future<Uint8List> loadAudioAsset(String path) async {
+    final ByteData data = await rootBundle.load(path);
+    return data.buffer.asUint8List();
+  }
   void startCountdown() {
     countdownStarted.value = true;
 
@@ -181,9 +185,17 @@ class TaskScreenController extends GetxController {
   }
 
   Future<void> play() async {
-    Source source = DeviceFileSource(audioPath.value);
-    await _audioPlayer.play(source);
-    isPlaying.value = true;
+    try {
+      final Uint8List audioBytes = await loadAudioAsset(audioPath.value);
+      // Create a BytesSource from the Uint8List
+      final BytesSource bytesSource = BytesSource(audioBytes);
+      await _audioPlayer.play(bytesSource);
+      isPlaying.value = true;
+      print("Tocou bytes");
+    } catch (e) {
+      print('Error playing audio: $e');
+      // Handle the error, such as by showing a user-friendly message
+    }
   }
 
   Future<void> stop() async {

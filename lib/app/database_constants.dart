@@ -1,4 +1,4 @@
-const DATABASE_NAME = "cognivoice_db";
+const DATABASE_NAME = "cognivoice_db.db";
 const DATABASE_VERSION = 1;
 
 const TABLE_EVALUATORS = "evaluators";
