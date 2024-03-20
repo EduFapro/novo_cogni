@@ -218,17 +218,13 @@ class TaskScreenController extends GetxController {
       final BytesSource bytesSource = BytesSource(audioBytes);
       await _audioPlayer.play(bytesSource);
       isPlaying.value = true;
+      isRecordButtonEnabled.value = false; // Disable recording when audio starts playing
 
       // Listen for audio completion
       _audioPlayer.onPlayerComplete.listen((_) {
         isPlaying.value = false;
-        audioPlayed.value = true; // Mark that audio has been played
-
-        // For tasks requiring no recording or where recording is done, enable the check button
-        if (taskMode.value == TaskMode.play || recordingDone.value) {
-          isCheckButtonEnabled.value = true;
-        } else {
-          // For record mode, ensure recording is done before enabling
+        // Only enable recording if all conditions for recording are met
+        if (shouldEnableRecording()) {
           isRecordButtonEnabled.value = true;
         }
       });
@@ -505,4 +501,10 @@ class TaskScreenController extends GetxController {
       startCountdown();
     }
   }
+
+  bool shouldEnableRecording() {
+    // Add your conditions here. Example:
+    return taskMode.value == TaskMode.record && !isPlaying.value && promptPlayedOnce.value;
+  }
+
 }

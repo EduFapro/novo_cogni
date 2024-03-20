@@ -19,9 +19,9 @@ ModuleEntity testingOnlyAudioModule = ModuleEntity(
 
 
 List<ModuleEntity> modulesList = [
+  testingOnlyAudioModule,
   // testsModule,
   way2AgeModule,
-  testingOnlyAudioModule
 ];
 
 void printModules() {
