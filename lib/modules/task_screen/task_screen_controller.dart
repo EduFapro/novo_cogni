@@ -54,8 +54,8 @@ class TaskScreenController extends GetxController {
   var isCheckButtonEnabled = false.obs;
   var isRecordButtonEnabled = false.obs;
 
-  RxBool get shouldDisablePlayButton => RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value);
-
+  RxBool get shouldDisablePlayButton =>
+      RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value);
 
   var mayRepeatPrompt = false.obs;
   var promptPlayedOnce = false.obs;
@@ -135,9 +135,7 @@ class TaskScreenController extends GetxController {
       }
 
       checkAndDisablePlayButton();
-
     });
-
 
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
@@ -153,18 +151,19 @@ class TaskScreenController extends GetxController {
       // Load the next task or handle it accordingly
     }
   }
+
   Future<Uint8List> loadAudioAsset(String path) async {
     final ByteData data = await rootBundle.load(path);
     return data.buffer.asUint8List();
   }
+
   void startCountdown() {
     countdownStarted.value = true;
 
     // Simulate countdown using Future.delayed
     Future.delayed(Duration(seconds: 5), () {
       // Countdown completed
-      isCheckButtonEnabled.value =
-          true;
+      isCheckButtonEnabled.value = true;
     });
   }
 
@@ -190,8 +189,10 @@ class TaskScreenController extends GetxController {
         countdownTrigger.value = false;
         promptPlayedOnce.value = false;
 
-        var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskInstance.taskID);
-        audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+        var taskPrompt = await taskService
+            .getTaskPromptByTaskInstanceID(taskInstance.taskID);
+        audioPath.value =
+            taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
         checkAndDisablePlayButton();
       }
     } catch (e) {
@@ -202,7 +203,6 @@ class TaskScreenController extends GetxController {
     audioPlayed.value = false;
     recordingDone.value = false;
   }
-
 
   Future<void> togglePlay() async {
     if (!isPlaying.value) {
@@ -237,10 +237,6 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
-
-
-
   Future<void> stop() async {
     await _audioPlayer.stop();
     isPlaying.value = false;
@@ -260,7 +256,6 @@ class TaskScreenController extends GetxController {
       await _recorder.start(config, path: recordingPath);
       isRecording.value = true;
       // isRecordButtonEnabled.value = false;
-
     } else {
       // Handle permission not granted
     }
@@ -281,8 +276,6 @@ class TaskScreenController extends GetxController {
       print('Recording was not stopped properly or path was null');
     }
   }
-
-
 
   Future<void> saveAudio(ByteData data) async {
     print('saveAudio called');
@@ -442,9 +435,9 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
   void checkAndDisablePlayButton() {
-    shouldDisablePlayButton.value = !mayRepeatPrompt.value && promptPlayedOnce.value;
+    shouldDisablePlayButton.value =
+        !mayRepeatPrompt.value && promptPlayedOnce.value;
   }
 
   void resetProgress() {
@@ -464,7 +457,6 @@ class TaskScreenController extends GetxController {
     totalTasks.value = taskInstances.length;
   }
 
-
   Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
     await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
     var evaluationID =
@@ -481,23 +473,26 @@ class TaskScreenController extends GetxController {
     }
   }
 
+  // TaskScreenController
   Future<void> launchNextTaskWithoutCompletingCurrent() async {
     if (currentTaskIndex.value < totalTasks.value) {
-      currentTaskIndex.value++;
+      currentTaskIndex.value++; // Increment to move to the next task
 
-      // Fetch the next task instance
-      var nextTaskInstance =
-      await evaluationService.getNextPendingTaskInstanceForModule(
-          moduleInstance.value!.moduleInstanceID!);
+      // Fetch the next task instance skipping the current one
+      var nextTaskInstance = await evaluationService.getNextTaskInstanceSkippingCurrent(
+          moduleInstance.value!.moduleInstanceID!, currentTask.value!.taskInstanceID!);
       if (nextTaskInstance != null) {
+        // If there's a next task, update current task to this new task
         await updateCurrentTask(nextTaskInstance.taskInstanceID!);
       } else {
+        // Handle case when there is no next task or unable to fetch
         Get.back();
       }
     } else {
-      Get.back();
+      Get.back(); // No more tasks to process
     }
   }
+
 
   void manageButtonStates(
       {required bool isAudioPlaying, required bool isAudioCompleted}) {
@@ -510,6 +505,4 @@ class TaskScreenController extends GetxController {
       startCountdown();
     }
   }
-
-
 }

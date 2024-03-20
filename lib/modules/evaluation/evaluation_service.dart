@@ -122,6 +122,32 @@ class EvaluationService {
     }
   }
 
+  // EvaluationService
+  Future<TaskInstanceEntity?> getNextTaskInstanceSkippingCurrent(
+      int moduleInstanceId, int currentTaskInstanceId) async {
+    try {
+      List<TaskInstanceEntity> taskInstances = await taskInstanceRepository
+          .getTaskInstancesForModuleInstance(moduleInstanceId);
+      TaskInstanceEntity? nextTask;
+      bool currentTaskSkipped = false;
+      for (var taskInstance in taskInstances) {
+        if (taskInstance.taskInstanceID == currentTaskInstanceId) {
+          currentTaskSkipped = true;
+          continue; // Skip the current task instance
+        }
+        if (currentTaskSkipped && taskInstance.status == TaskStatus.pending) {
+          nextTask = taskInstance;
+          break;
+        }
+      }
+      return nextTask;
+    } catch (e) {
+      print('Error fetching next task instance skipping current for module instance ID $moduleInstanceId: $e');
+      return null;
+    }
+  }
+
+
   Future<int> setModuleInstanceAsCompleted(int moduleInstanceId) {
     return moduleInstanceRepository
         .setModuleInstanceAsCompleted(moduleInstanceId);
