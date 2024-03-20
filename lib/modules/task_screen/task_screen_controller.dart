@@ -39,9 +39,6 @@ class TaskScreenController extends GetxController {
   var moduleInstance = Rxn<ModuleInstanceEntity>();
 
   var audioPath = ''.obs;
-  var isPlaying = false.obs;
-  var isRecording = false.obs;
-  var audioPlayed = false.obs;
   var currentTask = Rx<TaskInstanceEntity?>(null);
   var taskMode = Rx<TaskMode>(TaskMode.record);
   var currentTaskEntity = Rx<TaskEntity?>(null);
@@ -49,12 +46,15 @@ class TaskScreenController extends GetxController {
   var countdownTrigger = false.obs;
   var currentTaskIndex = 1.obs;
   var totalTasks = 1.obs;
-
   var isModuleCompleted = false.obs;
 
+  var isPlaying = false.obs;
+  var audioPlayed = false.obs;
+  var isRecording = false.obs;
+  var recordingDone = false.obs;
   var isCheckButtonEnabled = false.obs;
-
   var isRecordButtonEnabled = false.obs;
+
 
   var recordingRepository = Get.find<RecordingRepository>();
   var evaluationRepository = Get.find<EvaluationRepository>();
@@ -109,15 +109,25 @@ class TaskScreenController extends GetxController {
       print("Task instance ID not found in arguments.");
     }
 
-    _audioPlayer.onPlayerComplete.listen((event) async {
+    _audioPlayer.onPlayerComplete.listen((_) {
       isPlaying.value = false;
       audioPlayed.value = true;
-      _audioStopTime = DateTime.now();
-      isCheckButtonEnabled.value = true;
-      await Future.delayed(Duration(seconds: 1));
 
-      countdownTrigger.value = true;
+      // Check button should be enabled only if no recording is needed or after recording is completed.
+      // In TaskMode.play, enable if audio has played. In TaskMode.record, defer until recording is done.
+      if (taskMode.value == TaskMode.play) {
+        isCheckButtonEnabled.value = true;
+      } else if (taskMode.value == TaskMode.record && recordingDone.value) {
+        // Enable check button only if recording is already done
+        isCheckButtonEnabled.value = true;
+      }
+
+      // Ensure record button is enabled only in record mode and after audio playback.
+      if (taskMode.value == TaskMode.record) {
+        isRecordButtonEnabled.value = true;
+      }
     });
+
 
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
@@ -174,6 +184,10 @@ class TaskScreenController extends GetxController {
     } catch (e) {
       print("Error updating current task: $e");
     }
+    isRecordButtonEnabled.value = false;
+    isCheckButtonEnabled.value = false;
+    audioPlayed.value = false;
+    recordingDone.value = false;
   }
 
   Future<void> togglePlay() async {
@@ -190,24 +204,27 @@ class TaskScreenController extends GetxController {
       final BytesSource bytesSource = BytesSource(audioBytes);
       await _audioPlayer.play(bytesSource);
       isPlaying.value = true;
-      // Additional logic to manage button states based on task mode
-      if (taskMode.value == TaskMode.play) {
-        // For play mode, we will enable the check button after audio is finished playing
-        _audioPlayer.onPlayerComplete.listen((_) {
+
+      // Listen for audio completion
+      _audioPlayer.onPlayerComplete.listen((_) {
+        isPlaying.value = false;
+        audioPlayed.value = true; // Mark that audio has been played
+
+        // For tasks requiring no recording or where recording is done, enable the check button
+        if (taskMode.value == TaskMode.play || recordingDone.value) {
           isCheckButtonEnabled.value = true;
-          audioPlayed.value = true; // Mark that audio has been played
-        });
-      } else if (taskMode.value == TaskMode.record) {
-        // For record mode, enable the record button after audio is finished
-        _audioPlayer.onPlayerComplete.listen((_) {
+        } else {
+          // For record mode, ensure recording is done before enabling
           isRecordButtonEnabled.value = true;
-          audioPlayed.value = true; // Mark that audio has been played
-        });
-      }
+        }
+      });
     } catch (e) {
       print('Error playing audio: $e');
     }
   }
+
+
+
 
 
   Future<void> stop() async {
@@ -228,46 +245,30 @@ class TaskScreenController extends GetxController {
       );
       await _recorder.start(config, path: recordingPath);
       isRecording.value = true;
+      // isRecordButtonEnabled.value = false;
+
     } else {
       // Handle permission not granted
     }
   }
 
   Future<void> stopRecording() async {
-    print('stopRecording called');
     final String? originalPath = await _recorder.stop();
     isRecording.value = false;
 
     if (originalPath != null) {
-      final evaluationController = Get.find<EvaluationController>();
-      final evaluatorID =
-          evaluationController.evaluation.value?.evaluatorID ?? 0;
-      final participantID =
-          evaluationController.participant.value?.participantID ?? 0;
+      recordingDone.value = true;
 
-      // Encrypt the recording, rename it and save the new path
-      final encryptedFilePath = await renameAndSaveRecording(
-        originalPath: originalPath,
-        evaluatorId: evaluatorID,
-        participantId: participantID,
-        taskInstanceId: currentTask.value!.taskInstanceID!,
-        saveRecordingCallback: (RecordingFileEntity recording) async {
-          final recordingId =
-              await recordingRepository.createRecording(recording);
-          print(
-              'Recording saved with ID: $recordingId at path: $recording.filePath');
-        },
-      );
-
-      // Update the observable path with the encrypted file's path
-      audioPath.value = encryptedFilePath;
-      if (taskMode.value == TaskMode.record) {
+      // In TaskMode.record, enable check button if audio has been played.
+      if (taskMode.value == TaskMode.record && audioPlayed.value) {
         isCheckButtonEnabled.value = true;
       }
     } else {
       print('Recording was not stopped properly or path was null');
     }
   }
+
+
 
   Future<void> saveAudio(ByteData data) async {
     print('saveAudio called');
@@ -509,8 +510,6 @@ class TaskScreenController extends GetxController {
     }
 
     if (isAudioCompleted) {
-      // When the audio has finished playing, start the countdown
-      // The countdown itself will enable the check button upon completion
       startCountdown();
     }
   }
