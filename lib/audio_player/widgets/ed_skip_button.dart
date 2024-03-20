@@ -12,8 +12,7 @@ class EdSkipButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(text),
       style: ElevatedButton.styleFrom(
-        primary: Colors.white, // Background color
-        onPrimary: Colors.black, // Text color
+        foregroundColor: Colors.black, backgroundColor: Colors.white, // Text color
         elevation: 2, // Elevation
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.0), // Rounded corners

@@ -11,7 +11,7 @@ TaskEntity helloHowAreYouTask = TaskEntity(
   taskID: helloHowAreYouTaskId,
   title: helloHowAreYouTaskTitle,
   moduleID: way2AgeModuleId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 1,
@@ -114,7 +114,7 @@ TaskEntity payCloseAttentionTask = TaskEntity(
   taskID: payCloseAttentionTaskId,
   title: payCloseAttentionTitle,
   moduleID: way2AgeModuleId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 11,
@@ -215,16 +215,11 @@ TaskEntity formerPresidentOfBrazilTask = TaskEntity(
 
 
 
-
-
-
-
-
 TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningFirstTimeTaskId,
   title: repeatWordsAfterListeningFirstTimeTitle,
   moduleID: way2AgeModuleId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 21,
@@ -245,7 +240,7 @@ TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningSecondTimeTaskId,
   title: repeatWordsAfterListeningSecondTimeTitle,
   moduleID: way2AgeModuleId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 23,
@@ -265,7 +260,7 @@ TaskEntity repeatWordsAfterListeningThirdTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningThirdTimeTaskId,
   title: repeatWordsAfterListeningThirdTimeTitle,
   moduleID: way2AgeModuleId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 25,
@@ -316,7 +311,7 @@ TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
   taskID: payCloseAttentionToTheStoryTaskId,
   title: payCloseAttentionToTheStoryTitle,
   moduleID: way2AgeModuleId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 30,
@@ -581,7 +576,7 @@ TaskEntity thankingForParticipationTask = TaskEntity(
   taskID: thankingForParticipationTaskId,
   title: thankingForParticipationTitle,
   moduleID:way2AgeModuleId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 56,
