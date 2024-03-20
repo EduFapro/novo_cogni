@@ -34,7 +34,7 @@ class TaskScreenController extends GetxController {
   var evaluation = Rxn<EvaluationEntity>();
   var evaluatorId = RxInt(0);
   var taskName = RxString("");
-  var taskId = RxInt(0);
+  var task = Rxn<TaskEntity>();
   var taskInstance = Rxn<TaskInstanceEntity>();
   var moduleInstance = Rxn<ModuleInstanceEntity>();
 
@@ -53,6 +53,8 @@ class TaskScreenController extends GetxController {
   var isModuleCompleted = false.obs;
 
   var isCheckButtonEnabled = false.obs;
+
+  var isRecordButtonEnabled = false.obs;
 
   var recordingRepository = Get.find<RecordingRepository>();
   var evaluationRepository = Get.find<EvaluationRepository>();
@@ -87,7 +89,7 @@ class TaskScreenController extends GetxController {
       evaluatorId.value = arguments[RouteArguments.EVALUATOR_ID];
 
       taskName.value = arguments[RouteArguments.TASK_NAME];
-      taskId.value = arguments[RouteArguments.TASK_ID];
+      task.value = arguments[RouteArguments.TASK];
       taskInstance.value = arguments[RouteArguments.TASK_INSTANCE];
 
       moduleInstance.value = arguments[RouteArguments.MODULE_INSTANCE];
@@ -142,7 +144,7 @@ class TaskScreenController extends GetxController {
     Future.delayed(Duration(seconds: 5), () {
       // Countdown completed
       isCheckButtonEnabled.value =
-          true; // Enable the check button after countdown
+          true;
     });
   }
 
@@ -153,17 +155,16 @@ class TaskScreenController extends GetxController {
         currentTask.value = taskInstance;
         var taskEntity = await taskService.getTask(taskInstance.taskID);
         currentTaskEntity.value = taskEntity;
-        taskMode.value = taskEntity?.taskMode ?? TaskMode.play;
-        if (taskEntity != null && taskEntity.taskMode == TaskMode.record) {
-          taskMode.value = TaskMode.record;
-        } else {
-          taskMode.value = TaskMode.play;
-        }
-        isCheckButtonEnabled.value = false;
 
+        // Determine the task mode
+        taskMode.value = taskEntity?.taskMode ?? TaskMode.play;
+
+        // Reset states for the new task
+        isCheckButtonEnabled.value = false;
+        isRecordButtonEnabled.value = false;
+        audioPlayed.value = false;
         countdownStarted.value = false;
         countdownTrigger.value = false;
-        audioPlayed.value = false;
 
         var taskPrompt = await taskService
             .getTaskPromptByTaskInstanceID(taskInstance.taskID);
@@ -172,7 +173,6 @@ class TaskScreenController extends GetxController {
       }
     } catch (e) {
       print("Error updating current task: $e");
-      audioPath.value = 'assets/audio/audio_placeholder.mp3';
     }
   }
 
@@ -187,16 +187,28 @@ class TaskScreenController extends GetxController {
   Future<void> play() async {
     try {
       final Uint8List audioBytes = await loadAudioAsset(audioPath.value);
-      // Create a BytesSource from the Uint8List
       final BytesSource bytesSource = BytesSource(audioBytes);
       await _audioPlayer.play(bytesSource);
       isPlaying.value = true;
-      print("Tocou bytes");
+      // Additional logic to manage button states based on task mode
+      if (taskMode.value == TaskMode.play) {
+        // For play mode, we will enable the check button after audio is finished playing
+        _audioPlayer.onPlayerComplete.listen((_) {
+          isCheckButtonEnabled.value = true;
+          audioPlayed.value = true; // Mark that audio has been played
+        });
+      } else if (taskMode.value == TaskMode.record) {
+        // For record mode, enable the record button after audio is finished
+        _audioPlayer.onPlayerComplete.listen((_) {
+          isRecordButtonEnabled.value = true;
+          audioPlayed.value = true; // Mark that audio has been played
+        });
+      }
     } catch (e) {
       print('Error playing audio: $e');
-      // Handle the error, such as by showing a user-friendly message
     }
   }
+
 
   Future<void> stop() async {
     await _audioPlayer.stop();
@@ -249,6 +261,9 @@ class TaskScreenController extends GetxController {
 
       // Update the observable path with the encrypted file's path
       audioPath.value = encryptedFilePath;
+      if (taskMode.value == TaskMode.record) {
+        isCheckButtonEnabled.value = true;
+      }
     } else {
       print('Recording was not stopped properly or path was null');
     }

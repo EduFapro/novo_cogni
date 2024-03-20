@@ -126,7 +126,7 @@ TaskEntity subtracting3AndAgainTask = TaskEntity(
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
-  mayRepeatPrompt: true,
+  mayRepeatPrompt: false,
   position: 12,
 );
 
@@ -137,7 +137,7 @@ TaskEntity whatYearAreWeInTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: whatYearAreWeInTaskId,
+  position: 13,
 );
 
 TaskEntity whatMonthAreWeInTask = TaskEntity(
@@ -231,7 +231,7 @@ TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
-  mayRepeatPrompt: true,
+  mayRepeatPrompt: false,
   position: 22,
 );
 
@@ -252,7 +252,7 @@ TaskEntity recallWordsFromListSecondTimeTask = TaskEntity(
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
-  mayRepeatPrompt: true,
+  mayRepeatPrompt: false,
   position: 24,
 );
 
@@ -272,7 +272,7 @@ TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
-  mayRepeatPrompt: true,
+  mayRepeatPrompt: false,
   position: 26,
 );
 
@@ -324,7 +324,7 @@ TaskEntity anasCatStoryTask = TaskEntity(
   moduleID: way2AgeModuleId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
-  mayRepeatPrompt: true,
+  mayRepeatPrompt: false,
   position: 31,
 );
 

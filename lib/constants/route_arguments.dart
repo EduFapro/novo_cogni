@@ -1,6 +1,6 @@
 class RouteArguments {
   static final TASK_NAME = 'taskName';
-  static final TASK_ID = 'taskId';
+  static final TASK = 'task';
   static final TASK_INSTANCE = 'task_instance';
   static final FIRST_LOGIN = 'firstLogin';
   static final EVALUATOR_ID = 'evaluator_id';

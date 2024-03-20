@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
-import 'package:novo_cogni/modules/task_screen/widgets/countdown_timer.dart';
-import 'package:novo_cogni/modules/task_screen/widgets/task_deadline_banner.dart';
 
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
@@ -203,36 +201,35 @@ class TaskScreen extends GetView<TaskScreenController> {
                         },
                         isActive: true.obs,
                       ),
+
                       // This Container wraps the middle button and gives it a bigger size
                       Container(
                         decoration: BoxDecoration(
-
-                            color: controller.isRecording.value
-                                ? Colors.redAccent.shade100
-                                : Colors.blue.shade100,
+                            color: controller.isRecordButtonEnabled.value
+                                ? (controller.isRecording.value ? Colors.redAccent.shade100 : Colors.blue.shade100)
+                                : Colors.grey.shade400, // Grey color for disabled state
                             borderRadius: BorderRadius.circular(50)),
                         width: 100,
                         height: 100,
                         child: IconButton(
                           icon: Icon(
-                            controller.isRecording.value
-                                ? Icons.stop
-                                : Icons.mic,
-                            size:
-                                80, // Adjust the size of the icon if necessary
+                            controller.isRecording.value ? Icons.stop : Icons.mic,
+                            size: 80, // Adjust the size of the icon if necessary
                           ),
-                          color: controller.isRecording.value
-                              ? Colors.red
-                              : Colors.blue,
-                          onPressed: () async {
+                          color: controller.isRecordButtonEnabled.value
+                              ? (controller.isRecording.value ? Colors.red : Colors.blue)
+                              : Colors.grey, // Grey icon for disabled state
+                          onPressed: controller.isRecordButtonEnabled.value ? () async {
                             if (controller.isRecording.value) {
                               await controller.stopRecording();
                             } else {
                               await controller.startRecording();
                             }
-                          },
+                          } : null, // Disable the button if isRecordButtonEnabled is false
                         ),
                       ),
+
+
                       EdCheckIconButton(
                         iconData: Icons.check,
                         onPressed: () {

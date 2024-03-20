@@ -158,7 +158,7 @@ class EvaluationController extends GetxController {
         RouteArguments.EVALUATOR_ID: evaluatorId.value,
         RouteArguments.PARTICIPANT: participant.value,
         RouteArguments.TASK_NAME: taskEntity.title,
-        RouteArguments.TASK_ID: taskEntity.taskID,
+        RouteArguments.TASK: taskEntity,
         RouteArguments.TASK_INSTANCE: taskInstance,
         RouteArguments.MODULE_INSTANCE: moduleInstance,
       },
