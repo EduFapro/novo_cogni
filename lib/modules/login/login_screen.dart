@@ -39,15 +39,14 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                         Align(
                             alignment: Alignment.topRight,
                             child: ConstrainedBox(
-                              constraints:
-                                  BoxConstraints(maxWidth: 200, maxHeight: 30),
+                              constraints: BoxConstraints(maxWidth: 200, maxHeight: 30),
                               child: EdLanguageDropdown(),
-                            )),
+                            )
+                        ),
                         FormTitle(title: UiStrings.login),
                         const SizedBox(height: 10.0),
                         EdInputText(
-                          placeholder: UiStrings.login,
-                          // validator: validateEmail,
+                          placeholder: UiStrings.username,
                           onSaved: (value) => username = value ?? '',
                         ),
                         const SizedBox(height: 10.0),
@@ -67,14 +66,14 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                               child: Text(
                                 controller.loginError.value,
                                 style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 14,
+                                  color: Colors.redAccent,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             );
                           } else {
-                            return const SizedBox
-                                .shrink(); // Return an empty widget if there's no error
+                            return const SizedBox.shrink(); // Return an empty widget if there's no error
                           }
                         }),
 
@@ -82,21 +81,16 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              print("Username: $username");
-                              var successfulLogin =
-                                  await controller.login(username, password);
+                              var successfulLogin = await controller.login(username, password);
                               if (successfulLogin) {
-                                if (!controller
-                                    .currentEvaluatorFirstLogin.value) {
+                                if (!controller.currentEvaluatorFirstLogin.value) {
                                   Get.toNamed(AppRoutes.home);
                                 } else {
                                   Get.toNamed(
                                     AppRoutes.newPassword,
                                     arguments: {
-                                      RouteArguments.FIRST_LOGIN: controller
-                                          .currentEvaluatorFirstLogin.value,
-                                      RouteArguments.EVALUATOR_ID: controller
-                                          .currentEvaluator.value!.evaluatorID!,
+                                      RouteArguments.FIRST_LOGIN: controller.currentEvaluatorFirstLogin.value,
+                                      RouteArguments.EVALUATOR_ID: controller.currentEvaluator.value!.evaluatorID!,
                                     },
                                   );
                                 }

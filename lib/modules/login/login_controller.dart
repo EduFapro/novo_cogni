@@ -3,7 +3,6 @@ import 'package:novo_cogni/global/user_service.dart';
 
 import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/evaluator/evaluator_repository.dart';
-import '../../global/user_controller.dart';
 
 class LoginController extends GetxController {
   final EvaluatorRepository evaluatorRepository;
@@ -16,30 +15,31 @@ class LoginController extends GetxController {
 
   LoginController(this.evaluatorRepository);
 
-
   Future<bool> login(String username, String password) async {
     isLoading.value = true;
+    loginError.value = '';
     try {
-      EvaluatorEntity? user =
-          await evaluatorRepository.getEvaluatorByUsername(username);
-      // print("Resultado evaluatorRepository.getEvaluatorByUsername: $username");
-      currentEvaluatorFirstLogin.value = user!.firstLogin;
-      if (user.password == password) {
-        currentEvaluator.value = user;
-        isLoading.value = false;
-        // print("chamando userService.updateUser com $user");
-        userService.updateUser(user);
-        return true;
+      EvaluatorEntity? user = await evaluatorRepository.getEvaluatorByUsername(username);
+
+      if (user != null) {
+        if (user.password == password) {
+          currentEvaluator.value = user;
+          currentEvaluatorFirstLogin.value = user.firstLogin;
+          userService.updateUser(user);
+          isLoading.value = false;
+          return true;
+        } else {
+          loginError.value = "Invalid username or password";
+        }
       } else {
-        loginError.value = "Invalid credentials";
-        isLoading.value = false;
-        return false;
+        loginError.value = "User not found. Please check your username and try again.";
       }
     } catch (e) {
-      isLoading.value = false;
-      loginError.value = e.toString();
-      return false;
+      loginError.value = "Login failed, please try again later";
     }
+
+    isLoading.value = false;
+    return false;
   }
 
   @override
