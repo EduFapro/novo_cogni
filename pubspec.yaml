@@ -41,4 +41,5 @@ flutter:
     - assets/profile-placeholder.png
     - assets/audio/
     - assets/task_prompts/
+    - assets/test_prompts/
     - .env

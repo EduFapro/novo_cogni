@@ -72,7 +72,10 @@ var thankingForParticipationTaskPromptID = 56;
 
 
 // PARA VALIDAÇÃO
-final cincoPatinhosTaskPromptID = 9001;
+final aPressaEhInimigaTaskPromptId = 9001;
 final umPassaroTaskPromptID = 9002;
-final nemTudoTaskPromptID = 9033;
+final nemTudoTaskPromptID = 9003;
+final conteAte5taskPromptID = 9004;
+final digaDoisAnimaistaskPromptID = 9005;
+final repitaAFrasetaskPromptID = 9006;
 

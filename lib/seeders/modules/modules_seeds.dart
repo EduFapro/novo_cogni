@@ -13,14 +13,14 @@ ModuleEntity way2AgeModule = ModuleEntity(
 //     moduleID: testModuleId,
 //     title: testsModuleTitle);
 
-ModuleEntity testingOnlyAudioModule = ModuleEntity(
-    moduleID: testingOnlyAudioModuleId,
-    title: testingOnlyAudioTitle);
+ModuleEntity testsModule = ModuleEntity(
+    moduleID: testsModuleId,
+    title: testsModuleTitle);
 
 
 List<ModuleEntity> modulesList = [
-  testingOnlyAudioModule,
-  // testsModule,
+  // testingOnlyAudioModule,
+  testsModule,
   way2AgeModule,
 ];
 

@@ -10,6 +10,7 @@ class TaskEntity {
   String? image_path;
   int timeForCompletion;
   bool mayRepeatPrompt;
+  bool test_only;
 
   TaskEntity({
     this.taskID,
@@ -20,6 +21,7 @@ class TaskEntity {
     this.image_path,
     this.timeForCompletion = 30,
     this.mayRepeatPrompt = true,
+    this.test_only = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,21 +33,23 @@ class TaskEntity {
       POSITION: position,
       IMAGE_PATH: image_path,
       TIME_FOR_COMPLETION: timeForCompletion,
-      MAY_REPEAT_PROMPT: mayRepeatPrompt ? 1 : 0
+      MAY_REPEAT_PROMPT: mayRepeatPrompt ? 1 : 0,
+      TEST_ONLY: test_only ? 1 : 0,
     };
   }
 
   static TaskEntity fromMap(Map<String, dynamic> map) {
     final mode = TaskMode.fromNumericValue(map[MODE] as int);
     return TaskEntity(
-      taskID: map[ID_TASK] as int?,
-      title: map[TITLE] as String,
-      moduleID: map[MODULE_ID] as int,
-      taskMode: mode,
-      position: map[POSITION] as int,
-      image_path: map[IMAGE_PATH] as String?,
-      timeForCompletion: map[TIME_FOR_COMPLETION],
-      mayRepeatPrompt: map[MAY_REPEAT_PROMPT] == 1? true : false
+        taskID: map[ID_TASK] as int?,
+        title: map[TITLE] as String,
+        moduleID: map[MODULE_ID] as int,
+        taskMode: mode,
+        position: map[POSITION] as int,
+        image_path: map[IMAGE_PATH] as String?,
+        timeForCompletion: map[TIME_FOR_COMPLETION],
+        mayRepeatPrompt: map[MAY_REPEAT_PROMPT] == 1 ? true : false,
+        test_only: map[MAY_REPEAT_PROMPT] == 1? true : false
     );
   }
 

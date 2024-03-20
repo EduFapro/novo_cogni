@@ -74,7 +74,12 @@ class AudioFilePaths {
 
 
   static String get audioPlaceholder => 'assets/audio/audio_placeholder.mp3';
-  static String get cincoPatinhos => 'assets/audio/cinco_patinhos.mp3';
-  static String get ehMelhorUmPassaro => 'assets/audio/eh_melhor_um_passaro.mp3';
-  static String get nemTudoQueReluz => 'assets/audio/nem_tudo_que_reluz.mp3';
+
+  static String get aPressaEhInimiga => 'assets/test_prompts/a_pressa_eh_inimiga_da_perfeicao.mp3';
+  static String get ehMelhorUmPassaro => 'assets/test_prompts/eh_melhor_um_passaro_na_mao.mp3';
+  static String get nemTudoQueReluz => 'assets/test_prompts/nem_tudo_que_reluz_eh_ouro.mp3';
+
+  static String get conteAte5 => 'assets/test_prompts/conte_ateh_5.mp3';
+  static String get digaDoisAnimais => 'assets/test_prompts/diga_dois_animais_4_patas.mp3';
+  static String get repitaAFrase => 'assets/test_prompts/repita_a_frase.mp3';
 }

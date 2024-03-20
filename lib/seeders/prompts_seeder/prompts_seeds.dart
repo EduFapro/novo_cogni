@@ -436,10 +436,10 @@ final thankingForParticipationPrompt = TaskPromptEntity(
 
 /////// PARA VALIDAÇÃO
 
-final cincoPatinhosTaskPrompt = TaskPromptEntity(
-    promptID: cincoPatinhosTaskPromptID,
-    taskID: cincoPatinhosTask.taskID!,
-    filePath: AudioFilePaths.cincoPatinhos);
+final aPressaEhInimigaTaskPrompt = TaskPromptEntity(
+    promptID: aPressaEhInimigaTaskPromptId,
+    taskID: aPressaEhInimigaTask.taskID!,
+    filePath: AudioFilePaths.aPressaEhInimiga);
 
 final umPassaroTaskPrompt = TaskPromptEntity(
     promptID: umPassaroTaskPromptID,
@@ -450,3 +450,18 @@ final nemTudoTaskPrompt = TaskPromptEntity(
     promptID: nemTudoTaskPromptID,
     taskID: nemTudoTask.taskID!,
     filePath: AudioFilePaths.nemTudoQueReluz);
+
+final conteAteh5TaskPrompt = TaskPromptEntity(
+    promptID: conteAte5taskPromptID,
+    taskID: conteAte5Task.taskID!,
+    filePath: AudioFilePaths.conteAte5);
+
+final digaDoisAnimaistaskPrompt = TaskPromptEntity(
+    promptID: digaDoisAnimaistaskPromptID,
+    taskID: digaDoisAnimaisTask.taskID!,
+    filePath: AudioFilePaths.digaDoisAnimais);
+
+final repitaAFrasetaskPrompt = TaskPromptEntity(
+    promptID: repitaAFrasetaskPromptID,
+    taskID: repitaAFraseTask.taskID!,
+    filePath: AudioFilePaths.repitaAFrase);

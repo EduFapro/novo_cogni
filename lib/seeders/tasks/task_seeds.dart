@@ -5,6 +5,7 @@ import '../../constants/enums/task_enums.dart';
 import '../modules/modules_seeds.dart';
 
 part "task_seeds_list.dart";
+
 part "task_seeds_constants.dart";
 
 TaskEntity helloHowAreYouTask = TaskEntity(
@@ -56,7 +57,6 @@ TaskEntity whatWasYourProfessionTask = TaskEntity(
   position: 5,
 );
 
-
 TaskEntity whoDoYouLiveWithTask = TaskEntity(
   taskID: whoDoYouLiveWithTaskId,
   title: whoDoYouLiveWithTitle,
@@ -106,9 +106,6 @@ TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 10,
 );
-
-
-
 
 TaskEntity payCloseAttentionTask = TaskEntity(
   taskID: payCloseAttentionTaskId,
@@ -160,9 +157,6 @@ TaskEntity whatDayOfTheMonthIsItTask = TaskEntity(
   position: 15,
 );
 
-
-
-
 TaskEntity whatDayOfTheWeekIsItTask = TaskEntity(
   taskID: whatDayOfTheWeekIsItTaskId,
   title: whatDayOfTheWeekIsItTitle,
@@ -213,8 +207,6 @@ TaskEntity formerPresidentOfBrazilTask = TaskEntity(
   position: 20,
 );
 
-
-
 TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningFirstTimeTaskId,
   title: repeatWordsAfterListeningFirstTimeTitle,
@@ -234,7 +226,6 @@ TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
   mayRepeatPrompt: false,
   position: 22,
 );
-
 
 TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningSecondTimeTaskId,
@@ -276,7 +267,6 @@ TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
   position: 26,
 );
 
-
 TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
   taskID: whatDidYouDoYesterdayTaskId,
   title: whatDidYouDoYesterdayTitle,
@@ -317,7 +307,6 @@ TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
   position: 30,
 );
 
-
 TaskEntity anasCatStoryTask = TaskEntity(
   taskID: anasCatStoryTaskId,
   title: anasCatStoryTitle,
@@ -329,13 +318,13 @@ TaskEntity anasCatStoryTask = TaskEntity(
 );
 
 TaskEntity howManyAnimalsCanYouThinkOfTask = TaskEntity(
-taskID: howManyAnimalsCanYouThinkOfTaskId,
-title: howManyAnimalsCanYouThinkOfTitle,
-moduleID: way2AgeModuleId,
-taskMode: TaskMode.record,
-timeForCompletion: 40,
-mayRepeatPrompt: true,
-position: 32,
+  taskID: howManyAnimalsCanYouThinkOfTaskId,
+  title: howManyAnimalsCanYouThinkOfTitle,
+  moduleID: way2AgeModuleId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 32,
 );
 
 TaskEntity wordsStartingWithFTask = TaskEntity(
@@ -438,8 +427,6 @@ TaskEntity canYouUsePhoneAloneTask = TaskEntity(
   position: 42,
 );
 
-
-
 TaskEntity canYouShopAloneTask = TaskEntity(
   taskID: canYouShopAloneTaskId,
   title: canYouShopAloneTitle,
@@ -479,7 +466,6 @@ TaskEntity canYouUseTransportAloneTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 46,
 );
-
 
 TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
   taskID: feelingsInPastTwoWeeksTaskId,
@@ -562,60 +548,65 @@ TaskEntity hopefulAboutFutureTask = TaskEntity(
 );
 
 TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
-  taskID: feelingLifeIsWorthLivingTaskId,
-  title: feelingLifeIsWorthLivingTitle,
-  moduleID: way2AgeModuleId,
-  taskMode: TaskMode.record,
-  timeForCompletion: 40,
-  mayRepeatPrompt: true,
-  position: 55
-);
-
+    taskID: feelingLifeIsWorthLivingTaskId,
+    title: feelingLifeIsWorthLivingTitle,
+    moduleID: way2AgeModuleId,
+    taskMode: TaskMode.record,
+    timeForCompletion: 40,
+    mayRepeatPrompt: true,
+    position: 55);
 
 TaskEntity thankingForParticipationTask = TaskEntity(
   taskID: thankingForParticipationTaskId,
   title: thankingForParticipationTitle,
-  moduleID:way2AgeModuleId,
+  moduleID: way2AgeModuleId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 56,
 );
 
-
-
 ////////////////////////////////////////////
 
-
 // TASKS VERIFICAÇÃO
-int cincoPatinhos = 9005;
-int umPassaroNaMao = 9006;
-int nemTudoQueReluz = 9007;
 
-List<String> testingOnlyAudioTasksTitles = [
-  "Cinco Patinhos",
-  "Um Passaro na Mão",
-  "Nem Tudo Que Reluz"
-];
-
-TaskEntity cincoPatinhosTask = TaskEntity(
-  taskID: cincoPatinhos,
-  title: testingOnlyAudioTasksTitles[0],
-  moduleID: testingOnlyAudioModuleId,
+TaskEntity aPressaEhInimigaTask = TaskEntity(
+  taskID: pressaInimigaId,
+  title: pressaInimigaTitle,
+  moduleID: testsModuleId,
   taskMode: TaskMode.play,
   position: 1,
 );
 TaskEntity umPassaroTask = TaskEntity(
-  taskID: umPassaroNaMao,
-  title: testingOnlyAudioTasksTitles[1],
-  moduleID: testingOnlyAudioModuleId,
+  taskID: umPassaroNaMaoId,
+  title: umPassaroNaMaoTitle,
+  moduleID: testsModuleId,
   taskMode: TaskMode.play,
   position: 2,
 );
 TaskEntity nemTudoTask = TaskEntity(
-  taskID: nemTudoQueReluz,
-  title: testingOnlyAudioTasksTitles[2],
-  moduleID: testingOnlyAudioModuleId,
+  taskID: nemTudoQueReluzId,
+  title: nemTudoQueReluzTitle,
+  moduleID: testsModuleId,
   taskMode: TaskMode.play,
   position: 3,
 );
+TaskEntity conteAte5Task = TaskEntity(
+    taskID: conteAte5Id,
+    moduleID: testsModuleId,
+    title: conteAte5Title,
+    taskMode: TaskMode.record,
+    position: 4);
+
+TaskEntity digaDoisAnimaisTask = TaskEntity(
+  taskID: digaDoisAnimaisId,
+    moduleID: testsModuleId,
+    title: digaDoisAnimaisTitle,
+    taskMode: TaskMode.record,
+    position: 5);
+TaskEntity repitaAFraseTask = TaskEntity(
+  taskID: repitaAFraseId,
+    moduleID: testsModuleId,
+    title: repitaAFraseTitle,
+    taskMode: TaskMode.record,
+    position: 6);

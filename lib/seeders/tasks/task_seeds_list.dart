@@ -56,7 +56,10 @@ List<TaskEntity> tasksList = [
   hopefulAboutFutureTask,
   feelingLifeIsWorthLivingTask,
   thankingForParticipationTask,
-  cincoPatinhosTask,
+  aPressaEhInimigaTask,
   umPassaroTask,
-  nemTudoTask
+  nemTudoTask,
+  conteAte5Task,
+  digaDoisAnimaisTask,
+  repitaAFraseTask
 ];

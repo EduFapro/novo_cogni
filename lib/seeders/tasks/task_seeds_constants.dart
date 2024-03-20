@@ -95,8 +95,7 @@ int retellWordsHeardBeforeTaskId = 29;
 String retellWordsHeardBeforeTitle = "retell_story_heard_before_";
 
 int payCloseAttentionToTheStoryTaskId = 30;
-String payCloseAttentionToTheStoryTitle =
-    "pay_close_attention_to_the_story_";
+String payCloseAttentionToTheStoryTitle = "pay_close_attention_to_the_story_";
 
 int anasCatStoryTaskId = 31;
 String anasCatStoryTitle = "ana's_cat_story";
@@ -175,3 +174,24 @@ String feelingLifeIsWorthLivingTitle = "feeling_life_is_worth_living";
 
 int thankingForParticipationTaskId = 56;
 String thankingForParticipationTitle = "thanking_for_participation";
+
+/////////////////////////////////
+// PARA VERIFICAÇÃO
+
+int pressaInimigaId = 9005;
+String pressaInimigaTitle = "A Pressa É Inimiga";
+
+int umPassaroNaMaoId = 9006;
+String umPassaroNaMaoTitle = "Um Passaro na Mão";
+
+int nemTudoQueReluzId = 9007;
+String nemTudoQueReluzTitle = "Nem Tudo Que Reluz";
+
+int conteAte5Id = 9008;
+String conteAte5Title = "Conte Até 5";
+
+int digaDoisAnimaisId = 9009;
+String digaDoisAnimaisTitle = "Diga Dois Animais que Andam em 4 Patas";
+
+int repitaAFraseId = 9010;
+String repitaAFraseTitle = "Repita a Frase";
