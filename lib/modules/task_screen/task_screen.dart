@@ -78,6 +78,7 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
+    print("TRUEEE: ${controller.shouldDisablePlayButton}");
     return SizedBox(
       width: 880,
       child: Column(
@@ -111,13 +112,20 @@ class TaskScreen extends GetView<TaskScreenController> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+
                       IconButton(
+                        color: controller.shouldDisablePlayButton.value
+                            ? Colors.redAccent
+                            : Colors.black54,
+
+                        disabledColor: Colors.redAccent,
                         iconSize: 48,
-                        icon: Icon(controller.isPlaying.value
-                            ? Icons.stop
-                            : Icons.play_arrow),
-                        onPressed: () => controller.togglePlay(),
+                        icon: Icon(controller.isPlaying.value ? Icons.stop : Icons.play_arrow),
+                        onPressed: controller.shouldDisablePlayButton.value ? null : () => controller.togglePlay(),
                       ),
+
+
+
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(

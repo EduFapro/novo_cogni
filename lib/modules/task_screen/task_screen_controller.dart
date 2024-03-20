@@ -13,7 +13,6 @@ import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/participant/participant_entity.dart';
-import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/module_enums.dart';
@@ -55,6 +54,11 @@ class TaskScreenController extends GetxController {
   var isCheckButtonEnabled = false.obs;
   var isRecordButtonEnabled = false.obs;
 
+  RxBool get shouldDisablePlayButton => RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value);
+
+
+  var mayRepeatPrompt = false.obs;
+  var promptPlayedOnce = false.obs;
 
   var recordingRepository = Get.find<RecordingRepository>();
   var evaluationRepository = Get.find<EvaluationRepository>();
@@ -90,6 +94,8 @@ class TaskScreenController extends GetxController {
 
       taskName.value = arguments[RouteArguments.TASK_NAME];
       task.value = arguments[RouteArguments.TASK];
+      mayRepeatPrompt.value = task.value!.mayRepeatPrompt;
+
       taskInstance.value = arguments[RouteArguments.TASK_INSTANCE];
 
       moduleInstance.value = arguments[RouteArguments.MODULE_INSTANCE];
@@ -112,6 +118,7 @@ class TaskScreenController extends GetxController {
     _audioPlayer.onPlayerComplete.listen((_) {
       isPlaying.value = false;
       audioPlayed.value = true;
+      promptPlayedOnce.value = true;
 
       // Check button should be enabled only if no recording is needed or after recording is completed.
       // In TaskMode.play, enable if audio has played. In TaskMode.record, defer until recording is done.
@@ -126,6 +133,9 @@ class TaskScreenController extends GetxController {
       if (taskMode.value == TaskMode.record) {
         isRecordButtonEnabled.value = true;
       }
+
+      checkAndDisablePlayButton();
+
     });
 
 
@@ -166,6 +176,9 @@ class TaskScreenController extends GetxController {
         var taskEntity = await taskService.getTask(taskInstance.taskID);
         currentTaskEntity.value = taskEntity;
 
+        // Update mayRepeatPrompt based on the current task's properties
+        mayRepeatPrompt.value = taskEntity?.mayRepeatPrompt ?? false;
+
         // Determine the task mode
         taskMode.value = taskEntity?.taskMode ?? TaskMode.play;
 
@@ -175,11 +188,11 @@ class TaskScreenController extends GetxController {
         audioPlayed.value = false;
         countdownStarted.value = false;
         countdownTrigger.value = false;
+        promptPlayedOnce.value = false;
 
-        var taskPrompt = await taskService
-            .getTaskPromptByTaskInstanceID(taskInstance.taskID);
-        audioPath.value =
-            taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+        var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskInstance.taskID);
+        audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+        checkAndDisablePlayButton();
       }
     } catch (e) {
       print("Error updating current task: $e");
@@ -189,6 +202,7 @@ class TaskScreenController extends GetxController {
     audioPlayed.value = false;
     recordingDone.value = false;
   }
+
 
   Future<void> togglePlay() async {
     if (!isPlaying.value) {
@@ -428,10 +442,10 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  // void startCountdown() {
-  //   countdownStarted.value = true;
-  //   update();
-  // }
+
+  void checkAndDisablePlayButton() {
+    shouldDisablePlayButton.value = !mayRepeatPrompt.value && promptPlayedOnce.value;
+  }
 
   void resetProgress() {
     currentTaskIndex.value = 0;
@@ -450,23 +464,6 @@ class TaskScreenController extends GetxController {
     totalTasks.value = taskInstances.length;
   }
 
-  // Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
-  //   await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
-  //   var evaluationID =
-  //   Get
-  //       .find<EvaluationController>()
-  //       .evaluation
-  //       .value!
-  //       .evaluationID!;
-  //   bool allModulesCompleted =
-  //   await evaluationService.areAllModulesCompleted(evaluationID);
-  //   if (allModulesCompleted) {
-  //     print("All modules completed. Evaluation can be marked as completed.");
-  //     evaluationRepository.setEvaluationAsCompleted(evaluationID);
-  //     Get.find<HomeController>().refreshEvaluations();
-  //     Get.find<HomeController>().refreshEvaluationCounts();
-  //   }
-  // }
 
   Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
     await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
@@ -513,4 +510,6 @@ class TaskScreenController extends GetxController {
       startCountdown();
     }
   }
+
+
 }
