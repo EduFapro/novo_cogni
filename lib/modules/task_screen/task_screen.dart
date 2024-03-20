@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
@@ -13,6 +14,7 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    var windowsSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -25,9 +27,14 @@ class TaskScreen extends GetView<TaskScreenController> {
                 var mode = controller.taskMode.value;
                 return Column(
                   children: [
-                    NumericProgressIndicator(
-                      current: controller.currentTaskIndex.value,
-                      total: controller.totalTasks.value,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal:
+                      (windowsSize.width * 0.30)
+                      ),
+                      child: CustomLinearPercentIndicator(
+                        current: controller.currentTaskIndex.value,
+                        total: controller.totalTasks.value,
+                      ),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.1,
@@ -480,3 +487,51 @@ class TaskCompletedWidget extends StatelessWidget {
     );
   }
 }
+
+
+class CustomLinearPercentIndicator extends StatelessWidget {
+  final int current;
+  final int total;
+
+  const CustomLinearPercentIndicator({
+    Key? key,
+    required this.current,
+    required this.total,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Calculate the percent value
+    final double percent = total != 0 ? (current-1)/ total : 0;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.0), // Adjust padding if necessary
+      child: Row(
+        children: [
+          Expanded( // This will make the LinearPercentIndicator take up available space
+            child: LinearPercentIndicator(
+              // width property is now removed, as Expanded will control the width
+              lineHeight: 20.0,
+              percent: percent,
+              center: Text(
+                "${(percent * 100).toStringAsFixed(1)}%",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              barRadius: const Radius.circular(10),
+              backgroundColor: Colors.grey,
+              progressColor: Colors.blue,
+              // Trailing and leading widgets removed, add if needed
+            ),
+          ),
+          // Add trailing and leading widgets here if needed
+        ],
+      ),
+    );
+  }
+}
+
+
