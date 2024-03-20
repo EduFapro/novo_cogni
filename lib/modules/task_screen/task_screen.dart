@@ -115,10 +115,10 @@ class TaskScreen extends GetView<TaskScreenController> {
 
                       IconButton(
                         color: controller.shouldDisablePlayButton.value
-                            ? Colors.redAccent
+                            ? Colors.redAccent.shade100
                             : Colors.black54,
 
-                        disabledColor: Colors.redAccent,
+                        disabledColor: Colors.redAccent.shade100,
                         iconSize: 48,
                         icon: Icon(controller.isPlaying.value ? Icons.stop : Icons.play_arrow),
                         onPressed: controller.shouldDisablePlayButton.value ? null : () => controller.togglePlay(),
@@ -194,7 +194,17 @@ class TaskScreen extends GetView<TaskScreenController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
+            // Skip Button
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: EdSkipButton(
+                  text: 'Skip',
+                ),
+              ),
+            ),
             Flexible(
               flex: 5,
               child: Container(
@@ -209,7 +219,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                         },
                         isActive: true.obs,
                       ),
-
                       // This Container wraps the middle button and gives it a bigger size
                       Container(
                         decoration: BoxDecoration(
@@ -236,8 +245,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                           } : null, // Disable the button if isRecordButtonEnabled is false
                         ),
                       ),
-
-
                       EdCheckIconButton(
                         iconData: Icons.check,
                         onPressed: () {
@@ -270,6 +277,7 @@ class TaskScreen extends GetView<TaskScreenController> {
       ),
     );
   }
+
 
   void _onTimeCompleted() async {
     // Play time up sound
