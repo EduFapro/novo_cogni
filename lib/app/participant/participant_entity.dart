@@ -50,4 +50,9 @@ class ParticipantEntity {
   String toString() {
     return 'ParticipantEntity{participantID: $participantID, name: $name, surname: $surname, sex: $sex}';
   }
+
+  get fullName => '$name $surname';
+
+
+
 }

@@ -159,7 +159,7 @@ class EdEvaluationHistory extends GetView<HomeController> {
                       children: [
                         Expanded(
                             flex: 2,
-                            child: Text(participant?.name ?? 'Unknown')),
+                            child: Text(participant.fullName ?? 'Unknown')),
                         Expanded(
                             flex: 2,
                             child: Text(evaluation.status.description)),

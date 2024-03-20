@@ -65,9 +65,9 @@ class EvaluationScreen extends GetView<EvaluationController> {
                   } else {
                     var futureModules = controller.modulesInstanceList.value
                             ?.map((moduleInstance) async {
-                          var module = await moduleInstance?.module;
+                          var module = await moduleInstance.module;
                           var tasks = await controller
-                              .getTasks(moduleInstance!.moduleInstanceID!);
+                              .getTasks(moduleInstance.moduleInstanceID!);
                           return EdModuleInstanceItem(
                             moduleName: module!.title!,
                             moduleInstace: moduleInstance,
@@ -121,7 +121,7 @@ class ParticipantCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        buildRichText("Nome", controller.participant.value?.name ?? ''),
+        buildRichText("Nome", controller.participant.value?.fullName ?? ''),
         buildRichText("Idade", "${controller.age} anos"),
         buildRichText(
             "Status", controller.evaluation.value!.status.description),
