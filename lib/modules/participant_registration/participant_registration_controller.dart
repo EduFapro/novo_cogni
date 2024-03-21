@@ -22,7 +22,7 @@ class ParticipantRegistrationController extends GetxController {
   final selectedDate = Rx<DateTime?>(null);
   final selectedLaterality = Rx<Handedness?>(null);
   final selectedLanguage = Rx<Language?>(Language.values.first);
-
+  final formKey = GlobalKey<FormState>();
   final RxMap<String, bool> itemsMap =
       RxMap<String, bool>({for (var v in modulesList) v.title!: false});
 

@@ -22,9 +22,8 @@ class ParticipantRegistrationScreen extends GetView<ParticipantRegistrationContr
           ),
           centerTitle: true,
         ),
-        body: Container(
-          child: ParticipantForm(),
-        ),
+        body: ParticipantForm(),
+
       ),
     );
   }

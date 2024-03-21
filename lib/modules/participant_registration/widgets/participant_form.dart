@@ -22,7 +22,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
     double fieldWidthRow2 = adjustedFormWidthRow2 / 3;
 
     return Padding(
-      padding: const EdgeInsets.all(80.0),
+      padding: const EdgeInsets.all(20.0),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -39,10 +39,23 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
+                key: controller.formKey,
                 child: Column(
                   children: [
                     Row(
                       children: [
+                        // SizedBox(
+                        //   width: fieldWidthRow1,
+                        //   child: TextFormField(
+                        //     controller: controller.fullNameController,
+                        //     decoration: InputDecoration(
+                        //       filled: true,
+                        //       fillColor: Color(0xffededed),
+                        //       border: InputBorder.none,
+                        //       labelText: UiStrings.fullName,
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           width: fieldWidthRow1,
                           child: TextFormField(
@@ -50,11 +63,25 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
-                              border: InputBorder.none,
                               labelText: UiStrings.fullName,
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 2.0),
+                              ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'This field cannot be empty';
+                              }
+                              return null;
+                            },
                           ),
                         ),
+
+
+
                         SizedBox(width: spacingWidth),
                         SizedBox(
                           width: fieldWidthRow1,
@@ -183,7 +210,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                     Padding(
                       padding: EdgeInsets.only(left: spacingWidth),
                       child: SizedBox(
-                        height: 300,
+                        height: 200,
                         width: 200,
                         child: Obx(() {
                           return Column(
@@ -214,6 +241,8 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                     ),
                   ]),
             ),
+
+
             Align(
               alignment: Alignment.bottomRight,
               child: Row(
@@ -247,22 +276,15 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
 
                       // Call the method to handle participant and modules creation
                       bool success =
-                          await controller.createParticipantAndModules(
-                              evaluator.evaluatorID!, selectedModules);
+                      await controller.createParticipantAndModules(
+                          evaluator.evaluatorID!, selectedModules);
 
                       if (success) {
                         var homeCtrller = Get.find<HomeController>();
                         homeCtrller.refreshData();
                         Get.back();
                       } else {
-                        // Handle the case where the operation failed
-                        // For example, show an error message to the user
-                        Get.snackbar(
-                          'Error', // Title
-                          'Failed to create participant and modules.',
-                          // Message
-                          snackPosition: SnackPosition.BOTTOM,
-                        );
+
                       }
                     },
                     style: TextButton.styleFrom(
@@ -279,6 +301,8 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                 ],
               ),
             ),
+
+
           ],
         ),
       ),

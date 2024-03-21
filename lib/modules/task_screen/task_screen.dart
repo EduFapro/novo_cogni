@@ -27,6 +27,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                 var mode = controller.taskMode.value;
                 return Column(
                   children: [
+                    SizedBox(height: 20,),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal:
                       (windowsSize.width * 0.30)
