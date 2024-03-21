@@ -14,7 +14,9 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    var windowsSize = MediaQuery.of(context).size;
+    var windowsSize = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -38,10 +40,14 @@ class TaskScreen extends GetView<TaskScreenController> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.1,
                     ),
                     Text(
-                      "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
+                      "Current Task: ${controller.currentTaskEntity.value
+                          ?.title ?? 'Unknown'}",
                       style: TextStyle(fontSize: 18),
                     ),
                     Center(child: buildInterfaceBasedOnMode(context, mode)),
@@ -55,7 +61,10 @@ class TaskScreen extends GetView<TaskScreenController> {
           Align(
             alignment: Alignment.centerRight,
             child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.4,
                 child: buildAccordion(context)),
           )
         ],
@@ -85,7 +94,9 @@ class TaskScreen extends GetView<TaskScreenController> {
   }
 
   Widget buildGeneralInterface(BuildContext context) {
-    final Size windowSize = MediaQuery.of(context).size;
+    final Size windowSize = MediaQuery
+        .of(context)
+        .size;
     print("TRUEEE: ${controller.shouldDisablePlayButton}");
     return SizedBox(
       width: 880,
@@ -128,10 +139,13 @@ class TaskScreen extends GetView<TaskScreenController> {
 
                         disabledColor: Colors.redAccent.shade100,
                         iconSize: 48,
-                        icon: Icon(controller.isPlaying.value ? Icons.stop : Icons.play_arrow),
-                        onPressed: controller.shouldDisablePlayButton.value ? null : () => controller.togglePlay(),
+                        icon: Icon(
+                            controller.isPlaying.value ? Icons.stop : Icons
+                                .play_arrow),
+                        onPressed: controller.shouldDisablePlayButton.value
+                            ? null
+                            : () => controller.togglePlay(),
                       ),
-
 
 
                       Padding(
@@ -157,7 +171,9 @@ class TaskScreen extends GetView<TaskScreenController> {
   }
 
   Widget buildAudioPlayerInterface(BuildContext context) {
-    final Size windowSize = MediaQuery.of(context).size;
+    final Size windowSize = MediaQuery
+        .of(context)
+        .size;
     return Container(
       child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -191,7 +207,9 @@ class TaskScreen extends GetView<TaskScreenController> {
   }
 
   Widget buildAudioRecorderInterface(BuildContext context) {
-    final Size windowSize = MediaQuery.of(context).size;
+    final Size windowSize = MediaQuery
+        .of(context)
+        .size;
     final recorderInterfaceHeight = windowSize.height * 0.40;
     final TaskScreenController controller = Get.find<TaskScreenController>();
 
@@ -228,31 +246,9 @@ class TaskScreen extends GetView<TaskScreenController> {
                         isActive: true.obs,
                       ),
                       // This Container wraps the middle button and gives it a bigger size
-                      Container(
-                        decoration: BoxDecoration(
-                            color: controller.isRecordButtonEnabled.value
-                                ? (controller.isRecording.value ? Colors.redAccent.shade100 : Colors.blue.shade100)
-                                : Colors.grey.shade400, // Grey color for disabled state
-                            borderRadius: BorderRadius.circular(50)),
-                        width: 100,
-                        height: 100,
-                        child: IconButton(
-                          icon: Icon(
-                            controller.isRecording.value ? Icons.stop : Icons.mic,
-                            size: 80, // Adjust the size of the icon if necessary
-                          ),
-                          color: controller.isRecordButtonEnabled.value
-                              ? (controller.isRecording.value ? Colors.red : Colors.blue)
-                              : Colors.grey, // Grey icon for disabled state
-                          onPressed: controller.isRecordButtonEnabled.value ? () async {
-                            if (controller.isRecording.value) {
-                              await controller.stopRecording();
-                            } else {
-                              await controller.startRecording();
-                            }
-                          } : null, // Disable the button if isRecordButtonEnabled is false
-                        ),
-                      ),
+                      controller.task.value!.test_only
+                          ? CustomTestingRecordingButton(controller: controller)
+                          : CustomRecordingButton(controller: controller),
                       EdCheckIconButton(
                         iconData: Icons.check,
                         onPressed: () {
@@ -332,7 +328,7 @@ class TaskScreen extends GetView<TaskScreenController> {
       initiallyExpanded: false,
       // Set to true if you want the accordion to be expanded initially
       title:
-          Text("Task Details", style: TextStyle(fontWeight: FontWeight.bold)),
+      Text("Task Details", style: TextStyle(fontWeight: FontWeight.bold)),
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -351,6 +347,86 @@ class TaskScreen extends GetView<TaskScreenController> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CustomRecordingButton extends StatelessWidget {
+  const CustomRecordingButton({
+    super.key,
+    required this.controller,
+  });
+
+  final TaskScreenController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: controller.isRecordButtonEnabled.value
+              ? (controller.isRecording.value
+              ? Colors.redAccent.shade100
+              : Colors.blue.shade100)
+              : Colors.grey.shade400, // Grey color for disabled state
+          borderRadius: BorderRadius.circular(50)),
+      width: 100,
+      height: 100,
+      child: IconButton(
+        icon: Icon(
+          controller.isRecording.value ? Icons.stop : Icons.mic,
+          size: 80, // Adjust the size of the icon if necessary
+        ),
+        color: controller.isRecordButtonEnabled.value
+            ? (controller.isRecording.value ? Colors.red : Colors.blue)
+            : Colors.grey, // Grey icon for disabled state
+        onPressed: controller.isRecordButtonEnabled.value ? () async {
+          if (controller.isRecording.value) {
+            await controller.stopRecording();
+          } else {
+            await controller.startRecording();
+          }
+        } : null, // Disable the button if isRecordButtonEnabled is false
+      ),
+    );
+  }
+}
+
+class CustomTestingRecordingButton extends StatelessWidget {
+  const CustomTestingRecordingButton({
+    super.key,
+    required this.controller,
+  });
+
+  final TaskScreenController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: controller.isRecordButtonEnabled.value
+              ? (controller.isRecording.value
+              ? Colors.redAccent.shade100
+              : Colors.blue.shade100)
+              : Colors.grey.shade400, // Grey color for disabled state
+          borderRadius: BorderRadius.circular(50)),
+      width: 100,
+      height: 100,
+      child: IconButton(
+        icon: Icon(
+          controller.isRecording.value ? Icons.stop : Icons.mic,
+          size: 80, // Adjust the size of the icon if necessary
+        ),
+        color: controller.isRecordButtonEnabled.value
+            ? (controller.isRecording.value ? Colors.red : Colors.blue)
+            : Colors.grey, // Grey icon for disabled state
+        onPressed: controller.isRecordButtonEnabled.value ? () async {
+          if (controller.isRecording.value) {
+            await controller.stopRecording();
+          } else {
+            await controller.startRecording();
+          }
+        } : null, // Disable the button if isRecordButtonEnabled is false
+      ),
     );
   }
 }
@@ -401,19 +477,20 @@ class EdSkipButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<TaskScreenController>();
 
-    return Obx(() => ElevatedButton(
+    return Obx(() =>
+        ElevatedButton(
           onPressed: controller.launchNextTaskWithoutCompletingCurrent,
           child: Text(text),
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.black,
             backgroundColor:
-                controller.isPlaying.value ? Colors.grey : Colors.white,
+            controller.isPlaying.value ? Colors.grey : Colors.white,
             elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
               side: BorderSide(
                   color:
-                      controller.isPlaying.value ? Colors.grey : Colors.black),
+                  controller.isPlaying.value ? Colors.grey : Colors.black),
             ),
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           ),
@@ -503,10 +580,11 @@ class CustomLinearPercentIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calculate the percent value
-    final double percent = total != 0 ? (current-1)/ total : 0;
+    final double percent = total != 0 ? (current - 1) / total : 0;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.0), // Adjust padding if necessary
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      // Adjust padding if necessary
       child: Row(
         children: [
           Expanded( // This will make the LinearPercentIndicator take up available space
