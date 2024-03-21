@@ -90,7 +90,7 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                                     AppRoutes.newPassword,
                                     arguments: {
                                       RouteArguments.FIRST_LOGIN: controller.currentEvaluatorFirstLogin.value,
-                                      RouteArguments.EVALUATOR_ID: controller.currentEvaluator.value!.evaluatorID!,
+                                      RouteArguments.EVALUATOR: controller.currentEvaluator.value!,
                                     },
                                   );
                                 }

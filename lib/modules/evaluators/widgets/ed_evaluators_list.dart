@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/person_enums/person_enums.dart';
+import '../../../constants/route_arguments.dart';
+import '../../../routes.dart';
 import '../evaluators_controller.dart';
 import '../../widgets/ed_input_text.dart';
 import 'ed_new_evaluator_button.dart';
-
 
 class EdEvaluatorsList extends GetView<EvaluatorsController> {
   final String placeholder;
@@ -36,7 +37,6 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
             controller: controller.searchController,
             onSearch: controller.performSearch,
           ),
-
           Expanded(
             child: Obx(() {
               var evaluatorsList = controller.filteredEvaluatorsList;
@@ -53,10 +53,34 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
                   rows: evaluatorsList.map((evaluator) {
                     return DataRow(
                       cells: [
-                        DataCell(Text('${evaluator.name} ${evaluator.surname}')),
-                        DataCell(Text(evaluator.username)),
-                        DataCell(Text(DateFormat('dd/MM/yyyy').format(evaluator.birthDate))),
-                        DataCell(Text(evaluator.sex == Sex.male ? 'Male' : 'Female')),
+                        DataCell(
+                          Text('${evaluator.name} ${evaluator.surname}'),
+                          onTap: () => Get.toNamed(
+                            AppRoutes.evaluatorRegistration,
+                            arguments: {
+                              RouteArguments.EVALUATOR: evaluator,
+                            },
+                          ),
+                        ),
+                        DataCell(
+                          Text(evaluator.username),
+                          onTap: () => Get.toNamed(
+                              AppRoutes.evaluatorRegistration,
+                              arguments: evaluator),
+                        ),
+                        DataCell(
+                          Text(DateFormat('dd/MM/yyyy')
+                              .format(evaluator.birthDate)),
+                          onTap: () => Get.toNamed(
+                              AppRoutes.evaluatorRegistration,
+                              arguments: evaluator),
+                        ),
+                        DataCell(
+                          Text(evaluator.sex == Sex.male ? 'Male' : 'Female'),
+                          onTap: () => Get.toNamed(
+                              AppRoutes.evaluatorRegistration,
+                              arguments: evaluator),
+                        ),
                       ],
                     );
                   }).toList(),

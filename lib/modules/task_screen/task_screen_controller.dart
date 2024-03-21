@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:novo_cogni/app/evaluation/evaluation_repository.dart';
+import 'package:novo_cogni/app/evaluator/evaluator_entity.dart';
 import 'package:novo_cogni/app/module_instance/module_instance_entity.dart';
 import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import 'package:novo_cogni/app/task_instance/task_instance_repository.dart';
@@ -31,7 +32,7 @@ class TaskScreenController extends GetxController {
 
   var participant = Rxn<ParticipantEntity>();
   var evaluation = Rxn<EvaluationEntity>();
-  var evaluatorId = RxInt(0);
+  var evaluator = Rxn<EvaluatorEntity>();
   var taskName = RxString("");
   var task = Rxn<TaskEntity>();
   var taskInstance = Rxn<TaskInstanceEntity>();
@@ -90,7 +91,7 @@ class TaskScreenController extends GetxController {
     if (arguments != null) {
       participant.value = arguments[RouteArguments.PARTICIPANT];
       evaluation.value = arguments[RouteArguments.EVALUATION];
-      evaluatorId.value = arguments[RouteArguments.EVALUATOR_ID];
+      evaluator.value = arguments[RouteArguments.EVALUATOR];
 
       taskName.value = arguments[RouteArguments.TASK_NAME];
       task.value = arguments[RouteArguments.TASK];

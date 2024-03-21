@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/evaluator/evaluator_repository.dart';
 import '../../constants/enums/person_enums/person_enums.dart';
+import '../../constants/route_arguments.dart';
 import '../../mixins/ValidationMixin.dart';
 import '../evaluators/evaluators_controller.dart';
 
@@ -28,26 +29,58 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   final formKey = GlobalKey<FormState>();
 
   @override
+  @override
   void onInit() {
     super.onInit();
 
+    EvaluatorEntity? evaluator;
+
+    // Attempt to get the evaluator ID passed as an argument
+    // Ensure Get.arguments is not null before accessing it
+    if (Get.arguments != null) {
+
+      // Attempt to get the evaluator passed as an argument
+      evaluator = Get.arguments[RouteArguments.EVALUATOR];
+
+
+      // If there's an evaluator, populate form fields
+      if (evaluator != null) {
+        _populateFieldsWithEvaluatorData(evaluator.evaluatorID!);
+      }
+    }
     fullNameFocusNode.addListener(() async {
       if (!fullNameFocusNode.hasFocus) {
-        // Validation for fullName
         final validationResult = validateFullName(fullNameController.text);
         if (validationResult == null) {
-          // Generate a base username
           String baseUsername = generateUsername(fullNameController.text, []);
-          // Check if username exists and update accordingly
           await checkAndUpdateUsername(baseUsername);
         } else {
-          // If validation fails
           username.value = '';
           isUsernameValid.value = false;
         }
       }
     });
   }
+
+  Future<void> _populateFieldsWithEvaluatorData(int evaluatorId) async {
+    try {
+      final evaluator = await _repository.getEvaluator(evaluatorId);
+      if (evaluator != null) {
+        fullNameController.text = '${evaluator.name} ${evaluator.surname}';
+        dateOfBirthController.text = DateFormat.yMd().format(evaluator.birthDate);
+        specialtyController.text = evaluator.specialty ?? '';
+        cpfOrNifController.text = evaluator.cpfOrNif ?? '';
+        usernameController.text = evaluator.username;
+        selectedSex.value = evaluator.sex;
+        selectedDate.value = evaluator.birthDate;
+
+        // Assuming you have methods to set initial values for other fields if needed
+      }
+    } catch (e) {
+      print("Error fetching evaluator data: $e");
+    }
+  }
+
 
 
   void selectDate(BuildContext context) async {

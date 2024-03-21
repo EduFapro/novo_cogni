@@ -18,7 +18,7 @@ class EvaluationController extends GetxController {
 
   var participant = Rxn<ParticipantEntity>();
   var evaluation = Rxn<EvaluationEntity>();
-  var evaluatorId = RxInt(0);
+  var evaluator = Rxn<EvaluationEntity>();
   var modulesInstanceList = Rx<List<ModuleInstanceEntity>?>(null);
   var tasksListDetails = Rx<List<Map<int, List<TaskInstanceEntity>>>>([]);
 
@@ -50,7 +50,7 @@ class EvaluationController extends GetxController {
     if (arguments != null) {
       participant.value = arguments[RouteArguments.PARTICIPANT];
       evaluation.value = arguments[RouteArguments.EVALUATION];
-      evaluatorId.value = arguments[RouteArguments.EVALUATOR_ID];
+      evaluator.value = arguments[RouteArguments.EVALUATOR];
 
 
       if (evaluation.value != null) {
@@ -147,7 +147,7 @@ class EvaluationController extends GetxController {
 
   void navigateToTask(
       TaskEntity taskEntity, TaskInstanceEntity taskInstance, ModuleInstanceEntity moduleInstance) {
-    print("RouteArguments.EVALUATOR_ID: ${evaluatorId.value}");
+    print("RouteArguments.EVALUATOR: ${evaluator.value}");
     print("RouteArguments.TASK_NAME: ${taskEntity.title}");
     print("RouteArguments.TASK_ID: ${taskEntity.taskID}");
     print("RouteArguments.TASK_INSTANCE: ${taskInstance}");
@@ -155,7 +155,7 @@ class EvaluationController extends GetxController {
     Get.toNamed(
       AppRoutes.task,
       arguments: {
-        RouteArguments.EVALUATOR_ID: evaluatorId.value,
+        RouteArguments.EVALUATOR: evaluator.value,
         RouteArguments.PARTICIPANT: participant.value,
         RouteArguments.TASK_NAME: taskEntity.title,
         RouteArguments.TASK: taskEntity,
