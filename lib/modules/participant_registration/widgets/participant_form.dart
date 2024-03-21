@@ -20,7 +20,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
 
     double fieldWidthRow1 = adjustedFormWidth / 2;
     double fieldWidthRow2 = adjustedFormWidthRow2 / 3;
-
+    var fieldContainerHeight = 80.0;
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: SingleChildScrollView(
@@ -57,6 +57,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                         //   ),
                         // ),
                         SizedBox(
+                          height: fieldContainerHeight,
                           width: fieldWidthRow1,
                           child: TextFormField(
                             controller: controller.fullNameController,
@@ -65,10 +66,12 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                               fillColor: Color(0xffededed),
                               labelText: UiStrings.fullName,
                               errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 1.0),
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 2.0),
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 2.0),
                               ),
                             ),
                             validator: (value) {
@@ -79,18 +82,30 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             },
                           ),
                         ),
-
-
-
                         SizedBox(width: spacingWidth),
                         SizedBox(
+                          height: fieldContainerHeight,
                           width: fieldWidthRow1,
                           child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select a date'; // Return a message to show as an error
+                              }
+                              return null; // Return null if the date is valid
+                            },
                             controller: controller.birthDateController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
                               labelText: UiStrings.dateOfBirth,
+                              errorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 2.0),
+                              ),
                             ),
                             readOnly: true,
                             onTap: () async {
@@ -105,8 +120,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                                     .toLocal()
                                     .toString()
                                     .split(' ')[0];
-                                controller.selectedDate.value =
-                                    pickedDate;
+                                controller.selectedDate.value = pickedDate;
                               }
                             },
                           ),
@@ -117,34 +131,57 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                     Row(
                       children: [
                         SizedBox(
+                          height: fieldContainerHeight,
                           width: fieldWidthRow2,
                           child: DropdownButtonFormField<Sex>(
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
                               labelText: UiStrings.sex,
+                              errorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 2.0),
+                              ),
                             ),
                             items: Sex.values.map((sex) {
                               return DropdownMenuItem<Sex>(
                                 value: sex,
-
-                                child: Text(sex == Sex.male ? Sex.male.description : Sex.female.description),
+                                child: Text(sex.description),
                               );
                             }).toList(),
                             onChanged: (Sex? value) {
                               controller.selectedSex.value = value;
                             },
                             value: controller.selectedSex.value,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Please select an option'; // Error message
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         SizedBox(width: spacingWidth),
                         SizedBox(
+                          height: fieldContainerHeight,
                           width: fieldWidthRow2,
                           child: DropdownButtonFormField<EducationLevel>(
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
                               labelText: UiStrings.educationLevel,
+                              errorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 2.0),
+                              ),
                             ),
                             items: EducationLevel.values.map((educationLevel) {
                               return DropdownMenuItem<EducationLevel>(
@@ -156,27 +193,48 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                               controller.selectedEducationLevel.value = value;
                             },
                             value: controller.selectedEducationLevel.value,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Please select an option'; // Error message
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         SizedBox(width: spacingWidth),
                         SizedBox(
+                          height: fieldContainerHeight,
                           width: fieldWidthRow2,
                           child: DropdownButtonFormField<Handedness>(
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Color(0xffededed),
                               labelText: UiStrings.laterality,
+                              errorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 2.0),
+                              ),
                             ),
-                            items: Handedness.values.map((laterality) {
+                            items: Handedness.values.map((handedness) {
                               return DropdownMenuItem<Handedness>(
-                                value: laterality,
-                                child: Text(laterality.description),
+                                value: handedness,
+                                child: Text(handedness.description),
                               );
                             }).toList(),
                             onChanged: (Handedness? value) {
                               controller.selectedLaterality.value = value;
                             },
                             value: controller.selectedLaterality.value,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Please select an option'; // Error message
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -234,6 +292,25 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                                   },
                                 );
                               }).toList(),
+                              Obx(() {
+                                if (!controller.isModuleSelectionValid.value) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        left: spacingWidth, top: 8),
+                                    child: Text(
+                                      'Please select at least one module.',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return SizedBox
+                                      .shrink(); // Return an empty container when there's no error.
+                                }
+                              }),
                             ],
                           );
                         }),
@@ -241,8 +318,6 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                     ),
                   ]),
             ),
-
-
             Align(
               alignment: Alignment.bottomRight,
               child: Row(
@@ -266,26 +341,35 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                   SizedBox(width: 20),
                   TextButton(
                     onPressed: () async {
-                      controller.printFormData();
+                      // Check if the form is valid
+                      bool isFormValid =
+                          controller.formKey.currentState!.validate();
+                      // Check if at least one module is selected
+                      bool isAtLeastOneModuleSelected =
+                          controller.isModuleSelected();
 
-                      // Capture selected activities from the form
-                      List<String> selectedModules = controller.itemsMap.entries
-                          .where((entry) => entry.value)
-                          .map((entry) => entry.key)
-                          .toList();
+                      controller.isModuleSelectionValid.value =
+                          isAtLeastOneModuleSelected;
 
-                      // Call the method to handle participant and modules creation
-                      bool success =
-                      await controller.createParticipantAndModules(
-                          evaluator.evaluatorID!, selectedModules);
+                      if (isFormValid && isAtLeastOneModuleSelected) {
+                        controller.printFormData();
 
-                      if (success) {
-                        var homeCtrller = Get.find<HomeController>();
-                        homeCtrller.refreshData();
-                        Get.back();
-                      } else {
+                        List<String> selectedModules = controller
+                            .itemsMap.entries
+                            .where((entry) => entry.value)
+                            .map((entry) => entry.key)
+                            .toList();
 
-                      }
+                        bool success =
+                            await controller.createParticipantAndModules(
+                                evaluator.evaluatorID!, selectedModules);
+
+                        if (success) {
+                          var homeCtrller = Get.find<HomeController>();
+                          homeCtrller.refreshData();
+                          Get.back();
+                        }
+                      } else {}
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -301,8 +385,6 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                 ],
               ),
             ),
-
-
           ],
         ),
       ),

@@ -26,6 +26,9 @@ class ParticipantRegistrationController extends GetxController {
   final RxMap<String, bool> itemsMap =
       RxMap<String, bool>({for (var v in modulesList) v.title!: false});
 
+  final isModuleSelectionValid = RxBool(true);
+
+
   // Method to select a date using a date picker
   void selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -76,6 +79,11 @@ class ParticipantRegistrationController extends GetxController {
 
     return true;
   }
+
+  bool isModuleSelected() {
+    return itemsMap.containsValue(true);
+  }
+
 
   void printFormData() {
     print("Full Name: ${fullNameController.text}");
