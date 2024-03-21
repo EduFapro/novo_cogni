@@ -25,6 +25,8 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   var isGeneratingUsername = false.obs;
   var isUsernameValid = false.obs;
   final FocusNode fullNameFocusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
+
   @override
   void onInit() {
     super.onInit();
