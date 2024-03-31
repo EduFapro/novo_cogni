@@ -1,6 +1,6 @@
 final Map<String, String> ptBrTranslations = {
   'hello': 'Ola',
-  'new_participant': 'Novo Participante',
+  'new_participant': 'Novo Avaliando',
   'password': 'Senha',
   'login': 'Entrar',
   'username': 'Username',
@@ -14,7 +14,7 @@ final Map<String, String> ptBrTranslations = {
   'status': 'Status',
   'evaluator': 'Avaliador',
   'date': 'Data',
-  'participant_registration': 'Cadastro de Participante',
+  'participant_registration': 'Cadastro de Avaliando',
   'identification_data': 'Dados de Identificação',
   'full_name': 'Nome Completo',
   'date_of_birth': 'Data de Nascimento',
