@@ -8,7 +8,7 @@ class ParticipantEntity {
   final DateTime birthDate;
   final Sex sex;
   final EducationLevel educationLevel;
-  final Handedness handedness;
+  // final Handedness handedness;
 
   ParticipantEntity({
     this.participantID,
@@ -17,7 +17,7 @@ class ParticipantEntity {
     required this.birthDate,
     required this.sex,
     required this.educationLevel,
-    required this.handedness,
+    // required this.handedness,
   });
 
   // Adapt fromMap method
@@ -29,7 +29,7 @@ class ParticipantEntity {
       birthDate: DateTime.parse(map[BIRTH_DATE_PARTICIPANT]),
       sex: SexExtension.fromValue(map[PARTICIPANT_SEX]),
       educationLevel: EducationLevelExtension.fromValue(map[PARTICIPANT_EDUCATION_LEVEL]),
-      handedness: HandednessExtension.fromValue(map[PARTICIPANT_HANDEDNESS]),
+      // handedness: HandednessExtension.fromValue(map[PARTICIPANT_HANDEDNESS]),
     );
   }
 
@@ -42,7 +42,7 @@ class ParticipantEntity {
       BIRTH_DATE_PARTICIPANT: birthDate.toIso8601String(),
       PARTICIPANT_SEX: sex.numericValue,
       PARTICIPANT_EDUCATION_LEVEL: educationLevel.numericValue,
-      PARTICIPANT_HANDEDNESS: handedness.numericValue,
+      // PARTICIPANT_HANDEDNESS: handedness.numericValue,
     };
   }
 

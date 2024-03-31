@@ -48,7 +48,7 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
                     DataColumn(label: Text(UiStrings.name)),
                     DataColumn(label: Text(UiStrings.username)),
                     DataColumn(label: Text(UiStrings.dateOfBirth)),
-                    DataColumn(label: Text(UiStrings.sex)),
+                    // DataColumn(label: Text(UiStrings.sex)),
                   ],
                   rows: evaluatorsList.map((evaluator) {
                     return DataRow(
@@ -75,12 +75,12 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
                               AppRoutes.evaluatorRegistration,
                               arguments: evaluator),
                         ),
-                        DataCell(
-                          Text(evaluator.sex == Sex.male ? 'Male' : 'Female'),
-                          onTap: () => Get.toNamed(
-                              AppRoutes.evaluatorRegistration,
-                              arguments: evaluator),
-                        ),
+                        // DataCell(
+                        //   Text(evaluator.sex == Sex.male ? 'Male' : 'Female'),
+                        //   onTap: () => Get.toNamed(
+                        //       AppRoutes.evaluatorRegistration,
+                        //       arguments: evaluator),
+                        // ),
                       ],
                     );
                   }).toList(),

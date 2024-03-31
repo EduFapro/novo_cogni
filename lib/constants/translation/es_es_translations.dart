@@ -58,5 +58,5 @@ final Map<String, String> esEsTranslations = {
   'record_mode': 'Grabar',
   'start_task_button': "Iniciar",
   "postgraduate": "Posgrado",
-
+  "other_sex": "Otro",
 };

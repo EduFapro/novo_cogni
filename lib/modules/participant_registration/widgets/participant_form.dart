@@ -202,41 +202,41 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                           ),
                         ),
                         SizedBox(width: spacingWidth),
-                        SizedBox(
-                          height: fieldContainerHeight,
-                          width: fieldWidthRow2,
-                          child: DropdownButtonFormField<Handedness>(
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color(0xffededed),
-                              labelText: UiStrings.laterality,
-                              errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.red, width: 2.0),
-                              ),
-                            ),
-                            items: Handedness.values.map((handedness) {
-                              return DropdownMenuItem<Handedness>(
-                                value: handedness,
-                                child: Text(handedness.description),
-                              );
-                            }).toList(),
-                            onChanged: (Handedness? value) {
-                              controller.selectedLaterality.value = value;
-                            },
-                            value: controller.selectedLaterality.value,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Please select an option'; // Error message
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: fieldContainerHeight,
+                        //   width: fieldWidthRow2,
+                        //   child: DropdownButtonFormField<Handedness>(
+                        //     decoration: InputDecoration(
+                        //       filled: true,
+                        //       fillColor: Color(0xffededed),
+                        //       labelText: UiStrings.laterality,
+                        //       errorBorder: OutlineInputBorder(
+                        //         borderSide:
+                        //             BorderSide(color: Colors.red, width: 1.0),
+                        //       ),
+                        //       focusedErrorBorder: OutlineInputBorder(
+                        //         borderSide:
+                        //             BorderSide(color: Colors.red, width: 2.0),
+                        //       ),
+                        //     ),
+                        //     items: Handedness.values.map((handedness) {
+                        //       return DropdownMenuItem<Handedness>(
+                        //         value: handedness,
+                        //         child: Text(handedness.description),
+                        //       );
+                        //     }).toList(),
+                        //     onChanged: (Handedness? value) {
+                        //       controller.selectedLaterality.value = value;
+                        //     },
+                        //     value: controller.selectedLaterality.value,
+                        //     validator: (value) {
+                        //       if (value == null) {
+                        //         return 'Please select an option'; // Error message
+                        //       }
+                        //       return null;
+                        //     },
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],

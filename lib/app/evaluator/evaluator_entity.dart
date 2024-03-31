@@ -8,7 +8,7 @@ class EvaluatorEntity extends Equatable {
   final String name;
   final String surname;
   final DateTime birthDate;
-  final Sex sex;
+  // final Sex sex;
   final String specialty;
   final String cpfOrNif;
   final String username;
@@ -21,7 +21,7 @@ class EvaluatorEntity extends Equatable {
     required this.name,
     required this.surname,
     required this.birthDate,
-    required this.sex,
+    // required this.sex,
     required this.specialty,
     required this.cpfOrNif,
     required this.username,
@@ -35,7 +35,7 @@ class EvaluatorEntity extends Equatable {
         name = map[EVALUATOR_NAME],
         surname = map[EVALUATOR_SURNAME],
         birthDate = DateTime.parse(map[BIRTH_DATE_EVALUATOR]),
-        sex = SexExtension.fromValue(map[EVALUATOR_SEX]),
+        // sex = SexExtension.fromValue(map[EVALUATOR_SEX]),
         specialty = map[SPECIALTY_EVALUATOR],
         cpfOrNif = map[CPF_EVALUATOR],
         username = map[USERNAME_EVALUATOR],
@@ -49,7 +49,7 @@ class EvaluatorEntity extends Equatable {
       EVALUATOR_NAME: name,
       EVALUATOR_SURNAME: surname,
       BIRTH_DATE_EVALUATOR: birthDate.toIso8601String(),
-      EVALUATOR_SEX: sex.toInt(),
+      // EVALUATOR_SEX: sex.toInt(),
       SPECIALTY_EVALUATOR: specialty,
       CPF_EVALUATOR: cpfOrNif,
       USERNAME_EVALUATOR: username,
@@ -65,7 +65,7 @@ class EvaluatorEntity extends Equatable {
     name,
     surname,
     birthDate,
-    sex,
+    // sex,
     specialty,
     cpfOrNif,
     username,
@@ -79,7 +79,7 @@ class EvaluatorEntity extends Equatable {
         'ID: $evaluatorID, '
         'Name: $name $surname, '
         'Birth Date: ${birthDate.toIso8601String()}, '
-        'Sex: ${sex.description}, '
+        // 'Sex: ${sex.description}, '
         'Specialty: $specialty, '
         'CPF/NIF: $cpfOrNif, '
         'Username: $username, '

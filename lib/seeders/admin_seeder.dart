@@ -22,7 +22,7 @@ class Config {
     name: adminName,
     surname: adminSurname,
     birthDate: _adminBirthDate,
-    sex: _adminSex,
+    // sex: _adminSex,
     specialty: adminSpecialty,
     cpfOrNif: adminCpfOrNif,
     username: adminUsername,
@@ -30,17 +30,17 @@ class Config {
     firstLogin: false,
   );
 
-  static Sex get _adminSex {
-    final sexString = dotenv.env['ADMIN_SEX']?.toLowerCase() ?? '';
-    switch (sexString) {
-      case 'male':
-        return Sex.male;
-      case 'female':
-        return Sex.female;
-      default:
-        return Sex.male;
-    }
-  }
+  // static Sex get _adminSex {
+  //   final sexString = dotenv.env['ADMIN_SEX']?.toLowerCase() ?? '';
+  //   switch (sexString) {
+  //     case 'male':
+  //       return Sex.male;
+  //     case 'female':
+  //       return Sex.female;
+  //     default:
+  //       return Sex.male;
+  //   }
+  // }
 
   static DateTime get _adminBirthDate {
     final birthDateString = dotenv.env['ADMIN_BIRTHDATE'];

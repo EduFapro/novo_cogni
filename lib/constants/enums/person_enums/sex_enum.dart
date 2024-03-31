@@ -1,6 +1,6 @@
 part of 'person_enums.dart';
 
-enum Sex { male, female }
+enum Sex { male, female, other }
 
 extension SexDesc on Sex {
   String get description {
@@ -9,8 +9,10 @@ extension SexDesc on Sex {
         return "male_sex".tr;
       case Sex.female:
         return "female_sex".tr;
+      case Sex.other:
+        return "other_sex".tr;
       default:
-        return "unknown".tr;
+        return "other_sex".tr;
     }
   }
 
@@ -25,10 +27,13 @@ extension SexDesc on Sex {
         return Sex.male;
       case 'female':
         return Sex.female;
+      case 'other':
+        return Sex.other;
       default:
-        return Sex.male;
+        return Sex.other;
     }
   }
+
 }
 
 const Map<Sex, int> _sexValues = {

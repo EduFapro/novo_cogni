@@ -20,7 +20,7 @@ class ParticipantRegistrationController extends GetxController {
   final selectedSex = Rx<Sex?>(null);
   final selectedEducationLevel = Rx<EducationLevel?>(null);
   final selectedDate = Rx<DateTime?>(null);
-  final selectedLaterality = Rx<Handedness?>(null);
+  // final selectedLaterality = Rx<Handedness?>(null);
   final selectedLanguage = Rx<Language?>(Language.values.first);
   final formKey = GlobalKey<FormState>();
   final RxMap<String, bool> itemsMap =
@@ -52,7 +52,7 @@ class ParticipantRegistrationController extends GetxController {
     DateTime? birthDate = selectedDate.value;
     Sex? sex = selectedSex.value;
     EducationLevel? educationLevel = selectedEducationLevel.value;
-    Handedness? handedness = selectedLaterality.value;
+    // Handedness? handedness = selectedLaterality.value;
     Language? language = selectedLanguage.value;
 
     List<String> nameParts = fullName.split(' ');
@@ -66,7 +66,7 @@ class ParticipantRegistrationController extends GetxController {
       birthDate: birthDate!,
       sex: sex!,
       educationLevel: educationLevel!,
-      handedness: handedness!,
+      // handedness: handedness!,
     );
 
     var success = await participantService.createParticipantAndModules(
@@ -90,7 +90,7 @@ class ParticipantRegistrationController extends GetxController {
     print("Birth Date: ${birthDateController.text}");
     print("Sex: ${selectedSex.value}");
     print("Education Level: ${selectedEducationLevel.value}");
-    print("Laterality: ${selectedLaterality.value}");
+    // print("Laterality: ${selectedLaterality.value}");
     print("Language: ${selectedLanguage.value}");
     // Add more prints as needed for other fields
   }

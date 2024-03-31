@@ -21,7 +21,7 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   final usernameController = TextEditingController();
   final RxString username = ''.obs;
 
-  var selectedSex = Rx<Sex?>(null);
+  // var selectedSex = Rx<Sex?>(null);
   var selectedDate = Rx<DateTime?>(null);
   var isGeneratingUsername = false.obs;
   var isUsernameValid = false.obs;
@@ -71,7 +71,7 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
         specialtyController.text = evaluator.specialty ?? '';
         cpfOrNifController.text = evaluator.cpfOrNif ?? '';
         usernameController.text = evaluator.username;
-        selectedSex.value = evaluator.sex;
+        // selectedSex.value = evaluator.sex;
         selectedDate.value = evaluator.birthDate;
 
         // Assuming you have methods to set initial values for other fields if needed
@@ -121,16 +121,16 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
       return false;
     }
 
-    if (selectedSex.value == null) {
-      print('Date or Sex is null. Aborting.');
-      return false;
-    }
+    // if (selectedSex.value == null) {
+    //   print('Date or Sex is null. Aborting.');
+    //   return false;
+    // }
 
     EvaluatorEntity newEvaluator = EvaluatorEntity(
       name: firstName,
       surname: lastName,
       birthDate: parsedDate,
-      sex: selectedSex.value!,
+      // sex: selectedSex.value!,
       specialty: specialtyController.text,
       cpfOrNif: cpfOrNifController.text,
       username: username.value,
@@ -181,7 +181,7 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   void printFormData() {
     print('Full Name: ${fullNameController.text}');
     print('Date of Birth: ${dateOfBirthController.text}');
-    print('Sex: ${selectedSex.value == Sex.male ? 'Male' : 'Female'}');
+    // print('Sex: ${selectedSex.value == Sex.male ? 'Male' : 'Female'}');
     print('Specialty: ${specialtyController.text}');
     print('CPF/NIF: ${cpfOrNifController.text}');
     print('Username: ${usernameController.text}');

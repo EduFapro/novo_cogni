@@ -23,7 +23,7 @@ class ParticipantLocalDataSource {
       // Use the enum's numeric value directly
       final sexValue = participant.sex.numericValue;
       final educationLevelValue = participant.educationLevel.numericValue;
-      final handednessValue = participant.handedness.numericValue;
+      // final handednessValue = participant.handedness.numericValue;
 
       return await database!.insert(
         TABLE_PARTICIPANTS,
@@ -33,7 +33,7 @@ class ParticipantLocalDataSource {
           BIRTH_DATE_PARTICIPANT: participant.birthDate.toIso8601String(),
           PARTICIPANT_SEX: sexValue,
           PARTICIPANT_EDUCATION_LEVEL: educationLevelValue,
-          PARTICIPANT_HANDEDNESS: handednessValue,
+          // PARTICIPANT_HANDEDNESS: handednessValue,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );

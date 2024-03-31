@@ -166,33 +166,33 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    SizedBox(
-                      height: fieldContainerHeight,
-                      width: fieldWidthRow2,
-                      child: DropdownButtonFormField<Sex>(
-                        decoration: InputDecoration(
-                          labelText: UiStrings.sex,
-                        ),
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Please select a sex'; // Your validation message
-                          }
-                          return null;
-                        },
-                        items: Sex.values.map((Sex sex) {
-                          return DropdownMenuItem<Sex>(
-                            value: sex,
-                            child: Text(sex == Sex.male
-                                ? Sex.male.description
-                                : Sex.female.description),
-                          );
-                        }).toList(),
-                        onChanged: (Sex? value) {
-                          controller.selectedSex.value = value;
-                        },
-                        value: controller.selectedSex.value,
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: fieldContainerHeight,
+                    //   width: fieldWidthRow2,
+                    //   child: DropdownButtonFormField<Sex>(
+                    //     decoration: InputDecoration(
+                    //       labelText: UiStrings.sex,
+                    //     ),
+                    //     validator: (value) {
+                    //       if (value == null) {
+                    //         return 'Please select a sex'; // Your validation message
+                    //       }
+                    //       return null;
+                    //     },
+                    //     items: Sex.values.map((Sex sex) {
+                    //       return DropdownMenuItem<Sex>(
+                    //         value: sex,
+                    //         child: Text(sex == Sex.male
+                    //             ? Sex.male.description
+                    //             : Sex.female.description),
+                    //       );
+                    //     }).toList(),
+                    //     onChanged: (Sex? value) {
+                    //       controller.selectedSex.value = value;
+                    //     },
+                    //     value: controller.selectedSex.value,
+                    //   ),
+                    // ),
                     SizedBox(width: spacingWidth),
                     Align(
                       alignment: Alignment.bottomRight,

@@ -33,7 +33,7 @@ class EvaluatorLocalDataSource {
     try {
       final Database? database = await db;
 
-      final sexValue = evaluator.sex.toInt();
+      // final sexValue = evaluator.sex.toInt();
 
       return await database!.insert(
         TABLE_EVALUATORS,
@@ -41,7 +41,7 @@ class EvaluatorLocalDataSource {
           EVALUATOR_NAME: evaluator.name,
           EVALUATOR_SURNAME: evaluator.surname,
           BIRTH_DATE_EVALUATOR: evaluator.birthDate.toIso8601String(),
-          EVALUATOR_SEX: sexValue,
+          // EVALUATOR_SEX: sexValue,
           CPF_EVALUATOR: evaluator.cpfOrNif,
           USERNAME_EVALUATOR: evaluator.username,
           SPECIALTY_EVALUATOR: evaluator.specialty,

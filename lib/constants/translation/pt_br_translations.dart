@@ -58,4 +58,5 @@ final Map<String, String> ptBrTranslations = {
   'record_mode': 'Gravar',
   'start_task_button': "Iniciar",
   "postgraduate": "Pós Graduação",
+  "other_sex": "Outro",
 };
