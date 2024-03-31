@@ -11,7 +11,7 @@ part "task_seeds_constants.dart";
 TaskEntity helloHowAreYouTask = TaskEntity(
   taskID: helloHowAreYouTaskId,
   title: helloHowAreYouTaskTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -21,7 +21,7 @@ TaskEntity helloHowAreYouTask = TaskEntity(
 TaskEntity whatsYourNameTask = TaskEntity(
     taskID: whatsYourNameTaskId,
     title: whatsYourNameTaskTitle,
-    moduleID: way2AgeModuleId,
+    moduleID: sociodemographicInfoId,
     taskMode: TaskMode.record,
     timeForCompletion: 40,
     mayRepeatPrompt: true,
@@ -30,7 +30,7 @@ TaskEntity whatsYourNameTask = TaskEntity(
 TaskEntity whatsYourDOBTask = TaskEntity(
   taskID: whatsYourDOBTaskId,
   title: whatsYourDOBTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -40,7 +40,7 @@ TaskEntity whatsYourDOBTask = TaskEntity(
 TaskEntity whatsYourEducationLevelTask = TaskEntity(
   taskID: whatsYourEducationLevelTaskId,
   title: whatsYourEducationLevelTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -50,7 +50,7 @@ TaskEntity whatsYourEducationLevelTask = TaskEntity(
 TaskEntity whatWasYourProfessionTask = TaskEntity(
   taskID: whatWasYourProfessionTaskId,
   title: whatWasYourProfessionTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -60,7 +60,7 @@ TaskEntity whatWasYourProfessionTask = TaskEntity(
 TaskEntity whoDoYouLiveWithTask = TaskEntity(
   taskID: whoDoYouLiveWithTaskId,
   title: whoDoYouLiveWithTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -70,7 +70,7 @@ TaskEntity whoDoYouLiveWithTask = TaskEntity(
 TaskEntity doYouExerciseFrequentlyTask = TaskEntity(
   taskID: doYouExerciseFrequentlyTaskId,
   title: doYouExerciseFrequentlyTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -80,7 +80,7 @@ TaskEntity doYouExerciseFrequentlyTask = TaskEntity(
 TaskEntity doYouReadFrequentlyTask = TaskEntity(
   taskID: doYouReadFrequentlyTaskId,
   title: doYouReadFrequentlyTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -90,7 +90,7 @@ TaskEntity doYouReadFrequentlyTask = TaskEntity(
 TaskEntity doYouPlayPuzzlesOrVideoGamesFrequentlyTask = TaskEntity(
   taskID: doYouPlayPuzzlesOrVideoGamesFrequentlyTaskId,
   title: doYouPlayPuzzlesOrVideoGamesFrequentlyTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -100,7 +100,7 @@ TaskEntity doYouPlayPuzzlesOrVideoGamesFrequentlyTask = TaskEntity(
 TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
   taskID: doYouHaveAnyDiseasesTaskId,
   title: doYouHaveAnyDiseasesTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -110,7 +110,7 @@ TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
 TaskEntity payCloseAttentionTask = TaskEntity(
   taskID: payCloseAttentionTaskId,
   title: payCloseAttentionTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -120,7 +120,7 @@ TaskEntity payCloseAttentionTask = TaskEntity(
 TaskEntity subtracting3AndAgainTask = TaskEntity(
   taskID: subtracting3AndAgainTaskId,
   title: subtracting3AndAgainTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
@@ -130,7 +130,7 @@ TaskEntity subtracting3AndAgainTask = TaskEntity(
 TaskEntity whatYearAreWeInTask = TaskEntity(
   taskID: whatYearAreWeInTaskId,
   title: whatYearAreWeInTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -140,7 +140,7 @@ TaskEntity whatYearAreWeInTask = TaskEntity(
 TaskEntity whatMonthAreWeInTask = TaskEntity(
   taskID: whatMonthAreWeInTaskId,
   title: whatMonthAreWeInTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -150,7 +150,7 @@ TaskEntity whatMonthAreWeInTask = TaskEntity(
 TaskEntity whatDayOfTheMonthIsItTask = TaskEntity(
   taskID: whatDayOfTheMonthIsItTaskId,
   title: whatDayOfTheMonthIsItTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -160,7 +160,7 @@ TaskEntity whatDayOfTheMonthIsItTask = TaskEntity(
 TaskEntity whatDayOfTheWeekIsItTask = TaskEntity(
   taskID: whatDayOfTheWeekIsItTaskId,
   title: whatDayOfTheWeekIsItTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -170,7 +170,7 @@ TaskEntity whatDayOfTheWeekIsItTask = TaskEntity(
 TaskEntity howOldAreYouTask = TaskEntity(
   taskID: howOldAreYouTaskId,
   title: howOldAreYouTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -180,7 +180,7 @@ TaskEntity howOldAreYouTask = TaskEntity(
 TaskEntity whereAreWeNowTask = TaskEntity(
   taskID: whereAreWeNowTaskId,
   title: whereAreWeNowTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -190,7 +190,7 @@ TaskEntity whereAreWeNowTask = TaskEntity(
 TaskEntity currentPresidentOfBrazilTask = TaskEntity(
   taskID: currentPresidentOfBrazilTaskId,
   title: currentPresidentOfBrazilTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -200,7 +200,7 @@ TaskEntity currentPresidentOfBrazilTask = TaskEntity(
 TaskEntity formerPresidentOfBrazilTask = TaskEntity(
   taskID: formerPresidentOfBrazilTaskId,
   title: formerPresidentOfBrazilTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -210,7 +210,7 @@ TaskEntity formerPresidentOfBrazilTask = TaskEntity(
 TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningFirstTimeTaskId,
   title: repeatWordsAfterListeningFirstTimeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -220,7 +220,7 @@ TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
 TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
   taskID: recallWordsFromListFirstTimeTaskId,
   title: recallWordsFromListFirstTimeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
@@ -230,7 +230,7 @@ TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
 TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningSecondTimeTaskId,
   title: repeatWordsAfterListeningSecondTimeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -240,7 +240,7 @@ TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
 TaskEntity recallWordsFromListSecondTimeTask = TaskEntity(
   taskID: recallWordsFromListSecondTimeTaskId,
   title: recallWordsFromListSecondTimeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
@@ -250,7 +250,7 @@ TaskEntity recallWordsFromListSecondTimeTask = TaskEntity(
 TaskEntity repeatWordsAfterListeningThirdTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningThirdTimeTaskId,
   title: repeatWordsAfterListeningThirdTimeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -260,7 +260,7 @@ TaskEntity repeatWordsAfterListeningThirdTimeTask = TaskEntity(
 TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
   taskID: recallWordsFromListThirdTimeTaskId,
   title: recallWordsFromListThirdTimeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
@@ -270,7 +270,7 @@ TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
 TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
   taskID: whatDidYouDoYesterdayTaskId,
   title: whatDidYouDoYesterdayTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -280,7 +280,7 @@ TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
 TaskEntity favoriteChildhoodGameTask = TaskEntity(
   taskID: favoriteChildhoodGameTaskId,
   title: favoriteChildhoodGameTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -290,7 +290,7 @@ TaskEntity favoriteChildhoodGameTask = TaskEntity(
 TaskEntity retellWordsHeardBeforeTask = TaskEntity(
   taskID: retellWordsHeardBeforeTaskId,
   title: retellWordsHeardBeforeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -300,7 +300,7 @@ TaskEntity retellWordsHeardBeforeTask = TaskEntity(
 TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
   taskID: payCloseAttentionToTheStoryTaskId,
   title: payCloseAttentionToTheStoryTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -310,7 +310,7 @@ TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
 TaskEntity anasCatStoryTask = TaskEntity(
   taskID: anasCatStoryTaskId,
   title: anasCatStoryTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
@@ -320,7 +320,7 @@ TaskEntity anasCatStoryTask = TaskEntity(
 TaskEntity howManyAnimalsCanYouThinkOfTask = TaskEntity(
   taskID: howManyAnimalsCanYouThinkOfTaskId,
   title: howManyAnimalsCanYouThinkOfTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -330,7 +330,7 @@ TaskEntity howManyAnimalsCanYouThinkOfTask = TaskEntity(
 TaskEntity wordsStartingWithFTask = TaskEntity(
   taskID: wordsStartingWithFTaskId,
   title: wordsStartingWithFTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -340,7 +340,7 @@ TaskEntity wordsStartingWithFTask = TaskEntity(
 TaskEntity wordsStartingWithATask = TaskEntity(
   taskID: wordsStartingWithATaskId,
   title: wordsStartingWithATitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -350,7 +350,7 @@ TaskEntity wordsStartingWithATask = TaskEntity(
 TaskEntity wordsStartingWithSTask = TaskEntity(
   taskID: wordsStartingWithSTaskId,
   title: wordsStartingWithSTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -360,7 +360,7 @@ TaskEntity wordsStartingWithSTask = TaskEntity(
 TaskEntity describeWhatYouSeeTask = TaskEntity(
   taskID: describeWhatYouSeeTaskId,
   title: describeWhatYouSeeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -370,7 +370,7 @@ TaskEntity describeWhatYouSeeTask = TaskEntity(
 TaskEntity retellStoryTask = TaskEntity(
   taskID: retellStoryTaskId,
   title: retellStoryTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -380,7 +380,7 @@ TaskEntity retellStoryTask = TaskEntity(
 TaskEntity yesOrNoQuestionsTask = TaskEntity(
   taskID: yesOrNoQuestionsTaskId,
   title: yesOrNoQuestionsTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -390,7 +390,7 @@ TaskEntity yesOrNoQuestionsTask = TaskEntity(
 TaskEntity canYouBatheAloneTask = TaskEntity(
   taskID: canYouBatheAloneTaskId,
   title: canYouBatheAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -400,7 +400,7 @@ TaskEntity canYouBatheAloneTask = TaskEntity(
 TaskEntity canYouDressAloneTask = TaskEntity(
   taskID: canYouDressAloneTaskId,
   title: canYouDressAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -410,7 +410,7 @@ TaskEntity canYouDressAloneTask = TaskEntity(
 TaskEntity canYouUseToiletAloneTask = TaskEntity(
   taskID: canYouUseToiletAloneTaskId,
   title: canYouUseToiletAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -420,7 +420,7 @@ TaskEntity canYouUseToiletAloneTask = TaskEntity(
 TaskEntity canYouUsePhoneAloneTask = TaskEntity(
   taskID: canYouUsePhoneAloneTaskId,
   title: canYouUsePhoneAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -430,7 +430,7 @@ TaskEntity canYouUsePhoneAloneTask = TaskEntity(
 TaskEntity canYouShopAloneTask = TaskEntity(
   taskID: canYouShopAloneTaskId,
   title: canYouShopAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -440,7 +440,7 @@ TaskEntity canYouShopAloneTask = TaskEntity(
 TaskEntity canYouHandleMoneyAloneTask = TaskEntity(
   taskID: canYouHandleMoneyAloneTaskId,
   title: canYouHandleMoneyAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -450,7 +450,7 @@ TaskEntity canYouHandleMoneyAloneTask = TaskEntity(
 TaskEntity canYouManageMedicationAloneTask = TaskEntity(
   taskID: canYouManageMedicationAloneTaskId,
   title: canYouManageMedicationAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -460,7 +460,7 @@ TaskEntity canYouManageMedicationAloneTask = TaskEntity(
 TaskEntity canYouUseTransportAloneTask = TaskEntity(
   taskID: canYouUseTransportAloneTaskId,
   title: canYouUseTransportAloneTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -470,7 +470,7 @@ TaskEntity canYouUseTransportAloneTask = TaskEntity(
 TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
   taskID: feelingsInPastTwoWeeksTaskId,
   title: feelingsInPastTwoWeeksTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -480,7 +480,7 @@ TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
 TaskEntity feelingSadFrequentlyTask = TaskEntity(
   taskID: feelingSadFrequentlyTaskId,
   title: feelingSadFrequentlyTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -490,7 +490,7 @@ TaskEntity feelingSadFrequentlyTask = TaskEntity(
 TaskEntity feelingTiredOrLackingEnergyTask = TaskEntity(
   taskID: feelingTiredOrLackingEnergyTaskId,
   title: feelingTiredOrLackingEnergyTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -500,7 +500,7 @@ TaskEntity feelingTiredOrLackingEnergyTask = TaskEntity(
 TaskEntity troubleSleepingTask = TaskEntity(
   taskID: troubleSleepingTaskId,
   title: troubleSleepingTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -510,7 +510,7 @@ TaskEntity troubleSleepingTask = TaskEntity(
 TaskEntity preferringToStayHomeTask = TaskEntity(
   taskID: preferringToStayHomeTaskId,
   title: preferringToStayHomeTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -520,7 +520,7 @@ TaskEntity preferringToStayHomeTask = TaskEntity(
 TaskEntity feelingUselessOrGuiltyTask = TaskEntity(
   taskID: feelingUselessOrGuiltyTaskId,
   title: feelingUselessOrGuiltyTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -530,7 +530,7 @@ TaskEntity feelingUselessOrGuiltyTask = TaskEntity(
 TaskEntity lostInterestInActivitiesTask = TaskEntity(
   taskID: lostInterestInActivitiesTaskId,
   title: lostInterestInActivitiesTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -540,7 +540,7 @@ TaskEntity lostInterestInActivitiesTask = TaskEntity(
 TaskEntity hopefulAboutFutureTask = TaskEntity(
   taskID: hopefulAboutFutureTaskId,
   title: hopefulAboutFutureTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
@@ -550,7 +550,7 @@ TaskEntity hopefulAboutFutureTask = TaskEntity(
 TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
     taskID: feelingLifeIsWorthLivingTaskId,
     title: feelingLifeIsWorthLivingTitle,
-    moduleID: way2AgeModuleId,
+    moduleID: sociodemographicInfoId,
     taskMode: TaskMode.record,
     timeForCompletion: 40,
     mayRepeatPrompt: true,
@@ -559,7 +559,7 @@ TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
 TaskEntity thankingForParticipationTask = TaskEntity(
   taskID: thankingForParticipationTaskId,
   title: thankingForParticipationTitle,
-  moduleID: way2AgeModuleId,
+  moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,

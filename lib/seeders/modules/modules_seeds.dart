@@ -6,8 +6,8 @@ part "modules_seeds_constants.dart";
 
 
 ModuleEntity way2AgeModule = ModuleEntity(
-    moduleID: way2AgeModuleId,
-    title: way2AgeTitle);
+    moduleID: sociodemographicInfoId,
+    title: sociodemographicInfo);
 
 // ModuleEntity testsModule = ModuleEntity(
 //     moduleID: testModuleId,
