@@ -5,13 +5,26 @@ import '../../app/module/module_entity.dart';
 part "modules_seeds_constants.dart";
 
 
-ModuleEntity way2AgeModule = ModuleEntity(
+ModuleEntity sociodemographicInfoModule = ModuleEntity(
     moduleID: sociodemographicInfoId,
     title: sociodemographicInfo);
 
-// ModuleEntity testsModule = ModuleEntity(
-//     moduleID: testModuleId,
-//     title: testsModuleTitle);
+
+ModuleEntity cognitiveFunctionsModule = ModuleEntity(
+    moduleID: cognitiveFunctionsId,
+    title: cognitiveFunctions
+);
+
+ModuleEntity functionalityModule = ModuleEntity(
+    moduleID: functionalityId,
+    title: functionality
+);
+
+ModuleEntity depressionSymptomsModule = ModuleEntity(
+    moduleID: depressionSymptomsId,
+    title: depressionSymptoms
+);
+
 
 ModuleEntity testsModule = ModuleEntity(
     moduleID: testsModuleId,
@@ -19,9 +32,11 @@ ModuleEntity testsModule = ModuleEntity(
 
 
 List<ModuleEntity> modulesList = [
-  // testingOnlyAudioModule,
   testsModule,
-  way2AgeModule,
+  sociodemographicInfoModule,
+  cognitiveFunctionsModule,
+  functionalityModule,
+  depressionSymptomsModule,
 ];
 
 void printModules() {
