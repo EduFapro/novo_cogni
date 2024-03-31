@@ -132,20 +132,27 @@ class TaskScreen extends GetView<TaskScreenController> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
 
-                      IconButton(
-                        color: controller.shouldDisablePlayButton.value
-                            ? Colors.redAccent.shade100
-                            : Colors.black54,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(
+                            color: controller.shouldDisablePlayButton.value
+                                ? Colors.redAccent.shade100
+                                : Colors.black54,
 
-                        disabledColor: Colors.redAccent.shade100,
-                        iconSize: 48,
-                        icon: Icon(
-                            controller.isPlaying.value ? Icons.stop : Icons
-                                .play_arrow),
-                        onPressed: controller.shouldDisablePlayButton.value
-                            ? null
-                            : () => controller.togglePlay(),
+                            disabledColor: Colors.redAccent.shade100,
+                            iconSize: 48,
+                            icon: Icon(
+                                controller.isPlaying.value ? Icons.stop : Icons
+                                    .play_arrow),
+                            onPressed: controller.shouldDisablePlayButton.value
+                                ? null
+                                : () => controller.togglePlay(),
+                          ),
+                          Text('Play', style: TextStyle(fontSize: 16)), // Subtitle label
+                        ],
                       ),
+
 
 
                       Padding(
@@ -192,6 +199,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                     ),
                     EdCheckIconButton(
                       iconData: Icons.check,
+                      label: "Confirm",
                       onPressed: () {
                         controller.onCheckButtonPressed();
                       },
@@ -220,47 +228,41 @@ class TaskScreen extends GetView<TaskScreenController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(height: 20),
-            // Skip Button
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: EdSkipButton(
+            SizedBox(height: 30,),
+            controller.task.value!.test_only
+                ? CustomTestingRecordingButton(controller: controller)
+                : CustomRecordingButton(controller: controller),
+            SizedBox(height: 50,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(width: 300,),
+                EdCheckIconButton(
+                  iconData: Icons.close,
+                  label: "Close",
+                  onPressed: () {
+                    controller.stopRecording();
+                  },
+                  isActive: true.obs,
+                ),
+                EdCheckIconButton(
+                  iconData: Icons.check,
+                  label: "Confirm",
+                  onPressed: () {
+                    controller.onCheckButtonPressed();
+                  },
+                  isActive: controller.isCheckButtonEnabled,
+                ),
+                EdSkipButton(
                   text: 'Skip',
                 ),
-              ),
+                SizedBox(width: 300,),
+              ],
             ),
-            Flexible(
-              flex: 5,
-              child: Container(
-                child: Obx(() {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      EdCheckIconButton(
-                        iconData: Icons.close,
-                        onPressed: () {
-                          controller.stopRecording();
-                        },
-                        isActive: true.obs,
-                      ),
-                      // This Container wraps the middle button and gives it a bigger size
-                      controller.task.value!.test_only
-                          ? CustomTestingRecordingButton(controller: controller)
-                          : CustomRecordingButton(controller: controller),
-                      EdCheckIconButton(
-                        iconData: Icons.check,
-                        onPressed: () {
-                          controller.onCheckButtonPressed();
-                        },
-                        isActive: controller.isCheckButtonEnabled,
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
+            SizedBox(height: 30,),
+
+
             Flexible(
               flex: 6,
               child: Container(
@@ -433,6 +435,7 @@ class CustomTestingRecordingButton extends StatelessWidget {
 
 class EdCheckIconButton extends StatelessWidget {
   final IconData iconData;
+  final String? label;
   final VoidCallback onPressed;
   final RxBool isActive;
 
@@ -440,7 +443,7 @@ class EdCheckIconButton extends StatelessWidget {
     Key? key,
     required this.iconData,
     required this.onPressed,
-    required this.isActive,
+    required this.isActive, this.label,
   }) : super(key: key);
 
   @override
@@ -450,16 +453,22 @@ class EdCheckIconButton extends StatelessWidget {
       Color borderColor = isActive.value ? Colors.black : Colors.grey;
       Color iconColor = iconData == Icons.check ? Colors.green : Colors.red;
 
-      return Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: borderColor, width: 2.0),
-        ),
-        child: IconButton(
-          icon: Icon(iconData),
-          color: iconColor,
-          onPressed: isActive.value ? onPressed : null,
-        ),
+      return Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: borderColor, width: 2.0),
+            ),
+            child: IconButton(
+              icon: Icon(iconData),
+              color: iconColor,
+              onPressed: isActive.value ? onPressed : null,
+            ),
+          ),
+          Text(label ?? "", style: TextStyle(fontSize: 12)), // Subtitle label for 'X' button
+
+        ],
       );
     });
   }
