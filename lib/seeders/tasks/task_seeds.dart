@@ -8,6 +8,8 @@ part "task_seeds_list.dart";
 
 part "task_seeds_constants.dart";
 
+
+// sociodemographicInfo - 1
 TaskEntity helloHowAreYouTask = TaskEntity(
   taskID: helloHowAreYouTaskId,
   title: helloHowAreYouTaskTitle,
@@ -17,7 +19,7 @@ TaskEntity helloHowAreYouTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 1,
 );
-
+// sociodemographicInfo - 2
 TaskEntity whatsYourNameTask = TaskEntity(
     taskID: whatsYourNameTaskId,
     title: whatsYourNameTaskTitle,
@@ -26,7 +28,7 @@ TaskEntity whatsYourNameTask = TaskEntity(
     timeForCompletion: 40,
     mayRepeatPrompt: true,
     position: 2);
-
+// sociodemographicInfo - 3
 TaskEntity whatsYourDOBTask = TaskEntity(
   taskID: whatsYourDOBTaskId,
   title: whatsYourDOBTitle,
@@ -36,7 +38,7 @@ TaskEntity whatsYourDOBTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 3,
 );
-
+// sociodemographicInfo - 4
 TaskEntity whatsYourEducationLevelTask = TaskEntity(
   taskID: whatsYourEducationLevelTaskId,
   title: whatsYourEducationLevelTitle,
@@ -46,7 +48,7 @@ TaskEntity whatsYourEducationLevelTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 4,
 );
-
+// sociodemographicInfo - 5
 TaskEntity whatWasYourProfessionTask = TaskEntity(
   taskID: whatWasYourProfessionTaskId,
   title: whatWasYourProfessionTitle,
@@ -56,7 +58,7 @@ TaskEntity whatWasYourProfessionTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 5,
 );
-
+// sociodemographicInfo - 6
 TaskEntity whoDoYouLiveWithTask = TaskEntity(
   taskID: whoDoYouLiveWithTaskId,
   title: whoDoYouLiveWithTitle,
@@ -66,7 +68,7 @@ TaskEntity whoDoYouLiveWithTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 6,
 );
-
+// sociodemographicInfo - 7
 TaskEntity doYouExerciseFrequentlyTask = TaskEntity(
   taskID: doYouExerciseFrequentlyTaskId,
   title: doYouExerciseFrequentlyTitle,
@@ -76,7 +78,7 @@ TaskEntity doYouExerciseFrequentlyTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 7,
 );
-
+// sociodemographicInfo - 8
 TaskEntity doYouReadFrequentlyTask = TaskEntity(
   taskID: doYouReadFrequentlyTaskId,
   title: doYouReadFrequentlyTitle,
@@ -86,7 +88,7 @@ TaskEntity doYouReadFrequentlyTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 8,
 );
-
+// sociodemographicInfo - 9
 TaskEntity doYouPlayPuzzlesOrVideoGamesFrequentlyTask = TaskEntity(
   taskID: doYouPlayPuzzlesOrVideoGamesFrequentlyTaskId,
   title: doYouPlayPuzzlesOrVideoGamesFrequentlyTitle,
@@ -96,7 +98,7 @@ TaskEntity doYouPlayPuzzlesOrVideoGamesFrequentlyTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 9,
 );
-
+// sociodemographicInfo - 10
 TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
   taskID: doYouHaveAnyDiseasesTaskId,
   title: doYouHaveAnyDiseasesTitle,
@@ -106,7 +108,7 @@ TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
   mayRepeatPrompt: true,
   position: 10,
 );
-
+// cognitiveFunctions - 1
 TaskEntity payCloseAttentionTask = TaskEntity(
   taskID: payCloseAttentionTaskId,
   title: payCloseAttentionTitle,
@@ -114,9 +116,9 @@ TaskEntity payCloseAttentionTask = TaskEntity(
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 11,
+  position: 1,
 );
-
+// cognitiveFunctions - 2
 TaskEntity subtracting3AndAgainTask = TaskEntity(
   taskID: subtracting3AndAgainTaskId,
   title: subtracting3AndAgainTitle,
@@ -124,9 +126,9 @@ TaskEntity subtracting3AndAgainTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
-  position: 12,
+  position: 2,
 );
-
+// cognitiveFunctions - 3
 TaskEntity whatYearAreWeInTask = TaskEntity(
   taskID: whatYearAreWeInTaskId,
   title: whatYearAreWeInTitle,
@@ -134,9 +136,9 @@ TaskEntity whatYearAreWeInTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 13,
+  position: 3,
 );
-
+// cognitiveFunctions - 4
 TaskEntity whatMonthAreWeInTask = TaskEntity(
   taskID: whatMonthAreWeInTaskId,
   title: whatMonthAreWeInTitle,
@@ -144,9 +146,9 @@ TaskEntity whatMonthAreWeInTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 14,
+  position: 4,
 );
-
+// cognitiveFunctions - 5
 TaskEntity whatDayOfTheMonthIsItTask = TaskEntity(
   taskID: whatDayOfTheMonthIsItTaskId,
   title: whatDayOfTheMonthIsItTitle,
@@ -154,9 +156,9 @@ TaskEntity whatDayOfTheMonthIsItTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 15,
+  position: 5,
 );
-
+// cognitiveFunctions - 6
 TaskEntity whatDayOfTheWeekIsItTask = TaskEntity(
   taskID: whatDayOfTheWeekIsItTaskId,
   title: whatDayOfTheWeekIsItTitle,
@@ -164,9 +166,9 @@ TaskEntity whatDayOfTheWeekIsItTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 16,
+  position: 6,
 );
-
+// cognitiveFunctions - 7
 TaskEntity howOldAreYouTask = TaskEntity(
   taskID: howOldAreYouTaskId,
   title: howOldAreYouTitle,
@@ -174,9 +176,9 @@ TaskEntity howOldAreYouTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 17,
+  position: 7,
 );
-
+// cognitiveFunctions - 8
 TaskEntity whereAreWeNowTask = TaskEntity(
   taskID: whereAreWeNowTaskId,
   title: whereAreWeNowTitle,
@@ -184,9 +186,9 @@ TaskEntity whereAreWeNowTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 18,
+  position: 8,
 );
-
+// cognitiveFunctions - 9
 TaskEntity currentPresidentOfBrazilTask = TaskEntity(
   taskID: currentPresidentOfBrazilTaskId,
   title: currentPresidentOfBrazilTitle,
@@ -194,9 +196,9 @@ TaskEntity currentPresidentOfBrazilTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 19,
+  position: 9,
 );
-
+// cognitiveFunctions - 10
 TaskEntity formerPresidentOfBrazilTask = TaskEntity(
   taskID: formerPresidentOfBrazilTaskId,
   title: formerPresidentOfBrazilTitle,
@@ -204,9 +206,9 @@ TaskEntity formerPresidentOfBrazilTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 20,
+  position: 10,
 );
-
+// cognitiveFunctions - 11
 TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningFirstTimeTaskId,
   title: repeatWordsAfterListeningFirstTimeTitle,
@@ -214,9 +216,9 @@ TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 21,
+  position: 11,
 );
-
+// cognitiveFunctions - 12
 TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
   taskID: recallWordsFromListFirstTimeTaskId,
   title: recallWordsFromListFirstTimeTitle,
@@ -224,9 +226,9 @@ TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
-  position: 22,
+  position: 12,
 );
-
+// cognitiveFunctions - 13
 TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningSecondTimeTaskId,
   title: repeatWordsAfterListeningSecondTimeTitle,
@@ -234,9 +236,9 @@ TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 23,
+  position: 13,
 );
-
+// cognitiveFunctions - 14
 TaskEntity recallWordsFromListSecondTimeTask = TaskEntity(
   taskID: recallWordsFromListSecondTimeTaskId,
   title: recallWordsFromListSecondTimeTitle,
@@ -244,9 +246,9 @@ TaskEntity recallWordsFromListSecondTimeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
-  position: 24,
+  position: 14,
 );
-
+// cognitiveFunctions - 15
 TaskEntity repeatWordsAfterListeningThirdTimeTask = TaskEntity(
   taskID: repeatWordsAfterListeningThirdTimeTaskId,
   title: repeatWordsAfterListeningThirdTimeTitle,
@@ -254,9 +256,9 @@ TaskEntity repeatWordsAfterListeningThirdTimeTask = TaskEntity(
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 25,
+  position: 15,
 );
-
+// cognitiveFunctions - 16
 TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
   taskID: recallWordsFromListThirdTimeTaskId,
   title: recallWordsFromListThirdTimeTitle,
@@ -264,9 +266,9 @@ TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
-  position: 26,
+  position: 16,
 );
-
+// cognitiveFunctions - 17
 TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
   taskID: whatDidYouDoYesterdayTaskId,
   title: whatDidYouDoYesterdayTitle,
@@ -274,9 +276,9 @@ TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 27,
+  position: 17,
 );
-
+// cognitiveFunctions - 18
 TaskEntity favoriteChildhoodGameTask = TaskEntity(
   taskID: favoriteChildhoodGameTaskId,
   title: favoriteChildhoodGameTitle,
@@ -284,9 +286,9 @@ TaskEntity favoriteChildhoodGameTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 28,
+  position: 18,
 );
-
+// cognitiveFunctions - 19
 TaskEntity retellWordsHeardBeforeTask = TaskEntity(
   taskID: retellWordsHeardBeforeTaskId,
   title: retellWordsHeardBeforeTitle,
@@ -294,9 +296,9 @@ TaskEntity retellWordsHeardBeforeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 29,
+  position: 19,
 );
-
+// cognitiveFunctions - 20
 TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
   taskID: payCloseAttentionToTheStoryTaskId,
   title: payCloseAttentionToTheStoryTitle,
@@ -304,9 +306,9 @@ TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 30,
+  position: 20,
 );
-
+// cognitiveFunctions - 21
 TaskEntity anasCatStoryTask = TaskEntity(
   taskID: anasCatStoryTaskId,
   title: anasCatStoryTitle,
@@ -314,9 +316,9 @@ TaskEntity anasCatStoryTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: false,
-  position: 31,
+  position: 21,
 );
-
+// cognitiveFunctions - 22
 TaskEntity howManyAnimalsCanYouThinkOfTask = TaskEntity(
   taskID: howManyAnimalsCanYouThinkOfTaskId,
   title: howManyAnimalsCanYouThinkOfTitle,
@@ -324,9 +326,9 @@ TaskEntity howManyAnimalsCanYouThinkOfTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 32,
+  position: 22,
 );
-
+// cognitiveFunctions - 23
 TaskEntity wordsStartingWithFTask = TaskEntity(
   taskID: wordsStartingWithFTaskId,
   title: wordsStartingWithFTitle,
@@ -334,9 +336,9 @@ TaskEntity wordsStartingWithFTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 33,
+  position: 23,
 );
-
+// cognitiveFunctions - 24
 TaskEntity wordsStartingWithATask = TaskEntity(
   taskID: wordsStartingWithATaskId,
   title: wordsStartingWithATitle,
@@ -344,9 +346,9 @@ TaskEntity wordsStartingWithATask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 34,
+  position: 24,
 );
-
+// cognitiveFunctions - 25
 TaskEntity wordsStartingWithSTask = TaskEntity(
   taskID: wordsStartingWithSTaskId,
   title: wordsStartingWithSTitle,
@@ -354,9 +356,9 @@ TaskEntity wordsStartingWithSTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 35,
+  position: 25,
 );
-
+// cognitiveFunctions - 26
 TaskEntity describeWhatYouSeeTask = TaskEntity(
   taskID: describeWhatYouSeeTaskId,
   title: describeWhatYouSeeTitle,
@@ -364,9 +366,9 @@ TaskEntity describeWhatYouSeeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 36,
+  position: 26,
 );
-
+// cognitiveFunctions - 27
 TaskEntity retellStoryTask = TaskEntity(
   taskID: retellStoryTaskId,
   title: retellStoryTitle,
@@ -374,9 +376,9 @@ TaskEntity retellStoryTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 37,
+  position: 27,
 );
-
+// functionality - 1
 TaskEntity yesOrNoQuestionsTask = TaskEntity(
   taskID: yesOrNoQuestionsTaskId,
   title: yesOrNoQuestionsTitle,
@@ -384,9 +386,9 @@ TaskEntity yesOrNoQuestionsTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 38,
+  position: 1,
 );
-
+// functionality - 2
 TaskEntity canYouBatheAloneTask = TaskEntity(
   taskID: canYouBatheAloneTaskId,
   title: canYouBatheAloneTitle,
@@ -394,9 +396,9 @@ TaskEntity canYouBatheAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 39,
+  position: 2,
 );
-
+// functionality - 3
 TaskEntity canYouDressAloneTask = TaskEntity(
   taskID: canYouDressAloneTaskId,
   title: canYouDressAloneTitle,
@@ -404,9 +406,9 @@ TaskEntity canYouDressAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 40,
+  position: 3,
 );
-
+// functionality - 4
 TaskEntity canYouUseToiletAloneTask = TaskEntity(
   taskID: canYouUseToiletAloneTaskId,
   title: canYouUseToiletAloneTitle,
@@ -414,9 +416,9 @@ TaskEntity canYouUseToiletAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 41,
+  position: 4,
 );
-
+// functionality - 5
 TaskEntity canYouUsePhoneAloneTask = TaskEntity(
   taskID: canYouUsePhoneAloneTaskId,
   title: canYouUsePhoneAloneTitle,
@@ -424,9 +426,9 @@ TaskEntity canYouUsePhoneAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 42,
+  position: 5,
 );
-
+// functionality - 6
 TaskEntity canYouShopAloneTask = TaskEntity(
   taskID: canYouShopAloneTaskId,
   title: canYouShopAloneTitle,
@@ -434,9 +436,9 @@ TaskEntity canYouShopAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 43,
+  position: 6,
 );
-
+// functionality - 7
 TaskEntity canYouHandleMoneyAloneTask = TaskEntity(
   taskID: canYouHandleMoneyAloneTaskId,
   title: canYouHandleMoneyAloneTitle,
@@ -444,9 +446,9 @@ TaskEntity canYouHandleMoneyAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 44,
+  position: 7,
 );
-
+// functionality - 8
 TaskEntity canYouManageMedicationAloneTask = TaskEntity(
   taskID: canYouManageMedicationAloneTaskId,
   title: canYouManageMedicationAloneTitle,
@@ -454,9 +456,9 @@ TaskEntity canYouManageMedicationAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 45,
+  position: 8,
 );
-
+// functionality - 9
 TaskEntity canYouUseTransportAloneTask = TaskEntity(
   taskID: canYouUseTransportAloneTaskId,
   title: canYouUseTransportAloneTitle,
@@ -464,9 +466,9 @@ TaskEntity canYouUseTransportAloneTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 46,
+  position: 9,
 );
-
+// depressionSymptoms - 1
 TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
   taskID: feelingsInPastTwoWeeksTaskId,
   title: feelingsInPastTwoWeeksTitle,
@@ -474,9 +476,9 @@ TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 47,
+  position: 1,
 );
-
+// depressionSymptoms - 2
 TaskEntity feelingSadFrequentlyTask = TaskEntity(
   taskID: feelingSadFrequentlyTaskId,
   title: feelingSadFrequentlyTitle,
@@ -484,9 +486,9 @@ TaskEntity feelingSadFrequentlyTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 48,
+  position: 2,
 );
-
+// depressionSymptoms - 3
 TaskEntity feelingTiredOrLackingEnergyTask = TaskEntity(
   taskID: feelingTiredOrLackingEnergyTaskId,
   title: feelingTiredOrLackingEnergyTitle,
@@ -494,9 +496,9 @@ TaskEntity feelingTiredOrLackingEnergyTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 49,
+  position: 3,
 );
-
+// depressionSymptoms - 4
 TaskEntity troubleSleepingTask = TaskEntity(
   taskID: troubleSleepingTaskId,
   title: troubleSleepingTitle,
@@ -504,9 +506,9 @@ TaskEntity troubleSleepingTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 50,
+  position: 4,
 );
-
+// depressionSymptoms - 5
 TaskEntity preferringToStayHomeTask = TaskEntity(
   taskID: preferringToStayHomeTaskId,
   title: preferringToStayHomeTitle,
@@ -514,9 +516,9 @@ TaskEntity preferringToStayHomeTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 51,
+  position: 5,
 );
-
+// depressionSymptoms - 6
 TaskEntity feelingUselessOrGuiltyTask = TaskEntity(
   taskID: feelingUselessOrGuiltyTaskId,
   title: feelingUselessOrGuiltyTitle,
@@ -524,9 +526,9 @@ TaskEntity feelingUselessOrGuiltyTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 52,
+  position: 6,
 );
-
+// depressionSymptoms - 7
 TaskEntity lostInterestInActivitiesTask = TaskEntity(
   taskID: lostInterestInActivitiesTaskId,
   title: lostInterestInActivitiesTitle,
@@ -534,9 +536,9 @@ TaskEntity lostInterestInActivitiesTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 53,
+  position: 7,
 );
-
+// depressionSymptoms - 8
 TaskEntity hopefulAboutFutureTask = TaskEntity(
   taskID: hopefulAboutFutureTaskId,
   title: hopefulAboutFutureTitle,
@@ -544,9 +546,9 @@ TaskEntity hopefulAboutFutureTask = TaskEntity(
   taskMode: TaskMode.record,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 54,
+  position: 8,
 );
-
+// depressionSymptoms - 9
 TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
     taskID: feelingLifeIsWorthLivingTaskId,
     title: feelingLifeIsWorthLivingTitle,
@@ -554,8 +556,9 @@ TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
     taskMode: TaskMode.record,
     timeForCompletion: 40,
     mayRepeatPrompt: true,
-    position: 55);
-
+    position: 9,
+);
+// depressionSymptoms - 10
 TaskEntity thankingForParticipationTask = TaskEntity(
   taskID: thankingForParticipationTaskId,
   title: thankingForParticipationTitle,
@@ -563,7 +566,7 @@ TaskEntity thankingForParticipationTask = TaskEntity(
   taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
-  position: 56,
+  position: 10,
 );
 
 ////////////////////////////////////////////
