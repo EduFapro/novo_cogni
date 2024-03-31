@@ -42,7 +42,7 @@ class EvaluatorLocalDataSource {
           EVALUATOR_SURNAME: evaluator.surname,
           BIRTH_DATE_EVALUATOR: evaluator.birthDate.toIso8601String(),
           EVALUATOR_SEX: sexValue,
-          CPF_OR_NIF_EVALUATOR: evaluator.cpfOrNif,
+          CPF_EVALUATOR: evaluator.cpfOrNif,
           USERNAME_EVALUATOR: evaluator.username,
           SPECIALTY_EVALUATOR: evaluator.specialty,
           PASSWORD_EVALUATOR: evaluator.password,
@@ -155,4 +155,15 @@ class EvaluatorLocalDataSource {
       return null;
     }
   }
+
+  Future<bool> evaluatorCpfExists(String cpf) async {
+    final Database? database = await db;
+    final List<Map<String, dynamic>> maps = await database!.query(
+      TABLE_EVALUATORS,
+      where: '$CPF_EVALUATOR = ?',
+      whereArgs: [cpf],
+    );
+    return maps.isNotEmpty;
+  }
+
 }

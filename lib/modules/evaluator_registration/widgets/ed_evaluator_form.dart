@@ -130,7 +130,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                           child: TextFormField(
                             controller: controller.cpfOrNifController,
                             decoration: InputDecoration(
-                              labelText: UiStrings.cpfNif,
+                              labelText: UiStrings.cpf,
                             ),
                            validator: (value) {
                         if (value == null || value.isEmpty) {

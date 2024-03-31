@@ -54,4 +54,9 @@ class EvaluatorRepository {
   Future<int?> getNumberOfEvaluators() async {
     return await localDataSource.getNumberOfEvaluators();
   }
+
+  Future<bool> evaluatorCpfExists(String cpf) async {
+    return await localDataSource.evaluatorCpfExists(cpf);
+  }
+
 }

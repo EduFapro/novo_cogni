@@ -30,7 +30,7 @@ final Map<String, String> enUsTranslations = {
   'new_evaluator': 'New Evaluator',
   'evaluator_registration': 'Evaluator Registration',
   'specialty': 'Specialty',
-  'cpf_nif': 'CPF/NIF',
+  'cpf': 'CPF',
   'evaluation': 'Evaluation',
   'list_of_activities': 'List of Activities',
   'click_on_play_to_listen_to_audio': 'Click on play to listen to the audio',

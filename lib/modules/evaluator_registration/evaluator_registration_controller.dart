@@ -98,6 +98,15 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   }
 
   Future<bool> createEvaluator() async {
+    var cpf = cpfOrNifController.text;
+
+    // Check if CPF is already registered
+    bool cpfExists = await _repository.evaluatorCpfExists(cpf);
+    if (cpfExists) {
+      Get.snackbar('Error', 'An evaluator with this CPF is already registered.');
+      return false;
+    }
+
     var fullName = fullNameController.text;
     List<String> parts = fullName.split(' ');
 

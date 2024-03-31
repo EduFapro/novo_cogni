@@ -30,7 +30,7 @@ final Map<String, String> ptBrTranslations = {
   'new_evaluator': 'Novo Avaliador',
   'evaluator_registration': 'Registro de Avaliador',
   'specialty': 'Especialidade',
-  'cpf_nif': 'CPF/NIF',
+  'cpf': 'CPF',
   'evaluation': 'Avaliação',
   'list_of_activities': 'Lista de Atividades',
   'click_on_play_to_listen_to_audio': 'Clique no play para ouvir o audio',

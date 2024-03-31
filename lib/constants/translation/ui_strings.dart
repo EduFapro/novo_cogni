@@ -74,7 +74,7 @@ class UiStrings extends Translations {
 
   static String get specialty => 'specialty'.tr;
 
-  static String get cpfNif => 'cpf_nif'.tr;
+  static String get cpf => 'cpf'.tr;
 
   static String get evaluation => 'evaluation'.tr;
 
