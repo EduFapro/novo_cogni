@@ -97,7 +97,7 @@ class TaskScreen extends GetView<TaskScreenController> {
     final Size windowSize = MediaQuery
         .of(context)
         .size;
-    print("TRUEEE: ${controller.shouldDisablePlayButton}");
+    // print("TRUEEE: ${controller.shouldDisablePlayButton}");
     return SizedBox(
       width: 880,
       child: Column(
@@ -567,6 +567,51 @@ class TaskCompletedWidget extends StatelessWidget {
 }
 
 
+// class CustomLinearPercentIndicator extends StatelessWidget {
+//   final int current;
+//   final int total;
+//
+//   const CustomLinearPercentIndicator({
+//     Key? key,
+//     required this.current,
+//     required this.total,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // Calculate the percent value
+//     final double percent = total != 0 ? (current - 1) / total : 0;
+//
+//     return Padding(
+//       padding: EdgeInsets.symmetric(horizontal: 15.0),
+//       // Adjust padding if necessary
+//       child: Row(
+//         children: [
+//           Expanded( // This will make the LinearPercentIndicator take up available space
+//             child: LinearPercentIndicator(
+//               // width property is now removed, as Expanded will control the width
+//               lineHeight: 20.0,
+//               percent: percent,
+//               center: Text(
+//                 "${(percent * 100).toStringAsFixed(1)}%",
+//                 style: TextStyle(
+//                   color: Colors.white,
+//                   fontWeight: FontWeight.bold,
+//                   fontSize: 16,
+//                 ),
+//               ),
+//               barRadius: const Radius.circular(10),
+//               backgroundColor: Colors.grey,
+//               progressColor: Colors.blue,
+//               // Trailing and leading widgets removed, add if needed
+//             ),
+//           ),
+//           // Add trailing and leading widgets here if needed
+//         ],
+//       ),
+//     );
+//   }
+// }
 class CustomLinearPercentIndicator extends StatelessWidget {
   final int current;
   final int total;
@@ -584,29 +629,24 @@ class CustomLinearPercentIndicator extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
-      // Adjust padding if necessary
-      child: Row(
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          Expanded( // This will make the LinearPercentIndicator take up available space
-            child: LinearPercentIndicator(
-              // width property is now removed, as Expanded will control the width
-              lineHeight: 20.0,
-              percent: percent,
-              center: Text(
-                "${(percent * 100).toStringAsFixed(1)}%",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              barRadius: const Radius.circular(10),
-              backgroundColor: Colors.grey,
-              progressColor: Colors.blue,
-              // Trailing and leading widgets removed, add if needed
+          LinearPercentIndicator(
+            lineHeight: 20.0,
+            percent: percent,
+            backgroundColor: Colors.grey,
+            progressColor: Colors.blue,
+            barRadius: const Radius.circular(10),
+          ),
+          Text(
+            '$current / $total',
+            style: TextStyle(
+              color: Colors.black, // Color that contrasts with the bar color
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
             ),
           ),
-          // Add trailing and leading widgets here if needed
         ],
       ),
     );

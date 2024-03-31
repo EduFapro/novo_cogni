@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
 import 'package:novo_cogni/modules/home/home_controller.dart';
 import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/module/module_entity.dart';
 import '../../app/module_instance/module_instance_entity.dart';
 import '../../app/participant/participant_entity.dart';
@@ -18,7 +19,7 @@ class EvaluationController extends GetxController {
 
   var participant = Rxn<ParticipantEntity>();
   var evaluation = Rxn<EvaluationEntity>();
-  var evaluator = Rxn<EvaluationEntity>();
+  var evaluator = Rxn<EvaluatorEntity>();
   var modulesInstanceList = Rx<List<ModuleInstanceEntity>?>(null);
   var tasksListDetails = Rx<List<Map<int, List<TaskInstanceEntity>>>>([]);
 
