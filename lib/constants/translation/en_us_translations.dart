@@ -56,6 +56,6 @@ final Map<String, String> enUsTranslations = {
   'done_task': 'Done',
   'play_mode': 'Play',
   'record_mode': 'Record',
-  'start_task_button': "Start"
-
+  'start_task_button': "Start",
+"postgraduate": "Postgraduate",
 };

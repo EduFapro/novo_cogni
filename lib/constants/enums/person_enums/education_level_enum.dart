@@ -7,6 +7,7 @@ enum EducationLevel {
   completeHighSchool,
   incompleteCollege,
   completeCollege,
+  postgraduate,
 }
 
 extension EducationLevelDesc on EducationLevel {
@@ -24,6 +25,8 @@ extension EducationLevelDesc on EducationLevel {
         return "incomplete_college".tr;
       case EducationLevel.completeCollege:
         return "complete_college".tr;
+      case EducationLevel.postgraduate:
+        return "postgraduate".tr;
       default:
         return "unknown".tr;
     }
@@ -38,6 +41,7 @@ const Map<EducationLevel, int> _educationLevelValues = {
   EducationLevel.completeHighSchool: 4,
   EducationLevel.incompleteCollege: 5,
   EducationLevel.completeCollege: 6,
+  EducationLevel.postgraduate: 7,
 };
 
 // Extension to get custom integer value from EducationLevel enum case and vice versa.

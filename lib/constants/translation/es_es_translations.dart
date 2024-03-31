@@ -56,6 +56,7 @@ final Map<String, String> esEsTranslations = {
   'done_task': 'Hecho',
   'play_mode': 'Reproducir',
   'record_mode': 'Grabar',
-  'start_task_button': "Iniciar"
+  'start_task_button': "Iniciar",
+  "postgraduate": "Posgrado",
 
 };

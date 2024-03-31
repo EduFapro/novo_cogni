@@ -56,5 +56,6 @@ final Map<String, String> ptBrTranslations = {
   'done_task': 'Concluído',
   'play_mode': 'Reproduzir',
   'record_mode': 'Gravar',
-  'start_task_button': "Iniciar"
+  'start_task_button': "Iniciar",
+  "postgraduate": "Pós Graduação",
 };
