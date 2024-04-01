@@ -68,10 +68,12 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             decoration: InputDecoration(
                               labelText: UiStrings.dateOfBirth,
                               errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 1.0),
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 2.0),
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 2.0),
                               ),
                             ),
                             readOnly: true,
@@ -89,7 +91,8 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                 }
 
                                 // Here, we assume the age requirement is 18 years
-                                final eighteenYearsAgo = currentDate.subtract(Duration(days: 18 * 365));
+                                final eighteenYearsAgo = currentDate
+                                    .subtract(Duration(days: 18 * 365));
 
                                 if (date.isAfter(eighteenYearsAgo)) {
                                   return 'Must be at least 18 years old';
@@ -99,7 +102,6 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             },
                           ),
                         ),
-
                       ],
                     ),
                     SizedBox(height: 16.0),
@@ -132,16 +134,15 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             decoration: InputDecoration(
                               labelText: UiStrings.cpf,
                             ),
-                           validator: (value) {
-                        if (value == null || value.isEmpty) {
-                        return 'CPF is required'; // CPF cannot be empty
-                        } else if (!isValidCPF(value)) {
-                        return 'Invalid CPF'; // Use your validation logic for a CPF
-                        }
-                        return null; // Return null if the CPF is valid
-                        },
-
-                        ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'CPF is required'; // CPF cannot be empty
+                              } else if (!isValidCPF(value)) {
+                                return 'Invalid CPF'; // Use your validation logic for a CPF
+                              }
+                              return null; // Return null if the CPF is valid
+                            },
+                          ),
                         ),
                         SizedBox(width: spacingWidth),
                         SizedBox(
@@ -149,17 +150,17 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                           width: fieldWidthRow2,
                           child: Obx(
                             () => TextFormField(
-                              // Always show the TextFormField
-                              controller: TextEditingController(
-                                text: controller.isUsernameValid.isTrue
-                                    ? controller.username
-                                        .value // If valid, show the username
-                                    : '', // If not valid, show an empty string
-                              ),
+                              controller: controller.usernameController,
                               decoration: InputDecoration(
                                   labelText: UiStrings.username),
-                              readOnly:
-                                  true, // You can set this to true if you don't want the user to edit this field
+                              readOnly: !controller.isEditMode.value,
+                              // Make this field editable only in edit mode
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Username is required';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ),
@@ -225,7 +226,6 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             },
                             child: Text(UiStrings.register),
                           ),
-
                         ],
                       ),
                     ),
@@ -240,7 +240,6 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
   }
 
   bool isValidCPF(String cpf) {
-
     String sanitizedCPF = cpf.replaceAll(RegExp(r'\D'), '');
 
     if (sanitizedCPF.length != 11) {
@@ -249,5 +248,4 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
 
     return true;
   }
-
 }
