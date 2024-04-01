@@ -183,15 +183,21 @@ class TaskScreen extends GetView<TaskScreenController> {
                     EdSkipButton(
                       text: 'Skip',
                     ),
-                    EdCheckIconButton(
+                    CustomIconButton(
                       iconData: Icons.check,
                       label: "Confirm",
-                      onPressed: () {
-                        controller.onCheckButtonPressed();
-                      },
-                      isActive: controller
-                          .isCheckButtonEnabled, // Pass the RxBool directly
-                    )
+                      onPressed: () => controller.onCheckButtonPressed(),
+                      isActive: controller.isCheckButtonEnabled,
+                    ),
+                    // EdCheckIconButton(
+                    //   iconData: Icons.check,
+                    //   label: "Confirm",
+                    //   onPressed: () {
+                    //     controller.onCheckButtonPressed();
+                    //   },
+                    //   isActive: controller
+                    //       .isCheckButtonEnabled, // Pass the RxBool directly
+                    // )
                   ],
                 ),
               )
@@ -578,50 +584,50 @@ class CustomRecordingButton extends StatelessWidget {
 //   }
 // }
 
-class EdCheckIconButton extends StatelessWidget {
-  final IconData iconData;
-  final String? label;
-  final VoidCallback onPressed;
-  final RxBool isActive;
-
-  EdCheckIconButton({
-    Key? key,
-    required this.iconData,
-    required this.onPressed,
-    required this.isActive,
-    this.label,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Use Obx here to listen to changes in isActive
-    return Obx(() {
-      Color borderColor = isActive.value ? Colors.black : Colors.grey;
-      Color iconColor = iconData == Icons.check ? Colors.green : Colors.orange;
-
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: borderColor, width: 2.0),
-              ),
-              child: IconButton(
-                icon: Icon(iconData),
-                color: iconColor,
-                onPressed: isActive.value ? onPressed : null,
-              ),
-            ),
-          ),
-          Text(label ?? "", style: TextStyle(fontSize: 12)),
-        ],
-      );
-    });
-  }
-}
+// class EdCheckIconButton extends StatelessWidget {
+//   final IconData iconData;
+//   final String? label;
+//   final VoidCallback onPressed;
+//   final RxBool isActive;
+//
+//   EdCheckIconButton({
+//     Key? key,
+//     required this.iconData,
+//     required this.onPressed,
+//     required this.isActive,
+//     this.label,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // Use Obx here to listen to changes in isActive
+//     return Obx(() {
+//       Color borderColor = isActive.value ? Colors.black : Colors.grey;
+//       Color iconColor = iconData == Icons.check ? Colors.green : Colors.orange;
+//
+//       return Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           Expanded(
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 border: Border.all(color: borderColor, width: 2.0),
+//               ),
+//               child: IconButton(
+//                 icon: Icon(iconData),
+//                 color: iconColor,
+//                 onPressed: isActive.value ? onPressed : null,
+//               ),
+//             ),
+//           ),
+//           Text(label ?? "", style: TextStyle(fontSize: 12)),
+//         ],
+//       );
+//     });
+//   }
+// }
 
 class EdSkipButton extends StatelessWidget {
   final String text;
