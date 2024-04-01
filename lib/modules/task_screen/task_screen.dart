@@ -469,38 +469,50 @@ class CustomRecordingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Container(
-        width: 100, // Consistent size with other buttons
-        height: 100, // Consistent size with other buttons
-        decoration: BoxDecoration(
-            color: controller.isRecordButtonEnabled.value
-                ? (controller.isRecording.value
-                    ? Colors.redAccent.shade100
-                    : Colors.blue.shade100)
-                : Colors.grey.shade400, // Grey color for disabled state
-            borderRadius: BorderRadius.circular(50)),
-        child: IconButton(
-          icon: Icon(
-            controller.isRecording.value ? Icons.stop : Icons.mic,
-            size: 80, // Adjust the size of the icon if necessary
-          ),
-          color: controller.isRecordButtonEnabled.value
-              ? (controller.isRecording.value ? Colors.red : Colors.blue)
-              : Colors.grey, // Grey icon for disabled state
-          onPressed: controller.isRecordButtonEnabled.value
-              ? () async {
-                  if (controller.isRecording.value) {
-                    await controller.stopRecording();
-                  } else {
-                    await controller.startRecording();
-                  }
+      var label = controller.isRecording.value ? "Parar" : "Gravar"; // Label changes based on recording state
+      return Column(
+        mainAxisSize: MainAxisSize.min, // Use the minimum space available
+        children: [
+          Container(
+            width: 100, // Consistent size with other buttons
+            height: 100, // Consistent size with other buttons
+            decoration: BoxDecoration(
+              color: controller.isRecordButtonEnabled.value
+                  ? (controller.isRecording.value
+                  ? Colors.redAccent.shade100
+                  : Colors.blue.shade100)
+                  : Colors.grey.shade400, // Grey color for disabled state
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: IconButton(
+              icon: Icon(
+                controller.isRecording.value ? Icons.stop : Icons.mic,
+                size: 80, // Adjust the size of the icon if necessary
+              ),
+              color: controller.isRecordButtonEnabled.value
+                  ? (controller.isRecording.value ? Colors.red : Colors.blue)
+                  : Colors.grey, // Grey icon for disabled state
+              onPressed: controller.isRecordButtonEnabled.value
+                  ? () async {
+                if (controller.isRecording.value) {
+                  await controller.stopRecording();
+                } else {
+                  await controller.startRecording();
                 }
-              : null, // Disable the button if isRecordButtonEnabled is false
-        ),
+              }
+                  : null, // Disable the button if isRecordButtonEnabled is false
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0), // Space between icon and text
+            child: Text(label, style: TextStyle(fontSize: 16)), // Use the variable label
+          ),
+        ],
       );
     });
   }
 }
+
 
 // class CustomRecordingButton extends StatelessWidget {
 //   const CustomRecordingButton({
