@@ -267,9 +267,9 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                     SizedBox(height: 32.0),
                     Padding(
                       padding: EdgeInsets.only(left: spacingWidth),
-                      child: SizedBox(
-                        height: 200,
-                        width: 200,
+                      child: Container(
+                        height: 300, // Fixed height for the scrollable area
+                        width: 500,
                         child: Obx(() {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,26 +277,28 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             children: [
                               Text(
                                 UiStrings.selectedModules,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              ...controller.itemsMap.keys.map((String key) {
-                                return CheckboxListTile(
-                                  title: Text(key),
-                                  value: controller.itemsMap[key],
-                                  onChanged: (bool? value) {
-                                    // Assign the value directly to the controller's itemsMap
-                                    if (value != null) {
-                                      controller.itemsMap[key] = value;
-                                    }
-                                  },
-                                );
-                              }).toList(),
+                              Expanded(
+                                child: ListView(
+                                  children: controller.itemsMap.keys.map((String key) {
+                                    return CheckboxListTile(
+                                      title: Text(key),
+                                      value: controller.itemsMap[key],
+                                      onChanged: (bool? value) {
+                                        // Assign the value directly to the controller's itemsMap
+                                        if (value != null) {
+                                          controller.itemsMap[key] = value;
+                                        }
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
                               Obx(() {
                                 if (!controller.isModuleSelectionValid.value) {
                                   return Padding(
-                                    padding: EdgeInsets.only(
-                                        left: spacingWidth, top: 8),
+                                    padding: EdgeInsets.only(left: spacingWidth, top: 8),
                                     child: Text(
                                       'Please select at least one module.',
                                       style: TextStyle(
@@ -307,8 +309,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                                     ),
                                   );
                                 } else {
-                                  return SizedBox
-                                      .shrink(); // Return an empty container when there's no error.
+                                  return SizedBox.shrink(); // Return an empty container when there's no error.
                                 }
                               }),
                             ],
@@ -316,6 +317,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                         }),
                       ),
                     ),
+
                   ]),
             ),
             Align(
