@@ -29,13 +29,15 @@ class _CountdownTimerState extends State<CountdownTimer> {
     remainingTime = widget.initialDurationInSeconds;
 
     // Listen to the countdownTrigger observable
-    widget.countdownTrigger.listen((start) {
-      if (start) {
-        startTimer();
-      } else {
-        resetTimer();
-      }
-    });
+    ever(widget.countdownTrigger, handleCountdownTrigger);
+  }
+
+  void handleCountdownTrigger(bool start) {
+    if (start) {
+      startTimer();
+    } else {
+      resetTimer();
+    }
   }
 
   void startTimer() {
@@ -73,10 +75,10 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        '$remainingTime',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
+      // child: Text(
+      //   '$remainingTime',
+      //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      // ),
     );
   }
 

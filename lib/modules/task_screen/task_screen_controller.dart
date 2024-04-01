@@ -121,21 +121,11 @@ class TaskScreenController extends GetxController {
       audioPlayed.value = true;
       promptPlayedOnce.value = true;
 
-      // Check button should be enabled only if no recording is needed or after recording is completed.
-      // In TaskMode.play, enable if audio has played. In TaskMode.record, defer until recording is done.
-      if (taskMode.value == TaskMode.play) {
-        isCheckButtonEnabled.value = true;
-      } else if (taskMode.value == TaskMode.record && recordingDone.value) {
-        // Enable check button only if recording is already done
-        isCheckButtonEnabled.value = true;
-      }
+      // Enable buttons as needed after audio completion
+      updateButtonStatesAfterAudioCompletion();
 
-      // Ensure record button is enabled only in record mode and after audio playback.
-      if (taskMode.value == TaskMode.record) {
-        isRecordButtonEnabled.value = true;
-      }
-
-      checkAndDisablePlayButton();
+      // Trigger countdown as audio has finished playing
+      countdownTrigger.value = true; // This will start the countdown
     });
 
     taskMode.listen((mode) {
@@ -239,6 +229,9 @@ class TaskScreenController extends GetxController {
     isPlaying.value = false;
     audioPlayed.value = true;
     _audioStopTime = DateTime.now();
+
+    // Start countdown after audio stops
+    countdownTrigger.value = true;
   }
 
   Future<void> startRecording() async {
@@ -506,6 +499,21 @@ class TaskScreenController extends GetxController {
   bool shouldEnableRecording() {
     // Add your conditions here. Example:
     return taskMode.value == TaskMode.record && !isPlaying.value && promptPlayedOnce.value;
+  }
+
+  void updateButtonStatesAfterAudioCompletion() {
+    // Check button should be enabled only if no recording is needed or after recording is completed.
+    // In TaskMode.play, enable if audio has played. In TaskMode.record, defer until recording is done.
+    if (taskMode.value == TaskMode.play) {
+      isCheckButtonEnabled.value = true;
+    } else if (taskMode.value == TaskMode.record && recordingDone.value) {
+      isCheckButtonEnabled.value = true;
+    }
+
+    // Ensure record button is enabled only in record mode and after audio playback.
+    if (taskMode.value == TaskMode.record) {
+      isRecordButtonEnabled.value = true;
+    }
   }
 
 }

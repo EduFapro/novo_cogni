@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
+import 'package:novo_cogni/modules/task_screen/task_deadline_banner.dart';
 
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
+import 'countdown_timer.dart';
 
 class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
@@ -94,18 +96,18 @@ class TaskScreen extends GetView<TaskScreenController> {
       width: 880,
       child: Column(
         children: [
-          // Align(
-          //   alignment: Alignment.centerRight,
-          //   child: TaskDeadlineBanner(
-          //     deadlineText:
-          //         "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
-          //   ),
-          // ),
-          // CountdownTimer(
-          //   countdownTrigger: controller.countdownTrigger,
-          //   initialDurationInSeconds: 4,
-          //   onTimerComplete: _onTimeCompleted,
-          // ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TaskDeadlineBanner(
+              deadlineText:
+                  "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
+            ),
+          ),
+          CountdownTimer(
+            countdownTrigger: controller.countdownTrigger,
+            initialDurationInSeconds: 4,
+            onTimerComplete: _onTimeCompleted,
+          ),
           Card(
             color: Color(0xFFD7D7D7),
             elevation: 0,
