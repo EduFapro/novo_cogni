@@ -34,8 +34,6 @@ class EvaluatorsController extends GetxController {
     filteredEvaluatorsList.assignAll(
         evaluators);
 
-    // performSearch("");
-
   }
 
   void performSearch(String query) {
@@ -55,6 +53,11 @@ class EvaluatorsController extends GetxController {
   void addEvaluator(EvaluatorEntity newEvaluator) {
     evaluatorsList.add(newEvaluator);
     // performSearch(searchController.text);
+
+    // Refresh the filtered list
+    performSearch('');
+   
+
     update();
   }
 }
