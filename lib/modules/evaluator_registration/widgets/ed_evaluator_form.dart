@@ -262,7 +262,6 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                   // ... Include more widgets here if needed
                                 ],
                               ),
-                              // ... (the rest of your code remains the same)
                             ],
                           )),
                     SizedBox(height: 16.0),
@@ -279,24 +278,37 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                 style: TextStyle(color: Color(0xff000000))),
                           ),
                           SizedBox(width: 20),
+
+
                           TextButton(
                             onPressed: () async {
+                              // Clear the password fields if the password change is not enabled.
+                              if (controller.isEditMode.isTrue && !controller.isPasswordChangeEnabled.value) {
+                                controller.newPasswordController.text = '';
+                                controller.confirmNewPasswordController.text = '';
+                              }
+
                               if (controller.formKey.currentState!.validate()) {
-                                // Check if all fields are valid
+                                // If all fields are valid, proceed
                                 if (controller.isUsernameValid.isTrue) {
-                                  // Proceed if the username is valid
-                                  if (await controller.createEvaluator()) {
+                                  // If the username is valid, attempt to create or update the evaluator
+                                  bool success = await controller.createEvaluator(); // This method should be adjusted for both create and edit operations
+                                  if (success) {
                                     Get.back();
                                   } else {
-                                    // Handle the error, for example by showing a Snackbar
+                                    print('Failed to create or update evaluator'); // Debugging print statement
                                   }
                                 } else {
-                                  // Handle the invalid username case
+                                  print('Username is invalid'); // Debugging print statement
                                 }
+                              } else {
+                                print('Form validation failed'); // Debugging print statement
                               }
                             },
                             child: Text(UiStrings.register),
                           ),
+
+
                         ],
                       ),
                     ),
