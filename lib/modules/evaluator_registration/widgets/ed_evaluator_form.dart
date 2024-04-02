@@ -160,42 +160,67 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                               ),
                               decoration: InputDecoration(
                                   labelText: UiStrings.username),
-                              readOnly:
-                                  !(controller.isEditMode.value),
+                              readOnly: !(controller.isEditMode.value),
                             ),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    // SizedBox(
-                    //   height: fieldContainerHeight,
-                    //   width: fieldWidthRow2,
-                    //   child: DropdownButtonFormField<Sex>(
-                    //     decoration: InputDecoration(
-                    //       labelText: UiStrings.sex,
-                    //     ),
-                    //     validator: (value) {
-                    //       if (value == null) {
-                    //         return 'Please select a sex'; // Your validation message
-                    //       }
-                    //       return null;
-                    //     },
-                    //     items: Sex.values.map((Sex sex) {
-                    //       return DropdownMenuItem<Sex>(
-                    //         value: sex,
-                    //         child: Text(sex == Sex.male
-                    //             ? Sex.male.description
-                    //             : Sex.female.description),
-                    //       );
-                    //     }).toList(),
-                    //     onChanged: (Sex? value) {
-                    //       controller.selectedSex.value = value;
-                    //     },
-                    //     value: controller.selectedSex.value,
-                    //   ),
-                    // ),
-                    SizedBox(width: spacingWidth),
+                    if (controller.isEditMode.isTrue)
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row( // Use a Row to align the fields horizontally
+                            children: [
+                              SizedBox(
+                                height: fieldContainerHeight,
+                                width: fieldWidthRow2, // Use the same width as the second row fields
+                                child: TextFormField(
+                                  controller: controller.newPasswordController,
+                                  obscureText: true,
+                                  decoration: InputDecoration(labelText: "Nova Senha"),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'New password is required';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: spacingWidth), // Consistent spacing
+                              // ... Include more widgets here if needed
+                            ],
+                          ),
+                          SizedBox(height: 16.0),
+                          Row( // Again, use a Row to align the fields horizontally
+                            children: [
+                              SizedBox(
+                                height: fieldContainerHeight,
+                                width: fieldWidthRow2, // Use the same width as the second row fields
+                                child: TextFormField(
+                                  controller: controller.confirmNewPasswordController,
+                                  obscureText: true,
+                                  decoration: InputDecoration(labelText: "Confirme Senha"),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Confirm password is required';
+                                    }
+                                    if (value != controller.newPasswordController.text) {
+                                      return 'Passwords do not match';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: spacingWidth), // Consistent spacing
+                              // ... Include more widgets here if needed
+                            ],
+                          ),
+                          // ... (the rest of your code remains the same)
+                        ],
+                      ),
+                    SizedBox(height: 16.0),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Row(

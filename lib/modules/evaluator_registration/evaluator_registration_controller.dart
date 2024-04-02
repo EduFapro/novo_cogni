@@ -20,6 +20,12 @@ class EvaluatorRegistrationController extends GetxController
   final cpfOrNifController = TextEditingController();
   final usernameController = TextEditingController();
   final RxString username = ''.obs;
+  final newPasswordController = TextEditingController();
+  final confirmNewPasswordController = TextEditingController();
+
+  final RxBool showPasswordFields = false.obs;
+
+
 
   // var selectedSex = Rx<Sex?>(null);
 
@@ -199,6 +205,10 @@ class EvaluatorRegistrationController extends GetxController
     cpfOrNifController.dispose();
     usernameController.dispose();
     fullNameFocusNode.dispose();
+
+    newPasswordController.dispose();
+    confirmNewPasswordController.dispose();
+
     super.onClose();
   }
 
@@ -248,6 +258,11 @@ class EvaluatorRegistrationController extends GetxController
 
   void toggleEditMode() {
     isEditMode.value = !isEditMode.value;
+  }
+
+
+  void togglePasswordVisibility() {
+    showPasswordFields.value = !showPasswordFields.value;
   }
 
 }
