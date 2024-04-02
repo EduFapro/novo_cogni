@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/evaluator/evaluator_repository.dart';
-import '../../constants/enums/person_enums/person_enums.dart';
 import '../../constants/route_arguments.dart';
 import '../../mixins/ValidationMixin.dart';
 import '../evaluators/evaluators_controller.dart';
 
-class EvaluatorRegistrationController extends GetxController with ValidationMixin {
+class EvaluatorRegistrationController extends GetxController
+    with ValidationMixin {
   final EvaluatorRepository _repository;
   final EvaluatorsController _evaluatorsController;
 
@@ -22,6 +22,8 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   final RxString username = ''.obs;
 
   // var selectedSex = Rx<Sex?>(null);
+
+  final RxBool isEditMode = false.obs;
   var selectedDate = Rx<DateTime?>(null);
   var isGeneratingUsername = false.obs;
   var isUsernameValid = false.obs;
@@ -29,49 +31,59 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   final formKey = GlobalKey<FormState>();
 
   @override
-  @override
   void onInit() {
     super.onInit();
 
     EvaluatorEntity? evaluator;
 
-    // Attempt to get the evaluator ID passed as an argument
-    // Ensure Get.arguments is not null before accessing it
-    if (Get.arguments != null) {
-
+    if (Get.arguments != null &&
+        Get.arguments[RouteArguments.EVALUATOR] != null) {
+      isEditMode.value = true;
       // Attempt to get the evaluator passed as an argument
       evaluator = Get.arguments[RouteArguments.EVALUATOR];
-
 
       // If there's an evaluator, populate form fields
       if (evaluator != null) {
         _populateFieldsWithEvaluatorData(evaluator.evaluatorID!);
       }
+    } else {
+      isEditMode.value = false;
     }
-    fullNameFocusNode.addListener(() async {
-      if (!fullNameFocusNode.hasFocus) {
-        final validationResult = validateFullName(fullNameController.text);
-        if (validationResult == null) {
-          String baseUsername = generateUsername(fullNameController.text, []);
-          await checkAndUpdateUsername(baseUsername);
-        } else {
-          username.value = '';
-          isUsernameValid.value = false;
-        }
-      }
-    });
-  }
 
+
+    if (!isEditMode.value) {
+      fullNameFocusNode.addListener(
+            () async {
+          if (!fullNameFocusNode.hasFocus) {
+            final validationResult = validateFullName(fullNameController.text);
+            if (validationResult == null) {
+              String baseUsername = generateUsername(
+                  fullNameController.text, []);
+
+
+              await checkAndUpdateUsername(baseUsername);
+            } else {
+              username.value = '';
+              isUsernameValid.value = false;
+            }
+          }
+        },
+      );
+    }
+      print("Edit mode: ${isEditMode.value}");
+
+  }
   Future<void> _populateFieldsWithEvaluatorData(int evaluatorId) async {
     try {
       final evaluator = await _repository.getEvaluator(evaluatorId);
       if (evaluator != null) {
         fullNameController.text = '${evaluator.name} ${evaluator.surname}';
-        dateOfBirthController.text = DateFormat.yMd().format(evaluator.birthDate);
+        dateOfBirthController.text =
+            DateFormat.yMd().format(evaluator.birthDate);
         specialtyController.text = evaluator.specialty ?? '';
         cpfOrNifController.text = evaluator.cpfOrNif ?? '';
         usernameController.text = evaluator.username;
-        // selectedSex.value = evaluator.sex;
+        username.value = evaluator.username;
         selectedDate.value = evaluator.birthDate;
 
         // Assuming you have methods to set initial values for other fields if needed
@@ -80,8 +92,6 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
       print("Error fetching evaluator data: $e");
     }
   }
-
-
 
   void selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -103,7 +113,8 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
     // Check if CPF is already registered
     bool cpfExists = await _repository.evaluatorCpfExists(cpf);
     if (cpfExists) {
-      Get.snackbar('Error', 'An evaluator with this CPF is already registered.');
+      Get.snackbar(
+          'Error', 'An evaluator with this CPF is already registered.');
       return false;
     }
 
@@ -153,7 +164,8 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
     List<String> words = fullName.split(' ');
 
     // Take the first word and the last word to form the base username
-    String baseUsername = "${words.first.toLowerCase()}_${words.last.toLowerCase()}";
+    String baseUsername =
+        "${words.first.toLowerCase()}_${words.last.toLowerCase()}";
 
     // Initialize the username with the base form
     String username = baseUsername;
@@ -167,7 +179,7 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
     return username;
   }
 
-    @override
+  @override
   void onClose() {
     fullNameController.dispose();
     dateOfBirthController.dispose();
@@ -188,7 +200,8 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
   }
 
   Future<void> checkAndUpdateUsername(String baseUsername) async {
-    int counter = 2; // Start from 2 since you want to append '2' if the base username exists
+    int counter =
+        2;
     String currentUsername = baseUsername;
     EvaluatorEntity? existingEvaluator;
 
@@ -196,10 +209,12 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
     final numberSuffixPattern = RegExp(r'(\d+)$');
 
     while (true) {
-      existingEvaluator = await _repository.getEvaluatorByUsername(currentUsername);
+      existingEvaluator =
+          await _repository.getEvaluatorByUsername(currentUsername);
       if (existingEvaluator != null) {
         // Check if the existing username ends with a number
-        final match = numberSuffixPattern.firstMatch(existingEvaluator.username);
+        final match =
+            numberSuffixPattern.firstMatch(existingEvaluator.username);
         if (match != null) {
           // If it does, parse the number, increment it, and append to the base username
           final number = int.parse(match.group(1)!);
@@ -219,5 +234,8 @@ class EvaluatorRegistrationController extends GetxController with ValidationMixi
     isUsernameValid.value = true;
   }
 
+  void toggleEditMode() {
+    isEditMode.value = !isEditMode.value;
+  }
 
 }

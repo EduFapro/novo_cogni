@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
-import '../../../constants/enums/person_enums/person_enums.dart';
 import '../../../mixins/ValidationMixin.dart';
 import '../evaluator_registration_controller.dart';
 
@@ -68,13 +67,15 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             decoration: InputDecoration(
                               labelText: UiStrings.dateOfBirth,
                               errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 1.0),
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 2.0),
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 2.0),
                               ),
                             ),
-                            readOnly: true,
+                            readOnly: !(controller.isEditMode.value),
                             onTap: () => controller.selectDate(context),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -89,7 +90,8 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                 }
 
                                 // Here, we assume the age requirement is 18 years
-                                final eighteenYearsAgo = currentDate.subtract(Duration(days: 18 * 365));
+                                final eighteenYearsAgo = currentDate
+                                    .subtract(Duration(days: 18 * 365));
 
                                 if (date.isAfter(eighteenYearsAgo)) {
                                   return 'Must be at least 18 years old';
@@ -99,7 +101,6 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             },
                           ),
                         ),
-
                       ],
                     ),
                     SizedBox(height: 16.0),
@@ -132,16 +133,15 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             decoration: InputDecoration(
                               labelText: UiStrings.cpf,
                             ),
-                           validator: (value) {
-                        if (value == null || value.isEmpty) {
-                        return 'CPF is required'; // CPF cannot be empty
-                        } else if (!isValidCPF(value)) {
-                        return 'Invalid CPF'; // Use your validation logic for a CPF
-                        }
-                        return null; // Return null if the CPF is valid
-                        },
-
-                        ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'CPF is required'; // CPF cannot be empty
+                              } else if (!isValidCPF(value)) {
+                                return 'Invalid CPF'; // Use your validation logic for a CPF
+                              }
+                              return null; // Return null if the CPF is valid
+                            },
+                          ),
                         ),
                         SizedBox(width: spacingWidth),
                         SizedBox(
@@ -151,10 +151,12 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             () => TextFormField(
                               // Always show the TextFormField
                               controller: TextEditingController(
-                                text: controller.isUsernameValid.isTrue
-                                    ? controller.username
-                                        .value // If valid, show the username
-                                    : '', // If not valid, show an empty string
+                                text: controller.isEditMode.value
+                                    ? controller.username.value
+                                    : controller.isUsernameValid.isTrue
+                                        ? controller.username
+                                            .value // If valid, show the username
+                                        : '', // If not valid, show an empty string
                               ),
                               decoration: InputDecoration(
                                   labelText: UiStrings.username),
@@ -225,7 +227,6 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                             },
                             child: Text(UiStrings.register),
                           ),
-
                         ],
                       ),
                     ),
@@ -240,7 +241,6 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
   }
 
   bool isValidCPF(String cpf) {
-
     String sanitizedCPF = cpf.replaceAll(RegExp(r'\D'), '');
 
     if (sanitizedCPF.length != 11) {
@@ -249,5 +249,4 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
 
     return true;
   }
-
 }
