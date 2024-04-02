@@ -161,7 +161,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                               decoration: InputDecoration(
                                   labelText: UiStrings.username),
                               readOnly:
-                                  true, // You can set this to true if you don't want the user to edit this field
+                                  !(controller.isEditMode.value),
                             ),
                           ),
                         ),
