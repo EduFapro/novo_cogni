@@ -23,7 +23,7 @@ class EvaluatorRegistrationController extends GetxController
   final newPasswordController = TextEditingController();
   final confirmNewPasswordController = TextEditingController();
 
-  final RxBool showPasswordFields = false.obs;
+  final RxBool isPasswordChangeEnabled  = false.obs;
 
 
 
@@ -262,7 +262,7 @@ class EvaluatorRegistrationController extends GetxController
 
 
   void togglePasswordVisibility() {
-    showPasswordFields.value = !showPasswordFields.value;
+    isPasswordChangeEnabled .value = !isPasswordChangeEnabled .value;
   }
 
 }
