@@ -43,6 +43,7 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
+                  showCheckboxColumn: false,
                   columnSpacing: 16,
                   columns: [
                     DataColumn(label: Text(UiStrings.name)),
