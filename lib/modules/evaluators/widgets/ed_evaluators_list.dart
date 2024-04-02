@@ -48,39 +48,31 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
                     DataColumn(label: Text(UiStrings.name)),
                     DataColumn(label: Text(UiStrings.username)),
                     DataColumn(label: Text(UiStrings.dateOfBirth)),
-                    // DataColumn(label: Text(UiStrings.sex)),
+                    // Add more DataColumn if needed
                   ],
                   rows: evaluatorsList.map((evaluator) {
                     return DataRow(
-                      cells: [
-                        DataCell(
-                          Text('${evaluator.name} ${evaluator.surname}'),
-                          onTap: () => Get.toNamed(
+                      onSelectChanged: (selected) {
+                        if (selected != null && selected) {
+                          Get.toNamed(
                             AppRoutes.evaluatorRegistration,
                             arguments: {
                               RouteArguments.EVALUATOR: evaluator,
                             },
-                          ),
+                          );
+                        }
+                      },
+                      cells: [
+                        DataCell(
+                          Text('${evaluator.name} ${evaluator.surname}'),
                         ),
                         DataCell(
                           Text(evaluator.username),
-                          onTap: () => Get.toNamed(
-                              AppRoutes.evaluatorRegistration,
-                              arguments: evaluator),
                         ),
                         DataCell(
-                          Text(DateFormat('dd/MM/yyyy')
-                              .format(evaluator.birthDate)),
-                          onTap: () => Get.toNamed(
-                              AppRoutes.evaluatorRegistration,
-                              arguments: evaluator),
+                          Text(DateFormat('dd/MM/yyyy').format(evaluator.birthDate)),
                         ),
-                        // DataCell(
-                        //   Text(evaluator.sex == Sex.male ? 'Male' : 'Female'),
-                        //   onTap: () => Get.toNamed(
-                        //       AppRoutes.evaluatorRegistration,
-                        //       arguments: evaluator),
-                        // ),
+                        // Add more DataCell for additional data if needed
                       ],
                     );
                   }).toList(),
@@ -88,6 +80,7 @@ class EdEvaluatorsList extends GetView<EvaluatorsController> {
               );
             }),
           ),
+
           SizedBox(
             width: 900,
             child: EdNewEvaluatorButton(),

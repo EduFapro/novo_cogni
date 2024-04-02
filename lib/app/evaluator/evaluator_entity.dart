@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../constants/enums/person_enums/person_enums.dart';
 import 'evaluator_constants.dart';
 
 class EvaluatorEntity extends Equatable {
@@ -27,6 +26,7 @@ class EvaluatorEntity extends Equatable {
     required this.username,
     this.password = '0000',
     this.firstLogin = false,
+    this.isAdmin = false,
   });
 
 
@@ -58,7 +58,33 @@ class EvaluatorEntity extends Equatable {
       IS_ADMIN: isAdmin ? 1 : 0,
     };
   }
-
+  EvaluatorEntity copyWith({
+    int? evaluatorID,
+    String? name,
+    String? surname,
+    DateTime? birthDate,
+    // Sex? sex,
+    String? specialty,
+    String? cpfOrNif,
+    String? username,
+    String? password,
+    bool? firstLogin,
+    bool? isAdmin,
+  }) {
+    return EvaluatorEntity(
+      evaluatorID: evaluatorID ?? this.evaluatorID,
+      name: name ?? this.name,
+      surname: surname ?? this.surname,
+      birthDate: birthDate ?? this.birthDate,
+      // sex: sex ?? this.sex,
+      specialty: specialty ?? this.specialty,
+      cpfOrNif: cpfOrNif ?? this.cpfOrNif,
+      username: username ?? this.username,
+      password: password ?? this.password,
+      firstLogin: firstLogin ?? this.firstLogin,
+      isAdmin: isAdmin ?? this.isAdmin,
+    );
+  }
   @override
   List<Object?> get props => [
     evaluatorID,

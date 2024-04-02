@@ -150,13 +150,25 @@ class EvaluatorRegistrationController extends GetxController
     );
 
     try {
-      await _repository.createEvaluator(newEvaluator);
-      _evaluatorsController.addEvaluator(newEvaluator);
+      // Attempt to create a new evaluator in the database and receive an ID.
+      int? evaluatorId = await _repository.createEvaluator(newEvaluator);
+
+      // Use the copyWith method to create a new instance of EvaluatorEntity with the received ID.
+      EvaluatorEntity updatedEvaluator = newEvaluator.copyWith(evaluatorID: evaluatorId);
+      print(updatedEvaluator);
+      // Add the updated evaluator to the controller.
+      _evaluatorsController.addEvaluator(updatedEvaluator);
+
+      // Return true to indicate success.
       return true;
     } catch (e) {
+      // If there's an error, print it and return false.
       print('Error creating evaluator: $e');
       return false;
+    } finally {
+      isEditMode.value = false;
     }
+
   }
 
   String generateUsername(String fullName, List<String> existingUsernames) {
