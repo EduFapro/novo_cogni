@@ -262,6 +262,7 @@ class TaskScreenController extends GetxController {
       final evaluationController = Get.find<EvaluationController>();
       final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
       final participantID = evaluationController.participant.value?.participantID ?? 0;
+      countdownTrigger.value = false; 
 
       // Encrypt the recording, rename it and save the new path
       final encryptedFilePath = await renameAndSaveRecording(
