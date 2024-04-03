@@ -105,7 +105,7 @@ class TaskScreen extends GetView<TaskScreenController> {
           ),
           CountdownTimer(
             countdownTrigger: controller.countdownTrigger,
-            initialDurationInSeconds: 4,
+            initialDurationInSeconds: controller.task.value!.timeForCompletion,
             onTimerComplete: _onTimeCompleted,
           ),
           Card(
