@@ -119,3 +119,14 @@ Future<String> getSecureStoragePath() async {
   return secureDir.path;
 }
 
+Future<String> createTestingDirectory() async {
+  final String dirPath = await getApplicationDocumentsPath();
+  final Directory cognivoiceDir = Directory(path.join(dirPath, 'Cognivoice'));
+  final Directory testingDir = Directory(path.join(cognivoiceDir.path, 'Testing'));
+
+  if (!await testingDir.exists()) {
+    await testingDir.create(recursive: true);
+  }
+
+  return testingDir.path;
+}

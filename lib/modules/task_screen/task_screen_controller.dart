@@ -54,13 +54,17 @@ class TaskScreenController extends GetxController {
   var recordingDone = false.obs;
   var isCheckButtonEnabled = false.obs;
   var isRecordButtonEnabled = false.obs;
+  var isTestAudioPlayEnabled = false.obs;
+  var isTestAudioPlaying = false.obs;
+  var testingRecordingPath = ''.obs;
+  var testingDirectoryPath = ''.obs;
 
   RxBool get shouldDisablePlayButton =>
       RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value);
 
   var mayRepeatPrompt = false.obs;
   var promptPlayedOnce = false.obs;
-
+  var isTestingOnly = false.obs;
   var recordingRepository = Get.find<RecordingRepository>();
   var evaluationRepository = Get.find<EvaluationRepository>();
   var taskInstanceRepository = Get.find<TaskInstanceRepository>();
@@ -100,6 +104,11 @@ class TaskScreenController extends GetxController {
       taskInstance.value = arguments[RouteArguments.TASK_INSTANCE];
 
       moduleInstance.value = arguments[RouteArguments.MODULE_INSTANCE];
+
+      if(task.value!.test_only) {
+        isTestingOnly.value = true;
+      }
+
       if (moduleInstance.value!.moduleInstanceID! != null) {
         // Calculate total tasks for the module instance.
         await _calculateTotalTasks(moduleInstance.value!.moduleInstanceID!);
@@ -115,6 +124,8 @@ class TaskScreenController extends GetxController {
       // Fallback or error handling if task instance ID is not provided.
       print("Task instance ID not found in arguments.");
     }
+
+
 
     _audioPlayer.onPlayerComplete.listen((_) {
       isPlaying.value = false;
@@ -515,5 +526,39 @@ class TaskScreenController extends GetxController {
       isRecordButtonEnabled.value = true;
     }
   }
+
+  stopTestAudio() {}
+
+  playTestAudio() {}
+
+  Future<void> onCheckButtonPressedWhenTesting() async {
+    // Ensure the Testing directory is created
+    testingDirectoryPath.value = await createTestingDirectory();
+
+    if (isRecording.value) {
+      await stopRecording(); // Stop the recording if it's still happening
+    }
+
+    // Assuming the recording has been stopped and we have a valid path
+    if (audioPath.isNotEmpty) {
+      try {
+        // Move the recording to the Testing directory
+        String newPath = path.join(testingDirectoryPath.value, path.basename(audioPath.value));
+        await File(audioPath.value).rename(newPath);
+
+        // Update audioPath to point to the new location
+        audioPath.value = newPath;
+
+        // Set isTestAudioPlayEnabled to true as the file is now in the Testing directory
+        isTestAudioPlayEnabled.value = true;
+      } catch (e) {
+        // If an error occurs during the file operation, handle it appropriately
+        print('Failed to save the test audio file: $e');
+        isTestAudioPlayEnabled.value = false;
+      }
+    }
+  }
+
+
 
 }
