@@ -169,6 +169,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                     SizedBox(height: 16.0),
                     Obx(() => Row(
                       children: [
+                        if (controller.isEditMode.isTrue)
                         SizedBox(
                           width: fieldWidthRow2, // Use the same width as the password fields
                           child: SwitchListTile(
@@ -291,9 +292,10 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                               if (controller.formKey.currentState!.validate()) {
                                 // If all fields are valid, proceed
                                 if (controller.isUsernameValid.isTrue) {
-                                  // If the username is valid, attempt to create or update the evaluator
-                                  bool success = await controller.createEvaluator(); // This method should be adjusted for both create and edit operations
-                                  if (success) {
+                                  bool success;
+                                  controller.isEditMode.isTrue ?
+                                      success = await controller.updateEvaluator()
+                                  : success = await controller.createEvaluator();                                if (success) {
                                     Get.back();
                                   } else {
                                     print('Failed to create or update evaluator'); // Debugging print statement

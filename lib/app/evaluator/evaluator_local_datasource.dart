@@ -166,4 +166,16 @@ class EvaluatorLocalDataSource {
     return maps.isNotEmpty;
   }
 
+
+  Future<bool> evaluatorCpfExistsForOther(int currentEvaluatorId, String cpf) async {
+    final Database? database = await db;
+    final List<Map<String, dynamic>> maps = await database!.query(
+      TABLE_EVALUATORS,
+      where: '$CPF_EVALUATOR = ? AND $ID_EVALUATOR != ?',
+      whereArgs: [cpf, currentEvaluatorId],
+    );
+    return maps.isNotEmpty;
+  }
+
+
 }

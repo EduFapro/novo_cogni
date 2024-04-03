@@ -59,4 +59,10 @@ class EvaluatorRepository {
     return await localDataSource.evaluatorCpfExists(cpf);
   }
 
+
+  Future<bool> evaluatorCpfExistsForOther(int currentEvaluatorId, String cpf) async {
+    return await localDataSource.evaluatorCpfExistsForOther(currentEvaluatorId, cpf);
+  }
+
+
 }
