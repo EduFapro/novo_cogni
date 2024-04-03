@@ -96,13 +96,6 @@ class TaskScreen extends GetView<TaskScreenController> {
       width: 880,
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: TaskDeadlineBanner(
-              deadlineText:
-                  "Tempo Limite da Tarefa: ${controller.currentTaskEntity.value?.timeForCompletion ?? 'Indefinido'}",
-            ),
-          ),
           CountdownTimer(
             countdownTrigger: controller.countdownTrigger,
             initialDurationInSeconds: controller.task.value!.timeForCompletion,
@@ -362,6 +355,12 @@ class TaskScreen extends GetView<TaskScreenController> {
     // Play time up sound
     final audioPlayer = AudioPlayer();
     await audioPlayer.play(AssetSource('audio/climbing_fast_sound_effect.mp3'));
+
+
+    if (controller.isRecording.value) {
+      await controller.stopRecording(); // Stop the recording
+    }
+
 
     // Show time up dialog
     Get.dialog(
