@@ -578,7 +578,6 @@ TaskEntity aPressaEhInimigaTask = TaskEntity(
   title: pressaInimigaTitle,
   moduleID: testsModuleId,
   taskMode: TaskMode.play,
-  test_only: true,
   position: 1,
 );
 TaskEntity umPassaroTask = TaskEntity(
@@ -586,7 +585,6 @@ TaskEntity umPassaroTask = TaskEntity(
   title: umPassaroNaMaoTitle,
   moduleID: testsModuleId,
   taskMode: TaskMode.play,
-  test_only: true,
   position: 2,
 );
 TaskEntity nemTudoTask = TaskEntity(
@@ -594,7 +592,6 @@ TaskEntity nemTudoTask = TaskEntity(
   title: nemTudoQueReluzTitle,
   moduleID: testsModuleId,
   taskMode: TaskMode.play,
-  test_only: true,
   position: 3,
 );
 TaskEntity conteAte5Task = TaskEntity(
@@ -602,7 +599,6 @@ TaskEntity conteAte5Task = TaskEntity(
     moduleID: testsModuleId,
     title: conteAte5Title,
     taskMode: TaskMode.record,
-      test_only: true,
     position: 4);
 
 TaskEntity digaDoisAnimaisTask = TaskEntity(
@@ -610,12 +606,10 @@ TaskEntity digaDoisAnimaisTask = TaskEntity(
     moduleID: testsModuleId,
     title: digaDoisAnimaisTitle,
     taskMode: TaskMode.record,
-      test_only: true,
     position: 5);
 TaskEntity repitaAFraseTask = TaskEntity(
   taskID: repitaAFraseId,
     moduleID: testsModuleId,
     title: repitaAFraseTitle,
     taskMode: TaskMode.record,
-      test_only: true,
     position: 6);
