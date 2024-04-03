@@ -14,6 +14,7 @@ import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/participant/participant_entity.dart';
+import '../../app/recording_file/recording_file_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/module_enums.dart';
@@ -258,6 +259,25 @@ class TaskScreenController extends GetxController {
     if (originalPath != null) {
       recordingDone.value = true;
 
+      final evaluationController = Get.find<EvaluationController>();
+      final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
+      final participantID = evaluationController.participant.value?.participantID ?? 0;
+
+      // Encrypt the recording, rename it and save the new path
+      final encryptedFilePath = await renameAndSaveRecording(
+        originalPath: originalPath,
+        evaluatorId: evaluatorID,
+        participantId: participantID,
+        taskInstanceId: currentTask.value!.taskInstanceID!,
+        saveRecordingCallback: (RecordingFileEntity recording) async {
+          final recordingId = await recordingRepository.createRecording(recording);
+          print('Recording saved with ID: $recordingId at path: $recording.filePath');
+        },
+      );
+
+      // Update the observable path with the encrypted file's path
+      audioPath.value = encryptedFilePath;
+
       // In TaskMode.record, enable check button if audio has been played.
       if (taskMode.value == TaskMode.record && audioPlayed.value) {
         isCheckButtonEnabled.value = true;
@@ -267,29 +287,30 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  Future<void> saveAudio(ByteData data) async {
-    print('saveAudio called');
-    var evaluationController = Get.find<EvaluationController>();
-    var evaluatorID = evaluationController.evaluation.value?.evaluatorID;
-    var participantID = evaluationController.participant.value?.participantID;
 
-    if (evaluatorID != null && participantID != null) {
-      print(
-          'Saving audio for evaluator: $evaluatorID, participant: $participantID');
-      // Create a unique file name for the temporary file
-      final tempFileName = 'temp_recording.aac';
-
-      // Save the temporary file
-      String tempPath = await saveAudioFile(data, tempFileName, evaluatorID,
-          participantID, currentTask.value!.taskInstanceID!);
-
-      // Update audioPath to the new path
-      audioPath.value = tempPath;
-    } else {
-      print('Evaluator ID or Participant ID is null');
-      // Handle the null case, perhaps by using a default name or notifying the user
-    }
-  }
+  // Future<void> saveAudio(ByteData data) async {
+  //   print('saveAudio called');
+  //   var evaluationController = Get.find<EvaluationController>();
+  //   var evaluatorID = evaluationController.evaluation.value?.evaluatorID;
+  //   var participantID = evaluationController.participant.value?.participantID;
+  //
+  //   if (evaluatorID != null && participantID != null) {
+  //     print(
+  //         'Saving audio for evaluator: $evaluatorID, participant: $participantID');
+  //     // Create a unique file name for the temporary file
+  //     final tempFileName = 'temp_recording.aac';
+  //
+  //     // Save the temporary file
+  //     String tempPath = await saveAudioFile(data, tempFileName, evaluatorID,
+  //         participantID, currentTask.value!.taskInstanceID!);
+  //
+  //     // Update audioPath to the new path
+  //     audioPath.value = tempPath;
+  //   } else {
+  //     print('Evaluator ID or Participant ID is null');
+  //     // Handle the null case, perhaps by using a default name or notifying the user
+  //   }
+  // }
 
   Future<String> _getRecordingPath() async {
     // Obtain the directory path for the application's documents directory.
