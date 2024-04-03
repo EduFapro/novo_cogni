@@ -147,22 +147,13 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                         SizedBox(
                           height: fieldContainerHeight,
                           width: fieldWidthRow2,
-                          child: Obx(
-                            () => TextFormField(
-                              // Always show the TextFormField
-                              controller: TextEditingController(
-                                text: controller.isEditMode.value
-                                    ? controller.username.value
-                                    : controller.isUsernameValid.isTrue
-                                        ? controller.username
-                                            .value // If valid, show the username
-                                        : '', // If not valid, show an empty string
-                              ),
-                              decoration: InputDecoration(
-                                  labelText: UiStrings.username),
-                              readOnly: !(controller.isEditMode.value),
-                            ),
-                          ),
+                          child:TextFormField(
+                            controller: controller.usernameController,
+                            decoration: InputDecoration(labelText: UiStrings.username),
+                            readOnly: !controller.isEditMode.value,
+                          )
+
+
                         ),
                       ],
                     ),

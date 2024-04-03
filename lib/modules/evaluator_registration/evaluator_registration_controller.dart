@@ -293,7 +293,7 @@ class EvaluatorRegistrationController extends GetxController
       birthDate: selectedDate.value!,
       specialty: specialtyController.text,
       cpfOrNif: cpfOrNifController.text,
-      // Include other fields that may be updated as well
+      username: usernameController.text,
     );
 
     // Check if passwords should be updated
