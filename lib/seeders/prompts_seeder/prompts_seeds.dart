@@ -438,7 +438,7 @@ final thankingForParticipationPrompt = TaskPromptEntity(
 
 final aPressaEhInimigaTaskPrompt = TaskPromptEntity(
     promptID: aPressaEhInimigaTaskPromptId,
-    taskID: aPressaEhInimigaTask.taskID!,
+    taskID: pressaInimigaTask.taskID!,
     filePath: AudioFilePaths.aPressaEhInimiga);
 
 final umPassaroTaskPrompt = TaskPromptEntity(
