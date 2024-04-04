@@ -30,6 +30,7 @@ class TaskEntity {
     return {
       ID_TASK: taskID,
       TITLE: title,
+      SNAKE_CASE_BRIEF_TRANSCRIPT: snakeCaseBriefTranscript,
       MODULE_ID: moduleID,
       MODE: taskMode.numericValue,
       POSITION: position,
@@ -45,6 +46,7 @@ class TaskEntity {
     return TaskEntity(
         taskID: map[ID_TASK] as int?,
         title: map[TITLE] as String,
+        snakeCaseBriefTranscript: map[SNAKE_CASE_BRIEF_TRANSCRIPT],
         moduleID: map[MODULE_ID] as int,
         taskMode: mode,
         position: map[POSITION] as int,

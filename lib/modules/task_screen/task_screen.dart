@@ -45,10 +45,22 @@ class TaskScreen extends GetView<TaskScreenController> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.1,
                     ),
-                    Text(
-                      "Current Task: ${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
-                      style: TextStyle(fontSize: 18),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey.shade400,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        "${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
+SizedBox(height: 15,),
                     Center(child: buildInterfaceBasedOnMode(context, mode)),
                   ],
                 );
