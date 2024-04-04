@@ -56,8 +56,9 @@ class TaskScreenController extends GetxController {
   var isCheckButtonEnabled = false.obs;
   var isRecordButtonEnabled = false.obs;
 
-  RxBool get shouldDisablePlayButton =>
-      RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value);
+  // Inside TaskScreenController
+  RxBool get shouldDisablePlayButton => RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value || isRecording.value);
+
 
   var mayRepeatPrompt = false.obs;
   var promptPlayedOnce = false.obs;
@@ -236,6 +237,7 @@ class TaskScreenController extends GetxController {
   }
 
   Future<void> startRecording() async {
+    shouldDisablePlayButton.value = true;
     bool hasPermission = await _recorder.hasPermission();
     if (hasPermission) {
       String recordingPath = await _getRecordingPath();
@@ -246,6 +248,7 @@ class TaskScreenController extends GetxController {
       );
       await _recorder.start(config, path: recordingPath);
       isRecording.value = true;
+
       // isRecordButtonEnabled.value = false;
     } else {
       // Handle permission not granted
@@ -286,6 +289,7 @@ class TaskScreenController extends GetxController {
     } else {
       print('Recording was not stopped properly or path was null');
     }
+    shouldDisablePlayButton.value = false;
   }
 
 

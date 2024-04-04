@@ -91,7 +91,6 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildGeneralInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
-    // print("TRUEEE: ${controller.shouldDisablePlayButton}");
     return SizedBox(
       width: 880,
       child: Column(
@@ -176,18 +175,17 @@ class TaskScreen extends GetView<TaskScreenController> {
                       width: windowSize.width * 0.2,
                     ),
                     CustomIconButton(
-                      iconData: Icons.close,
-                      label: "Pular",
-                      onPressed: () =>
-                          controller.skipCurrentTask(),
-                      isActive: true.obs,
-                    ),
+                        iconData: Icons.close,
+                        label: "Pular",
+                        onPressed: () => controller.skipCurrentTask(),
+                        isActive: true.obs,
+                        displayMessage: "Atividade Pulada"),
                     CustomIconButton(
-                      iconData: Icons.check,
-                      label: "Confirm",
-                      onPressed: () => controller.onCheckButtonPressed(),
-                      isActive: controller.isCheckButtonEnabled,
-                    ),
+                        iconData: Icons.check,
+                        label: "Confirm",
+                        onPressed: () => controller.onCheckButtonPressed(),
+                        isActive: controller.isCheckButtonEnabled,
+                        displayMessage: "Atividade Concluída"),
                     // EdCheckIconButton(
                     //   iconData: Icons.check,
                     //   label: "Confirm",
@@ -316,38 +314,35 @@ class TaskScreen extends GetView<TaskScreenController> {
                 // Vertically center items
                 children: [
                   CustomIconButton(
-                    iconData: Icons.close,
-                    label: "Pular",
-                    onPressed: () =>
-                        controller.skipCurrentTask(),
-                    isActive: true.obs,
-                  ),
+                      iconData: Icons.close,
+                      label: "Pular",
+                      onPressed: () => controller.skipCurrentTask(),
+                      isActive: true.obs,
+                      displayMessage: "Atividade Pulada"),
                   CustomRecordingButton(controller: controller),
                   CustomIconButton(
-                    iconData: Icons.check,
-                    label: "Confirm",
-                    onPressed: () => controller.onCheckButtonPressed(),
-                    isActive: controller.isCheckButtonEnabled,
-                  ),
+                      iconData: Icons.check,
+                      label: "Confirm",
+                      onPressed: () => controller.onCheckButtonPressed(),
+                      isActive: controller.isCheckButtonEnabled,
+                      displayMessage: "Atividade Concluída"),
                 ],
               ),
-
-          Flexible(
-                        flex: 6,
-                        child: Container(
-                          width: 300,
-                          child: SizedBox(
-                            height: 200,
-                            child: MusicVisualizer(
-                              isPlaying: controller.isRecording.value,
-                              barCount: 30,
-                              barWidth: 2,
-                              activeColor: Colors.red,
-                            ),
-                          ),
-                        ),
-                      )
-
+              Flexible(
+                flex: 6,
+                child: Container(
+                  width: 300,
+                  child: SizedBox(
+                    height: 200,
+                    child: MusicVisualizer(
+                      isPlaying: controller.isRecording.value,
+                      barCount: 30,
+                      barWidth: 2,
+                      activeColor: Colors.red,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -360,11 +355,9 @@ class TaskScreen extends GetView<TaskScreenController> {
     final audioPlayer = AudioPlayer();
     await audioPlayer.play(AssetSource('audio/climbing_fast_sound_effect.mp3'));
 
-
     if (controller.isRecording.value) {
       await controller.stopRecording(); // Stop the recording
     }
-
 
     // Show time up dialog
     Get.dialog(
@@ -434,6 +427,7 @@ class CustomIconButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   final RxBool isActive;
+  String? displayMessage;
 
   CustomIconButton({
     Key? key,
@@ -441,19 +435,42 @@ class CustomIconButton extends StatelessWidget {
     required this.onPressed,
     required this.isActive,
     required this.label,
+    this.displayMessage,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return Column(
-        mainAxisSize: MainAxisSize.min, // Keep the label close to the icon
+        mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
             icon: Icon(iconData, size: 40),
             // Consistent size with recording button
             color: isActive.value ? Colors.blue : Colors.grey,
-            onPressed: isActive.value ? onPressed : null,
+            onPressed: isActive.value
+                ? () {
+                    onPressed();
+                    displayMessage != null
+                        ? Get.snackbar(
+                            "Ação", // Title
+                            displayMessage!, // Message
+                            snackPosition: SnackPosition.BOTTOM,
+                            // Position of the snackbar
+                            backgroundColor: Colors.blue,
+                            colorText: Colors.white,
+                            borderRadius: 20,
+                            margin: EdgeInsets.all(15),
+                            duration: Duration(milliseconds: 1000),
+                            // Duration of the snackbar
+                            isDismissible: true,
+                            // Allow the snackbar to be dismissed
+                            dismissDirection: DismissDirection
+                                .horizontal, // Dismiss direction
+                          )
+                        : null;
+                  }
+                : null,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
@@ -474,7 +491,11 @@ class CustomRecordingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var label = controller.isRecording.value ? "Parar" : "Gravar"; // Label changes based on recording state
+      var label = controller.isRecording.value ? "Parar" : "Gravar";
+      var message = controller.isRecording.value
+          ? "Gravação parada."
+          : "Iniciando Garavção";
+
       return Column(
         mainAxisSize: MainAxisSize.min, // Use the minimum space available
         children: [
@@ -484,8 +505,8 @@ class CustomRecordingButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: controller.isRecordButtonEnabled.value
                   ? (controller.isRecording.value
-                  ? Colors.redAccent.shade100
-                  : Colors.blue.shade100)
+                      ? Colors.redAccent.shade100
+                      : Colors.blue.shade100)
                   : Colors.grey.shade400, // Grey color for disabled state
               borderRadius: BorderRadius.circular(50),
             ),
@@ -499,25 +520,30 @@ class CustomRecordingButton extends StatelessWidget {
                   : Colors.grey, // Grey icon for disabled state
               onPressed: controller.isRecordButtonEnabled.value
                   ? () async {
-                if (controller.isRecording.value) {
-                  await controller.stopRecording();
-                } else {
-                  await controller.startRecording();
-                }
-              }
+                      if (controller.isRecording.value) {
+                        await controller.stopRecording();
+                      } else {
+                        await controller.startRecording();
+                      }
+
+                      Get.snackbar("Ação", message,
+                          snackPosition: SnackPosition.BOTTOM,
+                          duration: Duration(milliseconds: 1500));
+                    }
                   : null, // Disable the button if isRecordButtonEnabled is false
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0), // Space between icon and text
-            child: Text(label, style: TextStyle(fontSize: 16)), // Use the variable label
+            padding: const EdgeInsets.only(top: 8.0),
+            // Space between icon and text
+            child: Text(label,
+                style: TextStyle(fontSize: 16)), // Use the variable label
           ),
         ],
       );
     });
   }
 }
-
 
 // class CustomRecordingButton extends StatelessWidget {
 //   const CustomRecordingButton({

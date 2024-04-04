@@ -383,7 +383,7 @@ TaskEntity yesOrNoQuestionsTask = TaskEntity(
   taskID: yesOrNoQuestionsTaskId,
   title: yesOrNoQuestionsTitle,
   moduleID: functionalityId,
-  taskMode: TaskMode.record,
+  taskMode: TaskMode.play,
   timeForCompletion: 40,
   mayRepeatPrompt: true,
   position: 1,
