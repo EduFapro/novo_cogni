@@ -486,22 +486,35 @@ class TaskScreenController extends GetxController {
   }
 
   // TaskScreenController
-  Future<void> launchNextTaskWithoutCompletingCurrent() async {
-    if (currentTaskIndex.value < totalTasks.value) {
-      currentTaskIndex.value++; // Increment to move to the next task
+  Future<void> skipCurrentTask() async {
+    if (currentTask.value != null) {
+      await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
-      // Fetch the next task instance skipping the current one
-      var nextTaskInstance = await evaluationService.getNextTaskInstanceSkippingCurrent(
-          moduleInstance.value!.moduleInstanceID!, currentTask.value!.taskInstanceID!);
-      if (nextTaskInstance != null) {
-        // If there's a next task, update current task to this new task
-        await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+      if (currentTaskIndex.value < totalTasks.value) {
+        currentTaskIndex.value++; // Move to the next task
+
+        // Attempt to fetch the next pending task instance
+        var nextTaskInstance =
+        await evaluationService.getNextPendingTaskInstanceForModule(
+            moduleInstance.value!.moduleInstanceID!);
+        if (nextTaskInstance != null) {
+          // If there's a next task, update current task to this new task
+          await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+        } else {
+          // If there are no more tasks, mark the module as completed
+          isModuleCompleted.value = true;
+          await setModuleInstanceAsCompleted(
+              moduleInstance.value!.moduleInstanceID!);
+        }
       } else {
-        // Handle case when there is no next task or unable to fetch
-        Get.back();
+        // If we've reached or passed the last task, mark the module as completed
+        isModuleCompleted.value = true;
+        await setModuleInstanceAsCompleted(
+            moduleInstance.value!.moduleInstanceID!);
       }
     } else {
-      Get.back(); // No more tasks to process
+      // If for some reason there's no current task, log an error or handle it
+      print("Error: No current task found.");
     }
   }
 

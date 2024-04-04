@@ -175,8 +175,12 @@ class TaskScreen extends GetView<TaskScreenController> {
                     SizedBox(
                       width: windowSize.width * 0.2,
                     ),
-                    EdSkipButton(
-                      text: 'Skip',
+                    CustomIconButton(
+                      iconData: Icons.close,
+                      label: "Pular",
+                      onPressed: () =>
+                          controller.skipCurrentTask(),
+                      isActive: true.obs,
                     ),
                     CustomIconButton(
                       iconData: Icons.check,
@@ -315,7 +319,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                     iconData: Icons.close,
                     label: "Pular",
                     onPressed: () =>
-                        controller.launchNextTaskWithoutCompletingCurrent(),
+                        controller.skipCurrentTask(),
                     isActive: true.obs,
                   ),
                   CustomRecordingButton(controller: controller),
@@ -642,37 +646,37 @@ class CustomRecordingButton extends StatelessWidget {
 //   }
 // }
 
-class EdSkipButton extends StatelessWidget {
-  final String text;
-
-  EdSkipButton({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<TaskScreenController>();
-
-    return Obx(() => ElevatedButton(
-          onPressed: controller.launchNextTaskWithoutCompletingCurrent,
-          child: Text(text),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.black,
-            backgroundColor:
-                controller.isPlaying.value ? Colors.grey : Colors.white,
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              side: BorderSide(
-                  color:
-                      controller.isPlaying.value ? Colors.grey : Colors.black),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          ),
-        ));
-  }
-}
+// class EdSkipButton extends StatelessWidget {
+//   final String text;
+//
+//   EdSkipButton({
+//     Key? key,
+//     required this.text,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final controller = Get.find<TaskScreenController>();
+//
+//     return Obx(() => ElevatedButton(
+//           onPressed: controller.skipCurrentTask,
+//           child: Text(text),
+//           style: ElevatedButton.styleFrom(
+//             foregroundColor: Colors.black,
+//             backgroundColor:
+//                 controller.isPlaying.value ? Colors.grey : Colors.white,
+//             elevation: 2,
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(4.0),
+//               side: BorderSide(
+//                   color:
+//                       controller.isPlaying.value ? Colors.grey : Colors.black),
+//             ),
+//             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+//           ),
+//         ));
+//   }
+// }
 
 class NumericProgressIndicator extends StatelessWidget {
   final int current;
