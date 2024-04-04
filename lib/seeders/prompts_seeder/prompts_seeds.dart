@@ -441,27 +441,7 @@ final aPressaEhInimigaTaskPrompt = TaskPromptEntity(
     taskID: pressaInimigaTask.taskID!,
     filePath: AudioFilePaths.aPressaEhInimiga);
 
-final umPassaroTaskPrompt = TaskPromptEntity(
-    promptID: umPassaroTaskPromptID,
-    taskID: umPassaroTask.taskID!,
-    filePath: AudioFilePaths.ehMelhorUmPassaro);
-
-final nemTudoTaskPrompt = TaskPromptEntity(
-    promptID: nemTudoTaskPromptID,
-    taskID: nemTudoTask.taskID!,
-    filePath: AudioFilePaths.nemTudoQueReluz);
-
 final conteAteh5TaskPrompt = TaskPromptEntity(
     promptID: conteAte5taskPromptID,
     taskID: conteAte5Task.taskID!,
     filePath: AudioFilePaths.conteAte5);
-
-final digaDoisAnimaistaskPrompt = TaskPromptEntity(
-    promptID: digaDoisAnimaistaskPromptID,
-    taskID: digaDoisAnimaisTask.taskID!,
-    filePath: AudioFilePaths.digaDoisAnimais);
-
-final repitaAFrasetaskPrompt = TaskPromptEntity(
-    promptID: repitaAFrasetaskPromptID,
-    taskID: repitaAFraseTask.taskID!,
-    filePath: AudioFilePaths.repitaAFrase);

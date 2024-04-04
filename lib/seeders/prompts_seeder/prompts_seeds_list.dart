@@ -58,9 +58,5 @@ List<TaskPromptEntity> tasksPromptsList = [
   feelingLifeIsWorthLivingPrompt,
   thankingForParticipationPrompt,
   aPressaEhInimigaTaskPrompt,
-  umPassaroTaskPrompt,
-  nemTudoTaskPrompt,
   conteAteh5TaskPrompt,
-  digaDoisAnimaistaskPrompt,
-  repitaAFrasetaskPrompt
 ];
