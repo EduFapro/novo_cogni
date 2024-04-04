@@ -1,197 +1,245 @@
 part of task_seeds;
 
 // TASKS
-String helloHowAreYouTaskTitle = "hello_how_are_you";
+String helloHowAreYouTaskSnakeCaseTranscript = "hello_how_are_you";
+String helloHowAreYouTaskTitle = "Seja bem-vindo";
 int helloHowAreYouTaskId = 1;
 
-String whatsYourNameTaskTitle = "what_is_your_name";
+String whatsYourNameTaskSnakeCaseTranscript = "what_is_your_name";
+String whatsYourNameTaskTitle = "Dados Pessoais";
 int whatsYourNameTaskId = 2;
 
-String whatsYourDOBTitle = "what_is_dob";
+String whatsYourDOBTaskSnakeCaseTranscript = "what_is_dob";
+String whatsYourDOBTaskTitle = "Dados Pessoais";
 int whatsYourDOBTaskId = 3;
 
-String whatsYourEducationLevelTitle = "what_is_your_education_level";
+String whatsYourEducationLevelTaskSnakeCaseTranscript = "what_is_your_education_level";
+String whatsYourEducationLevelTaskTitle = "Dados Pessoais";
 int whatsYourEducationLevelTaskId = 4;
 
-String whatWasYourProfessionTitle = "what_was_your_profession";
+String whatWasYourProfessionTaskSnakeCaseTranscript = "what_was_your_profession";
+String whatWasYourProfessionTaskTitle = "Dados Pessoais";
 int whatWasYourProfessionTaskId = 5;
 
-String whoDoYouLiveWithTitle = "who_do_you_live_with";
+String whoDoYouLiveWithTaskSnakeCaseTranscript = "who_do_you_live_with";
+String whoDoYouLiveWithTaskTitle = "Dados Pessoais";
 int whoDoYouLiveWithTaskId = 6;
 
-String doYouExerciseFrequentlyTitle = "do_you_exercise_frequently";
+String doYouExerciseFrequentlyTaskSnakeCaseTranscript = "do_you_exercise_frequently";
+String doYouExerciseFrequentlyTaskTitle = "Dados Pessoais";
 int doYouExerciseFrequentlyTaskId = 7;
 
-String doYouReadFrequentlyTitle = "do_you_read_frequently";
+String doYouReadFrequentlyTaskSnakeCaseTranscript = "do_you_read_frequently";
+String doYouReadFrequentlyTaskTitle = "Dados Pessoais";
 int doYouReadFrequentlyTaskId = 8;
 
-String doYouPlayPuzzlesOrVideoGamesFrequentlyTitle =
+String doYouPlayPuzzlesOrVideoGamesFrequentlyTaskSnakeCaseTranscript =
     "do_you_play_puzzles_or_video_games_frequently";
+String doYouPlayPuzzlesOrVideoGamesFrequentlyTaskTitle = "Dados Pessoais";
 int doYouPlayPuzzlesOrVideoGamesFrequentlyTaskId = 9;
 
-String doYouHaveAnyDiseasesTitle = "do_you_have_any_diseases";
+String doYouHaveAnyDiseasesTaskSnakeCaseTranscript = "do_you_have_any_diseases";
+String doYouHaveAnyDiseasesTaskTitle = "Dados Pessoais";
 int doYouHaveAnyDiseasesTaskId = 10;
 
-String payCloseAttentionTitle = "pay_close_attention";
+String payCloseAttentionTaskSnakeCaseTranscript = "pay_close_attention";
+String payCloseAttentionTaskTitle = "Funções Cognitivas";
 int payCloseAttentionTaskId = 11;
 
-String subtracting3AndAgainTitle = "subtracting_3_and_again";
+String subtracting3AndAgainTaskSnakeCaseTranscript = "subtracting_3_and_again";
+String subtracting3AndAgainTaskTitle = "Funções Cognitivas";
 int subtracting3AndAgainTaskId = 12;
 
-String whatYearAreWeInTitle = "what_year_are_we_in";
+String whatYearAreWeInTaskSnakeCaseTranscript = "what_year_are_we_in";
 int whatYearAreWeInTaskId = 13;
+String whatYearAreWeInTaskTitle = "Funções Cognitivas";
 
-String whatMonthAreWeInTitle = "what_month_are_we_in";
+String whatMonthAreWeInTaskSnakeCaseTranscript = "what_month_are_we_in";
 int whatMonthAreWeInTaskId = 14;
+String whatMonthAreWeInTaskTitle = "Funções Cognitivas";
 
-String whatDayOfTheMonthIsItTitle = "what_day_of_the_month_is_it";
+String whatDayOfTheMonthIsItTaskSnakeCaseTranscript = "what_day_of_the_month_is_it";
 int whatDayOfTheMonthIsItTaskId = 15;
+String whatDayOfTheMonthIsItTaskTitle = "Funções Cognitivas";
 
-String whatDayOfTheWeekIsItTitle = "what_day_of_the_week_is_it";
+String whatDayOfTheWeekIsItTaskSnakeCaseTranscript = "what_day_of_the_week_is_it";
 int whatDayOfTheWeekIsItTaskId = 16;
+String whatDayOfTheWeekIsItTaskTitle = "Funções Cognitivas";
 
 int howOldAreYouTaskId = 17;
-String howOldAreYouTitle = "how_old_are_you";
+String howOldAreYouTaskSnakeCaseTranscript = "how_old_are_you";
+String howOldAreYouTaskTitle = "Funções Cognitivas";
 
 int whereAreWeNowTaskId = 18;
-String whereAreWeNowTitle = "where_are_we_now_title";
+String whereAreWeNowTaskSnakeCaseTranscript = "where_are_we_now_title";
+String whereAreWeNowTaskTitle = "Funções Cognitivas";
 
 int currentPresidentOfBrazilTaskId = 19;
-String currentPresidentOfBrazilTitle = "current_president_of_Brazil";
+String currentPresidentOfBrazilTaskSnakeCaseTranscript = "current_president_of_Brazil";
+String currentPresidentOfBrazilTaskTitle = "Funções Cognitivas";
 
 int formerPresidentOfBrazilTaskId = 20;
-String formerPresidentOfBrazilTitle = "former_president_of_Brazil";
+String formerPresidentOfBrazilTaskSnakeCaseTranscript = "former_president_of_Brazil";
+String formerPresidentOfBrazilTaskTitle = "Funções Cognitivas";
 
 int repeatWordsAfterListeningFirstTimeTaskId = 21;
-String repeatWordsAfterListeningFirstTimeTitle =
+String repeatWordsAfterListeningFirstTimeTaskSnakeCaseTranscript =
     "repeat_words_after_listening_first_time";
+String repeatWordsAfterListeningFirstTimeTaskTitle = "Funções Cognitivas";
 
 int recallWordsFromListFirstTimeTaskId = 22;
-String recallWordsFromListFirstTimeTitle = "recall_words_from_list_first_time";
+String recallWordsFromListFirstTimeTaskSnakeCaseTranscript = "recall_words_from_list_first_time";
+String recallWordsFromListFirstTimeTaskTitle = "Funções Cognitivas";
 
 int repeatWordsAfterListeningSecondTimeTaskId = 23;
-String repeatWordsAfterListeningSecondTimeTitle =
+String repeatWordsAfterListeningSecondTimeTaskSnakeCaseTranscript =
     "repeat_words_after_listening_second_time";
+String repeatWordsAfterListeningSecondTimeTaskTitle = "Funções Cognitivas";
 
 int recallWordsFromListSecondTimeTaskId = 24;
-String recallWordsFromListSecondTimeTitle =
+String recallWordsFromListSecondTimeTaskSnakeCaseTranscript =
     "recall_words_from_list_title_second_time";
+String recallWordsFromListSecondTimeTaskTitle = "Funções Cognitivas";
 
 int repeatWordsAfterListeningThirdTimeTaskId = 25;
-String repeatWordsAfterListeningThirdTimeTitle =
+String repeatWordsAfterListeningThirdTimeTaskSnakeCaseTranscript =
     "repeat_words_after_listening_third_time";
+String repeatWordsAfterListeningThirdTimeTaskTitle = "Funções Cognitivas";
 
 int recallWordsFromListThirdTimeTaskId = 26;
-String recallWordsFromListThirdTimeTitle =
+String recallWordsFromListThirdTimeTaskSnakeCaseTranscript =
     "recall_words_from_list_title_third_time";
+String recallWordsFromListThirdTimeTaskTitle = "Funções Cognitivas";
 
 int whatDidYouDoYesterdayTaskId = 27;
-String whatDidYouDoYesterdayTitle = "what_did_you_do_yesterday";
+String whatDidYouDoYesterdayTaskSnakeCaseTranscript = "what_did_you_do_yesterday";
+String whatDidYouDoYesterdayTaskTitle = "Funções Cognitivas";
 
 int favoriteChildhoodGameTaskId = 28;
-String favoriteChildhoodGameTitle = "favorite_childhood_game";
+String favoriteChildhoodGameTaskSnakeCaseTranscript = "favorite_childhood_game";
+String favoriteChildhoodGameTaskTitle = "Funções Cognitivas";
 
 int retellWordsHeardBeforeTaskId = 29;
-String retellWordsHeardBeforeTitle = "retell_story_heard_before_";
+String retellWordsHeardBeforeTaskSnakeCaseTranscript = "retell_story_heard_before_";
+String retellWordsHeardBeforeTaskTitle = "Funções Cognitivas";
 
 int payCloseAttentionToTheStoryTaskId = 30;
-String payCloseAttentionToTheStoryTitle = "pay_close_attention_to_the_story_";
+String payCloseAttentionToTheStoryTaskSnakeCaseTranscript = "pay_close_attention_to_the_story_";
+String payCloseAttentionToTheStoryTaskTitle = "Funções Cognitivas";
 
 int anasCatStoryTaskId = 31;
-String anasCatStoryTitle = "ana's_cat_story";
+String anasCatStoryTaskSnakeCaseTranscript = "ana's_cat_story";
+String anasCatStoryTaskTitle = "Funções Cognitivas";
 
 int howManyAnimalsCanYouThinkOfTaskId = 32;
-String howManyAnimalsCanYouThinkOfTitle = "how_many_animals_can_you_think_of";
+String howManyAnimalsCanYouThinkOfTaskSnakeCaseTranscript = "how_many_animals_can_you_think_of";
+String howManyAnimalsCanYouThinkOfTaskTitle = "Funções Cognitivas";
 
 int wordsStartingWithFTaskId = 33;
-String wordsStartingWithFTitle = "words_starting_with_F";
+String wordsStartingWithFTaskSnakeCaseTranscript = "words_starting_with_F";
+String wordsStartingWithFTaskTitle = "Funções Cognitivas";
 
 int wordsStartingWithATaskId = 34;
-String wordsStartingWithATitle = "words_starting_with_A";
+String wordsStartingWithATaskSnakeCaseTranscript = "words_starting_with_A";
+String wordsStartingWithATaskTitle = "Funções Cognitivas";
 
 int wordsStartingWithSTaskId = 35;
-String wordsStartingWithSTitle = "words_starting_with_S";
+String wordsStartingWithSTaskSnakeCaseTranscript = "words_starting_with_S";
+String wordsStartingWithSTaskTitle = "Funções Cognitivas";
 
 int describeWhatYouSeeTaskId = 36;
-String describeWhatYouSeeTitle = "describe_what_you_see";
+String describeWhatYouSeeTaskSnakeCaseTranscript = "describe_what_you_see";
+String describeWhatYouSeeTaskTitle = "Funções Cognitivas";
 
 int retellStoryTaskId = 37;
-String retellStoryTitle = "retellStory";
+String retellStoryTaskSnakeCaseTranscript = "retell_story";
+String retellStoryTaskTitle = "Funções Cognitivas";
 
 int yesOrNoQuestionsTaskId = 38;
-String yesOrNoQuestionsTitle = "yes_or_no_questions";
+String yesOrNoQuestionsTaskSnakeCaseTranscript = "yes_or_no_questions";
+String yesOrNoQuestionsTaskTitle = "Funcionalidade";
 
 int canYouBatheAloneTaskId = 39;
-String canYouBatheAloneTitle = "can_you_bathe_alone";
+String canYouBatheAloneTaskSnakeCaseTranscript = "can_you_bathe_alone";
+String canYouBatheAloneTaskTitle = "Funcionalidade";
 
 int canYouDressAloneTaskId = 40;
-String canYouDressAloneTitle = "can_you_dress_alone";
+String canYouDressAloneTaskSnakeCaseTranscript = "can_you_dress_alone";
+String canYouDressAloneTaskTitle = "Funcionalidade";
 
 int canYouUseToiletAloneTaskId = 41;
-String canYouUseToiletAloneTitle = "can_you_use_toilet_alone";
+String canYouUseToiletAloneTaskSnakeCaseTranscript = "can_you_use_toilet_alone";
+String canYouUseToiletAloneTaskTitle = "Funcionalidade";
 
 int canYouUsePhoneAloneTaskId = 42;
-String canYouUsePhoneAloneTitle = "can_you_use_phone_alone";
+String canYouUsePhoneAloneTaskSnakeCaseTranscript = "can_you_use_phone_alone";
+String canYouUsePhoneAloneTaskTitle = "Funcionalidade";
 
 int canYouShopAloneTaskId = 43;
-String canYouShopAloneTitle = "can_you_shop_alone_alone";
+String canYouShopAloneTaskSnakeCaseTranscript = "can_you_shop_alone_alone";
+String canYouShopAloneTaskTitle =  "Funcionalidade";
 
 int canYouHandleMoneyAloneTaskId = 44;
-String canYouHandleMoneyAloneTitle = "can_you_handle_money_alone";
+String canYouHandleMoneyAloneTaskSnakeCaseTranscript = "can_you_handle_money_alone";
+String canYouHandleMoneyAloneTaskTitle =  "Funcionalidade";
 
 int canYouManageMedicationAloneTaskId = 45;
-String canYouManageMedicationAloneTitle = "can_you_manage_medication_alone";
+String canYouManageMedicationAloneTaskSnakeCaseTranscript = "can_you_manage_medication_alone";
+String canYouManageMedicationAloneTaskTitle =  "Funcionalidade";
 
 int canYouUseTransportAloneTaskId = 46;
-String canYouUseTransportAloneTitle = "can_you_use_transport_alone";
+String canYouUseTransportAloneTaskSnakeCaseTranscript = "can_you_use_transport_alone";
+String canYouUseTransportAloneTaskTitle =  "Funcionalidade";
 
 int feelingsInPastTwoWeeksTaskId = 47;
-String feelingsInPastTwoWeeksTitle = "feelings_in_past_two_weeks";
+String feelingsInPastTwoWeeksTaskSnakeCaseTranscript = "feelings_in_past_two_weeks";
+String feelingsInPastTwoWeeksTaskTitle =  "Funcionalidade";
 
 int feelingSadFrequentlyTaskId = 48;
-String feelingSadFrequentlyTitle = "feeling_sad_frequently";
+String feelingSadFrequentlyTaskSnakeCaseTranscript = "feeling_sad_frequently";
+String feelingSadFrequentlyTaskTitle =  "Funcionalidade";
 
 int feelingTiredOrLackingEnergyTaskId = 49;
-String feelingTiredOrLackingEnergyTitle = "feeling_tired_or_lacking_energy";
+String feelingTiredOrLackingEnergyTaskSnakeCaseTranscript = "feeling_tired_or_lacking_energy";
+String feelingTiredOrLackingEnergyTaskTitle =  "Funcionalidade";
 
 int troubleSleepingTaskId = 50;
-String troubleSleepingTitle = "trouble_sleeping";
+String troubleSleepingTaskSnakeCaseTranscript = "trouble_sleeping";
+String troubleSleepingTaskTitle =  "Funcionalidade";
 
 int preferringToStayHomeTaskId = 51;
-String preferringToStayHomeTitle = "preferring_to_stay_home";
+String preferringToStayHomeTaskSnakeCaseTranscript = "preferring_to_stay_home";
+String preferringToStayHomeTaskTitle =  "Funcionalidade";
 
 int feelingUselessOrGuiltyTaskId = 52;
-String feelingUselessOrGuiltyTitle = "feeling_useless_or_guilty";
+String feelingUselessOrGuiltyTaskSnakeCaseTranscript = "feeling_useless_or_guilty";
+String feelingUselessOrGuiltyTaskTitle =  "Funcionalidade";
 
 int lostInterestInActivitiesTaskId = 53;
-String lostInterestInActivitiesTitle = "lost_interest_in_activities";
+String lostInterestInActivitiesTaskSnakeCaseTranscript = "lost_interest_in_activities";
+String lostInterestInActivitiesTaskTitle =  "Funcionalidade";
 
 int hopefulAboutFutureTaskId = 54;
-String hopefulAboutFutureTitle = "hopeful_about_future";
+String hopefulAboutFutureTaskSnakeCaseTranscript = "hopeful_about_future";
+String hopefulAboutFutureTaskTitle =  "Funcionalidade";
 
 int feelingLifeIsWorthLivingTaskId = 55;
-String feelingLifeIsWorthLivingTitle = "feeling_life_is_worth_living";
+String feelingLifeIsWorthLivingTaskSnakeCaseTranscript = "feeling_life_is_worth_living";
+String feelingLifeIsWorthLivingTaskTitle =  "Funcionalidade";
 
 int thankingForParticipationTaskId = 56;
-String thankingForParticipationTitle = "thanking_for_participation";
+String thankingForParticipationTaskSnakeCaseTranscript = "thanking_for_participation";
+String thankingForParticipationTaskTitle = "Agradecimento";
 
 /////////////////////////////////
 // PARA VERIFICAÇÃO
 
-int pressaInimigaId = 9005;
-String pressaInimigaTitle = "A Pressa É Inimiga";
+int pressaInimigaTaskId = 9005;
+String pressaInimigaTaskSnakeCaseTranscript = "A Pressa É Inimiga";
+String pressaInimigaTaskTitle = "A Pressa É Inimiga";
 
-int umPassaroNaMaoId = 9006;
-String umPassaroNaMaoTitle = "Um Passaro na Mão";
 
-int nemTudoQueReluzId = 9007;
-String nemTudoQueReluzTitle = "Nem Tudo Que Reluz";
+int conteAte5TaskId = 9008;
+String conteAte5TaskSnakeCaseTranscript = "Conte Até 5";
+String conteAte5TaskTitle = "Conte Até 5";
 
-int conteAte5Id = 9008;
-String conteAte5Title = "Conte Até 5";
-
-int digaDoisAnimaisId = 9009;
-String digaDoisAnimaisTitle = "Diga Dois Animais que Andam em 4 Patas";
-
-int repitaAFraseId = 9010;
-String repitaAFraseTitle = "Repita a Frase";

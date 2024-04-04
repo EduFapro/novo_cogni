@@ -492,6 +492,17 @@ class TaskScreenController extends GetxController {
   // TaskScreenController
   Future<void> skipCurrentTask() async {
     if (currentTask.value != null) {
+
+      // Stop playing audio if it is currently playing
+      if (isPlaying.value) {
+        await stop(); // Assuming stop() is your method to stop audio playback
+      }
+
+      // Stop recording if it is currently active
+      if (isRecording.value) {
+        await stopRecording(); // Assuming stopRecording() is your method to stop recording
+      }
+
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
       if (currentTaskIndex.value < totalTasks.value) {
