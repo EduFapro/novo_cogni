@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/assets_file_paths.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
@@ -20,15 +19,18 @@ class TaskScreen extends GetView<TaskScreenController> {
   @override
   Widget build(BuildContext context) {
     // Determine if an image path is present
-    final bool hasImagePath = controller.currentTaskEntity.value?.imagePath != null;
-
+    final bool hasImagePath =
+        controller.currentTaskEntity.value?.imagePath != null;
+    final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
-      body: hasImagePath ? buildScrollableContent(context) : buildNonScrollableContent(context),
+      body: hasImagePath
+          ? buildImageContent(context, windowSize)
+          : buildContent(context, windowSize),
     );
   }
 
-  Widget buildContent(BuildContext context) {
+  Widget buildContent(BuildContext context, Size windowSize) {
     return Column(
       children: [
         Expanded(
@@ -71,7 +73,9 @@ class TaskScreen extends GetView<TaskScreenController> {
                   SizedBox(
                     height: 15,
                   ),
-                  Center(child: buildInterfaceBasedOnMode(context, mode)),
+                  Center(
+                      child:
+                          buildInterfaceBasedOnMode(context, mode, windowSize)),
                 ],
               );
             } else {
@@ -89,10 +93,11 @@ class TaskScreen extends GetView<TaskScreenController> {
     );
   }
 
-  Widget buildInterfaceBasedOnMode(BuildContext context, TaskMode mode) {
+  Widget buildInterfaceBasedOnMode(
+      BuildContext context, TaskMode mode, Size windowSize) {
     return Column(
       children: [
-        buildGeneralInterface(context),
+        buildGeneralInterface(context, windowSize),
         mode == TaskMode.play
             ? buildAudioPlayerInterface(context)
             : mode == TaskMode.record
@@ -102,8 +107,7 @@ class TaskScreen extends GetView<TaskScreenController> {
     );
   }
 
-  Widget buildGeneralInterface(BuildContext context) {
-    final Size windowSize = MediaQuery.of(context).size;
+  Widget buildGeneralInterface(BuildContext context, Size windowSize) {
     return SizedBox(
       width: 880,
       child: Column(
@@ -114,60 +118,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                 controller.currentTaskEntity.value!.timeForCompletion,
             onTimerComplete: _onTimeCompleted,
           ),
-          Card(
-            color: Color(0xFFD7D7D7),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  Text(
-                    UiStrings.clickOnPlayToListenToTheTask,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(
-                            color: controller.shouldDisablePlayButton.value
-                                ? Colors.redAccent.shade100
-                                : Colors.black54,
-                            disabledColor: Colors.redAccent.shade100,
-                            iconSize: 48,
-                            icon: Icon(controller.isPlaying.value
-                                ? Icons.stop
-                                : Icons.play_arrow),
-                            onPressed: controller.shouldDisablePlayButton.value
-                                ? null
-                                : () => controller.togglePlay(),
-                          ),
-                          Text('Play', style: TextStyle(fontSize: 16)),
-                          // Subtitle label
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                            width: windowSize.width * 0.4,
-                            height: 80,
-                            child: MusicVisualizer(
-                              isPlaying: controller.isPlaying.value,
-                              barCount: 30, // Example: 30 bars
-                              barWidth: 3, // Example: Each bar is 3 pixels wide
-                            )),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          Player(controller: controller, windowSize: windowSize),
         ],
       ),
     );
@@ -217,104 +168,12 @@ class TaskScreen extends GetView<TaskScreenController> {
     );
   }
 
-  // Widget buildAudioRecorderInterface(BuildContext context) {
-  //   final Size windowSize = MediaQuery
-  //       .of(context)
-  //       .size;
-  //   final recorderInterfaceHeight = windowSize.height * 0.40;
-  //   final TaskScreenController controller = Get.find<TaskScreenController>();
-  //
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 400.0),
-  //     child: Container(
-  //       height: recorderInterfaceHeight,
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //         children: [
-  //           SizedBox(height: 20),
-  //           // Skip Button
-  //           // Align(
-  //           //   alignment: Alignment.centerRight,
-  //           //   child: Padding(
-  //           //     padding: const EdgeInsets.only(bottom: 8.0),
-  //           //     child: EdSkipButton(
-  //           //       text: 'Skip',
-  //           //     ),
-  //           //   ),
-  //           // ),
-  //           Flexible(
-  //             flex: 4,
-  //             child: Container(
-  //               color: Colors.pink,
-  //               child:
-  //   //Obx(() {
-  //                 //return
-  //               Center(
-  //                 child: Row(
-  //                   crossAxisAlignment: CrossAxisAlignment.center,
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Expanded(
-  //                         child: EdCheckIconButton(
-  //                           iconData: Icons.close,
-  //                           label: "Pular",
-  //                           onPressed: () {
-  //                             controller.launchNextTaskWithoutCompletingCurrent(); // The functionality of Skip is now here
-  //                           },
-  //                           isActive: true.obs,
-  //                         ),
-  //                       ),
-  //                       // This Container wraps the middle button and gives it a bigger size
-  //                       // controller.task.value!.test_only ?
-  //                       // CustomTestingRecordingButton(controller: controller)
-  //                       //
-  //                       //     :
-  //                       Expanded(child: CustomRecordingButton(controller: controller)),
-  //                       Expanded(
-  //                         child: EdCheckIconButton(
-  //                           iconData: Icons.check,
-  //                           label: "Confirm",
-  //                           onPressed: () {
-  //                             controller.onCheckButtonPressed();
-  //                           },
-  //                           isActive: controller.isCheckButtonEnabled,
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //               ),
-  //               // }),
-  //             ),
-  //           ),
-  //           Flexible(
-  //             flex: 6,
-  //             child: Container(
-  //               width: 300,
-  //               child: SizedBox(
-  //                 height: 200,
-  //                 child: MusicVisualizer(
-  //                   isPlaying: controller.isRecording.value,
-  //                   barCount: 30,
-  //                   barWidth: 2,
-  //                   activeColor: Colors.red,
-  //                 ),
-  //               ),
-  //             ),
-  //           )
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget buildAudioRecorderInterface(BuildContext context) {
     final Size windowSize = MediaQuery.of(context).size;
     final recorderInterfaceHeight = windowSize.height * 0.40;
     final TaskScreenController controller = Get.find<TaskScreenController>();
 
     var AudioRecorderinterfaceContent = [
-      if (controller.currentTaskEntity.value!.imagePath != null)
-        Image.asset(ImageFilePaths.describe_what_you_see_task),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         // Space out items equally
@@ -351,6 +210,50 @@ class TaskScreen extends GetView<TaskScreenController> {
           ),
         ),
       )
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 400.0),
+      child: Container(
+        height: recorderInterfaceHeight,
+        // color: Colors.pink,
+        child: Center(
+          // Center the row
+
+          child: Column(
+            children: AudioRecorderinterfaceContent,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildAudioRecorderInterfaceForImageTask(BuildContext context) {
+    final Size windowSize = MediaQuery.of(context).size;
+    final recorderInterfaceHeight = windowSize.height * 0.40;
+    final TaskScreenController controller = Get.find<TaskScreenController>();
+
+    var AudioRecorderinterfaceContent = [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // Space out items equally
+        crossAxisAlignment: CrossAxisAlignment.center,
+        // Vertically center items
+        children: [
+          CustomIconButton(
+              iconData: Icons.close,
+              label: "Pular",
+              onPressed: () => controller.skipCurrentTask(),
+              isActive: true.obs,
+              displayMessage: "Atividade Pulada"),
+          CustomRecordingButton(controller: controller),
+          CustomIconButton(
+              iconData: Icons.check,
+              label: "Confirm",
+              onPressed: () => controller.onCheckButtonPressed(),
+              isActive: controller.isCheckButtonEnabled,
+              displayMessage: "Atividade Concluída"),
+        ],
+      ),
     ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 400.0),
@@ -439,27 +342,124 @@ class TaskScreen extends GetView<TaskScreenController> {
     );
   }
 
-  Widget buildScrollableContent(BuildContext context) {
+  Widget buildImageContent(BuildContext context, Size windowSize) {
+    // Assuming imagePath is obtained from the controller
+    final String imagePath =
+        controller.currentTaskEntity.value?.imagePath ?? '';
+
     return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          // This ensures that the SingleChildScrollView has a minimum height
-          // equal to the viewport height, allowing it to scroll properly.
-          minHeight: MediaQuery.of(context).size.height,
-        ),
-        child: IntrinsicHeight(
-          // IntrinsicHeight is used to size the column height to the height
-          // of its children when inside a box with unconstrained height.
-          child: buildContent(context),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: (MediaQuery.of(context).size.width * 0.30)),
+            child: CustomLinearPercentIndicator(
+              current: controller.currentTaskIndex.value,
+              total: controller.totalTasks.value,
+            ),
+          ),
+
+          SizedBox(height: 20),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.blueGrey.shade400,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              "${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Player(controller: controller, windowSize: windowSize),
+          SizedBox(height: 20),
+          // Display Image
+          Image.asset(
+            imagePath,
+            width: double.infinity, // Use the full width of the screen
+            fit: BoxFit.cover, // Cover the widget's bounds
+          ),
+          SizedBox(height: 20),
+          // Recorder Buttons Container
+          buildAudioRecorderInterfaceForImageTask(context),
+        ],
+      ),
+    );
+  }
+}
+
+class Player extends StatelessWidget {
+  const Player({
+    super.key,
+    required this.controller,
+    required this.windowSize,
+  });
+
+  final TaskScreenController controller;
+  final Size windowSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Color(0xFFD7D7D7),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            Text(
+              UiStrings.clickOnPlayToListenToTheTask,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                      color: controller.shouldDisablePlayButton.value
+                          ? Colors.redAccent.shade100
+                          : Colors.black54,
+                      disabledColor: Colors.redAccent.shade100,
+                      iconSize: 48,
+                      icon: Icon(controller.isPlaying.value
+                          ? Icons.stop
+                          : Icons.play_arrow),
+                      onPressed: controller.shouldDisablePlayButton.value
+                          ? null
+                          : () => controller.togglePlay(),
+                    ),
+                    Text('Play', style: TextStyle(fontSize: 16)),
+                    // Subtitle label
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                      width: windowSize.width * 0.4,
+                      height: 80,
+                      child: MusicVisualizer(
+                        isPlaying: controller.isPlaying.value,
+                        barCount: 30, // Example: 30 bars
+                        barWidth: 3, // Example: Each bar is 3 pixels wide
+                      )),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
-
-  Widget buildNonScrollableContent(BuildContext context) {
-    return buildContent(context);
-  }
-
 }
 
 class CustomIconButton extends StatelessWidget {
@@ -585,165 +585,6 @@ class CustomRecordingButton extends StatelessWidget {
   }
 }
 
-// class CustomRecordingButton extends StatelessWidget {
-//   const CustomRecordingButton({
-//     super.key,
-//     required this.controller,
-//   });
-//
-//   final TaskScreenController controller;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//           color: controller.isRecordButtonEnabled.value
-//               ? (controller.isRecording.value
-//               ? Colors.redAccent.shade100
-//               : Colors.blue.shade100)
-//               : Colors.grey.shade400, // Grey color for disabled state
-//           borderRadius: BorderRadius.circular(50)),
-//       width: 100,
-//       height: 100,
-//       child: Center(
-//         child: IconButton(
-//           icon: Icon(
-//             controller.isRecording.value ? Icons.stop : Icons.mic,
-//             size: 80, // Adjust the size of the icon if necessary
-//           ),
-//           color: controller.isRecordButtonEnabled.value
-//               ? (controller.isRecording.value ? Colors.red : Colors.blue)
-//               : Colors.grey, // Grey icon for disabled state
-//           onPressed: controller.isRecordButtonEnabled.value ? () async {
-//             if (controller.isRecording.value) {
-//               await controller.stopRecording();
-//             } else {
-//               await controller.startRecording();
-//             }
-//           } : null, // Disable the button if isRecordButtonEnabled is false
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class CustomTestingRecordingButton extends StatelessWidget {
-//   const CustomTestingRecordingButton({
-//     super.key,
-//     required this.controller,
-//   });
-//
-//   final TaskScreenController controller;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//           color: controller.isRecordButtonEnabled.value
-//               ? (controller.isRecording.value
-//               ? Colors.redAccent.shade100
-//               : Colors.blue.shade100)
-//               : Colors.grey.shade400, // Grey color for disabled state
-//           borderRadius: BorderRadius.circular(50)),
-//       width: 100,
-//       height: 100,
-//       child: IconButton(
-//         icon: Icon(
-//           controller.isRecording.value ? Icons.stop : Icons.mic,
-//           size: 80, // Adjust the size of the icon if necessary
-//         ),
-//         color: controller.isRecordButtonEnabled.value
-//             ? (controller.isRecording.value ? Colors.red : Colors.blue)
-//             : Colors.grey, // Grey icon for disabled state
-//         onPressed: controller.isRecordButtonEnabled.value ? () async {
-//           if (controller.isRecording.value) {
-//             await controller.stopRecording();
-//           } else {
-//             await controller.startRecording();
-//           }
-//         } : null, // Disable the button if isRecordButtonEnabled is false
-//       ),
-//     );
-//   }
-// }
-
-// class EdCheckIconButton extends StatelessWidget {
-//   final IconData iconData;
-//   final String? label;
-//   final VoidCallback onPressed;
-//   final RxBool isActive;
-//
-//   EdCheckIconButton({
-//     Key? key,
-//     required this.iconData,
-//     required this.onPressed,
-//     required this.isActive,
-//     this.label,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Use Obx here to listen to changes in isActive
-//     return Obx(() {
-//       Color borderColor = isActive.value ? Colors.black : Colors.grey;
-//       Color iconColor = iconData == Icons.check ? Colors.green : Colors.orange;
-//
-//       return Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           Expanded(
-//             child: Container(
-//               decoration: BoxDecoration(
-//                 shape: BoxShape.circle,
-//                 border: Border.all(color: borderColor, width: 2.0),
-//               ),
-//               child: IconButton(
-//                 icon: Icon(iconData),
-//                 color: iconColor,
-//                 onPressed: isActive.value ? onPressed : null,
-//               ),
-//             ),
-//           ),
-//           Text(label ?? "", style: TextStyle(fontSize: 12)),
-//         ],
-//       );
-//     });
-//   }
-// }
-
-// class EdSkipButton extends StatelessWidget {
-//   final String text;
-//
-//   EdSkipButton({
-//     Key? key,
-//     required this.text,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final controller = Get.find<TaskScreenController>();
-//
-//     return Obx(() => ElevatedButton(
-//           onPressed: controller.skipCurrentTask,
-//           child: Text(text),
-//           style: ElevatedButton.styleFrom(
-//             foregroundColor: Colors.black,
-//             backgroundColor:
-//                 controller.isPlaying.value ? Colors.grey : Colors.white,
-//             elevation: 2,
-//             shape: RoundedRectangleBorder(
-//               borderRadius: BorderRadius.circular(4.0),
-//               side: BorderSide(
-//                   color:
-//                       controller.isPlaying.value ? Colors.grey : Colors.black),
-//             ),
-//             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-//           ),
-//         ));
-//   }
-// }
-
 class NumericProgressIndicator extends StatelessWidget {
   final int current;
   final int total;
@@ -812,51 +653,6 @@ class TaskCompletedWidget extends StatelessWidget {
   }
 }
 
-// class CustomLinearPercentIndicator extends StatelessWidget {
-//   final int current;
-//   final int total;
-//
-//   const CustomLinearPercentIndicator({
-//     Key? key,
-//     required this.current,
-//     required this.total,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Calculate the percent value
-//     final double percent = total != 0 ? (current - 1) / total : 0;
-//
-//     return Padding(
-//       padding: EdgeInsets.symmetric(horizontal: 15.0),
-//       // Adjust padding if necessary
-//       child: Row(
-//         children: [
-//           Expanded( // This will make the LinearPercentIndicator take up available space
-//             child: LinearPercentIndicator(
-//               // width property is now removed, as Expanded will control the width
-//               lineHeight: 20.0,
-//               percent: percent,
-//               center: Text(
-//                 "${(percent * 100).toStringAsFixed(1)}%",
-//                 style: TextStyle(
-//                   color: Colors.white,
-//                   fontWeight: FontWeight.bold,
-//                   fontSize: 16,
-//                 ),
-//               ),
-//               barRadius: const Radius.circular(10),
-//               backgroundColor: Colors.grey,
-//               progressColor: Colors.blue,
-//               // Trailing and leading widgets removed, add if needed
-//             ),
-//           ),
-//           // Add trailing and leading widgets here if needed
-//         ],
-//       ),
-//     );
-//   }
-// }
 class CustomLinearPercentIndicator extends StatelessWidget {
   final int current;
   final int total;
