@@ -1,6 +1,6 @@
 const ID_TASK = "task_id";
 const TITLE = "title";
-const SNAKE_CASE_TRANSCRIPT = "snake_case_transcript";
+const SNAKE_CASE_BRIEF_TRANSCRIPT = "snake_case_transcript";
 const MODULE_ID = "module_id";
 const MODE = "mode";
 const POSITION = "position";
@@ -15,7 +15,7 @@ const SCRIPT_CREATE_TABLE_TASKS = '''
   $ID_TASK INTEGER PRIMARY KEY AUTOINCREMENT,
   $MODULE_ID INTEGER NOT NULL,
   $TITLE TEXT NOT NULL,
-  $SNAKE_CASE_TRANSCRIPT TEXT NOT NULL,
+  $SNAKE_CASE_BRIEF_TRANSCRIPT TEXT NOT NULL,
   $MODE INT NOT NULL,
   $POSITION INT NOT NULL,
   $IMAGE_PATH TEXT,

@@ -5,6 +5,7 @@ class TaskEntity {
   int? taskID;
   int moduleID;
   String title;
+  String? snakeCaseBriefTranscript;
   TaskMode taskMode;
   int position;
   String? image_path;
@@ -22,6 +23,7 @@ class TaskEntity {
     this.timeForCompletion = 30,
     this.mayRepeatPrompt = true,
     this.test_only = false,
+    this.snakeCaseBriefTranscript,
   });
 
   Map<String, dynamic> toMap() {
@@ -49,8 +51,7 @@ class TaskEntity {
         image_path: map[IMAGE_PATH] as String?,
         timeForCompletion: map[TIME_FOR_COMPLETION],
         mayRepeatPrompt: map[MAY_REPEAT_PROMPT] == 1 ? true : false,
-        test_only: map[MAY_REPEAT_PROMPT] == 1? true : false
-    );
+        test_only: map[MAY_REPEAT_PROMPT] == 1 ? true : false);
   }
 
   @override

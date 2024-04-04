@@ -13,6 +13,7 @@ part "task_seeds_constants.dart";
 TaskEntity helloHowAreYouTask = TaskEntity(
   taskID: helloHowAreYouTaskId,
   title: helloHowAreYouTaskTitle,
+  snakeCaseBriefTranscript: helloHowAreYouTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
   timeForCompletion: 40,
@@ -23,6 +24,7 @@ TaskEntity helloHowAreYouTask = TaskEntity(
 TaskEntity whatsYourNameTask = TaskEntity(
     taskID: whatsYourNameTaskId,
     title: whatsYourNameTaskTitle,
+    snakeCaseBriefTranscript: whatsYourDOBTaskSnakeCaseTranscript,
     moduleID: sociodemographicInfoId,
     taskMode: TaskMode.record,
     timeForCompletion: 40,
@@ -31,7 +33,8 @@ TaskEntity whatsYourNameTask = TaskEntity(
 // sociodemographicInfo - 3
 TaskEntity whatsYourDOBTask = TaskEntity(
   taskID: whatsYourDOBTaskId,
-  title: whatsYourDOBTitle,
+  title: whatsYourDOBTaskTitle,
+  snakeCaseBriefTranscript: whatsYourDOBTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
@@ -41,7 +44,8 @@ TaskEntity whatsYourDOBTask = TaskEntity(
 // sociodemographicInfo - 4
 TaskEntity whatsYourEducationLevelTask = TaskEntity(
   taskID: whatsYourEducationLevelTaskId,
-  title: whatsYourEducationLevelTitle,
+  title: whatsYourEducationLevelTaskTitle,
+  snakeCaseBriefTranscript: whatsYourEducationLevelTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
   timeForCompletion: 40,
