@@ -34,19 +34,21 @@ class TaskScreenController extends GetxController {
   var participant = Rxn<ParticipantEntity>();
   var evaluation = Rxn<EvaluationEntity>();
   var evaluator = Rxn<EvaluatorEntity>();
-  var taskName = RxString("");
-  var task = Rxn<TaskEntity>();
-  var taskInstance = Rxn<TaskInstanceEntity>();
   var moduleInstance = Rxn<ModuleInstanceEntity>();
 
-  var audioPath = ''.obs;
-  var currentTask = Rx<TaskInstanceEntity?>(null);
-  var taskMode = Rx<TaskMode>(TaskMode.record);
-  var currentTaskEntity = Rx<TaskEntity?>(null);
-  var countdownStarted = false.obs;
-  var countdownTrigger = false.obs;
+  var taskName = RxString("");
+  var currentTaskEntity = Rxn<TaskEntity>();
   var currentTaskIndex = 1.obs;
   var totalTasks = 1.obs;
+  var mayRepeatPrompt = false.obs;
+  var audioPath = ''.obs;
+  var imagePath = ''.obs;
+  var currentTaskInstance = Rxn<TaskInstanceEntity>();
+  var taskMode = Rx<TaskMode>(TaskMode.record);
+
+
+  var countdownStarted = false.obs;
+  var countdownTrigger = false.obs;
   var isModuleCompleted = false.obs;
 
   var isPlaying = false.obs;
@@ -60,7 +62,7 @@ class TaskScreenController extends GetxController {
   RxBool get shouldDisablePlayButton => RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value || isRecording.value);
 
 
-  var mayRepeatPrompt = false.obs;
+
   var promptPlayedOnce = false.obs;
 
   var recordingRepository = Get.find<RecordingRepository>();
@@ -96,10 +98,10 @@ class TaskScreenController extends GetxController {
       evaluator.value = arguments[RouteArguments.EVALUATOR];
 
       taskName.value = arguments[RouteArguments.TASK_NAME];
-      task.value = arguments[RouteArguments.TASK];
-      mayRepeatPrompt.value = task.value!.mayRepeatPrompt;
+      currentTaskEntity.value = arguments[RouteArguments.TASK];
+      mayRepeatPrompt.value = currentTaskEntity.value!.mayRepeatPrompt;
 
-      taskInstance.value = arguments[RouteArguments.TASK_INSTANCE];
+      currentTaskInstance.value = arguments[RouteArguments.TASK_INSTANCE];
 
       moduleInstance.value = arguments[RouteArguments.MODULE_INSTANCE];
       if (moduleInstance.value!.moduleInstanceID! != null) {
@@ -111,8 +113,8 @@ class TaskScreenController extends GetxController {
       }
     }
     // Update the current task based on the task instance ID passed in the arguments.
-    if (taskInstance.value != null) {
-      await updateCurrentTask(taskInstance.value!.taskInstanceID!);
+    if (currentTaskInstance.value != null) {
+      await updateCurrentTask(currentTaskInstance.value!.taskInstanceID!);
     } else {
       // Fallback or error handling if task instance ID is not provided.
       print("Task instance ID not found in arguments.");
@@ -164,38 +166,54 @@ class TaskScreenController extends GetxController {
     try {
       var taskInstance = await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
-        currentTask.value = taskInstance;
+        currentTaskInstance.value = taskInstance;
         var taskEntity = await taskService.getTask(taskInstance.taskID);
-        currentTaskEntity.value = taskEntity;
 
-        // Update mayRepeatPrompt based on the current task's properties
-        mayRepeatPrompt.value = taskEntity?.mayRepeatPrompt ?? false;
+        if (taskEntity != null) {
+          currentTaskEntity.value = taskEntity;
 
-        // Determine the task mode
-        taskMode.value = taskEntity?.taskMode ?? TaskMode.play;
+          // Update task name based on the current task's details
+          taskName.value = taskEntity.title;
 
-        // Reset states for the new task
-        isCheckButtonEnabled.value = false;
-        isRecordButtonEnabled.value = false;
-        audioPlayed.value = false;
-        countdownStarted.value = false;
-        countdownTrigger.value = false;
-        promptPlayedOnce.value = false;
+          // Update mayRepeatPrompt based on the current task's properties
+          mayRepeatPrompt.value = taskEntity.mayRepeatPrompt ?? false;
 
-        var taskPrompt = await taskService
-            .getTaskPromptByTaskInstanceID(taskInstance.taskID);
-        audioPath.value =
-            taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
-        checkAndDisablePlayButton();
+          // Update the task mode
+          taskMode.value = taskEntity.taskMode ?? TaskMode.play;
+
+          // Fetch and set the audio path for the current task
+          var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskInstance.taskID);
+          audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+
+          // Update the image path if there is one
+          imagePath.value = taskEntity.imagePath ?? ''; // Assuming `imagePath` is a property of TaskEntity
+
+          // Reset states for the new task
+          isCheckButtonEnabled.value = false;
+          isRecordButtonEnabled.value = false;
+          audioPlayed.value = false;
+          countdownStarted.value = false;
+          countdownTrigger.value = false;
+          promptPlayedOnce.value = false;
+
+          // Ensure appropriate button states
+          checkAndDisablePlayButton();
+        } else {
+          print('Task entity not found');
+        }
+      } else {
+        print('Task instance not found');
       }
     } catch (e) {
       print("Error updating current task: $e");
     }
+    // Reset flags related to task progression
     isRecordButtonEnabled.value = false;
     isCheckButtonEnabled.value = false;
     audioPlayed.value = false;
     recordingDone.value = false;
   }
+
 
   Future<void> togglePlay() async {
     if (!isPlaying.value) {
@@ -272,7 +290,7 @@ class TaskScreenController extends GetxController {
         originalPath: originalPath,
         evaluatorId: evaluatorID,
         participantId: participantID,
-        taskInstanceId: currentTask.value!.taskInstanceID!,
+        taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
           final recordingId = await recordingRepository.createRecording(recording);
           print('Recording saved with ID: $recordingId at path: $recording.filePath');
@@ -344,37 +362,9 @@ class TaskScreenController extends GetxController {
   }
 
   Future<void> onCheckButtonPressed() async {
-    // Ensure there is a current task to conclude
-    if (currentTask.value != null) {
-      await concludeTaskInstance(currentTask.value!.taskInstanceID!);
-
-      if (currentTaskIndex.value < totalTasks.value) {
-        currentTaskIndex.value++; // Move to the next task
-
-        // Attempt to fetch the next pending task instance
-        var nextTaskInstance =
-            await evaluationService.getNextPendingTaskInstanceForModule(
-                moduleInstance.value!.moduleInstanceID!);
-        if (nextTaskInstance != null) {
-          // If there's a next task, update current task to this new task
-          await updateCurrentTask(nextTaskInstance.taskInstanceID!);
-        } else {
-          // If there are no more tasks, mark the module as completed
-          isModuleCompleted.value = true;
-          await setModuleInstanceAsCompleted(
-              moduleInstance.value!.moduleInstanceID!);
-        }
-      } else {
-        // If we've reached or passed the last task, mark the module as completed
-        isModuleCompleted.value = true;
-        await setModuleInstanceAsCompleted(
-            moduleInstance.value!.moduleInstanceID!);
-      }
-    } else {
-      // If for some reason there's no current task, log an error or handle it
-      print("Error: No current task found.");
-    }
+    await proceedToNextTask();
   }
+
 
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
@@ -415,9 +405,9 @@ class TaskScreenController extends GetxController {
     if (currentTaskIndex.value >= totalTasks.value) {
       // All tasks are completed
       isModuleCompleted.value = true;
-    } else if (currentTask.value != null &&
+    } else if (currentTaskInstance.value != null &&
         currentTaskIndex.value < totalTasks.value) {
-      await concludeTaskInstance(currentTask.value!.taskInstanceID!);
+      await concludeTaskInstance(currentTaskInstance.value!.taskInstanceID!);
 
       // Fetch the next pending task instance
       final nextTaskInstance =
@@ -425,7 +415,7 @@ class TaskScreenController extends GetxController {
               moduleInstance.value!.moduleInstanceID!);
       if (nextTaskInstance != null) {
         // Update the current task
-        currentTask.value = nextTaskInstance;
+        currentTaskInstance.value = nextTaskInstance;
         // Fetch task entity for the next task
         var taskEntity = await taskService.getTask(nextTaskInstance.taskID);
         if (taskEntity != null) {
@@ -489,50 +479,9 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  // TaskScreenController
   Future<void> skipCurrentTask() async {
-    if (currentTask.value != null) {
-
-      // Stop playing audio if it is currently playing
-      if (isPlaying.value) {
-        await stop(); // Assuming stop() is your method to stop audio playback
-      }
-
-      // Stop recording if it is currently active
-      if (isRecording.value) {
-        await stopRecording(); // Assuming stopRecording() is your method to stop recording
-      }
-
-      await concludeTaskInstance(currentTask.value!.taskInstanceID!);
-
-      if (currentTaskIndex.value < totalTasks.value) {
-        currentTaskIndex.value++; // Move to the next task
-
-        // Attempt to fetch the next pending task instance
-        var nextTaskInstance =
-        await evaluationService.getNextPendingTaskInstanceForModule(
-            moduleInstance.value!.moduleInstanceID!);
-        if (nextTaskInstance != null) {
-          // If there's a next task, update current task to this new task
-          await updateCurrentTask(nextTaskInstance.taskInstanceID!);
-        } else {
-          // If there are no more tasks, mark the module as completed
-          isModuleCompleted.value = true;
-          await setModuleInstanceAsCompleted(
-              moduleInstance.value!.moduleInstanceID!);
-        }
-      } else {
-        // If we've reached or passed the last task, mark the module as completed
-        isModuleCompleted.value = true;
-        await setModuleInstanceAsCompleted(
-            moduleInstance.value!.moduleInstanceID!);
-      }
-    } else {
-      // If for some reason there's no current task, log an error or handle it
-      print("Error: No current task found.");
-    }
+    await proceedToNextTask();
   }
-
 
   void manageButtonStates(
       {required bool isAudioPlaying, required bool isAudioCompleted}) {
@@ -563,6 +512,39 @@ class TaskScreenController extends GetxController {
     // Ensure record button is enabled only in record mode and after audio playback.
     if (taskMode.value == TaskMode.record) {
       isRecordButtonEnabled.value = true;
+    }
+  }
+  Future<void> proceedToNextTask() async {
+    if (currentTaskInstance.value != null) {
+      // Stop any ongoing audio or recording
+      if (isPlaying.value) {
+        await stop();
+      }
+
+      if (isRecording.value) {
+        await stopRecording();
+      }
+
+      await concludeTaskInstance(currentTaskInstance.value!.taskInstanceID!);
+
+      // Transition to the next task or mark the module as completed
+      if (currentTaskIndex.value < totalTasks.value) {
+        currentTaskIndex.value++;  // Move to the next task
+
+        var nextTaskInstance = await evaluationService.getNextPendingTaskInstanceForModule(
+            moduleInstance.value!.moduleInstanceID!);
+        if (nextTaskInstance != null) {
+          await updateCurrentTask(nextTaskInstance.taskInstanceID!);
+        } else {
+          isModuleCompleted.value = true;
+          await setModuleInstanceAsCompleted(moduleInstance.value!.moduleInstanceID!);
+        }
+      } else {
+        isModuleCompleted.value = true;
+        await setModuleInstanceAsCompleted(moduleInstance.value!.moduleInstanceID!);
+      }
+    } else {
+      print("Error: No current task found.");
     }
   }
 

@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/assets_file_paths.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/task_screen/task_deadline_banner.dart';
 
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -17,88 +17,89 @@ class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
 
   @override
+  @override
   Widget build(BuildContext context) {
-    var windowsSize = MediaQuery.of(context).size;
+    // Determine if an image path is present
+    final bool hasImagePath = controller.currentTaskEntity.value?.imagePath != null;
+
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Obx(() {
-              if (controller.isModuleCompleted.isTrue) {
-                return TaskCompletedWidget(onNavigateBack: () => Get.back());
-              } else if (controller.currentTask.value != null) {
-                var mode = controller.taskMode.value;
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
+      body: hasImagePath ? buildScrollableContent(context) : buildNonScrollableContent(context),
+    );
+  }
+
+  Widget buildContent(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Obx(() {
+            if (controller.isModuleCompleted.isTrue) {
+              return TaskCompletedWidget(onNavigateBack: () => Get.back());
+            } else if (controller.currentTaskInstance.value != null) {
+              var mode = controller.taskMode.value;
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: (MediaQuery.of(context).size.width * 0.30)),
+                    child: CustomLinearPercentIndicator(
+                      current: controller.currentTaskIndex.value,
+                      total: controller.totalTasks.value,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: (windowsSize.width * 0.30)),
-                      child: CustomLinearPercentIndicator(
-                        current: controller.currentTaskIndex.value,
-                        total: controller.totalTasks.value,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey.shade400,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      "${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey.shade400,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        "${controller.currentTaskEntity.value?.title ?? 'Unknown'}",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-SizedBox(height: 15,),
-                    Center(child: buildInterfaceBasedOnMode(context, mode)),
-                  ],
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
-                child: buildAccordion(context)),
-          )
-        ],
-      ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(child: buildInterfaceBasedOnMode(context, mode)),
+                ],
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.4,
+              child: buildAccordion(context)),
+        )
+      ],
     );
   }
 
   Widget buildInterfaceBasedOnMode(BuildContext context, TaskMode mode) {
-    switch (mode) {
-      case TaskMode.play:
-        return Column(
-          children: [
-            buildGeneralInterface(context),
-            buildAudioPlayerInterface(context),
-          ],
-        );
-      case TaskMode.record:
-        return Column(
-          children: [
-            buildGeneralInterface(context),
-            buildAudioRecorderInterface(context),
-          ],
-        );
-      default:
-        return Container();
-    }
+    return Column(
+      children: [
+        buildGeneralInterface(context),
+        mode == TaskMode.play
+            ? buildAudioPlayerInterface(context)
+            : mode == TaskMode.record
+                ? buildAudioRecorderInterface(context)
+                : Container(),
+      ],
+    );
   }
 
   Widget buildGeneralInterface(BuildContext context) {
@@ -109,7 +110,8 @@ SizedBox(height: 15,),
         children: [
           CountdownTimer(
             countdownTrigger: controller.countdownTrigger,
-            initialDurationInSeconds: controller.task.value!.timeForCompletion,
+            initialDurationInSeconds:
+                controller.currentTaskEntity.value!.timeForCompletion,
             onTimerComplete: _onTimeCompleted,
           ),
           Card(
@@ -310,6 +312,46 @@ SizedBox(height: 15,),
     final recorderInterfaceHeight = windowSize.height * 0.40;
     final TaskScreenController controller = Get.find<TaskScreenController>();
 
+    var AudioRecorderinterfaceContent = [
+      if (controller.currentTaskEntity.value!.imagePath != null)
+        Image.asset(ImageFilePaths.describe_what_you_see_task),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // Space out items equally
+        crossAxisAlignment: CrossAxisAlignment.center,
+        // Vertically center items
+        children: [
+          CustomIconButton(
+              iconData: Icons.close,
+              label: "Pular",
+              onPressed: () => controller.skipCurrentTask(),
+              isActive: true.obs,
+              displayMessage: "Atividade Pulada"),
+          CustomRecordingButton(controller: controller),
+          CustomIconButton(
+              iconData: Icons.check,
+              label: "Confirm",
+              onPressed: () => controller.onCheckButtonPressed(),
+              isActive: controller.isCheckButtonEnabled,
+              displayMessage: "Atividade Concluída"),
+        ],
+      ),
+      Flexible(
+        flex: 6,
+        child: Container(
+          width: 300,
+          child: SizedBox(
+            height: 200,
+            child: MusicVisualizer(
+              isPlaying: controller.isRecording.value,
+              barCount: 30,
+              barWidth: 2,
+              activeColor: Colors.red,
+            ),
+          ),
+        ),
+      )
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 400.0),
       child: Container(
@@ -317,45 +359,9 @@ SizedBox(height: 15,),
         // color: Colors.pink,
         child: Center(
           // Center the row
+
           child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                // Space out items equally
-                crossAxisAlignment: CrossAxisAlignment.center,
-                // Vertically center items
-                children: [
-                  CustomIconButton(
-                      iconData: Icons.close,
-                      label: "Pular",
-                      onPressed: () => controller.skipCurrentTask(),
-                      isActive: true.obs,
-                      displayMessage: "Atividade Pulada"),
-                  CustomRecordingButton(controller: controller),
-                  CustomIconButton(
-                      iconData: Icons.check,
-                      label: "Confirm",
-                      onPressed: () => controller.onCheckButtonPressed(),
-                      isActive: controller.isCheckButtonEnabled,
-                      displayMessage: "Atividade Concluída"),
-                ],
-              ),
-              Flexible(
-                flex: 6,
-                child: Container(
-                  width: 300,
-                  child: SizedBox(
-                    height: 200,
-                    child: MusicVisualizer(
-                      isPlaying: controller.isRecording.value,
-                      barCount: 30,
-                      barWidth: 2,
-                      activeColor: Colors.red,
-                    ),
-                  ),
-                ),
-              )
-            ],
+            children: AudioRecorderinterfaceContent,
           ),
         ),
       ),
@@ -432,6 +438,28 @@ SizedBox(height: 15,),
       ],
     );
   }
+
+  Widget buildScrollableContent(BuildContext context) {
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          // This ensures that the SingleChildScrollView has a minimum height
+          // equal to the viewport height, allowing it to scroll properly.
+          minHeight: MediaQuery.of(context).size.height,
+        ),
+        child: IntrinsicHeight(
+          // IntrinsicHeight is used to size the column height to the height
+          // of its children when inside a box with unconstrained height.
+          child: buildContent(context),
+        ),
+      ),
+    );
+  }
+
+  Widget buildNonScrollableContent(BuildContext context) {
+    return buildContent(context);
+  }
+
 }
 
 class CustomIconButton extends StatelessWidget {
