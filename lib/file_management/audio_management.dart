@@ -14,11 +14,12 @@ Future<String> renameAndSaveRecording({
   required int evaluatorId,
   required int participantId,
   required int taskInstanceId,
+  required int taskEntityId,
   required Function(RecordingFileEntity) saveRecordingCallback,
 }) async {
   final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
   final dateString = DateFormat('ddMMyyyy').format(DateTime.now());
-  final formattedFileName = 'A${evaluatorId.toString().padLeft(2, '0')}_P${participantId.toString().padLeft(2, '0')}_T${taskInstanceId}_$dateString.aac';
+  final formattedFileName = 'A${evaluatorId.toString().padLeft(2, '0')}_P${participantId.toString().padLeft(2, '0')}_T${taskEntityId}_$dateString.aac';
   final newPath = path.join(path.dirname(originalPath), formattedFileName);
 
   // First, rename the original file

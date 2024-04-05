@@ -303,6 +303,7 @@ class TaskScreenController extends GetxController {
         originalPath: originalPath,
         evaluatorId: evaluatorID,
         participantId: participantID,
+        taskEntityId: currentTaskEntity.value!.taskID!,
         taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
           final recordingId =
