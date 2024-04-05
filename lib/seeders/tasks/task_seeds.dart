@@ -637,6 +637,7 @@ TaskEntity pressaInimigaTask = TaskEntity(
   snakeCaseBriefTranscript: pressaInimigaTaskSnakeCaseTranscript,
   moduleID: testsModuleId,
   taskMode: TaskMode.play,
+  testOnly: true,
   position: 1,
 );
 
@@ -646,5 +647,6 @@ TaskEntity conteAte5Task = TaskEntity(
     title: conteAte5TaskTitle,
     snakeCaseBriefTranscript: conteAte5TaskSnakeCaseTranscript,
     taskMode: TaskMode.record,
+    testOnly: true,
     position: 2);
 
