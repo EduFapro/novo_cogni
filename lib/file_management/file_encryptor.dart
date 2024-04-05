@@ -27,4 +27,15 @@ class FileEncryptor {
     await originalFile.delete();
     return encryptedFilePath;
   }
+  // In FileEncryptor class
+  Future<String> decryptRecording(String encryptedFilePath) async {
+    final fileContents = await File(encryptedFilePath).readAsBytes();
+    final decryptedBytes = encrypter.decryptBytes(encrypt.Encrypted(fileContents), iv: iv);
+    // Write decryptedBytes to a temporary file and return its path
+    final String decryptedPath = encryptedFilePath.replaceAll('.enc', '');
+    await File(decryptedPath).writeAsBytes(decryptedBytes);
+    return decryptedPath;
+  }
+
+
 }
