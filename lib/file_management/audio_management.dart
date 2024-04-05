@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -117,5 +118,76 @@ Future<String> getSecureStoragePath() async {
 
   // Return the path to the '.MySecureAppData' directory.
   return secureDir.path;
+}
+
+Future<String> renameAndSaveTestingRecording({
+  required String originalPath,
+  required Function(RecordingFileEntity) saveRecordingCallback, required int taskInstanceId,
+}) async {
+  final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+  final String dirPath = await getApplicationDocumentsPath();
+  final Directory cognivoiceDir = Directory(path.join(dirPath, 'Cognivoice', 'testing'));
+
+  if (!await cognivoiceDir.exists()) {
+    await cognivoiceDir.create(recursive: true);
+  }
+
+  final String timestamp = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
+  final String newFileName = 'testing_$timestamp.aac';
+  final String newPath = path.join(cognivoiceDir.path, newFileName);
+
+  // Rename and move the original file to the new path
+  final File renamedFile = await File(originalPath).rename(newPath);
+
+  // Encrypt the file and get the encrypted file path
+  final String encryptedFilePath = await fileEncryptor.encryptRecording(renamedFile.path);
+
+  // Create a RecordingFileEntity and save it using the provided callback
+  final recording = RecordingFileEntity(
+    taskInstanceId: taskInstanceId, // Set appropriately if needed
+    filePath: encryptedFilePath,
+  );
+
+  await saveRecordingCallback(recording);
+
+  return encryptedFilePath; // Return the path of the encrypted file
+}
+
+
+Future<String> saveAndEncryptTestingAudioFile(ByteData data, int taskInstanceId) async {
+  final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+
+  // Obtain the directory path for the application's documents directory.
+  final String dirPath = await getApplicationDocumentsPath();
+
+  // Specify the "testing" subdirectory within the "Cognivoice" directory for test recordings.
+  final Directory testingDir = Directory(path.join(dirPath, 'Cognivoice', 'testing'));
+
+  // Ensure the "testing" directory exists.
+  if (!await testingDir.exists()) {
+    await testingDir.create(recursive: true);
+  }
+
+  // Generate a unique file name for the recording, incorporating the current timestamp.
+  final String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+  final String fileName = 'testing_$timestamp.aac';
+
+  // Full path for the unencrypted audio file.
+  final String filePath = path.join(testingDir.path, fileName);
+
+  // Write the ByteData to a file.
+  await File(filePath).writeAsBytes(data.buffer.asUint8List());
+
+  // Encrypt the file and get the encrypted file path.
+  final String encryptedFilePath = await fileEncryptor.encryptRecording(filePath);
+
+  // Optionally, create and save a RecordingFileEntity for the encrypted file.
+  // This step might involve interacting with a database or another form of storage.
+  // For example:
+  // RecordingFileEntity recording = RecordingFileEntity(taskInstanceId: taskInstanceId, filePath: encryptedFilePath);
+  // Save recording entity to database or other storage.
+
+  // Return the path of the encrypted file.
+  return encryptedFilePath;
 }
 
