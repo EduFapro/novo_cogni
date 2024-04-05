@@ -20,6 +20,7 @@ import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/module_enums.dart';
 import '../../constants/enums/task_enums.dart';
 import '../../file_management/audio_management.dart';
+import '../../file_management/file_encryptor.dart';
 import '../evaluation/evaluation_controller.dart';
 import '../evaluation/evaluation_service.dart';
 import 'task_screen_service.dart';
@@ -46,7 +47,6 @@ class TaskScreenController extends GetxController {
   var currentTaskInstance = Rxn<TaskInstanceEntity>();
   var taskMode = Rx<TaskMode>(TaskMode.record);
 
-
   var countdownStarted = false.obs;
   var countdownTrigger = false.obs;
   var isModuleCompleted = false.obs;
@@ -57,11 +57,16 @@ class TaskScreenController extends GetxController {
   var recordingDone = false.obs;
   var isCheckButtonEnabled = false.obs;
   var isRecordButtonEnabled = false.obs;
+  var isRecordButtonPlaying = false.obs;
+
+  // MÓDULO DE TESTE
+  var isTestOnly = false.obs;
+  var isTestingRecordButtonPlaying = false.obs;
+  var isTestingRecordButtonEnabled = false.obs;
 
   // Inside TaskScreenController
-  RxBool get shouldDisablePlayButton => RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value || isRecording.value);
-
-
+  RxBool get shouldDisablePlayButton => RxBool(
+      !mayRepeatPrompt.value && promptPlayedOnce.value || isRecording.value);
 
   var promptPlayedOnce = false.obs;
 
@@ -102,7 +107,7 @@ class TaskScreenController extends GetxController {
       mayRepeatPrompt.value = currentTaskEntity.value!.mayRepeatPrompt;
 
       currentTaskInstance.value = arguments[RouteArguments.TASK_INSTANCE];
-
+      isTestOnly.value = currentTaskEntity.value!.testOnly;
       moduleInstance.value = arguments[RouteArguments.MODULE_INSTANCE];
       if (moduleInstance.value!.moduleInstanceID! != null) {
         // Calculate total tasks for the module instance.
@@ -174,19 +179,25 @@ class TaskScreenController extends GetxController {
 
           // Update task name based on the current task's details
           taskName.value = taskEntity.title;
+          print(currentTaskEntity.value);
 
           // Update mayRepeatPrompt based on the current task's properties
           mayRepeatPrompt.value = taskEntity.mayRepeatPrompt ?? false;
-
+          print("IS TEST ONLY AAAA: ${taskEntity.testOnly}");
           // Update the task mode
           taskMode.value = taskEntity.taskMode ?? TaskMode.play;
 
+          isTestOnly.value = taskEntity.testOnly ?? false;
+
           // Fetch and set the audio path for the current task
-          var taskPrompt = await taskService.getTaskPromptByTaskInstanceID(taskInstance.taskID);
-          audioPath.value = taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
+          var taskPrompt = await taskService
+              .getTaskPromptByTaskInstanceID(taskInstance.taskID);
+          audioPath.value =
+              taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
 
           // Update the image path if there is one
-          imagePath.value = taskEntity.imagePath ?? ''; // Assuming `imagePath` is a property of TaskEntity
+          imagePath.value = taskEntity.imagePath ??
+              ''; // Assuming `imagePath` is a property of TaskEntity
 
           // Reset states for the new task
           isCheckButtonEnabled.value = false;
@@ -214,7 +225,6 @@ class TaskScreenController extends GetxController {
     recordingDone.value = false;
   }
 
-
   Future<void> togglePlay() async {
     if (!isPlaying.value) {
       await play();
@@ -229,7 +239,8 @@ class TaskScreenController extends GetxController {
       final BytesSource bytesSource = BytesSource(audioBytes);
       await _audioPlayer.play(bytesSource);
       isPlaying.value = true;
-      isRecordButtonEnabled.value = false; // Disable recording when audio starts playing
+      isRecordButtonEnabled.value =
+          false; // Disable recording when audio starts playing
 
       // Listen for audio completion
       _audioPlayer.onPlayerComplete.listen((_) {
@@ -281,9 +292,11 @@ class TaskScreenController extends GetxController {
       recordingDone.value = true;
 
       final evaluationController = Get.find<EvaluationController>();
-      final evaluatorID = evaluationController.evaluation.value?.evaluatorID ?? 0;
-      final participantID = evaluationController.participant.value?.participantID ?? 0;
-      countdownTrigger.value = false; 
+      final evaluatorID =
+          evaluationController.evaluation.value?.evaluatorID ?? 0;
+      final participantID =
+          evaluationController.participant.value?.participantID ?? 0;
+      countdownTrigger.value = false;
 
       // Encrypt the recording, rename it and save the new path
       final encryptedFilePath = await renameAndSaveRecording(
@@ -292,8 +305,10 @@ class TaskScreenController extends GetxController {
         participantId: participantID,
         taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
-          final recordingId = await recordingRepository.createRecording(recording);
-          print('Recording saved with ID: $recordingId at path: $recording.filePath');
+          final recordingId =
+              await recordingRepository.createRecording(recording);
+          print(
+              'Recording saved with ID: $recordingId at path: $recording.filePath');
         },
       );
 
@@ -309,7 +324,6 @@ class TaskScreenController extends GetxController {
     }
     shouldDisablePlayButton.value = false;
   }
-
 
   // Future<void> saveAudio(ByteData data) async {
   //   print('saveAudio called');
@@ -364,7 +378,6 @@ class TaskScreenController extends GetxController {
   Future<void> onCheckButtonPressed() async {
     await proceedToNextTask();
   }
-
 
   Future<void> concludeTaskInstance(int taskInstanceId) async {
     try {
@@ -497,7 +510,9 @@ class TaskScreenController extends GetxController {
 
   bool shouldEnableRecording() {
     // Add your conditions here. Example:
-    return taskMode.value == TaskMode.record && !isPlaying.value && promptPlayedOnce.value;
+    return taskMode.value == TaskMode.record &&
+        !isPlaying.value &&
+        promptPlayedOnce.value;
   }
 
   void updateButtonStatesAfterAudioCompletion() {
@@ -514,6 +529,7 @@ class TaskScreenController extends GetxController {
       isRecordButtonEnabled.value = true;
     }
   }
+
   Future<void> proceedToNextTask() async {
     if (currentTaskInstance.value != null) {
       // Stop any ongoing audio or recording
@@ -529,23 +545,88 @@ class TaskScreenController extends GetxController {
 
       // Transition to the next task or mark the module as completed
       if (currentTaskIndex.value < totalTasks.value) {
-        currentTaskIndex.value++;  // Move to the next task
+        currentTaskIndex.value++; // Move to the next task
 
-        var nextTaskInstance = await evaluationService.getNextPendingTaskInstanceForModule(
-            moduleInstance.value!.moduleInstanceID!);
+        var nextTaskInstance =
+            await evaluationService.getNextPendingTaskInstanceForModule(
+                moduleInstance.value!.moduleInstanceID!);
         if (nextTaskInstance != null) {
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
         } else {
           isModuleCompleted.value = true;
-          await setModuleInstanceAsCompleted(moduleInstance.value!.moduleInstanceID!);
+          await setModuleInstanceAsCompleted(
+              moduleInstance.value!.moduleInstanceID!);
         }
       } else {
         isModuleCompleted.value = true;
-        await setModuleInstanceAsCompleted(moduleInstance.value!.moduleInstanceID!);
+        await setModuleInstanceAsCompleted(
+            moduleInstance.value!.moduleInstanceID!);
       }
     } else {
       print("Error: No current task found.");
     }
   }
 
+  Future<void> stopTestingRecording() async {
+    final String? originalPath = await _recorder.stop();
+    isRecording.value = false;
+
+    if (originalPath != null) {
+      recordingDone.value = true;
+
+      // Encrypt the recording and save it in the 'testing' folder
+      final encryptedFilePath = await renameAndSaveTestingRecording(
+        originalPath: originalPath,
+        taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
+        saveRecordingCallback: (RecordingFileEntity recording) async {
+          final recordingId =
+              await recordingRepository.createRecording(recording);
+          print(
+              'Testing recording saved with ID: $recordingId at path: $recording.filePath');
+        },
+      );
+
+      // Update the observable path with the encrypted file's path
+      audioPath.value = encryptedFilePath;
+
+      // Here we ensure that after stopping the recording,
+      // isTestingRecordButtonEnabled is set to true for further actions.
+      isTestingRecordButtonEnabled.value = true;
+    } else {
+      print('Recording was not stopped properly or path was null');
+    }
+  }
+
+  Future<void> playTest() async {
+    final String encryptedFilePath = audioPath.value;
+    try {
+      final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+
+      // Decrypt the audio file
+      final String decryptedFilePath =
+          await fileEncryptor.decryptRecording(encryptedFilePath);
+
+      // Play the decrypted audio file
+      await _audioPlayer.play(UrlSource(decryptedFilePath),
+          mode: PlayerMode.lowLatency);
+      isTestingRecordButtonPlaying.value = true;
+
+      // Handle audio completion to clean up the decrypted file
+      _audioPlayer.onPlayerComplete.listen((_) {
+        isTestingRecordButtonPlaying.value = false;
+        File(decryptedFilePath).delete().catchError((e) {
+          print("Error deleting decrypted file: $e");
+        });
+      });
+    } catch (e) {
+      print("Error playing test audio: $e");
+      // Handle errors appropriately
+    }
+  }
+
+  Future<void> stopPlayingTest() async {
+    await _audioPlayer.stop();
+    isTestingRecordButtonPlaying.value = false;
+    // Clean up: Delete decrypted file if needed
+  }
 }

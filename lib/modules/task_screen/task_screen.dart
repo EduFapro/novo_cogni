@@ -21,6 +21,9 @@ class TaskScreen extends GetView<TaskScreenController> {
     // Determine if an image path is present
     final bool hasImagePath =
         controller.currentTaskEntity.value?.imagePath != null;
+
+    final bool isTestOnly = controller.isTestOnly.isTrue;
+
     final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
@@ -95,14 +98,18 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   Widget buildInterfaceBasedOnMode(
       BuildContext context, TaskMode mode, Size windowSize) {
+    var controller = Get.find<TaskScreenController>();
+    var isTestOnly = controller.isTestOnly.value;
     return Column(
       children: [
         buildGeneralInterface(context, windowSize),
         mode == TaskMode.play
             ? buildAudioPlayerInterface(context)
-            : mode == TaskMode.record
-                ? buildAudioRecorderInterface(context)
-                : Container(),
+            : isTestOnly
+                ? buildAudioRecorderTestingInterface(context)
+                : mode == TaskMode.record
+                    ? buildAudioRecorderInterface(context)
+                    : Container(),
       ],
     );
   }
@@ -187,6 +194,66 @@ class TaskScreen extends GetView<TaskScreenController> {
               isActive: true.obs,
               displayMessage: "Atividade Pulada"),
           CustomRecordingButton(controller: controller),
+          CustomIconButton(
+              iconData: Icons.check,
+              label: "Confirm",
+              onPressed: () => controller.onCheckButtonPressed(),
+              isActive: controller.isCheckButtonEnabled,
+              displayMessage: "Atividade Concluída"),
+        ],
+      ),
+      Flexible(
+        flex: 6,
+        child: Container(
+          width: 300,
+          child: SizedBox(
+            height: 200,
+            child: MusicVisualizer(
+              isPlaying: controller.isRecording.value,
+              barCount: 30,
+              barWidth: 2,
+              activeColor: Colors.red,
+            ),
+          ),
+        ),
+      )
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 400.0),
+      child: Container(
+        height: recorderInterfaceHeight,
+        // color: Colors.pink,
+        child: Center(
+          // Center the row
+
+          child: Column(
+            children: AudioRecorderinterfaceContent,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildAudioRecorderTestingInterface(BuildContext context) {
+    final Size windowSize = MediaQuery.of(context).size;
+    final recorderInterfaceHeight = windowSize.height * 0.40;
+    final TaskScreenController controller = Get.find<TaskScreenController>();
+
+    var AudioRecorderinterfaceContent = [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // Space out items equally
+        crossAxisAlignment: CrossAxisAlignment.center,
+        // Vertically center items
+        children: [
+          CustomIconButton(
+              iconData: Icons.close,
+              label: "Pular",
+              onPressed: () => controller.skipCurrentTask(),
+              isActive: true.obs,
+              displayMessage: "Atividade Pulada"),
+          CustomRecordingButton(controller: controller),
+          CustomPlayTestingButton(controller: controller),
           CustomIconButton(
               iconData: Icons.check,
               label: "Confirm",
@@ -393,6 +460,70 @@ class TaskScreen extends GetView<TaskScreenController> {
   }
 }
 
+class CustomPlayTestingButton extends StatelessWidget {
+  final TaskScreenController controller;
+
+  CustomPlayTestingButton({Key? key, required this.controller})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      var label =
+          controller.isTestingRecordButtonPlaying.value ? "Parar" : "Tocar";
+      var message = controller.isTestingRecordButtonPlaying.value
+          ? "Áudio Encerrado."
+          : "Tocando Áudio";
+
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: controller.isTestingRecordButtonEnabled.value
+                  ? Colors.blue.shade100
+                  : Colors.grey.shade400, // Grey color for disabled state
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: IconButton(
+              icon: Icon(
+                controller.isTestingRecordButtonEnabled.value
+                    ? Icons.stop
+                    : Icons.play_arrow,
+                size: 80, // Adjust the size of the icon if necessary
+              ),
+              color: controller.isTestingRecordButtonEnabled.value
+                  ? Colors.blue
+                  : Colors.grey, // Grey icon for disabled state
+              onPressed: controller.isTestingRecordButtonEnabled.value
+                  ? () async {
+                      if (controller.isTestingRecordButtonPlaying.value) {
+                        await controller.stopPlayingTest();
+                      } else {
+                        await controller.playTest();
+                      }
+
+                      Get.snackbar("Ação", message,
+                          snackPosition: SnackPosition.BOTTOM,
+                          duration: Duration(milliseconds: 1500));
+                    }
+                  : null, // Disable the button if isRecordButtonEnabled is false
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            // Space between icon and text
+            child: Text(label,
+                style: TextStyle(fontSize: 16)), // Use the variable label
+          ),
+        ],
+      );
+    });
+  }
+}
+
 class Player extends StatelessWidget {
   const Player({
     super.key,
@@ -405,7 +536,7 @@ class Player extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Obx(() => Card(
       color: Color(0xFFD7D7D7),
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -458,7 +589,7 @@ class Player extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 
@@ -560,7 +691,9 @@ class CustomRecordingButton extends StatelessWidget {
                   : Colors.grey, // Grey icon for disabled state
               onPressed: controller.isRecordButtonEnabled.value
                   ? () async {
-                      if (controller.isRecording.value) {
+                      if (controller.isTestOnly.isTrue) {
+                        controller.stopTestingRecording();
+                      } else if (controller.isRecording.value) {
                         await controller.stopRecording();
                       } else {
                         await controller.startRecording();
