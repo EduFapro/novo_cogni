@@ -64,6 +64,10 @@ class TaskScreenController extends GetxController {
   var isTestingRecordButtonPlaying = false.obs;
   var isTestingRecordButtonEnabled = false.obs;
 
+  var isTestingPlaybackButtonPlaying = false.obs;
+  var isTestingPlaybackButtonEnabled = false.obs;
+  var playbackPath = ''.obs;
+
   // Inside TaskScreenController
   RxBool get shouldDisablePlayButton => RxBool(
       !mayRepeatPrompt.value && promptPlayedOnce.value || isRecording.value);
@@ -94,6 +98,8 @@ class TaskScreenController extends GetxController {
     super.onInit();
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
+    isTestingRecordButtonEnabled.value = false;  // Ensure testing button is disabled initially
+    isRecordButtonEnabled.value = false;  // Regular recording button disabled initially
 
     final arguments = Get.arguments as Map<String, dynamic>?;
 
@@ -239,15 +245,21 @@ class TaskScreenController extends GetxController {
       final BytesSource bytesSource = BytesSource(audioBytes);
       await _audioPlayer.play(bytesSource);
       isPlaying.value = true;
-      isRecordButtonEnabled.value =
-          false; // Disable recording when audio starts playing
+      isRecordButtonEnabled.value = false;
 
-      // Listen for audio completion
       _audioPlayer.onPlayerComplete.listen((_) {
         isPlaying.value = false;
-        // Only enable recording if all conditions for recording are met
-        if (shouldEnableRecording()) {
-          isRecordButtonEnabled.value = true;
+        audioPlayed.value = true;
+        promptPlayedOnce.value = true;
+
+        // Check the mode to decide enabling the record button
+        if (isTestOnly.value) {
+          isTestingRecordButtonEnabled.value = true;  // Enable the testing record button
+        } else {
+          // Only enable recording if all conditions for recording are met
+          if (shouldEnableRecording()) {
+            isRecordButtonEnabled.value = true;
+          }
         }
       });
     } catch (e) {
@@ -415,6 +427,7 @@ class TaskScreenController extends GetxController {
     // Load the next task or conclude if all tasks are completed.
   }
 
+
   Future<void> launchNextTask() async {
     if (currentTaskIndex.value >= totalTasks.value) {
       // All tasks are completed
@@ -568,35 +581,35 @@ class TaskScreenController extends GetxController {
     }
   }
 
-  Future<void> stopTestingRecording() async {
-    final String? originalPath = await _recorder.stop();
-    isRecording.value = false;
-
-    if (originalPath != null) {
-      recordingDone.value = true;
-
-      // Encrypt the recording and save it in the 'testing' folder
-      final encryptedFilePath = await renameAndSaveTestingRecording(
-        originalPath: originalPath,
-        taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
-        saveRecordingCallback: (RecordingFileEntity recording) async {
-          final recordingId =
-              await recordingRepository.createRecording(recording);
-          print(
-              'Testing recording saved with ID: $recordingId at path: $recording.filePath');
-        },
-      );
-
-      // Update the observable path with the encrypted file's path
-      audioPath.value = encryptedFilePath;
-
-      // Here we ensure that after stopping the recording,
-      // isTestingRecordButtonEnabled is set to true for further actions.
-      isTestingRecordButtonEnabled.value = true;
-    } else {
-      print('Recording was not stopped properly or path was null');
-    }
-  }
+  // Future<void> stopTestingRecording() async {
+  //   final String? originalPath = await _recorder.stop();
+  //   isRecording.value = false;
+  //
+  //   if (originalPath != null) {
+  //     recordingDone.value = true;
+  //
+  //     // Encrypt the recording and save it in the 'testing' folder
+  //     final encryptedFilePath = await renameAndSaveTestingRecording(
+  //       originalPath: originalPath,
+  //       taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
+  //       saveRecordingCallback: (RecordingFileEntity recording) async {
+  //         final recordingId =
+  //             await recordingRepository.createRecording(recording);
+  //         print(
+  //             'Testing recording saved with ID: $recordingId at path: $recording.filePath');
+  //       },
+  //     );
+  //
+  //     // Update the observable path with the encrypted file's path
+  //     audioPath.value = encryptedFilePath;
+  //
+  //     // Here we ensure that after stopping the recording,
+  //     // isTestingRecordButtonEnabled is set to true for further actions.
+  //     isTestingRecordButtonEnabled.value = true;
+  //   } else {
+  //     print('Recording was not stopped properly or path was null');
+  //   }
+  // }
 
   Future<void> playTest() async {
     final String encryptedFilePath = audioPath.value;
@@ -629,5 +642,143 @@ class TaskScreenController extends GetxController {
     await _audioPlayer.stop();
     isTestingRecordButtonPlaying.value = false;
     // Clean up: Delete decrypted file if needed
+  }
+
+
+  // Future<void> stopTestingRecording() async {
+  //   final String? originalPath = await _recorder.stop();
+  //   isRecording.value = false;
+  //
+  //   if (originalPath != null) {
+  //     recordingDone.value = true;
+  //
+  //     final encryptedFilePath = await renameAndSaveTestingRecording(
+  //       originalPath: originalPath,
+  //       taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
+  //       saveRecordingCallback: (RecordingFileEntity recording) async {
+  //         final recordingId = await recordingRepository.createRecording(recording);
+  //         print('Testing recording saved with ID: $recordingId at path: $recording.filePath');
+  //       },
+  //     );
+  //
+  //     audioPath.value = encryptedFilePath;  // Update path to the encrypted testing file
+  //     isTestingRecordButtonEnabled.value = true;  // Enable playback button
+  //   } else {
+  //     print('Recording was not stopped properly or path was null');
+  //   }
+  // }
+
+
+
+  // Future<void> playTestRecording() async {
+  //   final String encryptedFilePath = audioPath.value;
+  //
+  //   final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+  //   final String decryptedFilePath = await fileEncryptor.decryptRecording(encryptedFilePath);
+  //
+  //   await _audioPlayer.play(UrlSource(decryptedFilePath));
+  //   isTestingRecordButtonPlaying.value = true;
+  //
+  //   _audioPlayer.onPlayerComplete.listen((_) {
+  //     isTestingRecordButtonPlaying.value = false;
+  //     File(decryptedFilePath).delete().catchError((e) {
+  //       print("Error deleting decrypted file: $e");
+  //     });
+  //   });
+  // }
+
+  // This is called when the audio playback of the task prompt finishes
+  void onPromptPlaybackComplete() {
+    if (isTestOnly.isTrue) {
+      isTestingRecordButtonEnabled.value = true; // Enable recording button only in test mode
+    }
+  }
+
+  Future<void> stopTestingRecording() async {
+    final String? originalPath = await _recorder.stop();
+    isRecording.value = false;
+
+    if (originalPath != null) {
+      recordingDone.value = true;
+
+      // Assuming you have these IDs available somewhere in your controller
+      final int evaluatorId = evaluator.value?.evaluatorID ?? 0; // Replace with actual value
+      final int participantId = participant.value?.participantID ?? 0; // Replace with actual value
+      final int taskEntityId = currentTaskEntity.value?.taskID ?? 0; // Replace with actual value
+
+      final encryptedFilePath = await renameAndSaveTestingRecording(
+        originalPath: originalPath,
+        evaluatorId: evaluatorId,
+        participantId: participantId,
+        taskEntityId: taskEntityId,
+        taskInstanceId: currentTaskInstance.value!.taskInstanceID!,
+        saveRecordingCallback: (RecordingFileEntity recording) {
+          recordingRepository.createRecording(recording);
+        },
+      );
+      print(originalPath);
+      print(encryptedFilePath);
+      playbackPath.value = encryptedFilePath;
+      audioPath.value = encryptedFilePath;
+      isTestingPlaybackButtonEnabled.value = true;
+    } else {
+      print('Recording was not stopped properly or path was null');
+    }
+  }
+
+
+  // Call this method when you want to start playback in test mode
+  // Call this method when you want to start playback in test mode
+  Future<void> playTestRecording() async {
+    print("HOHOHOHUHO");
+    print(playbackPath.value);
+    final String encryptedFilePath = playbackPath.value; // Use playbackPath.value
+    final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+    try {
+      // Decrypt the recording file before playback
+      final String decryptedFilePath = await fileEncryptor.decryptRecording(encryptedFilePath);
+      print(decryptedFilePath);
+
+      // Read the decrypted file into a byte array
+      final Uint8List audioBytes = await File(decryptedFilePath).readAsBytes();
+
+      // Play the decrypted audio file using BytesSource
+      final BytesSource bytesSource = BytesSource(audioBytes);
+      await _audioPlayer.play(bytesSource);
+      isTestingPlaybackButtonPlaying.value = true;
+
+      _audioPlayer.onPlayerComplete.listen((_) {
+        isTestingPlaybackButtonPlaying.value = false;
+        // Clean up the decrypted file after playback
+        File(decryptedFilePath).delete().catchError((error) {
+          print("Error deleting decrypted file: $error");
+        });
+      });
+    } catch (e) {
+      print("Error playing test audio: $e");
+      // Handle errors appropriately
+    }
+  }
+
+
+  startTestingRecording() async {
+
+    shouldDisablePlayButton.value = true;
+    bool hasPermission = await _recorder.hasPermission();
+    if (hasPermission) {
+      String recordingPath = await _getRecordingPath();
+      var config = RecordConfig(
+        encoder: AudioEncoder.aacLc,
+        bitRate: 128000,
+        sampleRate: 44100,
+      );
+      await _recorder.start(config, path: recordingPath);
+      isRecording.value = true;
+
+      // isRecordButtonEnabled.value = false;
+    } else {
+      // Handle permission not granted
+    }
+
   }
 }

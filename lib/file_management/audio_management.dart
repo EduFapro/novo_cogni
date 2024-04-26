@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -19,25 +18,27 @@ Future<String> renameAndSaveRecording({
 }) async {
   final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
   final dateString = DateFormat('ddMMyyyy').format(DateTime.now());
-  final formattedFileName = 'A${evaluatorId.toString().padLeft(2, '0')}_P${participantId.toString().padLeft(2, '0')}_T${taskEntityId}_$dateString.aac';
+  final formattedFileName =
+      'A${evaluatorId.toString().padLeft(2, '0')}_P${participantId.toString().padLeft(2, '0')}_T${taskEntityId}_$dateString.aac';
   final newPath = path.join(path.dirname(originalPath), formattedFileName);
 
   // First, rename the original file
-  final renamedFilePath = await File(originalPath).rename(newPath).then((file) => file.path);
+  final renamedFilePath =
+      await File(originalPath).rename(newPath).then((file) => file.path);
 
   // Now, encrypt the renamed file and get the path with .enc
-  final encryptedFilePath = await fileEncryptor.encryptRecording(renamedFilePath);
+  final encryptedFilePath =
+      await fileEncryptor.encryptRecording(renamedFilePath);
 
   final recording = RecordingFileEntity(
     taskInstanceId: taskInstanceId,
-    filePath: encryptedFilePath, // Make sure to save the path of the encrypted file
+    filePath:
+        encryptedFilePath, // Make sure to save the path of the encrypted file
   );
 
   await saveRecordingCallback(recording);
   return encryptedFilePath; // Return the path of the encrypted file
 }
-
-
 
 Future<String> getApplicationDocumentsPath() async {
   final directory = await getApplicationDocumentsDirectory();
@@ -49,9 +50,8 @@ Future<String> getTemporaryDirectoryPath() async {
   return directory.path;
 }
 
-
-Future<String> saveAudioFile(ByteData data, String tempFileName, int evaluatorId,
-    int participantId, int taskInstanceId) async {
+Future<String> saveAudioFile(ByteData data, String tempFileName,
+    int evaluatorId, int participantId, int taskInstanceId) async {
   // Log the invocation of the function with the temporary file name.
   print('saveAudioFile called with tempFileName: $tempFileName');
 
@@ -68,13 +68,15 @@ Future<String> saveAudioFile(ByteData data, String tempFileName, int evaluatorId
 
   // Format evaluatorId and participantId to have at least 2 digits with leading zeros if necessary.
   final String formattedEvaluatorId = evaluatorId.toString().padLeft(2, '0');
-  final String formattedParticipantId = participantId.toString().padLeft(2, '0');
+  final String formattedParticipantId =
+      participantId.toString().padLeft(2, '0');
 
   // Format the current date as a string in 'ddMMyyyy' format.
   final String recordingDate = DateFormat('ddMMyyyy').format(DateTime.now());
 
   // Construct a unique file name using the formatted evaluator and participant IDs, task instance ID, and the current date.
-  final String fileName = 'A${formattedEvaluatorId}_P${formattedParticipantId}_AT${taskInstanceId}_$recordingDate.aac';
+  final String fileName =
+      'A${formattedEvaluatorId}_P${formattedParticipantId}_AT${taskInstanceId}_$recordingDate.aac';
 
   // Use the path package's join method to concatenate the directory path and file name,
   // ensuring the correct path separators are used for the platform.
@@ -95,7 +97,6 @@ Future<String> saveAudioFile(ByteData data, String tempFileName, int evaluatorId
   // Return the full file path where the audio file was saved.
   return filePath;
 }
-
 
 Future<String> getSecureStoragePath() async {
   // Retrieve the user profile directory path from the system environment variables.
@@ -121,48 +122,50 @@ Future<String> getSecureStoragePath() async {
   return secureDir.path;
 }
 
+
 Future<String> renameAndSaveTestingRecording({
   required String originalPath,
-  required Function(RecordingFileEntity) saveRecordingCallback, required int taskInstanceId,
+  required int evaluatorId,
+  required int participantId,
+  required int taskEntityId,
+  required int taskInstanceId,
+  required Function(RecordingFileEntity) saveRecordingCallback,
 }) async {
   final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
-  final String dirPath = await getApplicationDocumentsPath();
-  final Directory cognivoiceDir = Directory(path.join(dirPath, 'Cognivoice', 'testing'));
+  final dateString = DateFormat('ddMMyyyy').format(DateTime.now());
+  final formattedFileName = 'A${evaluatorId.toString().padLeft(2, '0')}_P${participantId.toString().padLeft(2, '0')}_T${taskEntityId.toString().padLeft(2, '0')}_$dateString.aac';
 
-  if (!await cognivoiceDir.exists()) {
-    await cognivoiceDir.create(recursive: true);
+  final String dirPath = await getApplicationDocumentsPath();
+  final Directory testingDir = Directory(path.join(dirPath, 'Cognivoice', 'testing'));
+
+  if (!await testingDir.exists()) {
+    await testingDir.create(recursive: true);
   }
 
-  final String timestamp = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
-  final String newFileName = 'testing_$timestamp.aac';
-  final String newPath = path.join(cognivoiceDir.path, newFileName);
-
-  // Rename and move the original file to the new path
+  final String newPath = path.join(testingDir.path, formattedFileName);
   final File renamedFile = await File(originalPath).rename(newPath);
-
-  // Encrypt the file and get the encrypted file path
   final String encryptedFilePath = await fileEncryptor.encryptRecording(renamedFile.path);
 
-  // Create a RecordingFileEntity and save it using the provided callback
   final recording = RecordingFileEntity(
-    taskInstanceId: taskInstanceId, // Set appropriately if needed
+    taskInstanceId: taskInstanceId,
     filePath: encryptedFilePath,
   );
 
   await saveRecordingCallback(recording);
-
-  return encryptedFilePath; // Return the path of the encrypted file
+  return encryptedFilePath;
 }
 
 
-Future<String> saveAndEncryptTestingAudioFile(ByteData data, int taskInstanceId) async {
+Future<String> saveAndEncryptTestingAudioFile(
+    ByteData data, int taskInstanceId) async {
   final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
 
   // Obtain the directory path for the application's documents directory.
   final String dirPath = await getApplicationDocumentsPath();
 
   // Specify the "testing" subdirectory within the "Cognivoice" directory for test recordings.
-  final Directory testingDir = Directory(path.join(dirPath, 'Cognivoice', 'testing'));
+  final Directory testingDir =
+      Directory(path.join(dirPath, 'Cognivoice', 'testing'));
 
   // Ensure the "testing" directory exists.
   if (!await testingDir.exists()) {
@@ -180,15 +183,8 @@ Future<String> saveAndEncryptTestingAudioFile(ByteData data, int taskInstanceId)
   await File(filePath).writeAsBytes(data.buffer.asUint8List());
 
   // Encrypt the file and get the encrypted file path.
-  final String encryptedFilePath = await fileEncryptor.encryptRecording(filePath);
+  final String encryptedFilePath =
+      await fileEncryptor.encryptRecording(filePath);
 
-  // Optionally, create and save a RecordingFileEntity for the encrypted file.
-  // This step might involve interacting with a database or another form of storage.
-  // For example:
-  // RecordingFileEntity recording = RecordingFileEntity(taskInstanceId: taskInstanceId, filePath: encryptedFilePath);
-  // Save recording entity to database or other storage.
-
-  // Return the path of the encrypted file.
   return encryptedFilePath;
 }
-

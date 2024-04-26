@@ -252,7 +252,7 @@ class TaskScreen extends GetView<TaskScreenController> {
               onPressed: () => controller.skipCurrentTask(),
               isActive: true.obs,
               displayMessage: "Atividade Pulada"),
-          CustomRecordingButton(controller: controller),
+          CustomRecordingTestingButton(controller: controller),
           CustomPlayTestingButton(controller: controller),
           CustomIconButton(
               iconData: Icons.check,
@@ -463,17 +463,15 @@ class TaskScreen extends GetView<TaskScreenController> {
 class CustomPlayTestingButton extends StatelessWidget {
   final TaskScreenController controller;
 
-  CustomPlayTestingButton({Key? key, required this.controller})
-      : super(key: key);
+  CustomPlayTestingButton({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var label =
-          controller.isTestingRecordButtonPlaying.value ? "Parar" : "Tocar";
-      var message = controller.isTestingRecordButtonPlaying.value
-          ? "Áudio Encerrado."
-          : "Tocando Áudio";
+      var isEnabled = controller.isTestingPlaybackButtonEnabled.value;
+      var isPlaying = controller.isTestingPlaybackButtonPlaying.value;
+      var label = isPlaying ? "Stop" : "Play";
+      var icon = isPlaying ? Icons.stop : Icons.play_arrow;
 
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -482,47 +480,31 @@ class CustomPlayTestingButton extends StatelessWidget {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: controller.isTestingRecordButtonEnabled.value
-                  ? Colors.blue.shade100
-                  : Colors.grey.shade400, // Grey color for disabled state
+              color: isEnabled ? Colors.blue.shade100 : Colors.grey.shade400,
               borderRadius: BorderRadius.circular(50),
             ),
             child: IconButton(
-              icon: Icon(
-                controller.isTestingRecordButtonEnabled.value
-                    ? Icons.stop
-                    : Icons.play_arrow,
-                size: 80, // Adjust the size of the icon if necessary
-              ),
-              color: controller.isTestingRecordButtonEnabled.value
-                  ? Colors.blue
-                  : Colors.grey, // Grey icon for disabled state
-              onPressed: controller.isTestingRecordButtonEnabled.value
-                  ? () async {
-                      if (controller.isTestingRecordButtonPlaying.value) {
-                        await controller.stopPlayingTest();
-                      } else {
-                        await controller.playTest();
-                      }
-
-                      Get.snackbar("Ação", message,
-                          snackPosition: SnackPosition.BOTTOM,
-                          duration: Duration(milliseconds: 1500));
-                    }
-                  : null, // Disable the button if isRecordButtonEnabled is false
+              icon: Icon(icon, size: 48),
+              color: isEnabled ? Colors.blue : Colors.grey,
+              onPressed: isEnabled ? () async {
+                if (isPlaying) {
+                  await controller.stopPlayingTest();
+                } else {
+                  await controller.playTestRecording();
+                }
+              } : null,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            // Space between icon and text
-            child: Text(label,
-                style: TextStyle(fontSize: 16)), // Use the variable label
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(label),
           ),
         ],
       );
     });
   }
 }
+
 
 class Player extends StatelessWidget {
   const Player({
@@ -717,6 +699,53 @@ class CustomRecordingButton extends StatelessWidget {
     });
   }
 }
+
+class CustomRecordingTestingButton extends StatelessWidget {
+  final TaskScreenController controller;
+
+  CustomRecordingTestingButton({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      var isEnabled = controller.isTestingRecordButtonEnabled.value;
+      var isRecording = controller.isRecording.value;
+      var icon = isRecording ? Icons.stop : Icons.mic;
+      var color = isEnabled ? (isRecording ? Colors.red : Colors.blue) : Colors.grey;
+      var label = isRecording ? "Stop Recording" : "Start Recording";
+
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1), // Lighter shade for background
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: IconButton(
+              icon: Icon(icon, size: 48),
+              color: color,
+              onPressed: isEnabled ? () async {
+                if (isRecording) {
+                  await controller.stopTestingRecording();
+                } else {
+                  await controller.startTestingRecording();
+                }
+              } : null,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(label),
+          ),
+        ],
+      );
+    });
+  }
+}
+
 
 class NumericProgressIndicator extends StatelessWidget {
   final int current;
