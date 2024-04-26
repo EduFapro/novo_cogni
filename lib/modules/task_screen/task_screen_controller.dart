@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -27,7 +28,7 @@ import 'task_screen_service.dart';
 
 class TaskScreenController extends GetxController {
   final EvaluationService evaluationService = Get.find();
-
+  final ScrollController scrollController = ScrollController();
   final TaskScreenService taskService;
   late final AudioPlayer _audioPlayer;
   late final AudioRecorder _recorder;
@@ -98,8 +99,10 @@ class TaskScreenController extends GetxController {
     super.onInit();
     _audioPlayer = AudioPlayer();
     _recorder = AudioRecorder();
-    isTestingRecordButtonEnabled.value = false;  // Ensure testing button is disabled initially
-    isRecordButtonEnabled.value = false;  // Regular recording button disabled initially
+    isTestingRecordButtonEnabled.value =
+        false; // Ensure testing button is disabled initially
+    isRecordButtonEnabled.value =
+        false; // Regular recording button disabled initially
 
     final arguments = Get.arguments as Map<String, dynamic>?;
 
@@ -142,6 +145,19 @@ class TaskScreenController extends GetxController {
       // Trigger countdown as audio has finished playing
       countdownTrigger.value = true; // This will start the countdown
     });
+
+    _audioPlayer.onPlayerComplete.listen((_) {
+      isPlaying.value = false;
+      audioPlayed.value = true;
+      promptPlayedOnce.value = true;
+
+      // Now scroll after audio completes
+      scrollToPosition(500.0); // Adjust the scroll position as needed
+
+      updateButtonStatesAfterAudioCompletion();
+      countdownTrigger.value = true; // Start countdown
+    });
+
 
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
@@ -201,10 +217,11 @@ class TaskScreenController extends GetxController {
           audioPath.value =
               taskPrompt?.filePath ?? 'assets/audio/audio_placeholder.mp3';
 
+          print("image path: ${taskEntity.imagePath}");
           // Update the image path if there is one
           imagePath.value = taskEntity.imagePath ??
               ''; // Assuming `imagePath` is a property of TaskEntity
-
+          print("hahaah" + imagePath.value);
           // Reset states for the new task
           isCheckButtonEnabled.value = false;
           isRecordButtonEnabled.value = false;
@@ -254,7 +271,8 @@ class TaskScreenController extends GetxController {
 
         // Check the mode to decide enabling the record button
         if (isTestOnly.value) {
-          isTestingRecordButtonEnabled.value = true;  // Enable the testing record button
+          isTestingRecordButtonEnabled.value =
+              true; // Enable the testing record button
         } else {
           // Only enable recording if all conditions for recording are met
           if (shouldEnableRecording()) {
@@ -426,7 +444,6 @@ class TaskScreenController extends GetxController {
     }
     // Load the next task or conclude if all tasks are completed.
   }
-
 
   Future<void> launchNextTask() async {
     if (currentTaskIndex.value >= totalTasks.value) {
@@ -644,7 +661,6 @@ class TaskScreenController extends GetxController {
     // Clean up: Delete decrypted file if needed
   }
 
-
   // Future<void> stopTestingRecording() async {
   //   final String? originalPath = await _recorder.stop();
   //   isRecording.value = false;
@@ -668,8 +684,6 @@ class TaskScreenController extends GetxController {
   //   }
   // }
 
-
-
   // Future<void> playTestRecording() async {
   //   final String encryptedFilePath = audioPath.value;
   //
@@ -690,7 +704,8 @@ class TaskScreenController extends GetxController {
   // This is called when the audio playback of the task prompt finishes
   void onPromptPlaybackComplete() {
     if (isTestOnly.isTrue) {
-      isTestingRecordButtonEnabled.value = true; // Enable recording button only in test mode
+      isTestingRecordButtonEnabled.value =
+          true; // Enable recording button only in test mode
     }
   }
 
@@ -702,9 +717,12 @@ class TaskScreenController extends GetxController {
       recordingDone.value = true;
 
       // Assuming you have these IDs available somewhere in your controller
-      final int evaluatorId = evaluator.value?.evaluatorID ?? 0; // Replace with actual value
-      final int participantId = participant.value?.participantID ?? 0; // Replace with actual value
-      final int taskEntityId = currentTaskEntity.value?.taskID ?? 0; // Replace with actual value
+      final int evaluatorId =
+          evaluator.value?.evaluatorID ?? 0; // Replace with actual value
+      final int participantId =
+          participant.value?.participantID ?? 0; // Replace with actual value
+      final int taskEntityId =
+          currentTaskEntity.value?.taskID ?? 0; // Replace with actual value
 
       final encryptedFilePath = await renameAndSaveTestingRecording(
         originalPath: originalPath,
@@ -726,17 +744,18 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
   // Call this method when you want to start playback in test mode
   // Call this method when you want to start playback in test mode
   Future<void> playTestRecording() async {
     print("HOHOHOHUHO");
     print(playbackPath.value);
-    final String encryptedFilePath = playbackPath.value; // Use playbackPath.value
+    final String encryptedFilePath =
+        playbackPath.value; // Use playbackPath.value
     final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
     try {
       // Decrypt the recording file before playback
-      final String decryptedFilePath = await fileEncryptor.decryptRecording(encryptedFilePath);
+      final String decryptedFilePath =
+          await fileEncryptor.decryptRecording(encryptedFilePath);
       print(decryptedFilePath);
 
       // Read the decrypted file into a byte array
@@ -760,9 +779,7 @@ class TaskScreenController extends GetxController {
     }
   }
 
-
   startTestingRecording() async {
-
     shouldDisablePlayButton.value = true;
     bool hasPermission = await _recorder.hasPermission();
     if (hasPermission) {
@@ -779,6 +796,16 @@ class TaskScreenController extends GetxController {
     } else {
       // Handle permission not granted
     }
-
   }
+
+  void scrollToPosition(double position) {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        position,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
 }

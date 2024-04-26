@@ -16,22 +16,37 @@ class TaskScreen extends GetView<TaskScreenController> {
   TaskScreen({Key? key}) : super(key: key);
 
   @override
-  @override
   Widget build(BuildContext context) {
-    // Determine if an image path is present
-    final bool hasImagePath =
-        controller.currentTaskEntity.value?.imagePath != null;
 
-    final bool isTestOnly = controller.isTestOnly.isTrue;
+    final ScrollController scrollController = controller.scrollController;
 
     final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
-      body: hasImagePath
-          ? buildImageContent(context, windowSize)
-          : buildContent(context, windowSize),
+      body: Obx(
+            () {
+          final hasImagePath = controller.currentTaskEntity.value?.imagePath != null;
+          if (hasImagePath) {
+            WidgetsBinding.instance.addPostFrameCallback((_) => _scrollDown(scrollController));
+          }
+
+          return hasImagePath
+              ? buildImageContent(context, windowSize, scrollController)
+              : buildContent(context, windowSize);
+        },
+      ),
     );
   }
+  void _scrollDown(ScrollController scrollController) {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        100.0, // Adjust this value as needed
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
 
   Widget buildContent(BuildContext context, Size windowSize) {
     return Column(
@@ -409,12 +424,20 @@ class TaskScreen extends GetView<TaskScreenController> {
     );
   }
 
-  Widget buildImageContent(BuildContext context, Size windowSize) {
-    // Assuming imagePath is obtained from the controller
+  Widget buildImageContent(BuildContext context, Size windowSize, ScrollController scrollController) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (scrollController.hasClients) {
+    //     scrollController.animateTo(
+    //       500.0,
+    //       duration: Duration(milliseconds: 500),
+    //       curve: Curves.easeOut,
+    //     );
+    //   }
+    // });
     final String imagePath =
         controller.currentTaskEntity.value?.imagePath ?? '';
-
     return SingleChildScrollView(
+      controller: scrollController,
       child: Column(
         children: [
           Padding(
@@ -463,7 +486,8 @@ class TaskScreen extends GetView<TaskScreenController> {
 class CustomPlayTestingButton extends StatelessWidget {
   final TaskScreenController controller;
 
-  CustomPlayTestingButton({Key? key, required this.controller}) : super(key: key);
+  CustomPlayTestingButton({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -486,13 +510,15 @@ class CustomPlayTestingButton extends StatelessWidget {
             child: IconButton(
               icon: Icon(icon, size: 48),
               color: isEnabled ? Colors.blue : Colors.grey,
-              onPressed: isEnabled ? () async {
-                if (isPlaying) {
-                  await controller.stopPlayingTest();
-                } else {
-                  await controller.playTestRecording();
-                }
-              } : null,
+              onPressed: isEnabled
+                  ? () async {
+                      if (isPlaying) {
+                        await controller.stopPlayingTest();
+                      } else {
+                        await controller.playTestRecording();
+                      }
+                    }
+                  : null,
             ),
           ),
           Padding(
@@ -504,7 +530,6 @@ class CustomPlayTestingButton extends StatelessWidget {
     });
   }
 }
-
 
 class Player extends StatelessWidget {
   const Player({
@@ -519,59 +544,59 @@ class Player extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Card(
-      color: Color(0xFFD7D7D7),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Text(
-              UiStrings.clickOnPlayToListenToTheTask,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      color: controller.shouldDisablePlayButton.value
-                          ? Colors.redAccent.shade100
-                          : Colors.black54,
-                      disabledColor: Colors.redAccent.shade100,
-                      iconSize: 48,
-                      icon: Icon(controller.isPlaying.value
-                          ? Icons.stop
-                          : Icons.play_arrow),
-                      onPressed: controller.shouldDisablePlayButton.value
-                          ? null
-                          : () => controller.togglePlay(),
-                    ),
-                    Text('Play', style: TextStyle(fontSize: 16)),
-                    // Subtitle label
-                  ],
+          color: Color(0xFFD7D7D7),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Text(
+                  UiStrings.clickOnPlayToListenToTheTask,
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                      width: windowSize.width * 0.4,
-                      height: 80,
-                      child: MusicVisualizer(
-                        isPlaying: controller.isPlaying.value,
-                        barCount: 30, // Example: 30 bars
-                        barWidth: 3, // Example: Each bar is 3 pixels wide
-                      )),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          color: controller.shouldDisablePlayButton.value
+                              ? Colors.redAccent.shade100
+                              : Colors.black54,
+                          disabledColor: Colors.redAccent.shade100,
+                          iconSize: 48,
+                          icon: Icon(controller.isPlaying.value
+                              ? Icons.stop
+                              : Icons.play_arrow),
+                          onPressed: controller.shouldDisablePlayButton.value
+                              ? null
+                              : () => controller.togglePlay(),
+                        ),
+                        Text('Play', style: TextStyle(fontSize: 16)),
+                        // Subtitle label
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          width: windowSize.width * 0.4,
+                          height: 80,
+                          child: MusicVisualizer(
+                            isPlaying: controller.isPlaying.value,
+                            barCount: 30, // Example: 30 bars
+                            barWidth: 3, // Example: Each bar is 3 pixels wide
+                          )),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }
 
@@ -703,7 +728,8 @@ class CustomRecordingButton extends StatelessWidget {
 class CustomRecordingTestingButton extends StatelessWidget {
   final TaskScreenController controller;
 
-  CustomRecordingTestingButton({Key? key, required this.controller}) : super(key: key);
+  CustomRecordingTestingButton({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -711,7 +737,8 @@ class CustomRecordingTestingButton extends StatelessWidget {
       var isEnabled = controller.isTestingRecordButtonEnabled.value;
       var isRecording = controller.isRecording.value;
       var icon = isRecording ? Icons.stop : Icons.mic;
-      var color = isEnabled ? (isRecording ? Colors.red : Colors.blue) : Colors.grey;
+      var color =
+          isEnabled ? (isRecording ? Colors.red : Colors.blue) : Colors.grey;
       var label = isRecording ? "Stop Recording" : "Start Recording";
 
       return Column(
@@ -727,13 +754,15 @@ class CustomRecordingTestingButton extends StatelessWidget {
             child: IconButton(
               icon: Icon(icon, size: 48),
               color: color,
-              onPressed: isEnabled ? () async {
-                if (isRecording) {
-                  await controller.stopTestingRecording();
-                } else {
-                  await controller.startTestingRecording();
-                }
-              } : null,
+              onPressed: isEnabled
+                  ? () async {
+                      if (isRecording) {
+                        await controller.stopTestingRecording();
+                      } else {
+                        await controller.startTestingRecording();
+                      }
+                    }
+                  : null,
             ),
           ),
           Padding(
@@ -745,7 +774,6 @@ class CustomRecordingTestingButton extends StatelessWidget {
     });
   }
 }
-
 
 class NumericProgressIndicator extends StatelessWidget {
   final int current;
