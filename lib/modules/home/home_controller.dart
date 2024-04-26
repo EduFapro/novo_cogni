@@ -69,6 +69,15 @@ class HomeController extends GetxController {
     super.onReady();
     refreshEvaluations();
   }
+  var hoverStates = Map<int, RxBool>().obs;
+
+
+  // Function to set hover state
+
+  void setHoverState(int evaluationID, IconData iconData, bool isHovering) {
+    int uniqueKey = evaluationID.hashCode ^ iconData.hashCode; // Unique identifier for each icon
+    hoverStates[uniqueKey] = isHovering.obs; // Use .obs to make it observable
+  }
 
   void resetFilters() {
     if (selectedStatus.value == null && searchController.text.isEmpty) {
