@@ -10,6 +10,7 @@ import '../app/evaluator/evaluator_repository.dart';
 import '../app/module/module_repository.dart';
 import '../app/module_instance/module_instance_repository.dart';
 import '../app/participant/participant_entity.dart';
+import '../app/task_instance/task_instance_entity.dart';
 import '../app/task_instance/task_instance_repository.dart';
 
 class UserService extends GetxController {
@@ -24,8 +25,7 @@ class UserService extends GetxController {
   Rx<EvaluationMap> evaluationMap = Rx<EvaluationMap>({});
 
   Rx<TaskInstanceList> taskInstanceList = Rx<TaskInstanceList>([]);
-  Rx<ModuleInstanceMap> moduleInstanceMap= Rx<ModuleInstanceMap>({});
-
+  Rx<ModuleInstanceMap> moduleInstanceMap = Rx<ModuleInstanceMap>({});
 
   var evaluations = <EvaluationEntity>[].obs;
   var participants = <ParticipantEntity>[].obs;
@@ -39,7 +39,6 @@ class UserService extends GetxController {
   void onInit() {
     super.onInit();
   }
-
 
   // Fetch user data and organize the data structure
   Future<void> fetchUserData(int? userId) async {
@@ -59,7 +58,8 @@ class UserService extends GetxController {
 
   // Fetch evaluations and organize them into the map
   Future<void> fetchAndOrganizeEvaluations(EvaluatorEntity userEntity) async {
-    evaluations.value = await evaluationRepo.getEvaluationsByEvaluatorID(userEntity.evaluatorID!);
+    evaluations.value = await evaluationRepo
+        .getEvaluationsByEvaluatorID(userEntity.evaluatorID!);
     await fetchParticipantsForEvaluations(evaluations);
     await organizeEvaluationMap();
   }
@@ -76,22 +76,23 @@ class UserService extends GetxController {
   }
 
   // Fetch module instances and their corresponding task instances for a given evaluation
-  Future<ModuleInstanceMap> fetchModuleInstanceMap(EvaluationEntity evaluation) async {
+  Future<ModuleInstanceMap> fetchModuleInstanceMap(
+      EvaluationEntity evaluation) async {
     ModuleInstanceMap tempModuleInstanceMap = {};
 
-    List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepo.getModuleInstancesByEvaluationId(evaluation.evaluationID!);
+    List<ModuleInstanceEntity> moduleInstances = await moduleInstanceRepo
+        .getModuleInstancesByEvaluationId(evaluation.evaluationID!);
     for (var moduleInstance in moduleInstances) {
-      tempModuleInstanceMap[moduleInstance] = await taskInstanceRepo.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+      tempModuleInstanceMap[moduleInstance] = await taskInstanceRepo
+          .getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
     }
 
     return tempModuleInstanceMap;
   }
 
-
   Future<EvaluatorEntity?> getUser(int id) async {
     return await evaluatorRepo.getEvaluator(id);
   }
-
 
   Future<void> organizeDataStructure(int userId) async {
     // Temporary local map to organize data
@@ -109,7 +110,8 @@ class UserService extends GetxController {
 
       var moduleInstances = await getModuleInstancesByEvaluation(evaluation);
       for (var moduleInstance in moduleInstances) {
-        var taskInstances = await getTaskInstancesForModuleInstance(moduleInstance);
+        var taskInstances =
+            await getTaskInstancesForModuleInstance(moduleInstance);
         moduleInstanceMap[moduleInstance] = taskInstances;
       }
 
@@ -120,8 +122,6 @@ class UserService extends GetxController {
     evaluationMap.value = tempEvaluationMap;
     print("evaluation.map: ${evaluationMap.value}");
   }
-
-
 
   Future<List<EvaluationEntity>> getEvaluationsByUser(
       EvaluatorEntity user) async {
@@ -147,7 +147,6 @@ class UserService extends GetxController {
       // Add the module instance to the list corresponding to its module ID.
       modulesMap[instance.moduleID]!.add(instance);
     }
-
 
     return modulesMap;
   }
@@ -186,21 +185,23 @@ class UserService extends GetxController {
   }
 
   Future<void> updateUser(EvaluatorEntity newUser) async {
-    print("DENTRO DA USERSERVICE UPDATEUSER, RECEBIDO: $newUser");
     user.value = newUser;
     await fetchUserData(newUser.evaluatorID);
   }
 
-  Future<void> fetchParticipantsForEvaluations(List<EvaluationEntity> evaluationsList) async {
+  Future<void> fetchParticipantsForEvaluations(
+      List<EvaluationEntity> evaluationsList) async {
     List<ParticipantEntity> fetchedParticipants = [];
     for (var evaluation in evaluationsList) {
       try {
-        ParticipantEntity? participant = await participantRepo.getParticipantByEvaluation(evaluation.evaluationID!);
+        ParticipantEntity? participant = await participantRepo
+            .getParticipantByEvaluation(evaluation.evaluationID!);
         if (participant != null) {
           fetchedParticipants.add(participant);
         }
       } catch (e) {
-        print("Error fetching participant data for evaluation ${evaluation.evaluationID}: $e");
+        print(
+            "Error fetching participant data for evaluation ${evaluation.evaluationID}: $e");
       }
     }
     participants.assignAll(fetchedParticipants);
@@ -212,5 +213,40 @@ class UserService extends GetxController {
     return updatedParticipants;
   }
 
+  Future<EvaluationEntity> deleteEvaluation(
+      EvaluationEntity evaluation)  async {
+    // Fetch all module instances associated with the evaluation
+    var moduleInstancesList = await moduleInstanceRepo
+        .getModuleInstancesByEvaluationId(evaluation.evaluationID!);
+    print('Module Instances List: $moduleInstancesList');
 
+    // List to store all task instances from all module instances
+    List<TaskInstanceEntity> taskInstancesList = [];
+
+    // Iterate over each module instance
+    for (ModuleInstanceEntity moduleInstance in moduleInstancesList) {
+      print('Processing Module Instance: $moduleInstance');
+
+      // Fetch task instances for the current module instance
+      var taskInstances = await taskInstanceRepo
+          .getTaskInstancesForModuleInstance(moduleInstance.moduleInstanceID!);
+      print(
+          'Task Instances for Module Instance ID ${moduleInstance.moduleInstanceID}: $taskInstances');
+
+      // Add the fetched task instances to the list
+      taskInstancesList.addAll(taskInstances);
+    }
+
+    taskInstancesList
+        .forEach((e) => taskInstanceRepo.deleteTaskInstance(e.taskInstanceID!));
+    moduleInstancesList.forEach(
+        (e) => moduleInstanceRepo.deleteModuleInstance(e.moduleInstanceID!));
+    var deletedEvaluation = await evaluationRepo.getEvaluation(evaluation.evaluationID!);
+    evaluationRepo.deleteEvaluation(evaluation.evaluationID!);
+    participantRepo.deleteParticipant(evaluation.participantID);
+
+    print('All Task Instances: $taskInstancesList');
+
+    return deletedEvaluation!;
+  }
 }

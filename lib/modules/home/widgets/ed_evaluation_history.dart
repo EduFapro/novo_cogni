@@ -27,23 +27,23 @@ class EdEvaluationHistory extends GetView<HomeController> {
         SizedBox(height: 20),
         // Status counters
         Obx(() => buildIconLabel(
-          context,
-          Icons.folder_open,
-          UiStrings.totalProjects,
-          controller.numEvaluationsTotal.value,
-        )),
+              context,
+              Icons.folder_open,
+              UiStrings.totalProjects,
+              controller.numEvaluationsTotal.value,
+            )),
         Obx(() => buildIconLabel(
-          context,
-          Icons.hourglass_empty,
-          UiStrings.inProgress,
-          controller.numEvaluationsInProgress.value,
-        )),
+              context,
+              Icons.hourglass_empty,
+              UiStrings.inProgress,
+              controller.numEvaluationsInProgress.value,
+            )),
         Obx(() => buildIconLabel(
-          context,
-          Icons.check_circle_outline,
-          UiStrings.completed,
-          controller.numEvaluationsFinished.value,
-        )),
+              context,
+              Icons.check_circle_outline,
+              UiStrings.completed,
+              controller.numEvaluationsFinished.value,
+            )),
         SizedBox(height: 20),
         // Search bar and filter by status dropdown
         EdSearchBar(
@@ -134,8 +134,8 @@ class EdEvaluationHistory extends GetView<HomeController> {
                 final evaluation = homeController.filteredEvaluations[index];
                 final dateFormat = DateFormat.yMd();
                 final participant = controller.participants.firstWhere(
-                      (element) =>
-                  element.participantID == evaluation.participantID,
+                  (element) =>
+                      element.participantID == evaluation.participantID,
                 );
 
                 return Card(
@@ -143,11 +143,22 @@ class EdEvaluationHistory extends GetView<HomeController> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Expanded(flex: 2, child: Text(participant.fullName ?? 'Unknown')),
-                        Expanded(flex: 2, child: Text(evaluation.status.description)),
-                        Expanded(flex: 2, child: Text(homeController.user.value?.name ?? 'Unknown')),
-                        Expanded(flex: 2, child: Text(dateFormat.format(evaluation.evaluationDate!))),
-                        iconWithHoverEffect(evaluation.evaluationID!, Icons.create_rounded, () {
+                        Expanded(
+                            flex: 2,
+                            child: Text(participant.fullName ?? 'Unknown')),
+                        Expanded(
+                            flex: 2,
+                            child: Text(evaluation.status.description)),
+                        Expanded(
+                            flex: 2,
+                            child: Text(
+                                homeController.user.value?.name ?? 'Unknown')),
+                        Expanded(
+                            flex: 2,
+                            child: Text(
+                                dateFormat.format(evaluation.evaluationDate!))),
+                        iconWithHoverEffect(
+                            evaluation.evaluationID!, Icons.create_rounded, () {
                           Get.toNamed(
                             AppRoutes.evaluation,
                             arguments: {
@@ -158,12 +169,18 @@ class EdEvaluationHistory extends GetView<HomeController> {
                           );
                         }),
                         SizedBox(width: 36),
-                        iconWithHoverEffect(evaluation.evaluationID!, Icons.delete, () {
-                          print("Trashcan clicked");
+                        iconWithHoverEffect(
+                            evaluation.evaluationID!, Icons.delete, () {
+                          print("Trashcan clicked a");
+                          controller.deleteEvaluation(evaluation: evaluation);
+                          print("Trashcan clicked b");
                         }),
                         SizedBox(width: 36),
-                        iconWithHoverEffect(evaluation.evaluationID!, Icons.download_rounded, () {
-                          print('Download button tapped for evaluation ID: ${evaluation.evaluationID}');
+                        iconWithHoverEffect(
+                            evaluation.evaluationID!, Icons.download_rounded,
+                            () {
+                          print(
+                              'Download button tapped for evaluation ID: ${evaluation.evaluationID}');
                           homeController.handleDownload(
                             evaluation.evaluationID!,
                             evaluation.evaluatorID.toString(),
@@ -176,7 +193,6 @@ class EdEvaluationHistory extends GetView<HomeController> {
                     ),
                   ),
                 );
-
               },
             );
           }),
@@ -185,8 +201,8 @@ class EdEvaluationHistory extends GetView<HomeController> {
     );
   }
 
-
-  Widget buildIconLabel(BuildContext context, IconData icon, String label, int count) {
+  Widget buildIconLabel(
+      BuildContext context, IconData icon, String label, int count) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -199,7 +215,8 @@ class EdEvaluationHistory extends GetView<HomeController> {
     );
   }
 
-  Widget iconWithHoverEffect(int evaluationID, IconData iconData, void Function()? onTap) {
+  Widget iconWithHoverEffect(
+      int evaluationID, IconData iconData, void Function()? onTap) {
     int uniqueKey = evaluationID.hashCode ^ iconData.hashCode;
 
     return Obx(() {
@@ -217,9 +234,6 @@ class EdEvaluationHistory extends GetView<HomeController> {
       );
     });
   }
-
-
-
 }
 
 class StatusSwitchFilter extends GetView<HomeController> {
@@ -254,20 +268,21 @@ class StatusSwitchFilter extends GetView<HomeController> {
                       controller.filterEvaluationsByStatus();
                     }
                   },
-                  items: EvaluationStatus.values.map<
-                      DropdownMenuItem<EvaluationStatus>>(
+                  items: EvaluationStatus.values
+                      .map<DropdownMenuItem<EvaluationStatus>>(
                           (EvaluationStatus status) {
-                        return DropdownMenuItem<EvaluationStatus>(
-                          value: status,
-                          child: Text(status.description,
-                              style: TextStyle(color: Colors.white)),
-                        );
-                      }).toList(),
+                    return DropdownMenuItem<EvaluationStatus>(
+                      value: status,
+                      child: Text(status.description,
+                          style: TextStyle(color: Colors.white)),
+                    );
+                  }).toList(),
                   hint: controller.selectedStatus.value == null
                       ? Text(
-                    "Select",
-                    style: TextStyle(color: Colors.white.withOpacity(0.7)),
-                  )
+                          "Select",
+                          style:
+                              TextStyle(color: Colors.white.withOpacity(0.7)),
+                        )
                       : null,
                 ),
               ),
@@ -285,6 +300,4 @@ class StatusSwitchFilter extends GetView<HomeController> {
       );
     });
   }
-
-  
 }
