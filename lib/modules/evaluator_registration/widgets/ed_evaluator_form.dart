@@ -145,44 +145,47 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                         ),
                         SizedBox(width: spacingWidth),
                         SizedBox(
-                          height: fieldContainerHeight,
-                          width: fieldWidthRow2,
-                          child:TextFormField(
-                            controller: controller.usernameController,
-                            decoration: InputDecoration(labelText: UiStrings.username),
-                            readOnly: !controller.isEditMode.value,
-                          )
-
-
-                        ),
+                            height: fieldContainerHeight,
+                            width: fieldWidthRow2,
+                            child: TextFormField(
+                              controller: controller.usernameController,
+                              decoration: InputDecoration(
+                                  labelText: UiStrings.username),
+                              readOnly: !controller.isEditMode.value,
+                            )),
                       ],
                     ),
                     SizedBox(height: 16.0),
                     Obx(() => Row(
-                      children: [
-                        if (controller.isEditMode.isTrue)
-                        SizedBox(
-                          width: fieldWidthRow2, // Use the same width as the password fields
-                          child: SwitchListTile(
-                            title: Text("Modify Password"),
-                            value: controller.isPasswordChangeEnabled.value,
-                            onChanged: (bool value) {
-                              controller.isPasswordChangeEnabled.value = value;
-                              // If the switch is turned off, clear the password fields and remove any validation errors
-                              if (!value) {
-                                controller.newPasswordController.clear();
-                                controller.confirmNewPasswordController.clear();
-                                controller.formKey.currentState?.validate();
-                              }
-                            },
-                            // activeColor: Theme.of(context).accentColor,
-                          ),
-                        ),
-                        SizedBox(width: spacingWidth), // Maintain consistent spacing if necessary
-                        // Add other widgets here if necessary
-                      ],
-                    )),
-
+                          children: [
+                            if (controller.isEditMode.isTrue)
+                              SizedBox(
+                                width: fieldWidthRow2,
+                                // Use the same width as the password fields
+                                child: SwitchListTile(
+                                  title: Text("Modify Password"),
+                                  value:
+                                      controller.isPasswordChangeEnabled.value,
+                                  onChanged: (bool value) {
+                                    controller.isPasswordChangeEnabled.value =
+                                        value;
+                                    // If the switch is turned off, clear the password fields and remove any validation errors
+                                    if (!value) {
+                                      controller.newPasswordController.clear();
+                                      controller.confirmNewPasswordController
+                                          .clear();
+                                      controller.formKey.currentState
+                                          ?.validate();
+                                    }
+                                  },
+                                  // activeColor: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            SizedBox(width: spacingWidth),
+                            // Maintain consistent spacing if necessary
+                            // Add other widgets here if necessary
+                          ],
+                        )),
                     if (controller.isEditMode.isTrue)
                       Obx(() => Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -204,7 +207,8 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                           labelText: "Nova Senha"),
                                       validator: (value) {
                                         // Only validate if the password change is enabled
-                                        if (controller.isPasswordChangeEnabled.value) {
+                                        if (controller
+                                            .isPasswordChangeEnabled.value) {
                                           if (value == null || value.isEmpty) {
                                             return 'New password is required';
                                           }
@@ -237,11 +241,14 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                           labelText: "Confirme Senha"),
                                       validator: (value) {
                                         // Only validate if the password change is enabled
-                                        if (controller.isPasswordChangeEnabled.value) {
+                                        if (controller
+                                            .isPasswordChangeEnabled.value) {
                                           if (value == null || value.isEmpty) {
                                             return 'Confirm password is required';
                                           }
-                                          if (value != controller.newPasswordController.text) {
+                                          if (value !=
+                                              controller
+                                                  .newPasswordController.text) {
                                             return 'Passwords do not match';
                                           }
                                         }
@@ -270,38 +277,42 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                 style: TextStyle(color: Color(0xff000000))),
                           ),
                           SizedBox(width: 20),
-
-
                           TextButton(
                             onPressed: () async {
                               // Clear the password fields if the password change is not enabled.
-                              if (controller.isEditMode.isTrue && !controller.isPasswordChangeEnabled.value) {
+                              if (controller.isEditMode.isTrue &&
+                                  !controller.isPasswordChangeEnabled.value) {
                                 controller.newPasswordController.text = '';
-                                controller.confirmNewPasswordController.text = '';
+                                controller.confirmNewPasswordController.text =
+                                    '';
                               }
 
                               if (controller.formKey.currentState!.validate()) {
                                 // If all fields are valid, proceed
                                 if (controller.isUsernameValid.isTrue) {
                                   bool success;
-                                  controller.isEditMode.isTrue ?
-                                      success = await controller.updateEvaluator()
-                                  : success = await controller.createEvaluator();                                if (success) {
+                                  controller.isEditMode.isTrue
+                                      ? success =
+                                          await controller.updateEvaluator()
+                                      : success =
+                                          await controller.createEvaluator();
+                                  if (success) {
                                     Get.back();
                                   } else {
-                                    print('Failed to create or update evaluator'); // Debugging print statement
+                                    print(
+                                        'Failed to create or update evaluator'); // Debugging print statement
                                   }
                                 } else {
-                                  print('Username is invalid'); // Debugging print statement
+                                  print(
+                                      'Username is invalid'); // Debugging print statement
                                 }
                               } else {
-                                print('Form validation failed'); // Debugging print statement
+                                print(
+                                    'Form validation failed'); // Debugging print statement
                               }
                             },
                             child: Text(UiStrings.register),
                           ),
-
-
                         ],
                       ),
                     ),
