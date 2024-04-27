@@ -158,7 +158,6 @@ class TaskScreenController extends GetxController {
       countdownTrigger.value = true; // Start countdown
     });
 
-
     taskMode.listen((mode) {
       print("Task mode changed to: $mode");
     });
@@ -509,8 +508,12 @@ class TaskScreenController extends GetxController {
 
   Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
     await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
-    var evaluationID =
-        Get.find<EvaluationController>().evaluation.value!.evaluationID!;
+    final evalController = Get.find<EvaluationController>();
+    // evalController.markModuleAsCompleted(
+    //     controller.moduleInstance.value!.moduleInstanceID!);
+    evalController.updateModuleInstanceInList(
+        moduleInstance.value!.moduleInstanceID!, ModuleStatus.in_progress);
+    var evaluationID = evalController.evaluation.value!.evaluationID!;
     bool allModulesCompleted =
         await evaluationService.areAllModulesCompleted(evaluationID);
     if (allModulesCompleted) {
@@ -807,5 +810,4 @@ class TaskScreenController extends GetxController {
       );
     }
   }
-
 }

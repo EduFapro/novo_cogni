@@ -187,10 +187,13 @@ class EvaluationController extends GetxController {
   }
 
   void markModuleAsCompleted(int moduleInstanceId) {
-    moduleCompletionStatus[moduleInstanceId] = true;
+    moduleCompletionStatus[moduleInstanceId] = true; // This sets the status to completed
+    // Assuming the updateModuleInstanceInList updates the actual list of module instances
     updateModuleInstanceInList(moduleInstanceId, ModuleStatus.completed);
-    update(); // Update the UI after marking the module as completed
+    // Since we've updated the status, call update to trigger the UI refresh
+    update(); // This is crucial to ensure UI is updated
   }
+
 
   bool isModuleCompleted(int moduleId) {
     return moduleCompletionStatus[moduleId] ?? false;

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
+import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../constants/enums/module_enums.dart';
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
 import 'countdown_timer.dart';
@@ -17,17 +19,18 @@ class TaskScreen extends GetView<TaskScreenController> {
 
   @override
   Widget build(BuildContext context) {
-
     final ScrollController scrollController = controller.scrollController;
 
     final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
       body: Obx(
-            () {
-          final hasImagePath = controller.currentTaskEntity.value?.imagePath != null;
+        () {
+          final hasImagePath =
+              controller.currentTaskEntity.value?.imagePath != null;
           if (hasImagePath) {
-            WidgetsBinding.instance.addPostFrameCallback((_) => _scrollDown(scrollController));
+            WidgetsBinding.instance
+                .addPostFrameCallback((_) => _scrollDown(scrollController));
           }
 
           return hasImagePath
@@ -37,6 +40,7 @@ class TaskScreen extends GetView<TaskScreenController> {
       ),
     );
   }
+
   void _scrollDown(ScrollController scrollController) {
     if (scrollController.hasClients) {
       scrollController.animateTo(
@@ -47,14 +51,18 @@ class TaskScreen extends GetView<TaskScreenController> {
     }
   }
 
-
   Widget buildContent(BuildContext context, Size windowSize) {
     return Column(
       children: [
         Expanded(
           child: Obx(() {
             if (controller.isModuleCompleted.isTrue) {
-              return TaskCompletedWidget(onNavigateBack: () => Get.back());
+              return TaskCompletedWidget(onNavigateBack: () {
+                final evalController = Get.find<EvaluationController>();
+                evalController.markModuleAsCompleted(
+                    controller.moduleInstance.value!.moduleInstanceID!);
+                Get.back();
+              });
             } else if (controller.currentTaskInstance.value != null) {
               var mode = controller.taskMode.value;
               return Column(
@@ -424,7 +432,8 @@ class TaskScreen extends GetView<TaskScreenController> {
     );
   }
 
-  Widget buildImageContent(BuildContext context, Size windowSize, ScrollController scrollController) {
+  Widget buildImageContent(BuildContext context, Size windowSize,
+      ScrollController scrollController) {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   if (scrollController.hasClients) {
     //     scrollController.animateTo(

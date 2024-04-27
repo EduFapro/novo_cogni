@@ -287,15 +287,15 @@ class HomeController extends GetxController {
   }
 
   Future<void> deleteEvaluation({required EvaluationEntity evaluation}) async {
-    isLoading(true); // Show loading indicator
+    isLoading(true);
     var deleteResult = await userService.deleteEvaluation(evaluation);
 
     if (deleteResult != null) {
-      evaluations.remove(evaluation); // This should trigger UI update
-      // It's important that you remove the exact same instance that's present in the list
-      refreshEvaluations(); // Refresh the evaluations list
+      evaluations.remove(evaluation);
+
+      refreshEvaluations();
     } else {
-      // Handle the case where the deletion was not successful
+
     }
 
     isLoading(false); // Hide loading indicator
