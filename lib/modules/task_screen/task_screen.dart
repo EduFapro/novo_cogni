@@ -23,7 +23,18 @@ class TaskScreen extends GetView<TaskScreenController> {
 
     final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            final evalController = Get.find<EvaluationController>();
+            evalController.markModuleAsCompleted(
+                controller.moduleInstance.value!.moduleInstanceID!);
+
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Obx(
         () {
           final hasImagePath =
@@ -142,6 +153,33 @@ class TaskScreen extends GetView<TaskScreenController> {
       width: 880,
       child: Column(
         children: [
+          if (controller.mayRepeatPrompt.isFalse) ...[
+            Container(
+              width: 400,
+              height: 40,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.redAccent,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              child: Center(
+                child: Text(
+                  "Esse áudio só poderá ser ouvido uma vez",
+                  style: TextStyle(
+                    color: Colors.redAccent,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
           CountdownTimer(
             countdownTrigger: controller.countdownTrigger,
             initialDurationInSeconds:
@@ -174,12 +212,15 @@ class TaskScreen extends GetView<TaskScreenController> {
                         label: "Pular",
                         onPressed: () => controller.skipCurrentTask(),
                         isActive: true.obs,
-                        displayMessage: "Atividade Pulada"),
+                        displayMessage: "Atividade Pulada",
+                        confirmationMessage: "Realmente deseja pular?"),
                     CustomIconButton(
                         iconData: Icons.check,
                         label: "Confirm",
                         onPressed: () => controller.onCheckButtonPressed(),
                         isActive: controller.isCheckButtonEnabled,
+                        confirmationMessage:
+                            "Confirmar e ir para a próxima tarefa?",
                         displayMessage: "Atividade Concluída"),
                     // EdCheckIconButton(
                     //   iconData: Icons.check,
@@ -204,6 +245,7 @@ class TaskScreen extends GetView<TaskScreenController> {
     final TaskScreenController controller = Get.find<TaskScreenController>();
 
     var AudioRecorderinterfaceContent = [
+      SizedBox(height: 20,),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         // Space out items equally
@@ -215,6 +257,7 @@ class TaskScreen extends GetView<TaskScreenController> {
               label: "Pular",
               onPressed: () => controller.skipCurrentTask(),
               isActive: true.obs,
+              confirmationMessage: "Realmente deseja pular?",
               displayMessage: "Atividade Pulada"),
           CustomRecordingButton(controller: controller),
           CustomIconButton(
@@ -222,6 +265,7 @@ class TaskScreen extends GetView<TaskScreenController> {
               label: "Confirm",
               onPressed: () => controller.onCheckButtonPressed(),
               isActive: controller.isCheckButtonEnabled,
+              confirmationMessage: "Confirmar e ir para a próxima tarefa?",
               displayMessage: "Atividade Concluída"),
         ],
       ),
@@ -239,7 +283,17 @@ class TaskScreen extends GetView<TaskScreenController> {
             ),
           ),
         ),
-      )
+      ),
+      Align(
+        alignment: Alignment.centerRight,
+        child: CustomIconButton(
+            iconData: Icons.close,
+            label: "Pular",
+            onPressed: () => controller.skipCurrentTask(),
+            isActive: true.obs,
+            displayMessage: "Atividade Pulada",
+            confirmationMessage: "Realmente deseja pular?"),
+      ),
     ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 400.0),
@@ -274,6 +328,7 @@ class TaskScreen extends GetView<TaskScreenController> {
               label: "Pular",
               onPressed: () => controller.skipCurrentTask(),
               isActive: true.obs,
+              confirmationMessage: "Realmente deseja pular?",
               displayMessage: "Atividade Pulada"),
           CustomRecordingTestingButton(controller: controller),
           CustomPlayTestingButton(controller: controller),
@@ -282,6 +337,7 @@ class TaskScreen extends GetView<TaskScreenController> {
               label: "Confirm",
               onPressed: () => controller.onCheckButtonPressed(),
               isActive: controller.isCheckButtonEnabled,
+              confirmationMessage: "Confirmar e ir para a próxima tarefa?",
               displayMessage: "Atividade Concluída"),
         ],
       ),
@@ -332,6 +388,7 @@ class TaskScreen extends GetView<TaskScreenController> {
           CustomIconButton(
               iconData: Icons.close,
               label: "Pular",
+              confirmationMessage: "Realmente deseja pular?",
               onPressed: () => controller.skipCurrentTask(),
               isActive: true.obs,
               displayMessage: "Atividade Pulada"),
@@ -341,6 +398,7 @@ class TaskScreen extends GetView<TaskScreenController> {
               label: "Confirm",
               onPressed: () => controller.onCheckButtonPressed(),
               isActive: controller.isCheckButtonEnabled,
+              confirmationMessage: "Confirmar e ir para a próxima tarefa?",
               displayMessage: "Atividade Concluída"),
         ],
       ),
@@ -615,15 +673,17 @@ class CustomIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final RxBool isActive;
   String? displayMessage;
+  final String confirmationMessage;
 
-  CustomIconButton({
-    Key? key,
-    required this.iconData,
-    required this.onPressed,
-    required this.isActive,
-    required this.label,
-    this.displayMessage,
-  }) : super(key: key);
+  CustomIconButton(
+      {Key? key,
+      required this.iconData,
+      required this.onPressed,
+      required this.isActive,
+      required this.label,
+      this.displayMessage,
+      this.confirmationMessage = "Are you sure?"})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -636,27 +696,8 @@ class CustomIconButton extends StatelessWidget {
             // Consistent size with recording button
             color: isActive.value ? Colors.blue : Colors.grey,
             onPressed: isActive.value
-                ? () {
-                    onPressed();
-                    displayMessage != null
-                        ? Get.snackbar(
-                            "Ação", // Title
-                            displayMessage!, // Message
-                            snackPosition: SnackPosition.BOTTOM,
-                            // Position of the snackbar
-                            backgroundColor: Colors.blue,
-                            colorText: Colors.white,
-                            borderRadius: 20,
-                            margin: EdgeInsets.all(15),
-                            duration: Duration(milliseconds: 1000),
-                            // Duration of the snackbar
-                            isDismissible: true,
-                            // Allow the snackbar to be dismissed
-                            dismissDirection: DismissDirection
-                                .horizontal, // Dismiss direction
-                          )
-                        : null;
-                  }
+                ? () =>
+                    _showConfirmationDialog(context) // Show confirmation dialog
                 : null,
           ),
           Padding(
@@ -667,6 +708,52 @@ class CustomIconButton extends StatelessWidget {
         ],
       );
     });
+  }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirmation"),
+          content: Text(confirmationMessage),
+          actions: <Widget>[
+            TextButton(
+              child: Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+            TextButton(
+              child: Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                onPressed(); // Execute the provided onPressed action
+
+                displayMessage != null
+                    ? Get.snackbar(
+                        "Ação", // Title
+                        displayMessage!, // Message
+                        snackPosition: SnackPosition.BOTTOM,
+                        // Position of the snackbar
+                        backgroundColor: Colors.blue,
+                        colorText: Colors.white,
+                        borderRadius: 20,
+                        margin: EdgeInsets.all(15),
+                        duration: Duration(milliseconds: 1000),
+                        // Duration of the snackbar
+                        isDismissible: true,
+                        // Allow the snackbar to be dismissed
+                        dismissDirection:
+                            DismissDirection.horizontal, // Dismiss direction
+                      )
+                    : null;
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

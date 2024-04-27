@@ -132,7 +132,7 @@ class EdEvaluationHistory extends GetView<HomeController> {
               itemCount: homeController.filteredEvaluations.length,
               itemBuilder: (context, index) {
                 final evaluation = homeController.filteredEvaluations[index];
-                final dateFormat = DateFormat.yMd();
+                final dateFormat = DateFormat('dd/MM/yyyy');
                 final participant = controller.participants.firstWhere(
                   (element) =>
                       element.participantID == evaluation.participantID,
