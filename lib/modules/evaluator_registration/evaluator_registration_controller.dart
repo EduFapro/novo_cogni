@@ -37,42 +37,34 @@ class EvaluatorRegistrationController extends GetxController
   final formKey = GlobalKey<FormState>();
 
   @override
+  @override
+  @override
   void onInit() {
     super.onInit();
 
     if (Get.arguments != null &&
         Get.arguments[RouteArguments.EVALUATOR] != null) {
       isEditMode.value = true;
-      // Attempt to get the evaluator passed as an argument
       evaluator.value = Get.arguments[RouteArguments.EVALUATOR];
-      // If there's an evaluator, populate form fields
-      if (evaluator != null) {
+      if (evaluator.value != null) {
         _populateFieldsWithEvaluatorData(evaluator.value!.evaluatorID!);
       }
     } else {
       isEditMode.value = false;
     }
 
-    if (!isEditMode.value) {
-      fullNameFocusNode.addListener(
-        () async {
-          if (!fullNameFocusNode.hasFocus) {
-            final validationResult = validateFullName(fullNameController.text);
-            if (validationResult == null) {
-              String baseUsername =
-                  generateUsername(fullNameController.text, []);
-
-              await checkAndUpdateUsername(baseUsername);
-            } else {
-              username.value = '';
-              isUsernameValid.value = false;
-            }
-          }
-        },
-      );
-    } else {
-      isUsernameValid.value = true;
-    }
+    fullNameFocusNode.addListener(() {
+      if (!fullNameFocusNode.hasFocus && !isEditMode.value) {
+        final validationResult = validateFullName(fullNameController.text);
+        if (validationResult == null) {
+          String baseUsername = generateUsername(fullNameController.text, []);
+          checkAndUpdateUsername(baseUsername);
+        } else {
+          username.value = '';
+          isUsernameValid.value = false;
+        }
+      }
+    });
 
     if (isEditMode.isTrue && evaluator.value != null) {
       originalUsername.value = evaluator.value!.username;
@@ -80,6 +72,8 @@ class EvaluatorRegistrationController extends GetxController
 
     print("Edit mode: ${isEditMode.value}");
   }
+
+
 
   Future<void> _populateFieldsWithEvaluatorData(int evaluatorId) async {
     try {
@@ -180,24 +174,20 @@ class EvaluatorRegistrationController extends GetxController
   }
 
   String generateUsername(String fullName, List<String> existingUsernames) {
-    // Split the full name into words
     List<String> words = fullName.split(' ');
 
-    // Take the first word and the last word to form the base username
-    String baseUsername =
-        "${words.first.toLowerCase()}_${words.last.toLowerCase()}";
-
-    // Initialize the username with the base form
+    String baseUsername = "${words.first.toLowerCase()}_${words.last.toLowerCase()}";
     String username = baseUsername;
     int counter = 1;
 
-    // If the username exists, append a number and increment until a unique username is found
     while (existingUsernames.contains(username)) {
-      username = '${baseUsername}${counter++}';
+      username = '$baseUsername$counter';
+      counter++;
     }
 
     return username;
   }
+
 
   @override
   void onClose() {

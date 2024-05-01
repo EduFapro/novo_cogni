@@ -145,14 +145,16 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                         ),
                         SizedBox(width: spacingWidth),
                         SizedBox(
-                            height: fieldContainerHeight,
-                            width: fieldWidthRow2,
-                            child: TextFormField(
-                              controller: controller.usernameController,
-                              decoration: InputDecoration(
-                                  labelText: UiStrings.username),
-                              readOnly: !controller.isEditMode.value,
-                            )),
+                          height: fieldContainerHeight,
+                          width: fieldWidthRow2,
+                          child: Obx(() => TextFormField(
+                            controller: TextEditingController(text: controller.username.value),
+                            decoration: InputDecoration(labelText: UiStrings.username),
+                            readOnly: !(controller.isEditMode.value),  // Make this field editable only in edit mode
+                          )),
+                        ),
+
+
                       ],
                     ),
                     SizedBox(height: 16.0),
