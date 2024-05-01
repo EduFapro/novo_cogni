@@ -75,7 +75,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                     BorderSide(color: Colors.red, width: 2.0),
                               ),
                             ),
-                            readOnly: !(controller.isEditMode.value),
+                            // readOnly: !(controller.isEditMode.value),
                             onTap: () => controller.selectDate(context),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -150,7 +150,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                           child: Obx(() => TextFormField(
                             controller: TextEditingController(text: controller.username.value),
                             decoration: InputDecoration(labelText: UiStrings.username),
-                            readOnly: !(controller.isEditMode.value),  // Make this field editable only in edit mode
+                            readOnly: !(controller.isEditMode.value),
                           )),
                         ),
 
