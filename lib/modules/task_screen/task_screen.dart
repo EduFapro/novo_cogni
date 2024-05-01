@@ -9,7 +9,6 @@ import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../../constants/enums/module_enums.dart';
 import '../../constants/enums/task_enums.dart';
 import '../widgets/music_visualizer.dart';
 import 'countdown_timer.dart';
@@ -24,16 +23,16 @@ class TaskScreen extends GetView<TaskScreenController> {
     final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            final evalController = Get.find<EvaluationController>();
-            evalController.markModuleAsCompleted(
-                controller.moduleInstance.value!.moduleInstanceID!);
-
-            Navigator.of(context).pop();
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back),
+        //   onPressed: () {
+        //     final evalController = Get.find<EvaluationController>();
+        //     evalController.markModuleAsCompleted(
+        //         controller.moduleInstance.value!.moduleInstanceID!);
+        //
+        //     Navigator.of(context).pop();
+        //   },
+        // ),
       ),
       body: Obx(
         () {
@@ -550,6 +549,58 @@ class TaskScreen extends GetView<TaskScreenController> {
   }
 }
 
+
+class CustomRecordingTestingButton extends StatelessWidget {
+  final TaskScreenController controller;
+
+  CustomRecordingTestingButton({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      var isEnabled =
+          controller.isTestingRecordButtonEnabled.value
+              && !controller.isPlaying.value
+              && !controller.isTestingPlaybackButtonPlaying.value;
+      var isRecording = controller.isRecording.value;
+      var label = isRecording ? "Parar" : "Gravar";
+      var icon = isRecording ? Icons.stop : Icons.mic;
+      var backgroundColor = isEnabled ? (isRecording ? Colors.redAccent[100] : Colors.blue[100]) : Colors.grey[400];
+      var iconColor = isEnabled ? (isRecording ? Colors.red : Colors.blue) : Colors.grey;
+
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: IconButton(
+              icon: Icon(icon, size: 80),
+              color: iconColor,
+              onPressed: isEnabled ? () async {
+                if (isRecording) {
+                  await controller.stopTestingRecording();
+                } else {
+                  await controller.startTestingRecording();
+                }
+              } : null,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(label),
+          ),
+        ],
+      );
+    });
+  }
+}
+
+
 class CustomPlayTestingButton extends StatelessWidget {
   final TaskScreenController controller;
 
@@ -563,6 +614,8 @@ class CustomPlayTestingButton extends StatelessWidget {
       var isPlaying = controller.isTestingPlaybackButtonPlaying.value;
       var label = isPlaying ? "Stop" : "Play";
       var icon = isPlaying ? Icons.stop : Icons.play_arrow;
+      var backgroundColor = isEnabled ? (isPlaying ? Colors.redAccent[100] : Colors.blue[100]) : Colors.grey[400];
+      var iconColor = isEnabled ? (isPlaying ? Colors.red : Colors.blue) : Colors.grey;
 
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -571,21 +624,19 @@ class CustomPlayTestingButton extends StatelessWidget {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: isEnabled ? Colors.blue.shade100 : Colors.grey.shade400,
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(50),
             ),
             child: IconButton(
-              icon: Icon(icon, size: 48),
-              color: isEnabled ? Colors.blue : Colors.grey,
-              onPressed: isEnabled
-                  ? () async {
-                      if (isPlaying) {
-                        await controller.stopPlayingTest();
-                      } else {
-                        await controller.playTestRecording();
-                      }
-                    }
-                  : null,
+              icon: Icon(icon, size: 80),
+              color: iconColor,
+              onPressed: isEnabled ? () async {
+                if (isPlaying) {
+                  await controller.stopPlayingTest();
+                } else {
+                  await controller.playTestRecording();
+                }
+              } : null,
             ),
           ),
           Padding(
@@ -597,6 +648,7 @@ class CustomPlayTestingButton extends StatelessWidget {
     });
   }
 }
+
 
 class Player extends StatelessWidget {
   const Player({
@@ -821,55 +873,7 @@ class CustomRecordingButton extends StatelessWidget {
   }
 }
 
-class CustomRecordingTestingButton extends StatelessWidget {
-  final TaskScreenController controller;
 
-  CustomRecordingTestingButton({Key? key, required this.controller})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      var isEnabled = controller.isTestingRecordButtonEnabled.value;
-      var isRecording = controller.isRecording.value;
-      var icon = isRecording ? Icons.stop : Icons.mic;
-      var color =
-          isEnabled ? (isRecording ? Colors.red : Colors.blue) : Colors.grey;
-      var label = isRecording ? "Stop Recording" : "Start Recording";
-
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1), // Lighter shade for background
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: IconButton(
-              icon: Icon(icon, size: 48),
-              color: color,
-              onPressed: isEnabled
-                  ? () async {
-                      if (isRecording) {
-                        await controller.stopTestingRecording();
-                      } else {
-                        await controller.startTestingRecording();
-                      }
-                    }
-                  : null,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Text(label),
-          ),
-        ],
-      );
-    });
-  }
-}
 
 class NumericProgressIndicator extends StatelessWidget {
   final int current;

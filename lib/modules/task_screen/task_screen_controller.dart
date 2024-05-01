@@ -631,37 +631,41 @@ class TaskScreenController extends GetxController {
   //   }
   // }
 
-  Future<void> playTest() async {
-    final String encryptedFilePath = audioPath.value;
-    try {
-      final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
-
-      // Decrypt the audio file
-      final String decryptedFilePath =
-          await fileEncryptor.decryptRecording(encryptedFilePath);
-
-      // Play the decrypted audio file
-      await _audioPlayer.play(UrlSource(decryptedFilePath),
-          mode: PlayerMode.lowLatency);
-      isTestingRecordButtonPlaying.value = true;
-
-      // Handle audio completion to clean up the decrypted file
-      _audioPlayer.onPlayerComplete.listen((_) {
-        isTestingRecordButtonPlaying.value = false;
-        File(decryptedFilePath).delete().catchError((e) {
-          print("Error deleting decrypted file: $e");
-        });
-      });
-    } catch (e) {
-      print("Error playing test audio: $e");
-      // Handle errors appropriately
-    }
-  }
+  // Future<void> playTest() async {
+  //   final String encryptedFilePath = audioPath.value;
+  //   try {
+  //     final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+  //
+  //     // Decrypt the audio file
+  //     final String decryptedFilePath =
+  //         await fileEncryptor.decryptRecording(encryptedFilePath);
+  //
+  //     // Play the decrypted audio file
+  //     await _audioPlayer.play(UrlSource(decryptedFilePath),
+  //         mode: PlayerMode.lowLatency);
+  //     isTestingRecordButtonPlaying.value = true;
+  //
+  //     // Handle audio completion to clean up the decrypted file
+  //     _audioPlayer.onPlayerComplete.listen((_) {
+  //       isTestingRecordButtonPlaying.value = false;
+  //       File(decryptedFilePath).delete().catchError((e) {
+  //         print("Error deleting decrypted file: $e");
+  //       });
+  //     });
+  //   } catch (e) {
+  //     print("Error playing test audio: $e");
+  //     // Handle errors appropriately
+  //   }
+  // }
 
   Future<void> stopPlayingTest() async {
+    print("pressed stopPlayingTest");
     await _audioPlayer.stop();
-    isTestingRecordButtonPlaying.value = false;
-    // Clean up: Delete decrypted file if needed
+    togglePlayback();
+
+  }
+  void togglePlayback() {
+    isTestingPlaybackButtonPlaying.value = !isTestingPlaybackButtonPlaying.value;
   }
 
   // Future<void> stopTestingRecording() async {
@@ -750,6 +754,7 @@ class TaskScreenController extends GetxController {
   // Call this method when you want to start playback in test mode
   // Call this method when you want to start playback in test mode
   Future<void> playTestRecording() async {
+    togglePlayback();
     print("HOHOHOHUHO");
     print(playbackPath.value);
     final String encryptedFilePath =
