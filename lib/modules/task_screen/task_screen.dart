@@ -24,16 +24,16 @@ class TaskScreen extends GetView<TaskScreenController> {
     final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back),
-        //   onPressed: () {
-        //     final evalController = Get.find<EvaluationController>();
-        //     evalController.markModuleAsCompleted(
-        //         controller.moduleInstance.value!.moduleInstanceID!);
-        //
-        //     Navigator.of(context).pop();
-        //   },
-        // ),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              if (controller.isModuleCompleted.isTrue) {
+                final evalController = Get.find<EvaluationController>();
+                evalController.markModuleAsCompleted(
+                    controller.moduleInstance.value!.moduleInstanceID!);
+                Get.back();
+              }
+            }),
       ),
       body: Obx(
         () {
@@ -245,7 +245,9 @@ class TaskScreen extends GetView<TaskScreenController> {
     final TaskScreenController controller = Get.find<TaskScreenController>();
 
     var AudioRecorderinterfaceContent = [
-      SizedBox(height: 20,),
+      SizedBox(
+        height: 20,
+      ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         // Space out items equally
@@ -550,24 +552,26 @@ class TaskScreen extends GetView<TaskScreenController> {
   }
 }
 
-
 class CustomRecordingTestingButton extends StatelessWidget {
   final TaskScreenController controller;
 
-  CustomRecordingTestingButton({Key? key, required this.controller}) : super(key: key);
+  CustomRecordingTestingButton({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var isEnabled =
-          controller.isTestingRecordButtonEnabled.value
-              && !controller.isPlaying.value
-              && !controller.isTestingPlaybackButtonPlaying.value;
+      var isEnabled = controller.isTestingRecordButtonEnabled.value &&
+          !controller.isPlaying.value &&
+          !controller.isTestingPlaybackButtonPlaying.value;
       var isRecording = controller.isRecording.value;
       var label = isRecording ? "Parar" : "Gravar";
       var icon = isRecording ? Icons.stop : Icons.mic;
-      var backgroundColor = isEnabled ? (isRecording ? Colors.redAccent[100] : Colors.blue[100]) : Colors.grey[400];
-      var iconColor = isEnabled ? (isRecording ? Colors.red : Colors.blue) : Colors.grey;
+      var backgroundColor = isEnabled
+          ? (isRecording ? Colors.redAccent[100] : Colors.blue[100])
+          : Colors.grey[400];
+      var iconColor =
+          isEnabled ? (isRecording ? Colors.red : Colors.blue) : Colors.grey;
 
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -582,13 +586,15 @@ class CustomRecordingTestingButton extends StatelessWidget {
             child: IconButton(
               icon: Icon(icon, size: 80),
               color: iconColor,
-              onPressed: isEnabled ? () async {
-                if (isRecording) {
-                  await controller.stopTestingRecording();
-                } else {
-                  await controller.startTestingRecording();
-                }
-              } : null,
+              onPressed: isEnabled
+                  ? () async {
+                      if (isRecording) {
+                        await controller.stopTestingRecording();
+                      } else {
+                        await controller.startTestingRecording();
+                      }
+                    }
+                  : null,
             ),
           ),
           Padding(
@@ -600,7 +606,6 @@ class CustomRecordingTestingButton extends StatelessWidget {
     });
   }
 }
-
 
 class CustomPlayTestingButton extends StatelessWidget {
   final TaskScreenController controller;
@@ -615,8 +620,11 @@ class CustomPlayTestingButton extends StatelessWidget {
       var isPlaying = controller.isTestingPlaybackButtonPlaying.value;
       var label = isPlaying ? UiStrings.stop_audio : UiStrings.play_audio;
       var icon = isPlaying ? Icons.stop : Icons.play_arrow;
-      var backgroundColor = isEnabled ? (isPlaying ? Colors.redAccent[100] : Colors.blue[100]) : Colors.grey[400];
-      var iconColor = isEnabled ? (isPlaying ? Colors.red : Colors.blue) : Colors.grey;
+      var backgroundColor = isEnabled
+          ? (isPlaying ? Colors.redAccent[100] : Colors.blue[100])
+          : Colors.grey[400];
+      var iconColor =
+          isEnabled ? (isPlaying ? Colors.red : Colors.blue) : Colors.grey;
 
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -631,13 +639,15 @@ class CustomPlayTestingButton extends StatelessWidget {
             child: IconButton(
               icon: Icon(icon, size: 80),
               color: iconColor,
-              onPressed: isEnabled ? () async {
-                if (isPlaying) {
-                  await controller.stopPlayingTest();
-                } else {
-                  await controller.playTestRecording();
-                }
-              } : null,
+              onPressed: isEnabled
+                  ? () async {
+                      if (isPlaying) {
+                        await controller.stopPlayingTest();
+                      } else {
+                        await controller.playTestRecording();
+                      }
+                    }
+                  : null,
             ),
           ),
           Padding(
@@ -649,7 +659,6 @@ class CustomPlayTestingButton extends StatelessWidget {
     });
   }
 }
-
 
 class Player extends StatelessWidget {
   const Player({
@@ -696,7 +705,8 @@ class Player extends StatelessWidget {
                               ? null
                               : () => controller.togglePlay(),
                         ),
-                        Text(UiStrings.play_audio, style: TextStyle(fontSize: 16)),
+                        Text(UiStrings.play_audio,
+                            style: TextStyle(fontSize: 16)),
                         // Subtitle label
                       ],
                     ),
@@ -873,8 +883,6 @@ class CustomRecordingButton extends StatelessWidget {
     });
   }
 }
-
-
 
 class NumericProgressIndicator extends StatelessWidget {
   final int current;
