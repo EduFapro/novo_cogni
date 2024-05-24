@@ -280,7 +280,7 @@ class StatusSwitchFilter extends GetView<HomeController> {
                   }).toList(),
                   hint: controller.selectedStatus.value == null
                       ? Text(
-                          "Select",
+                          UiStrings.select,
                           style:
                               TextStyle(color: Colors.white.withOpacity(0.7)),
                         )

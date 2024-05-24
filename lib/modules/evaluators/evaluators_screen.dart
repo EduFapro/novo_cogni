@@ -15,14 +15,15 @@ class EvaluatorsScreen extends GetView<EvaluatorsController>  {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(UiStrings.evaluators),
-        centerTitle: false,
         elevation: 0,
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xfffdfdfd),
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text(UiStrings.evaluators),
+        centerTitle: true,
       ),
       body: Container(
         height: bodyHeight,
-        child: EdEvaluatorsList(placeholder: 'Search...',),
+        child: EdEvaluatorsList(placeholder: UiStrings.searchPlaceholder,),
       ),
     );
   }

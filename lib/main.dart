@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/routes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'app/database_helper.dart';
 import 'constants/translation/ui_strings.dart';
@@ -10,6 +11,17 @@ import 'global/global_binding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+
+  WindowOptions windowOptions = WindowOptions(
+    title: "CogniVoice"
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setTitle("CogniVoice");
+    // await windowManager.setIcon(iconPath);
+  });
+
 
   try {
     await dotenv.load(fileName: ".env");
@@ -37,6 +49,7 @@ class MyApp extends StatelessWidget {
       locale: Locale('pt','BR'),
       fallbackLocale: Locale('pt','BR'),
       initialBinding: GlobalBinding(),
+      title: 'CogniVoice',
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: AppRoutes.login,
       getPages: routes,

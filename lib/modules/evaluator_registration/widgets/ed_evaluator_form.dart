@@ -165,7 +165,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                 width: fieldWidthRow2,
                                 // Use the same width as the password fields
                                 child: SwitchListTile(
-                                  title: Text("Modify Password"),
+                                  title: Text(UiStrings.modifyPassword),
                                   value:
                                       controller.isPasswordChangeEnabled.value,
                                   onChanged: (bool value) {
