@@ -29,17 +29,15 @@ class EvaluatorRegistrationController extends GetxController
 
   final RxBool isPasswordChangeEnabled = false.obs;
 
-  // var selectedSex = Rx<Sex?>(null);
-
   final RxBool isEditMode = false.obs;
   var selectedDate = Rx<DateTime?>(null);
   var isGeneratingUsername = false.obs;
   var isUsernameValid = false.obs;
   final FocusNode fullNameFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+  final RxBool isUsernameModified = false.obs;
 
-  @override
-  @override
+
   @override
   void onInit() {
     super.onInit();
@@ -50,6 +48,7 @@ class EvaluatorRegistrationController extends GetxController
       evaluator.value = Get.arguments[RouteArguments.EVALUATOR];
       if (evaluator.value != null) {
         _populateFieldsWithEvaluatorData(evaluator.value!.evaluatorID!);
+        isUsernameValid.value = true;
       }
     } else {
       isEditMode.value = false;
@@ -65,6 +64,12 @@ class EvaluatorRegistrationController extends GetxController
           username.value = '';
           isUsernameValid.value = false;
         }
+      }
+    });
+
+    usernameController.addListener(() {
+      if (isEditMode.value) {
+        isUsernameModified.value = usernameController.text != originalUsername.value;
       }
     });
 
@@ -223,13 +228,19 @@ class EvaluatorRegistrationController extends GetxController
     // This pattern will match if the username ends with a number
     final numberSuffixPattern = RegExp(r'(\d+)$');
 
+    username.value = currentUsername;
+    usernameController.text = currentUsername; // Update the controller
+
+    if (isEditMode.isTrue && !isUsernameModified.value) {
+      isUsernameValid.value = true;
+      return;
+    }
+
     while (true) {
-      existingEvaluator =
-          await _repository.getEvaluatorByUsername(currentUsername);
+      existingEvaluator = await _repository.getEvaluatorByUsername(currentUsername);
       if (existingEvaluator != null) {
         // Check if the existing username ends with a number
-        final match =
-            numberSuffixPattern.firstMatch(existingEvaluator.username);
+        final match = numberSuffixPattern.firstMatch(existingEvaluator.username);
         if (match != null) {
           // If it does, parse the number, increment it, and append to the base username
           final number = int.parse(match.group(1)!);
@@ -246,8 +257,11 @@ class EvaluatorRegistrationController extends GetxController
 
     // Found a unique username, update the observable
     username.value = currentUsername;
+    usernameController.text = currentUsername; // Update the controller
     isUsernameValid.value = true;
   }
+
+
 
   void toggleEditMode() {
     isEditMode.value = !isEditMode.value;
@@ -266,16 +280,24 @@ class EvaluatorRegistrationController extends GetxController
   }
 
   Future<bool> updateEvaluator() async {
+    print("AIAIAI");
     var cpf = cpfOrNifController.text;
     var evaluatorId = evaluator.value!.evaluatorID!;
 
     // Check if CPF is registered to another evaluator
-    bool cpfExistsForOther =
-        await _repository.evaluatorCpfExistsForOther(evaluatorId, cpf);
+    bool cpfExistsForOther = await _repository.evaluatorCpfExistsForOther(evaluatorId, cpf);
     if (cpfExistsForOther) {
-      Get.snackbar(
-          'Error', 'This CPF is already registered to another evaluator.');
+      Get.snackbar(UiStrings.error, UiMessages.cpfAlreadyInUse);
       return false;
+    }
+
+    // Validate username if it has been modified
+    if (isEditMode.isTrue && isUsernameModified.value) {
+      await checkAndUpdateUsername(usernameController.text);
+      if (!isUsernameValid.value) {
+        print('Username is invalid'); // Debugging print statement
+        return false;
+      }
     }
 
     // Construct the EvaluatorEntity object with updated data
@@ -289,12 +311,11 @@ class EvaluatorRegistrationController extends GetxController
     );
 
     // Check if passwords should be updated
-    if (isPasswordChangeEnabled.value &&
-        newPasswordController.text.isNotEmpty) {
-      updatedEvaluator =
-          updatedEvaluator.copyWith(password: newPasswordController.text);
+    if (isPasswordChangeEnabled.value && newPasswordController.text.isNotEmpty) {
+      updatedEvaluator = updatedEvaluator.copyWith(password: newPasswordController.text);
     }
 
+    print(updatedEvaluator);
     // Attempt to update the evaluator in the database
     int updateCount = await _repository.updateEvaluator(updatedEvaluator);
     if (updateCount == 1) {
@@ -306,4 +327,6 @@ class EvaluatorRegistrationController extends GetxController
       return false;
     }
   }
+
+
 }

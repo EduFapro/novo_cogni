@@ -148,7 +148,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                           height: fieldContainerHeight,
                           width: fieldWidthRow2,
                           child: Obx(() => TextFormField(
-                            controller: TextEditingController(text: controller.username.value),
+                            controller: controller.usernameController,
                             decoration: InputDecoration(labelText: UiStrings.username),
                             readOnly: !(controller.isEditMode.value),
                           )),
@@ -289,7 +289,9 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                     '';
                               }
 
+                              print("hahah - 1");
                               if (controller.formKey.currentState!.validate()) {
+                                print("hahah - 2");
                                 // If all fields are valid, proceed
                                 if (controller.isUsernameValid.isTrue) {
                                   bool success;

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/constants/translation/ui_messages.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 
@@ -119,12 +120,12 @@ class TaskScreen extends GetView<TaskScreenController> {
             }
           }),
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              child: buildAccordion(context)),
-        )
+        // Align(
+        //   alignment: Alignment.centerRight,
+        //   child: SizedBox(
+        //       width: MediaQuery.of(context).size.width * 0.4,
+        //       child: buildAccordion(context)),
+        // )
       ],
     );
   }
@@ -215,7 +216,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                         confirmationMessage: "Realmente deseja pular?"),
                     CustomIconButton(
                         iconData: Icons.check,
-                        label: "Confirm",
+                        label: UiStrings.confirm,
                         onPressed: () => controller.onCheckButtonPressed(),
                         isActive: controller.isCheckButtonEnabled,
                         confirmationMessage:
@@ -261,7 +262,7 @@ class TaskScreen extends GetView<TaskScreenController> {
           CustomRecordingButton(controller: controller),
           CustomIconButton(
               iconData: Icons.check,
-              label: "Confirm",
+              label: UiStrings.confirm,
               onPressed: () => controller.onCheckButtonPressed(),
               isActive: controller.isCheckButtonEnabled,
               confirmationMessage: "Confirmar e ir para a próxima tarefa?",
@@ -333,7 +334,7 @@ class TaskScreen extends GetView<TaskScreenController> {
           CustomPlayTestingButton(controller: controller),
           CustomIconButton(
               iconData: Icons.check,
-              label: "Confirm",
+              label: UiStrings.confirm,
               onPressed: () => controller.onCheckButtonPressed(),
               isActive: controller.isCheckButtonEnabled,
               confirmationMessage: "Confirmar e ir para a próxima tarefa?",
@@ -394,7 +395,7 @@ class TaskScreen extends GetView<TaskScreenController> {
           CustomRecordingButton(controller: controller),
           CustomIconButton(
               iconData: Icons.check,
-              label: "Confirm",
+              label: UiStrings.confirm,
               onPressed: () => controller.onCheckButtonPressed(),
               isActive: controller.isCheckButtonEnabled,
               confirmationMessage: "Confirmar e ir para a próxima tarefa?",
@@ -436,12 +437,12 @@ class TaskScreen extends GetView<TaskScreenController> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'Time Up!',
+                UiStrings.timeUp,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
               Text(
-                'You have completed the time for this task.',
+                UiMessages.taskCompleted,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
@@ -612,7 +613,7 @@ class CustomPlayTestingButton extends StatelessWidget {
     return Obx(() {
       var isEnabled = controller.isTestingPlaybackButtonEnabled.value;
       var isPlaying = controller.isTestingPlaybackButtonPlaying.value;
-      var label = isPlaying ? "Stop" : "Play";
+      var label = isPlaying ? UiStrings.stop_audio : UiStrings.play_audio;
       var icon = isPlaying ? Icons.stop : Icons.play_arrow;
       var backgroundColor = isEnabled ? (isPlaying ? Colors.redAccent[100] : Colors.blue[100]) : Colors.grey[400];
       var iconColor = isEnabled ? (isPlaying ? Colors.red : Colors.blue) : Colors.grey;
@@ -695,7 +696,7 @@ class Player extends StatelessWidget {
                               ? null
                               : () => controller.togglePlay(),
                         ),
-                        Text('Play', style: TextStyle(fontSize: 16)),
+                        Text(UiStrings.play_audio, style: TextStyle(fontSize: 16)),
                         // Subtitle label
                       ],
                     ),
@@ -767,19 +768,19 @@ class CustomIconButton extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirmation"),
+          title: Text(UiStrings.confirmation),
           content: Text(confirmationMessage),
           actions: <Widget>[
             TextButton(
-              child: Text("No"),
+              child: Text(UiStrings.no),
               onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Yes"),
+              child: Text(UiStrings.yes),
               onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
+                Navigator.of(context).pop();
                 onPressed(); // Execute the provided onPressed action
 
                 displayMessage != null
@@ -820,7 +821,7 @@ class CustomRecordingButton extends StatelessWidget {
       var label = controller.isRecording.value ? "Parar" : "Gravar";
       var message = controller.isRecording.value
           ? "Gravação parada."
-          : "Iniciando Garavção";
+          : "Iniciando Gravação";
 
       return Column(
         mainAxisSize: MainAxisSize.min, // Use the minimum space available
@@ -925,7 +926,7 @@ class TaskCompletedWidget extends StatelessWidget {
             color: Colors.green,
           ),
           Text(
-            'All tasks completed!',
+            UiMessages.allTasksCompleted,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -935,7 +936,7 @@ class TaskCompletedWidget extends StatelessWidget {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: onNavigateBack,
-            child: Text('Go Back'),
+            child: Text(UiStrings.goBack),
           ),
         ],
       ),

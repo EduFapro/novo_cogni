@@ -11,6 +11,8 @@ import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
 import '../../constants/enums/module_enums.dart';
 import '../../constants/route_arguments.dart';
+import '../../constants/translation/ui_messages.dart';
+import '../../constants/translation/ui_strings.dart';
 import '../../routes.dart';
 import 'evaluation_service.dart';
 
@@ -124,8 +126,8 @@ class EvaluationController extends GetxController {
     } else {
       markModuleAsCompleted(moduleInstance.moduleInstanceID!);
       Get.snackbar(
-        'Module Completed',
-        'You have completed all tasks in this module.',
+        UiStrings.moduleCompleted,
+        UiMessages.allTasksCompletedInModule,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
