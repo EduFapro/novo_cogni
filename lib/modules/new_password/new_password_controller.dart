@@ -1,14 +1,12 @@
-import 'dart:ffi';
-
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/evaluation/evaluation_entity.dart';
+import 'package:novo_cogni/app/evaluator/evaluator_entity.dart';
 import 'package:novo_cogni/constants/route_arguments.dart';
 
 import '../../app/evaluator/evaluator_repository.dart';
 
 class NewPasswordController extends GetxController {
   late bool isFirstLogin;
-  late EvaluationEntity evaluator;
+  late EvaluatorEntity evaluator;
 
   final EvaluatorRepository evaluatorRepository;
 
@@ -23,7 +21,7 @@ class NewPasswordController extends GetxController {
   }
 
   Future<void> changePassword(String newPassword) async {
-    var fetchedEvaluator = await evaluatorRepository.getEvaluator(evaluator.evaluatorID);
+    var fetchedEvaluator = await evaluatorRepository.getEvaluator(evaluator.evaluatorID!);
     if (fetchedEvaluator != null) {
       fetchedEvaluator.password = newPassword;
       fetchedEvaluator.firstLogin = false;
