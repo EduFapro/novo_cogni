@@ -36,14 +36,15 @@ class EvaluatorRegistrationController extends GetxController
   final FocusNode fullNameFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
   final RxBool isUsernameModified = false.obs;
-
+  final RxBool saveAsAdmin = false.obs;
 
   @override
   void onInit() {
     super.onInit();
 
     if (Get.arguments != null &&
-        Get.arguments[RouteArguments.EVALUATOR] != null) {
+        Get.arguments[RouteArguments.EVALUATOR] != null &&
+        Get.arguments[RouteArguments.CONFIG_ADMIN] == null) {
       isEditMode.value = true;
       evaluator.value = Get.arguments[RouteArguments.EVALUATOR];
       if (evaluator.value != null) {
@@ -52,6 +53,13 @@ class EvaluatorRegistrationController extends GetxController
       }
     } else {
       isEditMode.value = false;
+    }
+
+    print(
+        "saveAsAdmin argument: ${Get.arguments[RouteArguments.CONFIG_ADMIN]}");
+    if (Get.arguments != null &&
+        Get.arguments[RouteArguments.CONFIG_ADMIN] != null) {
+      saveAsAdmin.value = Get.arguments[RouteArguments.CONFIG_ADMIN];
     }
 
     fullNameFocusNode.addListener(() {
@@ -69,7 +77,8 @@ class EvaluatorRegistrationController extends GetxController
 
     usernameController.addListener(() {
       if (isEditMode.value) {
-        isUsernameModified.value = usernameController.text != originalUsername.value;
+        isUsernameModified.value =
+            usernameController.text != originalUsername.value;
       }
     });
 
@@ -79,8 +88,6 @@ class EvaluatorRegistrationController extends GetxController
 
     print("Edit mode: ${isEditMode.value}");
   }
-
-
 
   Future<void> _populateFieldsWithEvaluatorData(int evaluatorId) async {
     try {
@@ -123,8 +130,7 @@ class EvaluatorRegistrationController extends GetxController
     // Check if CPF is already registered
     bool cpfExists = await _repository.evaluatorCpfExists(cpf);
     if (cpfExists) {
-      Get.snackbar(
-          UiStrings.error, UiMessages.cpfAlreadyInUse);
+      Get.snackbar(UiStrings.error, UiMessages.cpfAlreadyInUse);
       return false;
     }
 
@@ -147,6 +153,7 @@ class EvaluatorRegistrationController extends GetxController
     //   return false;
     // }
 
+    print("PRINTZERA ${saveAsAdmin.value}");
     EvaluatorEntity newEvaluator = EvaluatorEntity(
       name: firstName,
       surname: lastName,
@@ -157,6 +164,7 @@ class EvaluatorRegistrationController extends GetxController
       username: username.value,
       firstLogin: true,
       password: cpfOrNifController.text,
+      isAdmin: saveAsAdmin.value,
     );
 
     try {
@@ -184,7 +192,8 @@ class EvaluatorRegistrationController extends GetxController
   String generateUsername(String fullName, List<String> existingUsernames) {
     List<String> words = fullName.split(' ');
 
-    String baseUsername = "${words.first.toLowerCase()}_${words.last.toLowerCase()}";
+    String baseUsername =
+        "${words.first.toLowerCase()}_${words.last.toLowerCase()}";
     String username = baseUsername;
     int counter = 1;
 
@@ -195,7 +204,6 @@ class EvaluatorRegistrationController extends GetxController
 
     return username;
   }
-
 
   @override
   void onClose() {
@@ -238,10 +246,12 @@ class EvaluatorRegistrationController extends GetxController
     }
 
     while (true) {
-      existingEvaluator = await _repository.getEvaluatorByUsername(currentUsername);
+      existingEvaluator =
+          await _repository.getEvaluatorByUsername(currentUsername);
       if (existingEvaluator != null) {
         // Check if the existing username ends with a number
-        final match = numberSuffixPattern.firstMatch(existingEvaluator.username);
+        final match =
+            numberSuffixPattern.firstMatch(existingEvaluator.username);
         if (match != null) {
           // If it does, parse the number, increment it, and append to the base username
           final number = int.parse(match.group(1)!);
@@ -261,8 +271,6 @@ class EvaluatorRegistrationController extends GetxController
     usernameController.text = currentUsername; // Update the controller
     isUsernameValid.value = true;
   }
-
-
 
   void toggleEditMode() {
     isEditMode.value = !isEditMode.value;
@@ -286,7 +294,8 @@ class EvaluatorRegistrationController extends GetxController
     var evaluatorId = evaluator.value!.evaluatorID!;
 
     // Check if CPF is registered to another evaluator
-    bool cpfExistsForOther = await _repository.evaluatorCpfExistsForOther(evaluatorId, cpf);
+    bool cpfExistsForOther =
+        await _repository.evaluatorCpfExistsForOther(evaluatorId, cpf);
     if (cpfExistsForOther) {
       Get.snackbar(UiStrings.error, UiMessages.cpfAlreadyInUse);
       return false;
@@ -312,8 +321,10 @@ class EvaluatorRegistrationController extends GetxController
     );
 
     // Check if passwords should be updated
-    if (isPasswordChangeEnabled.value && newPasswordController.text.isNotEmpty) {
-      updatedEvaluator = updatedEvaluator.copyWith(password: newPasswordController.text);
+    if (isPasswordChangeEnabled.value &&
+        newPasswordController.text.isNotEmpty) {
+      updatedEvaluator =
+          updatedEvaluator.copyWith(password: newPasswordController.text);
     }
 
     print(updatedEvaluator);
@@ -328,6 +339,4 @@ class EvaluatorRegistrationController extends GetxController
       return false;
     }
   }
-
-
 }

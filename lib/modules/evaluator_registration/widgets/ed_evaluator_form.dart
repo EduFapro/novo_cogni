@@ -4,11 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
 import '../../../mixins/ValidationMixin.dart';
+import '../../../routes.dart';
 import '../evaluator_registration_controller.dart';
 
 class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
     with ValidationMixin {
-  EdEvaluatorForm({Key? key}) : super(key: key);
+  final pageTitle;
+
+  EdEvaluatorForm({Key? key, required this.pageTitle}) : super(key: key);
 
   final controller = Get.find<EvaluatorRegistrationController>();
 
@@ -31,7 +34,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              UiStrings.evaluatorRegistration,
+              pageTitle,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -148,13 +151,12 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                           height: fieldContainerHeight,
                           width: fieldWidthRow2,
                           child: Obx(() => TextFormField(
-                            controller: controller.usernameController,
-                            decoration: InputDecoration(labelText: UiStrings.username),
-                            readOnly: !(controller.isEditMode.value),
-                          )),
+                                controller: controller.usernameController,
+                                decoration: InputDecoration(
+                                    labelText: UiStrings.username),
+                                readOnly: !(controller.isEditMode.value),
+                              )),
                         ),
-
-
                       ],
                     ),
                     SizedBox(height: 16.0),
@@ -301,7 +303,11 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                       : success =
                                           await controller.createEvaluator();
                                   if (success) {
-                                    Get.back();
+                                    print("BELEZURA");
+                                    print(controller.saveAsAdmin.isTrue);
+                                    controller.saveAsAdmin.isTrue
+                                        ? Get.toNamed(AppRoutes.login)
+                                        : Get.back();
                                   } else {
                                     print(
                                         'Failed to create or update evaluator'); // Debugging print statement

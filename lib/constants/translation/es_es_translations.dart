@@ -29,6 +29,7 @@ final Map<String, String> esEsTranslations = {
   'evaluators_list': 'Lista de Evaluadores',
   'new_evaluator': 'Nuevo Evaluador',
   'evaluator_registration': 'Registro de Evaluador',
+  'admin_registration': 'Registro de Administrador',
   'specialty': 'Especialidad',
   'cpf': 'CPF',
   'evaluation': 'Evaluación',

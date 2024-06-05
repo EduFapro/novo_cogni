@@ -72,6 +72,7 @@ class UiStrings extends Translations {
   static String get newEvaluator => 'new_evaluator'.tr;
 
   static String get evaluatorRegistration => 'evaluator_registration'.tr;
+  static String get adminRegistration => 'admin_registration'.tr;
 
   static String get specialty => 'specialty'.tr;
 
