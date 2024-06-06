@@ -106,6 +106,10 @@ class HomeController extends GetxController {
 
     ever(userService.participants, (List<ParticipantEntity> newParticipants) {
       participants.assignAll(newParticipants);
+      // Populate participantDetails map
+      participantDetails.assignAll({
+        for (var participant in newParticipants) participant.participantID!: participant
+      });
       update();
     });
 
@@ -168,6 +172,10 @@ class HomeController extends GetxController {
 
     var updatedParticipants = await userService.fetchUpdatedParticipants();
     participants.assignAll(updatedParticipants);
+
+    participantDetails.assignAll({
+      for (var participant in updatedParticipants) participant.participantID!: participant
+    });
 
     isLoading.value = false;
     update(); // Notify listeners to rebuild the UI
@@ -254,16 +262,21 @@ class HomeController extends GetxController {
 
   void performSearch(String query) {
     if (query.isEmpty) {
+      print("query is empty");
+      print(participantDetails);
       resetFilters();
     } else {
+      print(query);
       // Apply search filter
       filteredEvaluations.assignAll(
         evaluations.where((evaluation) {
+          print("calma1");
+          print(evaluation);
+          print("calma2");
+
+          print(participantDetails);
           final participant = participantDetails[evaluation.participantID];
-          return participant?.fullName
-              .toLowerCase()
-              .contains(query.toLowerCase()) ??
-              false;
+          return participant?.name.toLowerCase().contains(query.toLowerCase()) ?? false;
         }).toList(),
       );
     }
