@@ -55,8 +55,7 @@ class EvaluatorRegistrationController extends GetxController
       isEditMode.value = false;
     }
 
-    print(
-        "saveAsAdmin argument: ${Get.arguments[RouteArguments.CONFIG_ADMIN]}");
+
     if (Get.arguments != null &&
         Get.arguments[RouteArguments.CONFIG_ADMIN] != null) {
       saveAsAdmin.value = Get.arguments[RouteArguments.CONFIG_ADMIN];

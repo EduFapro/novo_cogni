@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novo_cogni/app/evaluator/evaluator_repository.dart';
 import 'package:path/path.dart' as path;
 import 'package:novo_cogni/constants/enums/language_enums.dart';
 import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
@@ -27,6 +28,7 @@ class HomeController extends GetxController {
   var evaluations = RxList<EvaluationEntity>();
   var participants = RxList<ParticipantEntity>();
   var participantDetails = RxMap<int, ParticipantEntity>();
+  var evaluators = RxMap<int, EvaluatorEntity>();
 
   var numEvaluationsInProgress = RxInt(0);
   var numEvaluationsFinished = RxInt(0);
@@ -34,6 +36,7 @@ class HomeController extends GetxController {
 
   var moduleInstanceRepository = Get.find<ModuleInstanceRepository>();
   var taskInstanceRepository = Get.find<TaskInstanceRepository>();
+  var evaluatorRepo = Get.find<EvaluatorRepository>();
   var recordingRepository = Get.find<RecordingRepository>();
   var evalDataService = Get.find<EvalDataService>();
 
@@ -116,8 +119,22 @@ class HomeController extends GetxController {
 
     user.value = userService.user.value;
 
+
+    if (user.value?.isAdmin ?? false) {
+      await userService.fetchAllEvaluationsAndParticipants();
+    } else {
+      await userService.fetchUserData(user.value?.evaluatorID);
+    }
+    await fetchAllEvaluators();
     isLoading.value = false;
     update();
+  }
+
+  Future<void> fetchAllEvaluators() async {
+    var allEvaluators = await evaluatorRepo.getAllEvaluators();
+    allEvaluators.forEach((evaluator) {
+      evaluators[evaluator.evaluatorID!] = evaluator;
+    });
   }
 
   void updateLoadingState() {
@@ -243,15 +260,16 @@ class HomeController extends GetxController {
       filteredEvaluations.assignAll(
         evaluations.where((evaluation) {
           final participant = participantDetails[evaluation.participantID];
-          return participant?.name
-                  .toLowerCase()
-                  .contains(query.toLowerCase()) ??
+          return participant?.fullName
+              .toLowerCase()
+              .contains(query.toLowerCase()) ??
               false;
         }).toList(),
       );
     }
     update();
   }
+
 
   void setEvaluationInProgress(int evaluationId) {
     var index =
