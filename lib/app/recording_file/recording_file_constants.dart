@@ -1,6 +1,5 @@
-import 'package:novo_cogni/app/task_instance/task_instance_constants.dart';
-
 import '../database_constants.dart';
+import '../task_instance/task_instance_constants.dart';
 
 const ID_RECORDING = "recording_id";
 const ID_TASK_INSTANCE_FK = ID_TASK_INSTANCE;

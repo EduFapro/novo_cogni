@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novo_cogni/constants/enums/module_enums.dart';
+
+import '../../../constants/enums/module_enums.dart';
 
 class ModuleButton extends StatelessWidget {
   final VoidCallback? onPressed;

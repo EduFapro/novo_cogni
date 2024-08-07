@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
 import '../../../constants/route_arguments.dart';
+import '../../../constants/translation/ui_strings.dart';
 import '../../../routes.dart';
 import '../evaluators_controller.dart';
 import '../../widgets/ed_input_text.dart';

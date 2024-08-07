@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/task/task_entity.dart';
 import '../../../constants/enums/task_enums.dart';
+import '../task/task_entity.dart';
 import 'task_instance_constants.dart';
 import '../task/task_repository.dart';
 

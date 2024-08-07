@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/user/user_profile_screen_controller.dart';
 
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/module_instance/module_instance_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
+import 'user_profile_screen_controller.dart';
 
 class UserProfileScreen extends GetView<UserProfileScreenController> {
   const UserProfileScreen({Key? key}) : super(key: key);

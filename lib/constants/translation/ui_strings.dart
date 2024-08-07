@@ -1,17 +1,17 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/translation/pt_br_translations.dart';
 
 import 'en_us_translations.dart';
 import 'es_es_translations.dart';
+import 'pt_br_translations.dart';
 
 class UiStrings extends Translations {
 
   @override
   Map<String, Map<String, String>> get keys => {
-        'en_US': enUsTranslations,
-        'pt_BR': ptBrTranslations,
-        'es_ES': esEsTranslations
-      };
+    'en_US': enUsTranslations,
+    'pt_BR': ptBrTranslations,
+    'es_ES': esEsTranslations
+  };
 
   static String get hello => 'hello'.tr;
 
@@ -72,6 +72,8 @@ class UiStrings extends Translations {
   static String get newEvaluator => 'new_evaluator'.tr;
 
   static String get evaluatorRegistration => 'evaluator_registration'.tr;
+
+  static String get adminRegistration => 'admin_registration'.tr;
 
   static String get specialty => 'specialty'.tr;
 

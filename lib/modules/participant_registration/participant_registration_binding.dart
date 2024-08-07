@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/participant_registration/participant_registration_controller.dart';
-import 'package:novo_cogni/modules/participant_registration/participant_registration_service.dart';
 
 import '../../app/participant/participant_repository.dart';
 import '../../app/task_instance/task_instance_repository.dart';
@@ -8,6 +6,8 @@ import '../../app/task/task_repository.dart';
 import '../../app/evaluation/evaluation_repository.dart';
 import '../../app/module/module_repository.dart';
 import '../../app/module_instance/module_instance_repository.dart';
+import 'participant_registration_controller.dart';
+import 'participant_registration_service.dart';
 
 class ParticipantRegistrationBinding extends Bindings {
   @override

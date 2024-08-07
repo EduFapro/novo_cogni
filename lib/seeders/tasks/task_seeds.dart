@@ -606,14 +606,14 @@ TaskEntity hopefulAboutFutureTask = TaskEntity(
 );
 // depressionSymptoms - 9
 TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
-    taskID: feelingLifeIsWorthLivingTaskId,
-    title: feelingLifeIsWorthLivingTaskTitle,
-    snakeCaseBriefTranscript: feelingLifeIsWorthLivingTaskSnakeCaseTranscript,
-    moduleID: depressionSymptomsId,
-    taskMode: TaskMode.record,
-    timeForCompletion: 40,
-    mayRepeatPrompt: true,
-    position: 9,
+  taskID: feelingLifeIsWorthLivingTaskId,
+  title: feelingLifeIsWorthLivingTaskTitle,
+  snakeCaseBriefTranscript: feelingLifeIsWorthLivingTaskSnakeCaseTranscript,
+  moduleID: depressionSymptomsId,
+  taskMode: TaskMode.record,
+  timeForCompletion: 40,
+  mayRepeatPrompt: true,
+  position: 9,
 );
 // depressionSymptoms - 10
 TaskEntity thankingForParticipationTask = TaskEntity(
@@ -637,7 +637,6 @@ TaskEntity pressaInimigaTask = TaskEntity(
   snakeCaseBriefTranscript: pressaInimigaTaskSnakeCaseTranscript,
   moduleID: testsModuleId,
   taskMode: TaskMode.play,
-  testOnly: true,
   position: 1,
 );
 
@@ -647,6 +646,5 @@ TaskEntity conteAte5Task = TaskEntity(
     title: conteAte5TaskTitle,
     snakeCaseBriefTranscript: conteAte5TaskSnakeCaseTranscript,
     taskMode: TaskMode.record,
-    testOnly: true,
     position: 2);
 

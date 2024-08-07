@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/user/user_profile_screen_controller.dart';
+
+import 'user_profile_screen_controller.dart';
 
 class UserProfileScreenBinding extends Bindings {
   @override

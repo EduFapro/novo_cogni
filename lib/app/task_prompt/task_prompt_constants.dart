@@ -1,6 +1,5 @@
-import 'package:novo_cogni/app/task/task_constants.dart';
-
 import '../database_constants.dart';
+import '../task/task_constants.dart';
 
 const ID_TASK_PROMPT = "prompt_id";
 const ID_TASK_FK = ID_TASK;

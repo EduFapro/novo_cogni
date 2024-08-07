@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
 
+import '../../../constants/translation/ui_strings.dart';
 import '../../../mixins/ValidationMixin.dart';
+import '../../../routes.dart';
 import '../evaluator_registration_controller.dart';
 
 class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
     with ValidationMixin {
-  EdEvaluatorForm({Key? key}) : super(key: key);
+  final pageTitle;
+
+  EdEvaluatorForm({Key? key, required this.pageTitle}) : super(key: key);
 
   final controller = Get.find<EvaluatorRegistrationController>();
 
@@ -31,7 +34,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              UiStrings.evaluatorRegistration,
+              pageTitle,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -68,11 +71,11 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                               labelText: UiStrings.dateOfBirth,
                               errorBorder: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.red, width: 1.0),
+                                BorderSide(color: Colors.red, width: 1.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.red, width: 2.0),
+                                BorderSide(color: Colors.red, width: 2.0),
                               ),
                             ),
                             // readOnly: !(controller.isEditMode.value),
@@ -149,122 +152,121 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                           width: fieldWidthRow2,
                           child: Obx(() => TextFormField(
                             controller: controller.usernameController,
-                            decoration: InputDecoration(labelText: UiStrings.username),
+                            decoration: InputDecoration(
+                                labelText: UiStrings.username),
                             readOnly: !(controller.isEditMode.value),
                           )),
                         ),
-
-
                       ],
                     ),
                     SizedBox(height: 16.0),
                     Obx(() => Row(
-                          children: [
-                            if (controller.isEditMode.isTrue)
-                              SizedBox(
-                                width: fieldWidthRow2,
-                                // Use the same width as the password fields
-                                child: SwitchListTile(
-                                  title: Text(UiStrings.modifyPassword),
-                                  value:
-                                      controller.isPasswordChangeEnabled.value,
-                                  onChanged: (bool value) {
-                                    controller.isPasswordChangeEnabled.value =
-                                        value;
-                                    // If the switch is turned off, clear the password fields and remove any validation errors
-                                    if (!value) {
-                                      controller.newPasswordController.clear();
-                                      controller.confirmNewPasswordController
-                                          .clear();
-                                      controller.formKey.currentState
-                                          ?.validate();
-                                    }
-                                  },
-                                  // activeColor: Theme.of(context).accentColor,
-                                ),
-                              ),
-                            SizedBox(width: spacingWidth),
-                            // Maintain consistent spacing if necessary
-                            // Add other widgets here if necessary
-                          ],
-                        )),
+                      children: [
+                        if (controller.isEditMode.isTrue)
+                          SizedBox(
+                            width: fieldWidthRow2,
+                            // Use the same width as the password fields
+                            child: SwitchListTile(
+                              title: Text(UiStrings.modifyPassword),
+                              value:
+                              controller.isPasswordChangeEnabled.value,
+                              onChanged: (bool value) {
+                                controller.isPasswordChangeEnabled.value =
+                                    value;
+                                // If the switch is turned off, clear the password fields and remove any validation errors
+                                if (!value) {
+                                  controller.newPasswordController.clear();
+                                  controller.confirmNewPasswordController
+                                      .clear();
+                                  controller.formKey.currentState
+                                      ?.validate();
+                                }
+                              },
+                              // activeColor: Theme.of(context).accentColor,
+                            ),
+                          ),
+                        SizedBox(width: spacingWidth),
+                        // Maintain consistent spacing if necessary
+                        // Add other widgets here if necessary
+                      ],
+                    )),
                     if (controller.isEditMode.isTrue)
                       Obx(() => Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            // Use a Row to align the fields horizontally
                             children: [
-                              Row(
-                                // Use a Row to align the fields horizontally
-                                children: [
-                                  SizedBox(
-                                    height: fieldContainerHeight,
-                                    width: fieldWidthRow2,
-                                    // Use the same width as the second row fields
-                                    child: TextFormField(
-                                      controller:
-                                          controller.newPasswordController,
-                                      obscureText: true,
-                                      enabled: controller
-                                          .isPasswordChangeEnabled.value,
-                                      decoration: InputDecoration(
-                                          labelText: "Nova Senha"),
-                                      validator: (value) {
-                                        // Only validate if the password change is enabled
-                                        if (controller
-                                            .isPasswordChangeEnabled.value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'New password is required';
-                                          }
-                                          // You can add more validation for password strength here if needed
-                                        }
-                                        return null; // If password change is not enabled, don't validate
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(width: spacingWidth),
-                                  // Consistent spacing
-                                  // ... Include more widgets here if needed
-                                ],
+                              SizedBox(
+                                height: fieldContainerHeight,
+                                width: fieldWidthRow2,
+                                // Use the same width as the second row fields
+                                child: TextFormField(
+                                  controller:
+                                  controller.newPasswordController,
+                                  obscureText: true,
+                                  enabled: controller
+                                      .isPasswordChangeEnabled.value,
+                                  decoration: InputDecoration(
+                                      labelText: "Nova Senha"),
+                                  validator: (value) {
+                                    // Only validate if the password change is enabled
+                                    if (controller
+                                        .isPasswordChangeEnabled.value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'New password is required';
+                                      }
+                                      // You can add more validation for password strength here if needed
+                                    }
+                                    return null; // If password change is not enabled, don't validate
+                                  },
+                                ),
                               ),
-                              SizedBox(height: 16.0),
-                              Row(
-                                // Again, use a Row to align the fields horizontally
-                                children: [
-                                  SizedBox(
-                                    height: fieldContainerHeight,
-                                    width: fieldWidthRow2,
-                                    // Use the same width as the second row fields
-                                    child: TextFormField(
-                                      controller: controller
-                                          .confirmNewPasswordController,
-                                      obscureText: true,
-                                      enabled: controller
-                                          .isPasswordChangeEnabled.value,
-                                      decoration: InputDecoration(
-                                          labelText: "Confirme Senha"),
-                                      validator: (value) {
-                                        // Only validate if the password change is enabled
-                                        if (controller
-                                            .isPasswordChangeEnabled.value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Confirm password is required';
-                                          }
-                                          if (value !=
-                                              controller
-                                                  .newPasswordController.text) {
-                                            return 'Passwords do not match';
-                                          }
-                                        }
-                                        return null; // If password change is not enabled, don't validate
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(width: spacingWidth),
-                                  // Consistent spacing
-                                  // ... Include more widgets here if needed
-                                ],
-                              ),
+                              SizedBox(width: spacingWidth),
+                              // Consistent spacing
+                              // ... Include more widgets here if needed
                             ],
-                          )),
+                          ),
+                          SizedBox(height: 16.0),
+                          Row(
+                            // Again, use a Row to align the fields horizontally
+                            children: [
+                              SizedBox(
+                                height: fieldContainerHeight,
+                                width: fieldWidthRow2,
+                                // Use the same width as the second row fields
+                                child: TextFormField(
+                                  controller: controller
+                                      .confirmNewPasswordController,
+                                  obscureText: true,
+                                  enabled: controller
+                                      .isPasswordChangeEnabled.value,
+                                  decoration: InputDecoration(
+                                      labelText: "Confirme Senha"),
+                                  validator: (value) {
+                                    // Only validate if the password change is enabled
+                                    if (controller
+                                        .isPasswordChangeEnabled.value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Confirm password is required';
+                                      }
+                                      if (value !=
+                                          controller
+                                              .newPasswordController.text) {
+                                        return 'Passwords do not match';
+                                      }
+                                    }
+                                    return null; // If password change is not enabled, don't validate
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: spacingWidth),
+                              // Consistent spacing
+                              // ... Include more widgets here if needed
+                            ],
+                          ),
+                        ],
+                      )),
                     SizedBox(height: 16.0),
                     Align(
                       alignment: Alignment.bottomRight,
@@ -286,7 +288,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                   !controller.isPasswordChangeEnabled.value) {
                                 controller.newPasswordController.text = '';
                                 controller.confirmNewPasswordController.text =
-                                    '';
+                                '';
                               }
 
                               print("hahah - 1");
@@ -297,11 +299,15 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                   bool success;
                                   controller.isEditMode.isTrue
                                       ? success =
-                                          await controller.updateEvaluator()
+                                  await controller.updateEvaluator()
                                       : success =
-                                          await controller.createEvaluator();
+                                  await controller.createEvaluator();
                                   if (success) {
-                                    Get.back();
+                                    print("BELEZURA");
+                                    print(controller.saveAsAdmin.isTrue);
+                                    controller.saveAsAdmin.isTrue
+                                        ? Get.toNamed(AppRoutes.login)
+                                        : Get.back();
                                   } else {
                                     print(
                                         'Failed to create or update evaluator'); // Debugging print statement

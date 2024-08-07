@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
 
 import '../../../app/module_instance/module_instance_entity.dart';
 import '../../../app/task_instance/task_instance_entity.dart';
+import '../evaluation_controller.dart';
 import 'ed_module_button.dart';
 
 class EdModuleInstanceItem extends GetView<EvaluationController> {

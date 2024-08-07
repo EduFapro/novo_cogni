@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
-import 'package:novo_cogni/modules/home/home_controller.dart';
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/module/module_entity.dart';
@@ -9,11 +7,13 @@ import '../../app/module_instance/module_instance_entity.dart';
 import '../../app/participant/participant_entity.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task_instance/task_instance_entity.dart';
+import '../../constants/enums/evaluation_enums.dart';
 import '../../constants/enums/module_enums.dart';
 import '../../constants/route_arguments.dart';
 import '../../constants/translation/ui_messages.dart';
 import '../../constants/translation/ui_strings.dart';
 import '../../routes.dart';
+import '../home/home_controller.dart';
 import 'evaluation_service.dart';
 
 class EvaluationController extends GetxController {
@@ -74,7 +74,7 @@ class EvaluationController extends GetxController {
   }
 
   Future<List<ModuleEntity>?> getModulesByEvaluationId(
-          int evaluationId) async =>
+      int evaluationId) async =>
       await evaluationService.getModulesByEvaluationId(evaluationId);
 
   Future<void> fetchTaskInstancesForModuleInstances(
@@ -189,13 +189,10 @@ class EvaluationController extends GetxController {
   }
 
   void markModuleAsCompleted(int moduleInstanceId) {
-    moduleCompletionStatus[moduleInstanceId] = true; // This sets the status to completed
-    // Assuming the updateModuleInstanceInList updates the actual list of module instances
+    moduleCompletionStatus[moduleInstanceId] = true;
     updateModuleInstanceInList(moduleInstanceId, ModuleStatus.completed);
-    // Since we've updated the status, call update to trigger the UI refresh
-    update(); // This is crucial to ensure UI is updated
+    update(); // Update the UI after marking the module as completed
   }
-
 
   bool isModuleCompleted(int moduleId) {
     return moduleCompletionStatus[moduleId] ?? false;
@@ -228,27 +225,4 @@ class EvaluationController extends GetxController {
 
 
   }
-
-  //
-  // void checkAndFinalizeEvaluation() {
-  //   print("HOIHOHO");
-  //   bool allModulesCompleted = modulesInstanceList.value?.every((module) {
-  //         print(module);
-  //         print(module.status);
-  //         return module.status == ModuleStatus.completed;
-  //       }) ??
-  //       false;
-  //   print("ASDSAD");
-  //   if (allModulesCompleted) {
-  //     var evalId = evaluation.value?.evaluationID;
-  //     if (evalId != null) {
-  //       evaluationService.setEvaluationAsCompleted(evalId).then((_) {
-  //         evaluation.value?.status = EvaluationStatus.completed;
-  //         evaluation.refresh();
-  //         Get.find<HomeController>().refreshEvaluations();
-  //         Get.find<HomeController>().refreshEvaluationCounts();
-  //       });
-  //     }
-  //   }
-  // }
 }

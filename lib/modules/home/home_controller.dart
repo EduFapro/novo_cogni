@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
-import 'package:novo_cogni/constants/enums/language_enums.dart';
-import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
-import 'package:novo_cogni/app/module_instance/module_instance_entity.dart';
-import 'package:novo_cogni/app/module_instance/module_instance_repository.dart';
-import 'package:novo_cogni/app/participant/participant_entity.dart';
-import 'package:novo_cogni/app/evaluation/evaluation_entity.dart';
-import 'package:novo_cogni/app/evaluator/evaluator_entity.dart';
-import 'package:novo_cogni/app/recording_file/recording_file_entity.dart';
-import 'package:novo_cogni/app/task_instance/task_instance_entity.dart';
-import 'package:novo_cogni/app/task_instance/task_instance_repository.dart';
-import 'package:novo_cogni/file_management/evaluation_download.dart';
-import 'package:novo_cogni/file_management/file_encryptor.dart';
 
-import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
+import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/evaluator/evaluator_entity.dart';
+import '../../app/evaluator/evaluator_repository.dart';
+import '../../app/module_instance/module_instance_entity.dart';
+import '../../app/module_instance/module_instance_repository.dart';
+import '../../app/participant/participant_entity.dart';
+import '../../app/recording_file/recording_file_entity.dart';
+import '../../app/recording_file/recording_file_repository.dart';
+import '../../app/task_instance/task_instance_entity.dart';
+import '../../app/task_instance/task_instance_repository.dart';
+import '../../constants/enums/evaluation_enums.dart';
+import '../../constants/enums/language_enums.dart';
+import '../../file_management/evaluation_download.dart';
+import '../../file_management/file_encryptor.dart';
 import '../../global/user_service.dart';
 import '../eval_data/eval_data_service.dart';
 
@@ -27,6 +28,7 @@ class HomeController extends GetxController {
   var evaluations = RxList<EvaluationEntity>();
   var participants = RxList<ParticipantEntity>();
   var participantDetails = RxMap<int, ParticipantEntity>();
+  var evaluators = RxMap<int, EvaluatorEntity>();
 
   var numEvaluationsInProgress = RxInt(0);
   var numEvaluationsFinished = RxInt(0);
@@ -34,6 +36,7 @@ class HomeController extends GetxController {
 
   var moduleInstanceRepository = Get.find<ModuleInstanceRepository>();
   var taskInstanceRepository = Get.find<TaskInstanceRepository>();
+  var evaluatorRepo = Get.find<EvaluatorRepository>();
   var recordingRepository = Get.find<RecordingRepository>();
   var evalDataService = Get.find<EvalDataService>();
 
@@ -47,7 +50,6 @@ class HomeController extends GetxController {
     print("HomeController initialized");
     setupListeners();
     fetchData().then((_) {
-
       filteredEvaluations.assignAll(evaluations);
     });
     numEvaluationsTotal.value = evaluations.length;
@@ -69,13 +71,14 @@ class HomeController extends GetxController {
     super.onReady();
     refreshEvaluations();
   }
-  var hoverStates = Map<int, RxBool>().obs;
 
+  var hoverStates = Map<int, RxBool>().obs;
 
   // Function to set hover state
 
   void setHoverState(int evaluationID, IconData iconData, bool isHovering) {
-    int uniqueKey = evaluationID.hashCode ^ iconData.hashCode; // Unique identifier for each icon
+    int uniqueKey = evaluationID.hashCode ^
+        iconData.hashCode; // Unique identifier for each icon
     hoverStates[uniqueKey] = isHovering.obs; // Use .obs to make it observable
   }
 
@@ -103,6 +106,11 @@ class HomeController extends GetxController {
 
     ever(userService.participants, (List<ParticipantEntity> newParticipants) {
       participants.assignAll(newParticipants);
+      // Populate participantDetails map
+      participantDetails.assignAll({
+        for (var participant in newParticipants)
+          participant.participantID!: participant
+      });
       update();
     });
 
@@ -116,8 +124,21 @@ class HomeController extends GetxController {
 
     user.value = userService.user.value;
 
+    if (user.value?.isAdmin ?? false) {
+      await userService.fetchAllEvaluationsAndParticipants();
+    } else {
+      await userService.fetchUserData(user.value?.evaluatorID);
+    }
+    await fetchAllEvaluators();
     isLoading.value = false;
     update();
+  }
+
+  Future<void> fetchAllEvaluators() async {
+    var allEvaluators = await evaluatorRepo.getAllEvaluators();
+    allEvaluators.forEach((evaluator) {
+      evaluators[evaluator.evaluatorID!] = evaluator;
+    });
   }
 
   void updateLoadingState() {
@@ -152,12 +173,25 @@ class HomeController extends GetxController {
     var updatedParticipants = await userService.fetchUpdatedParticipants();
     participants.assignAll(updatedParticipants);
 
+    participantDetails.assignAll({
+      for (var participant in updatedParticipants)
+        participant.participantID!: participant
+    });
+
     isLoading.value = false;
     update(); // Notify listeners to rebuild the UI
   }
 
   Future<void> handleDownload(
       int evaluationId, String evaluatorId, String participantId) async {
+    Get.snackbar(
+      "Download",
+      "Download sendo realizado...",
+      snackPosition: SnackPosition.TOP,
+      duration: Duration(seconds: 2),
+      backgroundColor: Colors.lightBlueAccent,
+    );
+
     // 1. Fetch all task instances related to the evaluation
     List<TaskInstanceEntity> taskInstances =
         await fetchTaskInstancesForEvaluation(evaluationId);
@@ -237,11 +271,19 @@ class HomeController extends GetxController {
 
   void performSearch(String query) {
     if (query.isEmpty) {
+      print("query is empty");
+      print(participantDetails);
       resetFilters();
     } else {
+      print(query);
       // Apply search filter
       filteredEvaluations.assignAll(
         evaluations.where((evaluation) {
+          print("calma1");
+          print(evaluation);
+          print("calma2");
+
+          print(participantDetails);
           final participant = participantDetails[evaluation.participantID];
           return participant?.name
                   .toLowerCase()
@@ -287,18 +329,33 @@ class HomeController extends GetxController {
   }
 
   Future<void> deleteEvaluation({required EvaluationEntity evaluation}) async {
-    isLoading(true);
-    var deleteResult = await userService.deleteEvaluation(evaluation);
+    bool confirmed = await Get.dialog(
+      AlertDialog(
+        title: Text('Confirmação Deletar'),
+        content: Text('Tem certeza de que deseja deletar esta avaliação?'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(result: false), // Cancel
+            child: Text('CANCELAR'),
+          ),
+          TextButton(
+            onPressed: () => Get.back(result: true), // Confirm
+            child: Text('Deletar'),
+          ),
+        ],
+      ),
+    );
 
-    if (deleteResult != null) {
-      evaluations.remove(evaluation);
+    if (confirmed) {
+      isLoading(true);
+      var deleteResult = await userService.deleteEvaluation(evaluation);
 
-      refreshEvaluations();
-    } else {
+      if (deleteResult != null) {
+        evaluations.remove(evaluation);
+        refreshEvaluations();
+      }
 
+      isLoading(false); // Hide loading indicator
     }
-
-    isLoading(false); // Hide loading indicator
   }
-
 }

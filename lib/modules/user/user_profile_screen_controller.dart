@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/evaluator/evaluator_entity.dart';
-import 'package:novo_cogni/global/user_service.dart';
 
 import '../../app/evaluation/evaluation_entity.dart';
+import '../../app/evaluator/evaluator_entity.dart';
 import '../../app/module_instance/module_instance_entity.dart';
 import '../../global/typedefs.dart';
+import '../../global/user_service.dart';
 
 class UserProfileScreenController extends GetxController {
   final UserService userService = Get.find<UserService>();

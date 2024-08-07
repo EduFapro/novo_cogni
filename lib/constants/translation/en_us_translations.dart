@@ -29,6 +29,7 @@ final Map<String, String> enUsTranslations = {
   'evaluators_list': 'Evaluators List',
   'new_evaluator': 'New Evaluator',
   'evaluator_registration': 'Evaluator Registration',
+  'admin_registration': 'Admin Registration',
   'specialty': 'Specialty',
   'cpf': 'CPF',
   'evaluation': 'Evaluation',
@@ -78,4 +79,7 @@ final Map<String, String> enUsTranslations = {
   'task_completed' : 'The time for completing this task is over.',
   'all_tasks_completed': 'All Tasks Completed!',
   'all_tasks_completed_in_module': 'You have completed all tasks in this module.',
+  'invalid_username_or_password': "Invalid username or password",
+  'user_not_found': "User not found. Please check your username and try again.",
+  'login_failed': "Login failed, please try again later"
 };

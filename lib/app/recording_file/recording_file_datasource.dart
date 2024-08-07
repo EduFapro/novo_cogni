@@ -1,9 +1,9 @@
-import 'package:novo_cogni/app/recording_file/recording_file_constants.dart';
-import 'package:novo_cogni/app/recording_file/recording_file_entity.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../database_constants.dart';
 import '../database_helper.dart';
+import 'recording_file_constants.dart';
+import 'recording_file_entity.dart';
 
 class RecordingLocalDataSource {
   static final RecordingLocalDataSource _instance =

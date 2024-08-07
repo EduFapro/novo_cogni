@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
-import 'package:novo_cogni/constants/route_arguments.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
+import '../../../constants/enums/evaluation_enums.dart';
+import '../../../constants/route_arguments.dart';
+import '../../../constants/translation/ui_strings.dart';
 import '../../../routes.dart';
 import '../../widgets/ed_input_text.dart';
 import '../home_controller.dart';
@@ -105,7 +105,7 @@ class EdEvaluationHistory extends GetView<HomeController> {
           1: FlexColumnWidth(2),
           2: FlexColumnWidth(2),
           3: FlexColumnWidth(2),
-          4: FixedColumnWidth(200),
+          4: FixedColumnWidth(300),
         },
         children: [
           TableRow(
@@ -113,28 +113,33 @@ class EdEvaluationHistory extends GetView<HomeController> {
               TableCell(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(UiStrings.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(UiStrings.name,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),
               TableCell(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(UiStrings.status, style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(UiStrings.status,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),
               TableCell(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(UiStrings.evaluator, style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(UiStrings.evaluator,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),
               TableCell(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(UiStrings.date, style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(UiStrings.date,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),
-              TableCell(child: SizedBox.shrink()), // Empty cell for action icons
+              TableCell(child: SizedBox.shrink()),
+              // Empty cell for action icons
             ],
           ),
           TableRow(
@@ -146,59 +151,87 @@ class EdEvaluationHistory extends GetView<HomeController> {
               TableCell(child: Divider()),
             ],
           ),
-          ...homeController.filteredEvaluations.map((evaluation) {
-            final participant = controller.participants.firstWhere(
-                  (element) => element.participantID == evaluation.participantID,
+          ...homeController.filteredEvaluations.asMap().entries.map((entry) {
+            final index = entry.key;
+            final evaluation = entry.value;
+            final participant = homeController.participants.firstWhere(
+              (element) => element.participantID == evaluation.participantID,
             );
+            final evaluator = homeController.evaluators[evaluation.evaluatorID];
+            final Color backgroundColor = index % 2 == 0
+                ? Colors.grey.shade200
+                : Colors.blueGrey.shade100;
 
             return TableRow(
+              decoration: BoxDecoration(
+                color: backgroundColor,
+              ),
               children: [
                 TableCell(
-                  child: Padding(
+                  child: Container(
+                    height: 60,
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(participant.fullName ?? 'Unknown'),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(participant.fullName ?? 'Unknown')),
                   ),
                 ),
                 TableCell(
-                  child: Padding(
+                  child: Container(
+                    height: 60,
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(evaluation.status.description),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(evaluation.status.description)),
                   ),
                 ),
                 TableCell(
-                  child: Padding(
+                  child: Container(
+                    height: 60,
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(homeController.user.value?.name ?? 'Unknown'),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(evaluator!.fullName ?? 'Unknown')),
                   ),
                 ),
                 TableCell(
-                  child: Padding(
+                  child: Container(
+                    height: 60,
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(dateFormat.format(evaluation.evaluationDate!)),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            dateFormat.format(evaluation.evaluationDate!))),
                   ),
                 ),
                 TableCell(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        iconWithHoverEffect(evaluation.evaluationID!, Icons.create_rounded, () {
+                        iconWithHoverEffect(
+                            evaluation.evaluationID!, Icons.create_rounded, () {
                           Get.toNamed(
                             AppRoutes.evaluation,
                             arguments: {
-                              RouteArguments.EVALUATOR: controller.user.value!,
+                              RouteArguments.EVALUATOR:
+                                  homeController.user.value!,
                               RouteArguments.PARTICIPANT: participant,
                               RouteArguments.EVALUATION: evaluation,
                             },
                           );
                         }, "Abrir"),
                         SizedBox(width: 8),
-                        iconWithHoverEffect(evaluation.evaluationID!, Icons.delete, () {
-                          controller.deleteEvaluation(evaluation: evaluation);
+                        iconWithHoverEffect(
+                            evaluation.evaluationID!, Icons.delete, () {
+                          homeController.deleteEvaluation(
+                              evaluation: evaluation);
                         }, "Deletar"),
                         SizedBox(width: 8),
-                        iconWithHoverEffect(evaluation.evaluationID!, Icons.download_rounded, () {
+                        iconWithHoverEffect(
+                            evaluation.evaluationID!, Icons.download_rounded,
+                            () {
                           homeController.handleDownload(
                             evaluation.evaluationID!,
                             evaluation.evaluatorID.toString(),
@@ -218,7 +251,6 @@ class EdEvaluationHistory extends GetView<HomeController> {
     );
   }
 
-
   Widget buildIconLabel(
       BuildContext context, IconData icon, String label, int count) {
     return Padding(
@@ -227,7 +259,9 @@ class EdEvaluationHistory extends GetView<HomeController> {
         children: <Widget>[
           Icon(icon, size: 24.0),
           SizedBox(width: 8.0),
-          Text('$label: $count',),
+          Text(
+            '$label: $count',
+          ),
         ],
       ),
     );
@@ -239,20 +273,32 @@ class EdEvaluationHistory extends GetView<HomeController> {
 
     return Obx(() {
       bool isHovering = controller.hoverStates[uniqueKey]?.value ?? false;
-      return MouseRegion(
-        onEnter: (_) => controller.setHoverState(evaluationID, iconData, true),
-        onExit: (_) => controller.setHoverState(evaluationID, iconData, false),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: onTap,
-              child: Icon(
-                iconData,
-                color: isHovering ? Colors.blue : Colors.grey,
-              ),
+      return GestureDetector(
+        onTap: onTap,
+        child: MouseRegion(
+          onEnter: (_) =>
+              controller.setHoverState(evaluationID, iconData, true),
+          onExit: (_) =>
+              controller.setHoverState(evaluationID, iconData, false),
+          child: Container(
+            width: 80,
+            decoration: BoxDecoration(
+              color: isHovering ? Colors.lightBlueAccent : Colors.grey,
+              borderRadius: BorderRadius.circular(8),
             ),
-            Text(label, style: TextStyle(fontSize: 14),),
-          ],
+            child: Column(
+              children: [
+                Icon(
+                  iconData,
+                  color: isHovering ? Colors.black45 : Colors.white70,
+                ),
+                Text(
+                  label,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+          ),
         ),
       );
     });

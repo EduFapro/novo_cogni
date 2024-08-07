@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novo_cogni/constants/enums/evaluation_enums.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/evaluation/widgets/ed_module_instance_item.dart';
 
+import '../../constants/translation/ui_strings.dart';
 import 'evaluation_controller.dart';
+import 'widgets/ed_module_instance_item.dart';
 
 class EvaluationScreen extends GetView<EvaluationController> {
   const EvaluationScreen({Key? key}) : super(key: key);

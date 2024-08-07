@@ -1,5 +1,6 @@
-import 'package:novo_cogni/app/task/task_local_datasource.dart';
-import 'package:novo_cogni/app/task/task_entity.dart';
+
+import 'task_entity.dart';
+import 'task_local_datasource.dart';
 
 class TaskRepository {
   final TaskLocalDataSource _localDataSource;

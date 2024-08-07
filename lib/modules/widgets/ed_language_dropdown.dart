@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants/enums/language_enums.dart';
-import 'package:novo_cogni/global/language_controller.dart';
+import '../../global/language_controller.dart';
 
 class EdLanguageDropdown extends GetView<LanguageController> {
   @override

@@ -1,5 +1,4 @@
-import 'package:novo_cogni/app/task/task_entity.dart';
-
+import '../task/task_entity.dart';
 import 'module_constants.dart';
 
 class ModuleEntity {

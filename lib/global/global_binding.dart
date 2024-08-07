@@ -1,7 +1,5 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/file_management/file_encryptor.dart';
-import 'package:novo_cogni/global/user_service.dart';
 import '../app/participant/participant_local_datasource.dart';
 import '../app/recording_file/recording_file_datasource.dart';
 import '../app/task_instance/task_instance_local_datasource.dart';
@@ -20,9 +18,12 @@ import '../app/module/module_local_datasource.dart';
 import '../app/module/module_repository.dart';
 import '../app/module_instance/module_instance_local_datasource.dart';
 import '../app/module_instance/module_instance_repository.dart';
+import '../file_management/file_encryptor.dart';
 import '../modules/eval_data/eval_data_service.dart';
 import '../modules/evaluation/evaluation_service.dart';
+import '../modules/evaluators/evaluators_controller.dart';
 import 'language_controller.dart';
+import 'user_service.dart';
 
 class GlobalBinding extends Bindings {
   @override
@@ -103,12 +104,12 @@ class GlobalBinding extends Bindings {
         evaluationRepository: Get.find()));
     Get.put<EvalDataService>(EvalDataService(), permanent: true);
 
-    final key =
-        Key.fromUtf8('12345678901234567890123456789012'); // 32 bytes key
-    final iv = IV.fromLength(16); // AES block size is 16 bytes
 
-    final fileEncryptor = FileEncryptor(key, iv);
+    final key = Key.fromUtf8('12345678901234567890123456789012'); // 32 bytes key
+
+    final fileEncryptor = FileEncryptor(key);
 
     Get.put<FileEncryptor>(fileEncryptor, permanent: true);
+    Get.lazyPut<EvaluatorsController>(() => EvaluatorsController(), fenix: true);
   }
 }

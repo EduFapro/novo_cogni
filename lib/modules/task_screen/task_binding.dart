@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/task/task_repository.dart';
-import 'package:novo_cogni/modules/task_screen/task_screen_controller.dart';
-import 'package:novo_cogni/modules/task_screen/task_screen_service.dart';
 
+import '../../app/task/task_repository.dart';
 import '../../app/task_instance/task_instance_repository.dart';
 import '../../app/task_prompt/task_prompt_repository.dart';
+import 'task_screen_controller.dart';
+import 'task_screen_service.dart';
 
 class TaskScreenBinding extends Bindings {
   @override

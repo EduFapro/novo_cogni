@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
 import '../../../constants/enums/person_enums/person_enums.dart';
+import '../../../constants/translation/ui_strings.dart';
 import '../../home/home_controller.dart';
 import '../../login/login_controller.dart';
 import '../../widgets/ed_language_form_dropdown.dart';

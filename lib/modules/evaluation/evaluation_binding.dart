@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/modules/evaluation/evaluation_controller.dart';
+
+import 'evaluation_controller.dart';
 
 
 class EvaluationBinding extends Bindings {

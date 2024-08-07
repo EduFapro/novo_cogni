@@ -1,5 +1,5 @@
-import 'package:novo_cogni/app/task/task_constants.dart';
 import '../../../constants/enums/task_enums.dart';
+import 'task_constants.dart';
 
 class TaskEntity {
   int? taskID;
@@ -11,7 +11,7 @@ class TaskEntity {
   String? imagePath;
   int timeForCompletion;
   bool mayRepeatPrompt;
-  bool testOnly;
+  bool test_only;
 
   TaskEntity({
     this.taskID,
@@ -19,10 +19,10 @@ class TaskEntity {
     required this.title,
     required this.taskMode,
     required this.position,
-    this.imagePath,
+    this.imagePath = "no_image",
     this.timeForCompletion = 30,
     this.mayRepeatPrompt = true,
-    this.testOnly = false,
+    this.test_only = false,
     this.snakeCaseBriefTranscript,
   });
 
@@ -37,7 +37,7 @@ class TaskEntity {
       IMAGE_PATH: imagePath,
       TIME_FOR_COMPLETION: timeForCompletion,
       MAY_REPEAT_PROMPT: mayRepeatPrompt ? 1 : 0,
-      TEST_ONLY: testOnly ? 1 : 0,
+      TEST_ONLY: test_only ? 1 : 0,
     };
   }
 
@@ -53,7 +53,7 @@ class TaskEntity {
         imagePath: map[IMAGE_PATH] as String?,
         timeForCompletion: map[TIME_FOR_COMPLETION],
         mayRepeatPrompt: map[MAY_REPEAT_PROMPT] == 1 ? true : false,
-        testOnly: map[TEST_ONLY] == 1 ? true : false);
+        test_only: map[MAY_REPEAT_PROMPT] == 1 ? true : false);
   }
 
   @override
@@ -63,9 +63,8 @@ class TaskEntity {
         'title: "$title", '
         'taskMode: ${taskMode.description}, '
         'position: $position, '
-        'image_path: "$imagePath, '
-        'timeForCompletion: $timeForCompletion, '
-        'isTestingOnly: $testOnly'
+        'image_path: "$imagePath,'
+        'imeForCompletion: $timeForCompletion'
         '}';
   }
 }

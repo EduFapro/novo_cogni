@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/home/home_controller.dart';
+
+import '../../constants/translation/ui_strings.dart';
 
 class EdInputText extends StatelessWidget{
   final String placeholder;

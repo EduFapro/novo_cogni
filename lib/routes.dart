@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:novo_cogni/modules/user/user_profile_screen_binding.dart';
 
+import 'global/global_binding.dart';
+import 'modules/InitialRoute/InitialRouteScreen.dart';
 import 'modules/evaluation/evaluation_binding.dart';
 import 'modules/evaluation/evaluation_screen.dart';
 import 'modules/evaluator_registration/evaluator_registration_binding.dart';
@@ -18,6 +19,7 @@ import 'modules/participant_registration/participant_registration_screen.dart';
 import 'modules/task_screen/task_binding.dart';
 import 'modules/task_screen/task_screen.dart';
 import 'modules/user/user_profile_screen.dart';
+import 'modules/user/user_profile_screen_binding.dart';
 
 class AppRoutes {
   static const login = '/login';
@@ -29,9 +31,15 @@ class AppRoutes {
   static const task = '/task';
   static const newPassword = '/new_password';
   static const userProfileScreen = '/user_profile_screen';
+  static const initialRoute = '/';
 }
 
 final routes = [
+  GetPage(
+    name: AppRoutes.initialRoute,
+    page: () => InitialRouteScreen(),
+    binding: GlobalBinding(),
+  ),
   GetPage(
     name: AppRoutes.home,
     page: () => HomeScreen(),

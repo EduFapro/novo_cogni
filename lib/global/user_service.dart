@@ -1,17 +1,17 @@
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/module_instance/module_instance_entity.dart';
-import 'package:novo_cogni/app/participant/participant_repository.dart';
-import 'package:novo_cogni/global/typedefs.dart';
 
 import '../app/evaluation/evaluation_entity.dart';
 import '../app/evaluation/evaluation_repository.dart';
 import '../app/evaluator/evaluator_entity.dart';
 import '../app/evaluator/evaluator_repository.dart';
 import '../app/module/module_repository.dart';
+import '../app/module_instance/module_instance_entity.dart';
 import '../app/module_instance/module_instance_repository.dart';
 import '../app/participant/participant_entity.dart';
+import '../app/participant/participant_repository.dart';
 import '../app/task_instance/task_instance_entity.dart';
 import '../app/task_instance/task_instance_repository.dart';
+import 'typedefs.dart';
 
 class UserService extends GetxController {
   var evaluatorRepo = Get.find<EvaluatorRepository>();
@@ -35,11 +35,6 @@ class UserService extends GetxController {
     return user.value?.isAdmin ?? false;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   // Fetch user data and organize the data structure
   Future<void> fetchUserData(int? userId) async {
     if (userId == null) return;
@@ -48,7 +43,11 @@ class UserService extends GetxController {
       EvaluatorEntity? fetchedUser = await evaluatorRepo.getEvaluator(userId);
       if (fetchedUser != null) {
         user.value = fetchedUser;
-        await fetchAndOrganizeEvaluations(fetchedUser);
+        if (fetchedUser.isAdmin) {
+          await fetchAllEvaluationsAndParticipants();
+        } else {
+          await fetchAndOrganizeEvaluations(fetchedUser);
+        }
       }
     } catch (e) {
       // Handle error, log it or show a message to the user
@@ -62,6 +61,16 @@ class UserService extends GetxController {
         .getEvaluationsByEvaluatorID(userEntity.evaluatorID!);
     await fetchParticipantsForEvaluations(evaluations);
     await organizeEvaluationMap();
+  }
+
+  Future<void> fetchAllEvaluationsAndParticipants() async {
+    try {
+      evaluations.value = await evaluationRepo.getAllEvaluations();
+      participants.value = await participantRepo.getAllParticipants();
+      await organizeEvaluationMap();
+    } catch (e) {
+      print("Error fetching all evaluations and participants: $e");
+    }
   }
 
   // Organize evaluations, module instances, and task instances into the map
@@ -163,27 +172,6 @@ class UserService extends GetxController {
         .getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
   }
 
-  Future<void> _organizeDataStructure() async {
-    var userEvaluations = await getEvaluationsByUser(user.value!);
-    evaluations.assignAll(userEvaluations);
-
-    EvaluationMap evaluationMap = {};
-
-    for (var evaluation in userEvaluations) {
-      ModuleInstanceMap moduleInstanceMap = {};
-
-      List<ModuleInstanceEntity> moduleInstances =
-          await getModuleInstancesByEvaluation(evaluation);
-      for (var moduleInstance in moduleInstances) {
-        TaskInstanceList taskInstances =
-            await getTaskInstancesForModuleInstance(moduleInstance);
-        moduleInstanceMap[moduleInstance] = taskInstances;
-      }
-
-      evaluationMap[evaluation] = moduleInstanceMap;
-    }
-  }
-
   Future<void> updateUser(EvaluatorEntity newUser) async {
     user.value = newUser;
     await fetchUserData(newUser.evaluatorID);
@@ -213,8 +201,7 @@ class UserService extends GetxController {
     return updatedParticipants;
   }
 
-  Future<EvaluationEntity> deleteEvaluation(
-      EvaluationEntity evaluation)  async {
+  Future<EvaluationEntity> deleteEvaluation(EvaluationEntity evaluation) async {
     // Fetch all module instances associated with the evaluation
     var moduleInstancesList = await moduleInstanceRepo
         .getModuleInstancesByEvaluationId(evaluation.evaluationID!);
@@ -237,11 +224,14 @@ class UserService extends GetxController {
       taskInstancesList.addAll(taskInstances);
     }
 
-    taskInstancesList
-        .forEach((e) => taskInstanceRepo.deleteTaskInstance(e.taskInstanceID!));
-    moduleInstancesList.forEach(
-        (e) => moduleInstanceRepo.deleteModuleInstance(e.moduleInstanceID!));
-    var deletedEvaluation = await evaluationRepo.getEvaluation(evaluation.evaluationID!);
+    for (var e in taskInstancesList) {
+      taskInstanceRepo.deleteTaskInstance(e.taskInstanceID!);
+    }
+    for (var e in moduleInstancesList) {
+      moduleInstanceRepo.deleteModuleInstance(e.moduleInstanceID!);
+    }
+    var deletedEvaluation =
+        await evaluationRepo.getEvaluation(evaluation.evaluationID!);
     evaluationRepo.deleteEvaluation(evaluation.evaluationID!);
     participantRepo.deleteParticipant(evaluation.participantID);
 

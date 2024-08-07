@@ -1,9 +1,9 @@
-import 'package:novo_cogni/app/task/task_constants.dart';
-import 'package:novo_cogni/app/task/task_entity.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../database_constants.dart';
 import '../database_helper.dart';
+import 'task_constants.dart';
+import 'task_entity.dart';
 
 class TaskLocalDataSource {
   static final TaskLocalDataSource _instance = TaskLocalDataSource._internal();

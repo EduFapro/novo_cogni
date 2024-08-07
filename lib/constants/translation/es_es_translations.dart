@@ -15,6 +15,7 @@ final Map<String, String> esEsTranslations = {
   'evaluator': 'Evaluador',
   'date': 'Fecha',
   'participant_registration': 'Registro de Avaliando',
+  'admin_registration': 'Registro de Administrador',
   'identification_data': 'Datos de Identificación',
   'full_name': 'Nombre Completo',
   'date_of_birth': 'Fecha de Nacimiento',
@@ -34,7 +35,7 @@ final Map<String, String> esEsTranslations = {
   'evaluation': 'Evaluación',
   'list_of_activities': 'Lista de Actividades',
   'click_on_play_to_listen_to_audio':
-      'Haz clic en reproducir para escuchar el audio',
+  'Haz clic en reproducir para escuchar el audio',
   'pending_evaluation': 'Pendiente',
   'in_progress_evaluation': 'En Progreso',
   'completed_evaluation': "Completado",
@@ -79,4 +80,8 @@ final Map<String, String> esEsTranslations = {
   'task_completed' : '¡El tiempo para completar esta tarea ha expirado!',
   "all_tasks_completed" : '¡Todas las tareas han sido completadas!',
   "all_tasks_completed_in_module": 'Has completado todas las tareas en este módulo.',
+  'invalid_username_or_password': "Nombre de usuario o contraseña inválidos",
+  'user_not_found': "Usuario no encontrado. Por favor, verifica tu nombre de usuario e inténtalo de nuevo.",
+  'login_failed': "Fallo en el inicio de sesión, por favor inténtalo de nuevo más tarde"
+
 };

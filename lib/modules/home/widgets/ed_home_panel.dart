@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/home/home_controller.dart';
+import '../../../constants/translation/ui_strings.dart';
+import '../home_controller.dart';
 import 'ed_evaluation_history.dart';
 import 'ed_new_participant_button.dart';
 

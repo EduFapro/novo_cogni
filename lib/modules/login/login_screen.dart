@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/widgets/ed_form_title.dart';
 import '../../constants/route_arguments.dart';
+import '../../constants/translation/ui_strings.dart';
 import '../../mixins/ValidationMixin.dart';
 import '../../routes.dart';
+import '../widgets/ed_form_title.dart';
 import '../widgets/ed_input_text.dart';
 import '../widgets/ed_language_dropdown.dart';
 import 'login_controller.dart';

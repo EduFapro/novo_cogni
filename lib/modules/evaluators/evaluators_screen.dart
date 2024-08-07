@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/constants/translation/ui_strings.dart';
-import 'package:novo_cogni/modules/evaluators/widgets/ed_evaluators_list.dart';
-
+import '../../constants/translation/ui_strings.dart';
 import 'evaluators_controller.dart';
+import 'widgets/ed_evaluators_list.dart';
+
 class EvaluatorsScreen extends GetView<EvaluatorsController>  {
   const EvaluatorsScreen({Key? key}) : super(key: key);
 
@@ -15,10 +15,9 @@ class EvaluatorsScreen extends GetView<EvaluatorsController>  {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        title: Text(UiStrings.evaluators),
         backgroundColor: Color(0xfffdfdfd),
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text(UiStrings.evaluators),
         centerTitle: true,
       ),
       body: Container(

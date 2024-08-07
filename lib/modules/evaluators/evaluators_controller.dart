@@ -56,7 +56,7 @@ class EvaluatorsController extends GetxController {
 
     // Refresh the filtered list
     performSearch('');
-   
+
 
     update();
   }
