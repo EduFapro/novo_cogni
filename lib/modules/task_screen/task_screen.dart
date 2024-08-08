@@ -48,9 +48,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                   var mode = controller.taskMode.value;
                   return Column(
                     children: [
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
                       if (controller.imagePath.value == 'no_image')
                         Container(
                           padding: EdgeInsets.symmetric(
@@ -60,12 +57,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                             total: controller.totalTasks.value,
                           ),
                         ),
-                      // Container(
-                      //   color: Colors.blueAccent,
-                      //   height: MediaQuery.of(context).size.height * 0.03,
-                      // ),
                       Container(
-                        // height: MediaQuery.of(context).size.height * 0.07,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -89,7 +81,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                             ),
                             Expanded(
                                 child: Container(
-                              // color: Colors.white,
                               child: CustomIconButton(
                                   iconData: Icons.double_arrow_outlined,
                                   label: "Pular e Próximo",
@@ -113,14 +104,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                 }
               }),
             ),
-            // NAO APAGAR
-            // Align(
-            //   alignment: Alignment.centerRight,
-            //   child: SizedBox(
-            //       width: MediaQuery.of(context).size.width * 0.4,
-            //       child: buildAccordion(context)),
-            // )
-            // NAO APAGAR
           ],
         ),
       ),
@@ -186,7 +169,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                                   ),
                                   Text(UiStrings.play_audio,
                                       style: TextStyle(fontSize: 16)),
-                                  // Subtitle label
                                 ],
                               ),
                               Padding(
@@ -196,9 +178,8 @@ class TaskScreen extends GetView<TaskScreenController> {
                                     height: 80,
                                     child: MusicVisualizer(
                                       isPlaying: controller.isPlaying.value,
-                                      barCount: 30, // Example: 30 bars
-                                      barWidth:
-                                          3, // Example: Each bar is 3 pixels wide
+                                      barCount: 30,
+                                      barWidth: 3,
                                     )),
                               ),
                             ],
@@ -239,20 +220,29 @@ class TaskScreen extends GetView<TaskScreenController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                      color: Colors.black54,
+                                      color: controller
+                                              .shouldDisablePlayRecentlyButton
+                                              .value
+                                          ? Colors.redAccent.shade100
+                                          : Colors.black54,
+                                      disabledColor: Colors.redAccent.shade100,
                                       iconSize: 48,
                                       icon: Icon(
                                           controller.isPlayingPlayback.value
                                               ? Icons.stop
                                               : Icons.play_arrow),
                                       onPressed: controller
-                                              .hasPlaybackPath.value
-                                          ? controller.isPlayingPlayback.value
-                                              ? () => controller
-                                                  .stopRecentlyRecorded()
-                                              : () => controller
-                                                  .playRecentlyRecorded()
-                                          : null),
+                                              .shouldDisablePlayRecentlyButton
+                                              .value
+                                          ? null
+                                          : controller.hasPlaybackPath.value
+                                              ? controller
+                                                      .isPlayingPlayback.value
+                                                  ? () => controller
+                                                      .stopRecentlyRecorded()
+                                                  : () => controller
+                                                      .playRecentlyRecorded()
+                                              : null),
                                   Container(
                                     color: Colors.lightBlue,
                                     width: 350,
@@ -362,7 +352,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                           ),
                           Text(UiStrings.play_audio,
                               style: TextStyle(fontSize: 16)),
-                          // Subtitle label
                         ],
                       ),
                       Padding(
@@ -372,8 +361,8 @@ class TaskScreen extends GetView<TaskScreenController> {
                             height: 80,
                             child: MusicVisualizer(
                               isPlaying: controller.isPlaying.value,
-                              barCount: 30, // Example: 30 bars
-                              barWidth: 3, // Example: Each bar is 3 pixels wide
+                              barCount: 30,
+                              barWidth: 3,
                             )),
                       ),
                     ],
@@ -402,18 +391,6 @@ class TaskScreen extends GetView<TaskScreenController> {
                     SizedBox(
                       width: windowSize.width * 0.2,
                     ),
-                    // CustomIconButton(
-                    //     iconData: Icons.close,
-                    //     label: "Pular",
-                    //     onPressed: () => controller.skipCurrentTask(),
-                    //     isActive: true.obs,
-                    //     displayMessage: "Atividade Pulada"),
-                    // CustomIconButton(
-                    //     iconData: Icons.check,
-                    //     label: UiStrings.confirm,
-                    //     onPressed: () => controller.onCheckButtonPressed(),
-                    //     isActive: controller.isCheckButtonEnabled,
-                    //     displayMessage: "Atividade Concluída"),
                   ],
                 ),
               )
@@ -432,9 +409,7 @@ class TaskScreen extends GetView<TaskScreenController> {
       padding: const EdgeInsets.symmetric(horizontal: 400.0),
       child: Container(
         height: recorderInterfaceHeight,
-        // color: Colors.pink,
         child: Center(
-          // Center the row
           child: Column(
             children: [
               if (controller.imagePath.value == 'no_image')
@@ -449,92 +424,100 @@ class TaskScreen extends GetView<TaskScreenController> {
                   height: 20,
                 ),
               if (controller.imagePath.value == 'no_image')
-                Obx(
-                  () => Flexible(
-                    flex: 6,
-                    child: Container(
-                      width: 600,
-                      child: SizedBox(
-                        height: 100,
-                        child: (controller.hasPlaybackPath.isFalse)
-                            ? MusicVisualizer(
-                                isPlaying: controller.isRecording.value,
-                                barCount: 30,
-                                barWidth: 2,
-                                activeColor: Colors.red,
-                              )
-                            : Container(
-                                color: Colors.orange,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        color: Colors.black54,
-                                        iconSize: 48,
-                                        icon: Icon(
-                                            controller.isPlayingPlayback.value
-                                                ? Icons.stop
-                                                : Icons.play_arrow),
-                                        onPressed: controller
-                                                .hasPlaybackPath.value
-                                            ? controller.isPlayingPlayback.value
-                                                ? () => controller
-                                                    .stopRecentlyRecorded()
-                                                : () => controller
-                                                    .playRecentlyRecorded()
-                                            : null),
-                                    Container(
-                                      color: Colors.lightBlue,
-                                      width: 350,
-                                      child: MusicVisualizer(
-                                        isPlaying:
-                                            controller.isPlayingPlayback.value,
-                                        activeColor:
-                                            Colors.greenAccent.shade700,
-                                        barCount: 20,
-                                        barWidth: 2,
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 80,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: Text(
-                                        controller.isPlayingPlayback.value
-                                            ? controller.remainingTime.value
-                                            : controller
-                                                .recordingDuration.value,
-                                        style: TextStyle(
-                                          color:
+                Obx(() => Flexible(
+                      flex: 6,
+                      child: Container(
+                        width: 600,
+                        child: SizedBox(
+                          height: 100,
+                          child: (controller.hasPlaybackPath.isFalse)
+                              ? MusicVisualizer(
+                                  isPlaying: controller.isRecording.value,
+                                  barCount: 30,
+                                  barWidth: 2,
+                                  activeColor: Colors.red,
+                                )
+                              : Container(
+                                  color: Colors.orange,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                          color: controller
+                                                  .shouldDisablePlayRecentlyButton
+                                                  .value
+                                              ? Colors.redAccent.shade100
+                                              : Colors.black54,
+                                          disabledColor:
+                                              Colors.redAccent.shade100,
+                                          iconSize: 48,
+                                          icon: Icon(
                                               controller.isPlayingPlayback.value
-                                                  ? Colors.red
-                                                  : Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
+                                                  ? Icons.stop
+                                                  : Icons.play_arrow),
+                                          onPressed: controller
+                                                  .shouldDisablePlayRecentlyButton
+                                                  .value
+                                              ? null
+                                              : controller.hasPlaybackPath.value
+                                                  ? controller.isPlayingPlayback
+                                                          .value
+                                                      ? () => controller
+                                                          .stopRecentlyRecorded()
+                                                      : () => controller
+                                                          .playRecentlyRecorded()
+                                                  : null),
+                                      Container(
+                                        color: Colors.lightBlue,
+                                        width: 350,
+                                        child: MusicVisualizer(
+                                          isPlaying: controller
+                                              .isPlayingPlayback.value,
+                                          activeColor:
+                                              Colors.greenAccent.shade700,
+                                          barCount: 20,
+                                          barWidth: 2,
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: 70,
-                                      alignment: Alignment.center,
-                                      child: CustomIconButton(
-                                        iconData: Icons.close,
-                                        color: Colors.red,
-                                        label: "Excluir",
-                                        onPressed: () =>
-                                            controller.discardRecording(),
-                                        isActive: true.obs,
-                                        displayMessage: "Áudio Exlcuido",
+                                      Container(
+                                        width: 80,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: Text(
+                                          controller.isPlayingPlayback.value
+                                              ? controller.remainingTime.value
+                                              : controller
+                                                  .recordingDuration.value,
+                                          style: TextStyle(
+                                            color: controller
+                                                    .isPlayingPlayback.value
+                                                ? Colors.red
+                                                : Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 20,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      Container(
+                                        width: 70,
+                                        alignment: Alignment.center,
+                                        child: CustomIconButton(
+                                          iconData: Icons.close,
+                                          color: Colors.red,
+                                          label: "Excluir",
+                                          onPressed: () =>
+                                              controller.discardRecording(),
+                                          isActive: true.obs,
+                                          displayMessage: "Áudio Exlcuido",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    ))
             ],
           ),
         ),
@@ -543,15 +526,13 @@ class TaskScreen extends GetView<TaskScreenController> {
   }
 
   void _onTimeCompleted() async {
-    // Play time up sound
     final audioPlayer = AudioPlayer();
     await audioPlayer.play(AssetSource('audio/climbing_fast_sound_effect.mp3'));
 
     if (controller.isRecording.value) {
-      await controller.stopRecording(); // Stop the recording
+      await controller.stopRecording();
     }
 
-    // Show time up dialog
     Get.dialog(
       Dialog(
         child: Padding(
@@ -571,9 +552,8 @@ class TaskScreen extends GetView<TaskScreenController> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Get.back(); // Close the dialog
-                  audioPlayer.stop(); // Stop the sound if needed
-                  // controller.onCheckButtonPressed();
+                  Get.back();
+                  audioPlayer.stop();
                 },
                 child: Text('OK'),
               ),
@@ -581,7 +561,7 @@ class TaskScreen extends GetView<TaskScreenController> {
           ),
         ),
       ),
-      barrierDismissible: false, // Disables popup to close by tapping outside
+      barrierDismissible: false,
     );
   }
 
@@ -590,7 +570,6 @@ class TaskScreen extends GetView<TaskScreenController> {
     return ExpansionTile(
       shape: Border(),
       initiallyExpanded: false,
-      // Set to true if you want the accordion to be expanded initially
       title:
           Text("Task Details", style: TextStyle(fontWeight: FontWeight.bold)),
       children: [
@@ -641,29 +620,23 @@ class CustomIconButton extends StatelessWidget {
         children: [
           IconButton(
             icon: Icon(iconData, size: 40),
-            // Consistent size with recording button
             color: isActive.value ? color ?? Colors.blue : Colors.grey,
             onPressed: isActive.value
                 ? () {
-                    // Close the current snackbar before showing a new one
                     Get.closeAllSnackbars();
                     onPressed();
                     displayMessage != null
                         ? Get.snackbar(
-                            "Ação", // Title
-                            displayMessage!, // Message
+                            "Ação",
+                            displayMessage!,
                             snackPosition: SnackPosition.BOTTOM,
-                            // Position of the snackbar
                             backgroundColor: Colors.blue,
                             colorText: Colors.white,
                             borderRadius: 20,
                             margin: EdgeInsets.all(15),
                             duration: Duration(milliseconds: 1000),
-                            // Duration of the snackbar
                             isDismissible: true,
-                            // Allow the snackbar to be dismissed
-                            dismissDirection: DismissDirection
-                                .horizontal, // Dismiss direction
+                            dismissDirection: DismissDirection.horizontal,
                           )
                         : null;
                   }
@@ -671,7 +644,6 @@ class CustomIconButton extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            // Add some space above the label
             child: Text(label, style: TextStyle(fontSize: 12)),
           ),
         ],
@@ -694,27 +666,27 @@ class CustomRecordingButton extends StatelessWidget {
           : "Iniciando Gravação";
 
       return Column(
-        mainAxisSize: MainAxisSize.min, // Use the minimum space available
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 100, // Consistent size with other buttons
-            height: 100, // Consistent size with other buttons
+            width: 100,
+            height: 100,
             decoration: BoxDecoration(
               color: controller.isRecordButtonEnabled.value
                   ? (controller.isRecording.value
                       ? Colors.redAccent.shade100
                       : Colors.blue.shade100)
-                  : Colors.grey.shade400, // Grey color for disabled state
+                  : Colors.grey.shade400,
               borderRadius: BorderRadius.circular(50),
             ),
             child: IconButton(
               icon: Icon(
                 controller.isRecording.value ? Icons.stop : Icons.mic,
-                size: 80, // Adjust the size of the icon if necessary
+                size: 80,
               ),
               color: controller.isRecordButtonEnabled.value
                   ? (controller.isRecording.value ? Colors.red : Colors.blue)
-                  : Colors.grey, // Grey icon for disabled state
+                  : Colors.grey,
               onPressed: controller.isRecordButtonEnabled.value
                   ? () async {
                       Get.closeAllSnackbars();
@@ -729,14 +701,12 @@ class CustomRecordingButton extends StatelessWidget {
                           snackPosition: SnackPosition.BOTTOM,
                           duration: Duration(milliseconds: 1500));
                     }
-                  : null, // Disable the button if isRecordButtonEnabled is false
+                  : null,
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            // Space between icon and text
-            child: Text(label,
-                style: TextStyle(fontSize: 16)), // Use the variable label
+            child: Text(label, style: TextStyle(fontSize: 16)),
           ),
         ],
       );
@@ -824,7 +794,6 @@ class CustomLinearPercentIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate the percent value
     final double percent = total != 0 ? (current - 1) / total : 0;
 
     return Padding(
@@ -842,7 +811,7 @@ class CustomLinearPercentIndicator extends StatelessWidget {
           Text(
             '${current - 1}/ $total',
             style: TextStyle(
-              color: Colors.black, // Color that contrasts with the bar color
+              color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
