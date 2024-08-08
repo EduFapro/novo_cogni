@@ -68,10 +68,13 @@ class TaskScreenController extends GetxController {
 
   StreamSubscription<void>? _playerCompleteSubscription;
 
-  RxBool get shouldDisablePlayButton => RxBool(
-      !mayRepeatPrompt.value && promptPlayedOnce.value || isRecording.value || isPlayingPlayback.value);
+  RxBool get shouldDisablePlayButton =>
+      RxBool(!mayRepeatPrompt.value && promptPlayedOnce.value ||
+          isRecording.value ||
+          isPlayingPlayback.value);
 
-  RxBool get shouldDisablePlayRecentlyButton => RxBool(isPlaying.value || isRecording.value);
+  RxBool get shouldDisablePlayRecentlyButton =>
+      RxBool(isPlaying.value || isRecording.value);
 
   var mayRepeatPrompt = false.obs;
   var promptPlayedOnce = false.obs;
@@ -89,8 +92,8 @@ class TaskScreenController extends GetxController {
 
   Future<void> refreshProgress() async {
     final taskInstances =
-    await taskInstanceRepository.getTaskInstancesByModuleInstanceId(
-        moduleInstance.value!.moduleInstanceID!);
+        await taskInstanceRepository.getTaskInstancesByModuleInstanceId(
+            moduleInstance.value!.moduleInstanceID!);
     final completedTasksCount = taskInstances
         .where((taskInst) => taskInst.status == TaskStatus.done)
         .length;
@@ -273,7 +276,7 @@ class TaskScreenController extends GetxController {
         taskInstanceId: currentTask.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
           final recordingId =
-          await recordingRepository.createRecording(recording);
+              await recordingRepository.createRecording(recording);
           print(
               'Recording saved with ID: $recordingId at path: $recording.filePath');
         },
@@ -310,8 +313,8 @@ class TaskScreenController extends GetxController {
       if (currentTaskIndex.value < totalTasks.value) {
         currentTaskIndex.value++;
         var nextTaskInstance =
-        await evaluationService.getNextPendingTaskInstanceForModule(
-            moduleInstance.value!.moduleInstanceID!);
+            await evaluationService.getNextPendingTaskInstanceForModule(
+                moduleInstance.value!.moduleInstanceID!);
         if (nextTaskInstance != null) {
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
         } else {
@@ -334,10 +337,19 @@ class TaskScreenController extends GetxController {
     hasPlaybackPath.value = false;
     try {
       TaskInstanceEntity? taskInstance =
-      await taskService.getTaskInstance(taskInstanceId);
+          await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
         taskInstance.status = TaskStatus.done;
-        if (_audioStopTime != null) {
+        if (recordingDuration.value.isEmpty) {
+          await decryptAndCalculateDuration(playbackPath.value);
+        }
+
+        if (currentTaskEntity.value!.taskMode == TaskMode.play) {
+          taskInstance.completeTask("Tarefa sem gravação");
+        }
+        else if (recordingDuration.value == '') {
+          taskInstance.completeTask("Pulou a tarefa");
+        } else {
           taskInstance.completeTask(recordingDuration.value);
         }
         bool updated = await taskService.updateTaskInstance(taskInstance);
@@ -370,8 +382,8 @@ class TaskScreenController extends GetxController {
       await concludeTaskInstance(currentTask.value!.taskInstanceID!);
 
       final nextTaskInstance =
-      await evaluationService.getNextPendingTaskInstanceForModule(
-          moduleInstance.value!.moduleInstanceID!);
+          await evaluationService.getNextPendingTaskInstanceForModule(
+              moduleInstance.value!.moduleInstanceID!);
       if (nextTaskInstance != null) {
         currentTask.value = nextTaskInstance;
         var taskEntity = await taskService.getTask(nextTaskInstance.taskID);
@@ -418,16 +430,16 @@ class TaskScreenController extends GetxController {
 
   Future<void> _calculateTotalTasks(int moduleInstanceId) async {
     final taskInstances =
-    await taskService.getTasksByModuleInstanceId(moduleInstanceId);
+        await taskService.getTasksByModuleInstanceId(moduleInstanceId);
     totalTasks.value = taskInstances.length;
   }
 
   Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
     await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
     var evaluationID =
-    Get.find<EvaluationController>().evaluation.value!.evaluationID!;
+        Get.find<EvaluationController>().evaluation.value!.evaluationID!;
     bool allModulesCompleted =
-    await evaluationService.areAllModulesCompleted(evaluationID);
+        await evaluationService.areAllModulesCompleted(evaluationID);
     if (allModulesCompleted) {
       print("All modules completed. Evaluation can be marked as completed.");
       evaluationRepository.setEvaluationAsCompleted(evaluationID);
@@ -453,8 +465,8 @@ class TaskScreenController extends GetxController {
       if (currentTaskIndex.value < totalTasks.value) {
         currentTaskIndex.value++;
         var nextTaskInstance =
-        await evaluationService.getNextPendingTaskInstanceForModule(
-            moduleInstance.value!.moduleInstanceID!);
+            await evaluationService.getNextPendingTaskInstanceForModule(
+                moduleInstance.value!.moduleInstanceID!);
         if (nextTaskInstance != null) {
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
         } else {
@@ -509,7 +521,7 @@ class TaskScreenController extends GetxController {
     final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
     try {
       final Uint8List decryptedAudioBytes =
-      await fileEncryptor.decryptRecordingToMemory(encryptedFilePath);
+          await fileEncryptor.decryptRecordingToMemory(encryptedFilePath);
       print("Decrypted audio loaded into memory");
 
       final BytesSource bytesSource = BytesSource(decryptedAudioBytes);
@@ -523,15 +535,15 @@ class TaskScreenController extends GetxController {
 
       _playerCompleteSubscription =
           _audioPlayer.onPlayerComplete.listen((_) async {
-            isPlayingPlayback.value = false;
-            isRecentlyRecordedAudioPlaying.value = false;
+        isPlayingPlayback.value = false;
+        isRecentlyRecordedAudioPlaying.value = false;
 
-            _countdownTimer?.cancel();
+        _countdownTimer?.cancel();
 
-            print("Playback completed");
-            _playerCompleteSubscription?.cancel();
-            _playerCompleteSubscription = null;
-          });
+        print("Playback completed");
+        _playerCompleteSubscription?.cancel();
+        _playerCompleteSubscription = null;
+      });
     } catch (e) {
       print("Error playing test audio: $e");
     }
@@ -558,14 +570,15 @@ class TaskScreenController extends GetxController {
 
     try {
       final Uint8List decryptedAudioBytes =
-      await fileEncryptor.decryptRecordingToMemory(filePath);
+          await fileEncryptor.decryptRecordingToMemory(filePath);
 
       await _audioPlayer.setSourceBytes(decryptedAudioBytes);
       final duration = await _audioPlayer.getDuration();
       final minutes = duration?.inMinutes ?? 0;
       final seconds = (duration?.inSeconds ?? 0) % 60;
 
-      recordingDuration.value = '$minutes:${seconds.toString().padLeft(2, '0')}';
+      recordingDuration.value =
+          '$minutes:${seconds.toString().padLeft(2, '0')}';
 
       remainingTime.value = recordingDuration.value;
 
