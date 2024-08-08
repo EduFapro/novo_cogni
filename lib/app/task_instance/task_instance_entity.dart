@@ -10,7 +10,7 @@ class TaskInstanceEntity {
   int moduleInstanceID;
   TaskStatus status;
   TaskEntity? _task;
-  int? completingTime;
+  String? completingTime;
 
   TaskInstanceEntity({
     this.taskInstanceID,
@@ -41,7 +41,7 @@ class TaskInstanceEntity {
       taskID: map[ID_TASK_FK] as int,
       moduleInstanceID: map[ID_MODULE_INSTANCE_FK] as int,
       status: status,
-      completingTime: map[TASK_COMPLETING_TIME] as int?,
+      completingTime: map[TASK_COMPLETING_TIME],
     );
   }
 
@@ -64,12 +64,12 @@ class TaskInstanceEntity {
     };
   }
 
-  void updateDuration(Duration duration) {
-    completingTime = duration.inSeconds;
+  void updateDuration(String duration) {
+    completingTime = duration;
   }
-  void completeTask(Duration duration) {
+  void completeTask(String duration) {
     status = TaskStatus.done;
-    completingTime = duration.inSeconds;
+    completingTime = duration;
   }
   @override
   String toString() {

@@ -61,6 +61,10 @@ class TaskScreenController extends GetxController {
   var isCheckButtonEnabled = false.obs;
   var isRecordButtonEnabled = false.obs;
   var isRecentlyRecordedAudioPlaying = false.obs;
+  var recordingDuration = ''.obs;
+  var remainingTime = ''.obs;
+
+  Timer? _countdownTimer;
 
   StreamSubscription<void>? _playerCompleteSubscription;
 
@@ -84,8 +88,8 @@ class TaskScreenController extends GetxController {
 
   Future<void> refreshProgress() async {
     final taskInstances =
-        await taskInstanceRepository.getTaskInstancesByModuleInstanceId(
-            moduleInstance.value!.moduleInstanceID!);
+    await taskInstanceRepository.getTaskInstancesByModuleInstanceId(
+        moduleInstance.value!.moduleInstanceID!);
     final completedTasksCount = taskInstances
         .where((taskInst) => taskInst.status == TaskStatus.done)
         .length;
@@ -227,7 +231,7 @@ class TaskScreenController extends GetxController {
       await _audioPlayer.play(bytesSource);
       isPlaying.value = true;
       isRecordButtonEnabled.value =
-          false; // Disable recording when audio starts playing
+      false; // Disable recording when audio starts playing
 
       // Listen for audio completion
       _audioPlayer.onPlayerComplete.listen((_) {
@@ -294,7 +298,7 @@ class TaskScreenController extends GetxController {
         taskInstanceId: currentTask.value!.taskInstanceID!,
         saveRecordingCallback: (RecordingFileEntity recording) async {
           final recordingId =
-              await recordingRepository.createRecording(recording);
+          await recordingRepository.createRecording(recording);
           print(
               'Recording saved with ID: $recordingId at path: $recording.filePath');
         },
@@ -304,6 +308,10 @@ class TaskScreenController extends GetxController {
       // audioPath.value = encryptedFilePath;
       playbackPath.value = encryptedFilePath;
       hasPlaybackPath.value = true;
+
+      // Decrypt and calculate duration
+      await decryptAndCalculateDuration(encryptedFilePath);
+
       // In TaskMode.record, enable check button if audio has been played.
       if (taskMode.value == TaskMode.record && audioPlayed.value) {
         isCheckButtonEnabled.value = true;
@@ -374,8 +382,8 @@ class TaskScreenController extends GetxController {
 
         // Attempt to fetch the next pending task instance
         var nextTaskInstance =
-            await evaluationService.getNextPendingTaskInstanceForModule(
-                moduleInstance.value!.moduleInstanceID!);
+        await evaluationService.getNextPendingTaskInstanceForModule(
+            moduleInstance.value!.moduleInstanceID!);
         if (nextTaskInstance != null) {
           // If there's a next task, update current task to this new task
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
@@ -402,12 +410,12 @@ class TaskScreenController extends GetxController {
     hasPlaybackPath.value = false;
     try {
       TaskInstanceEntity? taskInstance =
-          await taskService.getTaskInstance(taskInstanceId);
+      await taskService.getTaskInstance(taskInstanceId);
       if (taskInstance != null) {
         taskInstance.status = TaskStatus.done;
         if (_audioStopTime != null) {
-          final duration = DateTime.now().difference(_audioStopTime!);
-          taskInstance.completeTask(duration);
+
+          taskInstance.completeTask(recordingDuration.value);
         }
         bool updated = await taskService.updateTaskInstance(taskInstance);
         if (!updated) {
@@ -423,7 +431,7 @@ class TaskScreenController extends GetxController {
 
   void completeTask(TaskInstanceEntity taskInstance) async {
     // Logic to mark the task as completed.
-    taskInstance.completeTask(Duration.zero);
+    taskInstance.completeTask(recordingDuration.value);
     await taskService.updateTaskInstance(taskInstance);
 
     // Assuming that the position in TaskEntity is the order of the task.
@@ -444,8 +452,8 @@ class TaskScreenController extends GetxController {
 
       // Fetch the next pending task instance
       final nextTaskInstance =
-          await evaluationService.getNextPendingTaskInstanceForModule(
-              moduleInstance.value!.moduleInstanceID!);
+      await evaluationService.getNextPendingTaskInstanceForModule(
+          moduleInstance.value!.moduleInstanceID!);
       if (nextTaskInstance != null) {
         // Update the current task
         currentTask.value = nextTaskInstance;
@@ -490,21 +498,24 @@ class TaskScreenController extends GetxController {
     _audioPlayer.dispose();
     _recorder.dispose();
     _playerCompleteSubscription?.cancel();
+
+    _countdownTimer?.cancel();
+
     super.onClose();
   }
 
   Future<void> _calculateTotalTasks(int moduleInstanceId) async {
     final taskInstances =
-        await taskService.getTasksByModuleInstanceId(moduleInstanceId);
+    await taskService.getTasksByModuleInstanceId(moduleInstanceId);
     totalTasks.value = taskInstances.length;
   }
 
   Future<void> setModuleInstanceAsCompleted(int moduleInstanceId) async {
     await evaluationService.setModuleInstanceAsCompleted(moduleInstanceId);
     var evaluationID =
-        Get.find<EvaluationController>().evaluation.value!.evaluationID!;
+    Get.find<EvaluationController>().evaluation.value!.evaluationID!;
     bool allModulesCompleted =
-        await evaluationService.areAllModulesCompleted(evaluationID);
+    await evaluationService.areAllModulesCompleted(evaluationID);
     if (allModulesCompleted) {
       print("All modules completed. Evaluation can be marked as completed.");
       evaluationRepository.setEvaluationAsCompleted(evaluationID);
@@ -535,8 +546,8 @@ class TaskScreenController extends GetxController {
 
         // Attempt to fetch the next pending task instance
         var nextTaskInstance =
-            await evaluationService.getNextPendingTaskInstanceForModule(
-                moduleInstance.value!.moduleInstanceID!);
+        await evaluationService.getNextPendingTaskInstanceForModule(
+            moduleInstance.value!.moduleInstanceID!);
         if (nextTaskInstance != null) {
           // If there's a next task, update current task to this new task
           await updateCurrentTask(nextTaskInstance.taskInstanceID!);
@@ -601,24 +612,34 @@ class TaskScreenController extends GetxController {
     try {
       // Decrypt the recording file into a byte array
       final Uint8List decryptedAudioBytes =
-          await fileEncryptor.decryptRecordingToMemory(encryptedFilePath);
+      await fileEncryptor.decryptRecordingToMemory(encryptedFilePath);
       print("Decrypted audio loaded into memory");
 
       // Play the decrypted audio file using BytesSource
       final BytesSource bytesSource = BytesSource(decryptedAudioBytes);
       isPlayingPlayback.value = true; // Set to true when playback starts
+
+      // Initialize remaining time with the recording duration
+      remainingTime.value = recordingDuration.value;
+
       await _audioPlayer.play(bytesSource);
       isRecentlyRecordedAudioPlaying.value = true;
 
+      // Start the countdown timer
+      _startCountdownTimer();
+
       _playerCompleteSubscription =
           _audioPlayer.onPlayerComplete.listen((_) async {
-        isPlayingPlayback.value = false;
-        isRecentlyRecordedAudioPlaying.value = false;
-        print("Playback completed");
-        // No need to delete a file since it's in memory
-        _playerCompleteSubscription?.cancel();
-        _playerCompleteSubscription = null;
-      });
+            isPlayingPlayback.value = false;
+            isRecentlyRecordedAudioPlaying.value = false;
+
+            _countdownTimer?.cancel(); // Cancel the timer when playback completes
+
+            print("Playback completed");
+            // No need to delete a file since it's in memory
+            _playerCompleteSubscription?.cancel();
+            _playerCompleteSubscription = null;
+          });
     } catch (e) {
       print("Error playing test audio: $e");
       // Handle errors appropriately
@@ -631,11 +652,69 @@ class TaskScreenController extends GetxController {
       isPlayingPlayback.value = false;
       isRecentlyRecordedAudioPlaying.value = false;
 
+      _countdownTimer?.cancel();
+      remainingTime.value = recordingDuration.value;
+
       _playerCompleteSubscription?.cancel();
       _playerCompleteSubscription = null;
     } catch (e) {
       print("Error stopping playback: $e");
       // Handle errors appropriately
+    }
+  }
+
+  Future<void> decryptAndCalculateDuration(String filePath) async {
+    final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+
+    try {
+      // Decrypt the recording file into a byte array
+      final Uint8List decryptedAudioBytes =
+      await fileEncryptor.decryptRecordingToMemory(filePath);
+
+      // Calculate the duration using the AudioPlayer instance
+      await _audioPlayer.setSourceBytes(decryptedAudioBytes);
+      final duration = await _audioPlayer.getDuration();
+      final minutes = duration?.inMinutes ?? 0;
+      final seconds = (duration?.inSeconds ?? 0) % 60;
+
+      // Store the duration in a formatted string variable
+      recordingDuration.value = '$minutes:${seconds.toString().padLeft(2, '0')}';
+
+      remainingTime.value = recordingDuration.value; // Initialize remaining time
+
+      print("Audio Duration: $recordingDuration");
+    } catch (e) {
+      print("Error decrypting and calculating duration: $e");
+    }
+  }
+
+  void _startCountdownTimer() {
+    // Parse the initial duration from the recordingDuration value
+    final parts = recordingDuration.value.split(':');
+    int totalSeconds = int.parse(parts[0]) * 60 + int.parse(parts[1]);
+
+    _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        final minutes = totalSeconds ~/ 60;
+        final seconds = totalSeconds % 60;
+        remainingTime.value = '$minutes:${seconds.toString().padLeft(2, '0')}';
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  Future<void> discardRecording() async {
+    playbackPath.value = '';
+    hasPlaybackPath.value = false;
+    recordingDuration.value = '';
+    isCheckButtonEnabled.value = false;
+    isRecordButtonEnabled.value = true;
+    remainingTime.value = '';
+
+    if (_countdownTimer != null) {
+      _countdownTimer!.cancel();
     }
   }
 }
