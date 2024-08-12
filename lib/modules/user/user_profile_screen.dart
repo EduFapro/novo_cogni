@@ -14,9 +14,14 @@ class UserProfileScreen extends GetView<UserProfileScreenController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User Profile"),
+        title: const Text(
+          "Informações Usuário",
+          style: TextStyle(color: Colors.white),
+        ),
+        foregroundColor: Colors.white10,
         centerTitle: false,
         backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Obx(() {
         var userInfo = controller.userAvaliador.value;
@@ -26,12 +31,13 @@ class UserProfileScreen extends GetView<UserProfileScreenController> {
           child: Column(
             children: [
               // Evaluator Information
-              if (userInfo != null)
-                UserInfoSection(userInfo: userInfo),
+              if (userInfo != null) UserInfoSection(userInfo: userInfo),
 
               // Evaluations and Module Instances
               for (var evaluationEntry in evaluationMap.entries)
-                EvaluationSection(evaluation: evaluationEntry.key, moduleInstanceMap: evaluationEntry.value),
+                EvaluationSection(
+                    evaluation: evaluationEntry.key,
+                    moduleInstanceMap: evaluationEntry.value),
             ],
           ),
         );
@@ -77,12 +83,14 @@ class EvaluationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       title: Text("Evaluation: ${evaluation.evaluationID}"),
-      children: moduleInstanceMap.entries.map((moduleEntry) =>
-          ModuleInstanceSection(
-            moduleInstance: moduleEntry.key,
-            taskInstances: moduleEntry.value,
-          ),
-      ).toList(),
+      children: moduleInstanceMap.entries
+          .map(
+            (moduleEntry) => ModuleInstanceSection(
+              moduleInstance: moduleEntry.key,
+              taskInstances: moduleEntry.value,
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -101,10 +109,14 @@ class ModuleInstanceSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       title: Text("Module Instance: ${moduleInstance.moduleInstanceID}"),
-      children: taskInstances.map((task) => ListTile(
-        title: Text("Task ID: ${task.taskID} - ${task.status.description}"),
-        trailing: Text("Duration: ${task.completingTime ?? 'Not completed'}"),
-      )).toList(),
+      children: taskInstances
+          .map((task) => ListTile(
+                title: Text(
+                    "Task ID: ${task.taskID} - ${task.status.description}"),
+                trailing:
+                    Text("Duration: ${task.completingTime ?? 'Not completed'}"),
+              ))
+          .toList(),
     );
   }
 }

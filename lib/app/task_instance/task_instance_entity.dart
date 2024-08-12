@@ -20,7 +20,6 @@ class TaskInstanceEntity {
     this.completingTime,
   });
 
-
   Map<String, dynamic> toMap() {
     return {
       ID_TASK_INSTANCE: taskInstanceID,
@@ -31,11 +30,9 @@ class TaskInstanceEntity {
     };
   }
 
-
-
   static TaskInstanceEntity fromMap(Map<String, dynamic> map) {
-
-    final status = TaskStatus.fromNumericValue(map[TASK_INSTANCE_STATUS] as int);
+    final status =
+        TaskStatus.fromNumericValue(map[TASK_INSTANCE_STATUS] as int);
     return TaskInstanceEntity(
       taskInstanceID: map[ID_TASK_INSTANCE] as int?,
       taskID: map[ID_TASK_FK] as int,
@@ -45,14 +42,12 @@ class TaskInstanceEntity {
     );
   }
 
-
   Future<TaskEntity?> get task async {
     if (_task == null) {
       _task = await Get.find<TaskRepository>().getTask(taskID);
     }
     return _task;
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -64,13 +59,24 @@ class TaskInstanceEntity {
     };
   }
 
+  Future<Map<String, dynamic>> detailedJson() async {
+    final tarefa = await task;
+    return {
+      'Tarefa': tarefa!.title,
+      'Status': status.numericValue == 1 ? "Concluído" : "A Realizar",
+      'Tempo da Gravação': completingTime,
+    };
+  }
+
   void updateDuration(String duration) {
     completingTime = duration;
   }
+
   void completeTask(String duration) {
     status = TaskStatus.done;
     completingTime = duration;
   }
+
   @override
   String toString() {
     return 'TaskInstanceEntity(taskInstanceID: $taskInstanceID, taskID: $taskID, moduleInstanceID: $moduleInstanceID, status: $status, duration: $completingTime seconds)';
