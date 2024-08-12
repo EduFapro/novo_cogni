@@ -17,17 +17,16 @@ class InitialRouteScreen extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
           bool isAdminConfigured = snapshot.data!;
-          if (isAdminConfigured) {
-            Future.microtask(() => Get.offNamed(AppRoutes.login));
-          } else {
-            Future.microtask(() => Get.offNamed(
-              AppRoutes.evaluatorRegistration,
-              arguments: {
-                RouteArguments.CONFIG_ADMIN: true,
-              },
-            ));
-          }
-          return Container(); // Empty container while navigation is in progress
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (isAdminConfigured) {
+              Get.offNamed(AppRoutes.login);
+            } else {
+              Get.offNamed(
+                AppRoutes.adminRegistration,
+              );
+            }
+          });
+          return Container();
         } else {
           return Center(child: Text('Unknown state'));
         }
@@ -35,3 +34,4 @@ class InitialRouteScreen extends StatelessWidget {
     );
   }
 }
+

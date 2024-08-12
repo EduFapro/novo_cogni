@@ -1,7 +1,9 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:novo_cogni/modules/admin_registration/admin_registration_screen.dart';
 
 import 'global/global_binding.dart';
 import 'modules/InitialRoute/InitialRouteScreen.dart';
+import 'modules/admin_registration/admin_registration_binding.dart';
 import 'modules/evaluation/evaluation_binding.dart';
 import 'modules/evaluation/evaluation_screen.dart';
 import 'modules/evaluator_registration/evaluator_registration_binding.dart';
@@ -25,6 +27,7 @@ class AppRoutes {
   static const login = '/login';
   static const home = '/home';
   static const evaluatorRegistration = '/evaluatorRegistration';
+  static const adminRegistration = '/adminRegistration';
   static const evaluators = '/evaluators';
   static const participantRegistration = '/participantRegistration';
   static const evaluation = '/module';
@@ -54,6 +57,11 @@ final routes = [
     name: AppRoutes.evaluatorRegistration,
     page: () => EvaluatorRegistrationScreen(),
     binding: EvaluatorRegistrationBinding(),
+  ),
+  GetPage(
+    name: AppRoutes.adminRegistration,
+    page: () => AdminRegistrationScreen(),
+    binding: AdminRegistrationBinding(),
   ),
   GetPage(
     name: AppRoutes.participantRegistration,

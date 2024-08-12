@@ -53,7 +53,6 @@ class LoginScreen extends GetView<LoginController> with ValidationMixin {
                         EdInputText(
                           placeholder: UiStrings.password,
                           obscureText: true,
-                          validator: validatePassword,
                           onSaved: (value) => password = value ?? '',
                         ),
                         const SizedBox(height: 20.0),
