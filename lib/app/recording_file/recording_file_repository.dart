@@ -29,4 +29,8 @@ class RecordingRepository {
   Future<List<RecordingFileEntity>> getRecordingsByTaskInstanceId(int taskInstanceId) async {
     return _localDataSource.getRecordingsByTaskInstanceID(taskInstanceId);
   }
+
+  Future<RecordingFileEntity?> getRecordingByTaskInstanceId(int taskInstanceId) async {
+    return _localDataSource.getRecordingByTaskInstanceId(taskInstanceId);
+  }
 }

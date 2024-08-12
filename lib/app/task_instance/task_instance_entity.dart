@@ -1,8 +1,11 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
 import '../../../constants/enums/task_enums.dart';
 import '../task/task_entity.dart';
 import 'task_instance_constants.dart';
 import '../task/task_repository.dart';
+import 'package:path/path.dart' as path;
+
 
 class TaskInstanceEntity {
   int? taskInstanceID;
@@ -61,10 +64,22 @@ class TaskInstanceEntity {
 
   Future<Map<String, dynamic>> detailedJson() async {
     final tarefa = await task;
+    final arquivoGravacao = await Get.find<RecordingRepository>().getRecordingByTaskInstanceId(taskInstanceID!);
+
+    var extractedName = null;
+    if (arquivoGravacao != null) {
+      final fullPath = arquivoGravacao!.filePath;
+      final fileName = path.basename(fullPath);
+      extractedName = fileName.split('.').first;
+    }
+
+
+
     return {
       'Tarefa': tarefa!.title,
       'Status': status.numericValue == 1 ? "Concluído" : "A Realizar",
       'Tempo da Gravação': completingTime,
+      "Arquivo": extractedName ?? "Sem gravação",
     };
   }
 

@@ -101,4 +101,22 @@ class RecordingLocalDataSource {
     return [];
   }
 
+  Future<RecordingFileEntity?> getRecordingByTaskInstanceId(int taskInstanceId) async {
+
+    final Database? database = await db;
+    final List<Map<String, dynamic>> maps = await database!.query(
+      TABLE_RECORDINGS,
+      columns: [ID_RECORDING, ID_TASK_INSTANCE_FK, FILE_PATH],
+      where: "$ID_TASK_INSTANCE_FK = ?",
+      whereArgs: [taskInstanceId],
+    );
+    if (maps.isNotEmpty) {
+      // Ensure a mutable copy is used
+      final editableMap = Map<String, dynamic>.from(maps.first);
+      return RecordingFileEntity.fromMap(editableMap);
+    }
+    return null;
+
+  }
+
 }
