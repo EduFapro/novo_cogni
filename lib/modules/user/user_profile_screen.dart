@@ -46,15 +46,22 @@ class UserInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Text("Evaluator: ${userInfo.name}"),
-      children: [
-        ListTile(
-          title: Text("${userInfo.name} ${userInfo.surname}"),
-          subtitle: Text("Username: ${userInfo.username}"),
-          // Add more details as needed
+    return Container(
+      color: Colors.blue.shade800,
+      child: ExpansionTile(
+        title: Text("Avaliador: ${userInfo.name}",
+            style: TextStyle(color: Colors.black)
         ),
-      ],
+        children: [
+          ListTile(
+            title: Text("${userInfo.name} ${userInfo.surname}",
+                style: TextStyle(color: Colors.black)),
+            subtitle: Text("Username: ${userInfo.username}",
+            style: TextStyle(color: Colors.black),),
+            // Add more details as needed
+          ),
+        ],
+      ),
     );
   }
 }
@@ -74,12 +81,16 @@ class EvaluationSection extends StatelessWidget {
     final controller = Get.find<UserProfileScreenController>();
     String participantName = controller.participants[evaluation.participantID]?.fullName ?? "Unknown";
 
-    return ExpansionTile(
-      title: Text("Evaluation: ${evaluation.evaluationID} - Participant: $participantName"),
-      children: moduleInstanceMap.entries.map((moduleEntry) => ModuleInstanceSection(
-        moduleInstance: moduleEntry.key,
-        taskInstances: moduleEntry.value,
-      )).toList(),
+    return Container(
+      color: Colors.blue.shade300,
+      padding: EdgeInsets.only(left: 20),
+      child: ExpansionTile(
+        title: Text("ID da Avaliação: ${evaluation.evaluationID} - Participante: $participantName"),
+        children: moduleInstanceMap.entries.map((moduleEntry) => ModuleInstanceSection(
+          moduleInstance: moduleEntry.key,
+          taskInstances: moduleEntry.value,
+        )).toList(),
+      ),
     );
   }
 }
@@ -99,15 +110,44 @@ class ModuleInstanceSection extends StatelessWidget {
     final controller = Get.find<UserProfileScreenController>();
     String moduleName = controller.modules[moduleInstance.moduleID]?.title ?? "Unknown Module";
 
-    return ExpansionTile(
-      title: Text("Module: $moduleName"),
-      children: taskInstances.map((task) {
-        String taskTitle = controller.tasks[task.taskID]?.title ?? "Unknown Task";
-        return ListTile(
-          title: Text("Task: $taskTitle - ${task.status.description}"),
-          trailing: Text("Duration: ${task.completingTime ?? 'Not completed'}"),
-        );
-      }).toList(),
+    return Container(
+      color: Colors.blue.shade100,
+      padding: EdgeInsets.only(left: 20),
+      child: ExpansionTile(
+        title: Text("Módulo: $moduleName"),
+        children: taskInstances.map((task) {
+          String taskTitle = controller.tasks[task.taskID]?.title ?? "Unknown Task";
+          String statusTranslated = translateTaskStatus(task.status.description);
+          return  Container(
+
+          padding: EdgeInsets.only(left: 20),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey, // Cor da borda
+                width: 1.0, // Largura da borda
+              ),
+              color: Colors.white70,
+              borderRadius: BorderRadius.circular(2.0), // Bordas arredondadas
+            ),
+            child: ListTile(
+              title: Text("Tarefa: $taskTitle - ${statusTranslated}"),
+              trailing: Text("Duração: ${task.completingTime ?? 'Não iniciado'}"),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
+
+  String translateTaskStatus(String status) {
+    switch (status) {
+      case 'done':
+        return 'Concluído';
+      case 'pending':
+        return 'Pendente';
+      default:
+        return 'Desconhecido';
+    }
+  }
+
 }
