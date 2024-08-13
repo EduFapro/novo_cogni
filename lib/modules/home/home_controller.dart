@@ -195,7 +195,7 @@ class HomeController extends GetxController {
     try {
       // 1. Fetch all task instances related to the evaluation
       List<TaskInstanceEntity> taskInstances =
-      await fetchTaskInstancesForEvaluation(evaluationId);
+          await fetchTaskInstancesForEvaluation(evaluationId);
 
       // 2. Fetch all recordings for these task instances
       List<RecordingFileEntity> recordings = [];
@@ -207,16 +207,16 @@ class HomeController extends GetxController {
 
       // 3. Create the folder in the downloads directory
       String downloadFolderPath =
-      await createDownloadFolder(evaluatorId, participantId);
+          await createDownloadFolder(evaluatorId, participantId);
 
       // 4. Copy the audio files to the new folder
       // Decrypt files and rename them back to .aac
       for (var recording in recordings) {
         String encryptedFilePath = recording.filePath;
         String fileNameWithoutExtension =
-        path.basenameWithoutExtension(encryptedFilePath);
+            path.basenameWithoutExtension(encryptedFilePath);
         String decryptedFilePath =
-        path.join(downloadFolderPath, "$fileNameWithoutExtension.aac");
+            path.join(downloadFolderPath, "$fileNameWithoutExtension");
 
         // Decrypt the file back to its original form
         await fileEncryptor.decryptFile(encryptedFilePath, decryptedFilePath);

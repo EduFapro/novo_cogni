@@ -20,14 +20,12 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
   final dateOfBirthController = TextEditingController();
   final specialtyController = TextEditingController();
   final cpfOrNifController = TextEditingController();
+  final confirmCpfOrNifController = TextEditingController();
   final usernameController = TextEditingController();
   final RxString username = ''.obs;
   final RxString originalUsername = ''.obs;
-  final newPasswordController = TextEditingController();
-  final confirmNewPasswordController = TextEditingController();
 
   final RxBool isPasswordChangeEnabled = false.obs;
-  final RxBool isEditMode = false.obs;
   var selectedDate = Rx<DateTime?>(null);
   var isGeneratingUsername = false.obs;
   var isUsernameValid = false.obs;
@@ -38,15 +36,13 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
     fullNameController.clear();
     dateOfBirthController.clear();
     specialtyController.clear();
+    confirmCpfOrNifController.clear();
     cpfOrNifController.clear();
     usernameController.clear();
-    newPasswordController.clear();
-    confirmNewPasswordController.clear();
 
     username.value = '';
     originalUsername.value = '';
     isPasswordChangeEnabled.value = false;
-    isEditMode.value = false;
     selectedDate.value = null;
     isGeneratingUsername.value = false;
     isUsernameValid.value = false;
@@ -60,10 +56,9 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
     dateOfBirthController.dispose();
     specialtyController.dispose();
     cpfOrNifController.dispose();
+    confirmCpfOrNifController.dispose();
     usernameController.dispose();
     fullNameFocusNode.dispose();
-    newPasswordController.dispose();
-    confirmNewPasswordController.dispose();
     super.onClose();
   }
   @override
@@ -71,7 +66,7 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
     super.onInit();
 
     fullNameFocusNode.addListener(() {
-      if (!fullNameFocusNode.hasFocus && !isEditMode.value) {
+      if (!fullNameFocusNode.hasFocus) {
         final validationResult = validateFullName(fullNameController.text);
         if (validationResult == null) {
           String baseUsername = generateUsername(fullNameController.text, []);
@@ -83,18 +78,7 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
       }
     });
 
-    usernameController.addListener(() {
-      if (isEditMode.value) {
-        isUsernameModified.value =
-            usernameController.text != originalUsername.value;
-      }
-    });
 
-    if (isEditMode.isTrue && evaluator.value != null) {
-      originalUsername.value = evaluator.value!.username;
-    }
-
-    print("Edit mode: ${isEditMode.value}");
   }
 
   void selectDate(BuildContext context) async {
@@ -166,8 +150,6 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
       // If there's an error, print it and return false.
       print('Error creating evaluator: $e');
       return false;
-    } finally {
-      isEditMode.value = false;
     }
   }
 
@@ -207,11 +189,6 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
     username.value = currentUsername;
     usernameController.text = currentUsername; // Update the controller
 
-    if (isEditMode.isTrue && !isUsernameModified.value) {
-      isUsernameValid.value = true;
-      return;
-    }
-
     while (true) {
       existingEvaluator =
           await _repository.getEvaluatorByUsername(currentUsername);
@@ -239,20 +216,14 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
     isUsernameValid.value = true;
   }
 
-  void toggleEditMode() {
-    isEditMode.value = !isEditMode.value;
-  }
-
   void togglePasswordVisibility() {
     isPasswordChangeEnabled.value = !isPasswordChangeEnabled.value;
   }
 
   Future<bool> saveEvaluator() async {
-    if (isEditMode.isTrue) {
-      return updateEvaluator();
-    } else {
+
       return createEvaluator();
-    }
+
   }
 
   Future<bool> updateEvaluator() async {
@@ -268,15 +239,6 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
       return false;
     }
 
-    // Validate username if it has been modified
-    if (isEditMode.isTrue && isUsernameModified.value) {
-      await checkAndUpdateUsername(usernameController.text);
-      if (!isUsernameValid.value) {
-        print('Username is invalid'); // Debugging print statement
-        return false;
-      }
-    }
-
     // Construct the EvaluatorEntity object with updated data
     EvaluatorEntity updatedEvaluator = evaluator.value!.copyWith(
       name: fullNameController.text.split(' ').first,
@@ -287,12 +249,6 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
       username: usernameController.text,
     );
 
-    // Check if passwords should be updated
-    if (isPasswordChangeEnabled.value &&
-        newPasswordController.text.isNotEmpty) {
-      updatedEvaluator =
-          updatedEvaluator.copyWith(password: newPasswordController.text);
-    }
 
     print(updatedEvaluator);
     // Attempt to update the evaluator in the database
@@ -306,5 +262,4 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
       return false;
     }
   }
-
 }

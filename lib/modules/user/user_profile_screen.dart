@@ -47,7 +47,7 @@ class UserInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue.shade800,
+      color: Colors.blue.shade600,
       child: ExpansionTile(
         title: Text("Avaliador: ${userInfo.name}",
             style: TextStyle(color: Colors.black)
@@ -123,11 +123,11 @@ class ModuleInstanceSection extends StatelessWidget {
           padding: EdgeInsets.only(left: 20),
             decoration: BoxDecoration(
               border: Border.all(
-                color: Colors.grey, // Cor da borda
-                width: 1.0, // Largura da borda
+                color: Colors.grey,
+                width: 0.3,
               ),
               color: Colors.white70,
-              borderRadius: BorderRadius.circular(2.0), // Bordas arredondadas
+              borderRadius: BorderRadius.circular(2.0),
             ),
             child: ListTile(
               title: Text("Tarefa: $taskTitle - ${statusTranslated}"),

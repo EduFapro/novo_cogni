@@ -7,13 +7,13 @@ import '../../../constants/translation/ui_strings.dart';
 import '../../../mixins/ValidationMixin.dart';
 import '../../../routes.dart';
 
-
 class EdAdminForm extends GetView<AdminRegistrationController>
     with ValidationMixin {
   final pageTitle;
   final GlobalKey<FormState> formKey;
 
-  EdAdminForm({Key? key, required this.pageTitle, required this.formKey}) : super(key: key);
+  EdAdminForm({Key? key, required this.pageTitle, required this.formKey})
+      : super(key: key);
 
   final controller = Get.find<AdminRegistrationController>();
 
@@ -53,7 +53,7 @@ class EdAdminForm extends GetView<AdminRegistrationController>
                       children: [
                         SizedBox(
                           height: fieldContainerHeight,
-                          width: fieldWidthRow1,
+                          width: fieldWidthRow2,
                           child: TextFormField(
                             controller: controller.fullNameController,
                             focusNode: controller.fullNameFocusNode,
@@ -63,21 +63,21 @@ class EdAdminForm extends GetView<AdminRegistrationController>
                             ),
                           ),
                         ),
-                        SizedBox(width: spacingWidth),
+                        SizedBox(width: spacingWidth * 2),
                         SizedBox(
                           height: fieldContainerHeight,
-                          width: fieldWidthRow1,
+                          width: fieldWidthRow2,
                           child: TextFormField(
                             controller: controller.dateOfBirthController,
                             decoration: InputDecoration(
                               labelText: UiStrings.dateOfBirth,
                               errorBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Colors.red, width: 1.0),
+                                    BorderSide(color: Colors.red, width: 1.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Colors.red, width: 2.0),
+                                    BorderSide(color: Colors.red, width: 2.0),
                               ),
                             ),
                             onTap: () => controller.selectDate(context),
@@ -124,7 +124,22 @@ class EdAdminForm extends GetView<AdminRegistrationController>
                             },
                           ),
                         ),
-                        SizedBox(width: spacingWidth),
+                        SizedBox(width: spacingWidth * 2),
+                        SizedBox(
+                          height: fieldContainerHeight,
+                          width: fieldWidthRow2,
+                          child: TextFormField(
+                            controller: controller.usernameController,
+                            decoration:
+                                InputDecoration(labelText: UiStrings.username),
+                            readOnly: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    Row(
+                      children: [
                         SizedBox(
                           height: fieldContainerHeight,
                           width: fieldWidthRow2,
@@ -143,102 +158,66 @@ class EdAdminForm extends GetView<AdminRegistrationController>
                             },
                           ),
                         ),
-                        SizedBox(width: spacingWidth),
+                        SizedBox(width: spacingWidth * 2),
                         SizedBox(
                           height: fieldContainerHeight,
                           width: fieldWidthRow2,
-                          child: Obx(() => TextFormField(
-                            controller: controller.usernameController,
+                          child: TextFormField(
+                            controller: controller.confirmCpfOrNifController,
                             decoration: InputDecoration(
-                                labelText: UiStrings.username),
-                            readOnly: !(controller.isEditMode.value),
-                          )),
+                              labelText: "Confirmar CPF",
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Confirme o CPF";
+                              } else if (value !=
+                                  controller.cpfOrNifController.text) {
+                                return 'CPF não confere';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
+                        SizedBox(width: spacingWidth),
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    Obx(() => Row(
-                      children: [
-                        if (controller.isEditMode.isTrue)
-                          SizedBox(
-                            width: fieldWidthRow2,
-                            child: SwitchListTile(
-                              title: Text(UiStrings.modifyPassword),
-                              value: controller.isPasswordChangeEnabled.value,
-                              onChanged: (bool value) {
-                                controller.isPasswordChangeEnabled.value = value;
-                                if (!value) {
-                                  controller.newPasswordController.clear();
-                                  controller.confirmNewPasswordController.clear();
-                                  formKey.currentState?.validate();
-                                }
-                              },
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      margin: EdgeInsets.symmetric(vertical: 16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.yellow[700],
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: Colors.orange[900]!,
+                          width: 2.0,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'ATENÇÃO',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red[900],
                             ),
                           ),
-                        SizedBox(width: spacingWidth),
-                      ],
-                    )),
-                    if (controller.isEditMode.isTrue)
-                      Obx(() => Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: fieldContainerHeight,
-                                width: fieldWidthRow2,
-                                child: TextFormField(
-                                  controller: controller.newPasswordController,
-                                  obscureText: true,
-                                  enabled: controller.isPasswordChangeEnabled.value,
-                                  decoration: InputDecoration(
-                                      labelText: "Nova Senha"),
-                                  validator: (value) {
-                                    if (controller.isPasswordChangeEnabled.value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Insira a nova senha';
-                                      }
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              SizedBox(width: spacingWidth),
-                            ],
-                          ),
-                          SizedBox(height: 16.0),
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: fieldContainerHeight,
-                                width: fieldWidthRow2,
-                                child: TextFormField(
-                                  controller: controller.confirmNewPasswordController,
-                                  obscureText: true,
-                                  enabled: controller.isPasswordChangeEnabled.value,
-                                  decoration: InputDecoration(
-                                      labelText: "Confirme Senha"),
-                                  validator: (value) {
-                                    if (controller.isPasswordChangeEnabled.value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Confirme a nova senha';
-                                      }
-                                      if (value != controller.newPasswordController.text) {
-                                        return 'Senhas diferentes';
-                                      }
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              SizedBox(width: spacingWidth),
-                            ],
+                          SizedBox(height: 8.0),
+                          Text(
+                            'O CPF INSERIDO SERÁ A SENHA DO USUÁRIO',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
                           ),
                         ],
-                      )),
+                      ),
+                    ),
                     SizedBox(height: 16.0),
                     Align(
-                      alignment: Alignment.bottomRight,
+                      alignment: Alignment.bottomCenter,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -252,29 +231,18 @@ class EdAdminForm extends GetView<AdminRegistrationController>
                           SizedBox(width: 20),
                           TextButton(
                             onPressed: () async {
-                              if (controller.isEditMode.isTrue &&
-                                  !controller.isPasswordChangeEnabled.value) {
-                                controller.newPasswordController.text = '';
-                                controller.confirmNewPasswordController.text = '';
-                              }
-
                               print("hahah - 1");
                               if (formKey.currentState!.validate()) {
                                 print("hahah - 2");
                                 if (controller.isUsernameValid.isTrue) {
-                                  bool success;
-                                  if (controller.isEditMode.isTrue) {
-                                    success = await controller.updateEvaluator();
-                                  } else {
-                                    success = await controller.createEvaluator();
-                                  }
+                                  bool success =
+                                      await controller.createEvaluator();
+
                                   if (success) {
-
-                                      Get.toNamed(AppRoutes.login);
-
-
+                                    Get.toNamed(AppRoutes.login);
                                   } else {
-                                    print('Failed to create or update evaluator');
+                                    print(
+                                        'Failed to create or update evaluator');
                                   }
                                 } else {
                                   print('Username is invalid');
