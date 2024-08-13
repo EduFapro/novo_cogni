@@ -37,7 +37,7 @@ class RecordingLocalDataSource {
   Future<RecordingFileEntity?> getRecording(int id) async {
     final Database? database = await db;
     final List<Map<String, dynamic>> maps = await database!.query(
-      TABLE_TASK_PROMPTS,
+      TABLE_RECORDINGS,
       columns: [ID_RECORDING, ID_TASK_INSTANCE_FK, FILE_PATH],
       where: "$ID_RECORDING = ?",
       whereArgs: [id],
@@ -54,7 +54,7 @@ class RecordingLocalDataSource {
   Future<int> deleteRecording(int id) async {
     final Database? database = await db;
     return await database!.delete(
-      TABLE_TASK_PROMPTS,
+      TABLE_RECORDINGS,
       where: "$ID_RECORDING = ?",
       whereArgs: [id],
     );
@@ -65,7 +65,7 @@ class RecordingLocalDataSource {
     final updatedMap = recording.toMap();
 
     return await database!.update(
-      TABLE_TASK_PROMPTS,
+      TABLE_RECORDINGS,
       updatedMap,
       where: "$ID_RECORDING = ?",
       whereArgs: [recording.recordingId],
@@ -75,7 +75,7 @@ class RecordingLocalDataSource {
 
   Future<List<RecordingFileEntity>> getAllRecordings() async {
     final Database? database = await db;
-    final result = await database!.query(TABLE_TASK_PROMPTS);
+    final result = await database!.query(TABLE_RECORDINGS);
 
     return result.isNotEmpty
         ? result

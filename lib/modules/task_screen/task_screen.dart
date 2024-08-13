@@ -297,10 +297,12 @@ class TaskScreen extends GetView<TaskScreenController> {
                       onPressed: () => controller.onCheckButtonPressed(),
                       isActive: controller.isCheckButtonEnabled,
                       displayMessage: "Atividade Concluída"),
-                ))
+                )),
+
               ],
             ),
           ),
+          if (controller.imagePath.value == 'no_image') SizedBox(height: 100,),
         ],
       ),
     );
@@ -699,7 +701,7 @@ class CustomRecordingButton extends StatelessWidget {
 
                       Get.snackbar("Ação", message,
                           snackPosition: SnackPosition.BOTTOM,
-                          duration: Duration(milliseconds: 1500));
+                          duration: Duration(milliseconds: 1000));
                     }
                   : null,
             ),

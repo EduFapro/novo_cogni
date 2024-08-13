@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_datasource.dart';
+import 'package:novo_cogni/app/recording_file/recording_file_entity.dart';
 
 import '../app/evaluation/evaluation_entity.dart';
 import '../app/evaluation/evaluation_repository.dart';
@@ -9,6 +11,7 @@ import '../app/module_instance/module_instance_entity.dart';
 import '../app/module_instance/module_instance_repository.dart';
 import '../app/participant/participant_entity.dart';
 import '../app/participant/participant_repository.dart';
+import '../app/recording_file/recording_file_repository.dart';
 import '../app/task_instance/task_instance_entity.dart';
 import '../app/task_instance/task_instance_repository.dart';
 import 'typedefs.dart';
@@ -20,6 +23,7 @@ class UserService extends GetxController {
   var moduleRepo = Get.find<ModuleRepository>();
   var moduleInstanceRepo = Get.find<ModuleInstanceRepository>();
   var taskInstanceRepo = Get.find<TaskInstanceRepository>();
+  var recordingRepo = Get.find<RecordingRepository>();
 
   Rx<EvaluatorEntity?> user = Rxn<EvaluatorEntity>();
   Rx<EvaluationMap> evaluationMap = Rx<EvaluationMap>({});
@@ -216,24 +220,44 @@ class UserService extends GetxController {
 
       // Fetch task instances for the current module instance
       var taskInstances = await taskInstanceRepo
-          .getTaskInstancesForModuleInstance(moduleInstance.moduleInstanceID!);
+          .getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
       print(
           'Task Instances for Module Instance ID ${moduleInstance.moduleInstanceID}: $taskInstances');
 
       // Add the fetched task instances to the list
       taskInstancesList.addAll(taskInstances);
     }
+    List<RecordingFileEntity> recordingsList = [];
+    // Deleting recording files associated with each task instance
+    for (var taskInstance in taskInstancesList) {
+      var recording = await recordingRepo
+          .getRecordingByTaskInstanceId(taskInstance.taskInstanceID!);
+      if (recording != null) {
+        recordingsList.add(recording!);
+      }
 
+      if(recordingsList.isNotEmpty) {
+        for (var recording in recordingsList) {
+          await recordingRepo.deleteRecording(recording.recordingId!);
+        }
+      }
+    }
+
+    // Deleting task instances
     for (var e in taskInstancesList) {
-      taskInstanceRepo.deleteTaskInstance(e.taskInstanceID!);
+      await taskInstanceRepo.deleteTaskInstance(e.taskInstanceID!);
     }
+
+    // Deleting module instances
     for (var e in moduleInstancesList) {
-      moduleInstanceRepo.deleteModuleInstance(e.moduleInstanceID!);
+      await moduleInstanceRepo.deleteModuleInstance(e.moduleInstanceID!);
     }
+
+    // Finally, delete the evaluation and its associated participant
     var deletedEvaluation =
         await evaluationRepo.getEvaluation(evaluation.evaluationID!);
-    evaluationRepo.deleteEvaluation(evaluation.evaluationID!);
-    participantRepo.deleteParticipant(evaluation.participantID);
+    await evaluationRepo.deleteEvaluation(evaluation.evaluationID!);
+    await participantRepo.deleteParticipant(evaluation.participantID);
 
     print('All Task Instances: $taskInstancesList');
 
