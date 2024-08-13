@@ -79,7 +79,7 @@ class TaskInstanceEntity {
       'Tarefa': tarefa!.title,
       'Status': status.numericValue == 1 ? "Concluído" : "A Realizar",
       'Tempo da Gravação': completingTime,
-      "Arquivo": extractedName ?? "Sem gravação",
+      "Arquivo": extractedName ?? "Pendente",
     };
   }
 
