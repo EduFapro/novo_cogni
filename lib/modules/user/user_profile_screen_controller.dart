@@ -1,10 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
-import 'package:novo_cogni/app/participant/participant_repository.dart';
-import 'package:novo_cogni/app/recording_file/recording_file_repository.dart';
-import 'package:novo_cogni/app/task_instance/task_instance_repository.dart';
 
 import '../../app/evaluation/evaluation_entity.dart';
 import '../../app/evaluator/evaluator_entity.dart';
@@ -13,103 +7,58 @@ import '../../app/module/module_repository.dart';
 import '../../app/module_instance/module_instance_entity.dart';
 import '../../app/module_instance/module_instance_repository.dart';
 import '../../app/participant/participant_entity.dart';
+import '../../app/participant/participant_repository.dart';
 import '../../app/task/task_entity.dart';
 import '../../app/task/task_repository.dart';
 import '../../app/task_instance/task_instance_entity.dart';
-import '../../file_management/file_encryptor.dart';
+import '../../app/task_instance/task_instance_repository.dart';
+import '../../global/typedefs.dart';
 import '../../global/user_service.dart';
 
 class UserProfileScreenController extends GetxController {
   final UserService userService = Get.find<UserService>();
-  final ParticipantRepository participantRepository =
-      Get.find<ParticipantRepository>();
-  final TaskInstanceRepository taskInstanceRepository =
-      Get.find<TaskInstanceRepository>();
+  final ParticipantRepository participantRepository = Get.find<ParticipantRepository>();
+  final TaskInstanceRepository taskInstanceRepository = Get.find<TaskInstanceRepository>();
   final TaskRepository taskRepository = Get.find<TaskRepository>();
-  final ModuleInstanceRepository moduleInstanceRepository =
-      Get.find<ModuleInstanceRepository>();
+  final ModuleInstanceRepository moduleInstanceRepository = Get.find<ModuleInstanceRepository>();
   final ModuleRepository moduleRepository = Get.find<ModuleRepository>();
-  final RecordingRepository recordingRepository =
-      Get.find<RecordingRepository>();
 
-  Rxn<EvaluatorEntity> userAvaliador = Rxn<EvaluatorEntity>();
-  RxList<EvaluationEntity> evaluations = <EvaluationEntity>[].obs;
-  RxMap<int, ParticipantEntity> participants = <int, ParticipantEntity>{}.obs;
-  RxMap<int, ModuleEntity> modules = <int, ModuleEntity>{}.obs;
-  RxMap<int, TaskEntity> tasks = <int, TaskEntity>{}.obs;
-  RxMap<int, String> taskRecordingPaths = RxMap<int, String>();
-  RxMap<EvaluationEntity, Map<ModuleInstanceEntity, List<TaskInstanceEntity>>>
-      evaluationMap = RxMap({});
-
-  var isPlayingPlayback = false.obs;
-
-  late final AudioPlayer _audioPlayer;
+  final Rx<EvaluatorEntity?> userAvaliador = Rx<EvaluatorEntity?>(null);
+  final RxList<EvaluationEntity> evaluations = <EvaluationEntity>[].obs;
+  RxMap<EvaluationEntity, Map<ModuleInstanceEntity, List<TaskInstanceEntity>>> evaluationMap = RxMap({});
+  RxMap<int, ParticipantEntity> participants = RxMap({});
+  RxMap<int, ModuleEntity> modules = RxMap({});
+  RxMap<int, TaskEntity> tasks = RxMap({});
 
   @override
   void onInit() {
     super.onInit();
     userAvaliador.value = userService.user.value;
     fetchAllData();
-    _audioPlayer = AudioPlayer();
   }
 
   void fetchAllData() async {
     evaluations.assignAll(userService.evaluations);
     for (var evaluation in evaluations) {
-      print("Processing evaluation: ${evaluation.evaluationID}");
-      var moduleInstances = await moduleInstanceRepository
-          .getModuleInstancesByEvaluationId(evaluation.evaluationID!);
+      ParticipantEntity? participant = await participantRepository.getParticipantByEvaluation(evaluation.participantID);
+      participants[evaluation.participantID] = participant!;
+      var moduleInstances = await moduleInstanceRepository.getModuleInstancesByEvaluationId(evaluation.evaluationID!);
 
-      if (evaluationMap[evaluation] == null) {
-        evaluationMap[evaluation] = {};
-      }
-
+      Map<ModuleInstanceEntity, List<TaskInstanceEntity>> taskMap = {};
       for (var moduleInstance in moduleInstances) {
-        print(
-            "Adding module: ${moduleInstance.moduleID} to evaluation: ${evaluation.evaluationID}");
-        List<TaskInstanceEntity> taskList =
-            await _processModuleInstance(moduleInstance);
-        evaluationMap[evaluation]![moduleInstance] = taskList;
+        ModuleEntity? module = await moduleRepository.getModule(moduleInstance.moduleID);
+        modules[moduleInstance.moduleID] = module!;
+
+        var taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+        List<TaskInstanceEntity> taskList = [];
+        for (var taskInstance in taskInstances) {
+          TaskEntity? task = await taskRepository.getTask(taskInstance.taskID);
+          tasks[taskInstance.taskID] = task!;
+          taskList.add(taskInstance);
+        }
+        taskMap[moduleInstance] = taskList;
       }
+      evaluationMap[evaluation] = taskMap;  // This ensures you are using the reactive map directly.
     }
   }
-
-  Future<List<TaskInstanceEntity>> _processModuleInstance(
-      ModuleInstanceEntity moduleInstance) async {
-    List<TaskInstanceEntity> taskList = [];
-    var taskInstances = await taskInstanceRepository
-        .getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
-    for (var taskInstance in taskInstances) {
-      tasks[taskInstance.taskID] =
-          (await taskRepository.getTask(taskInstance.taskID))!;
-      taskRecordingPaths[taskInstance.taskInstanceID!] =
-          (await recordingRepository.getRecordingByTaskInstanceId(
-                      taskInstance.taskInstanceID!))
-                  ?.filePath ??
-              "";
-      taskList.add(taskInstance);
-    }
-    return taskList;
-  }
-
-  Future<void> playRecorded(String playbackPath) async {
-    final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
-    print("Attempting to play audio from path: $playbackPath");
-    try {
-      final String encryptedFilePath = playbackPath;
-
-      // Decrypting to memory for playback without file I/O
-      final Uint8List decryptedAudioBytes = await fileEncryptor.decryptRecordingToMemory(encryptedFilePath);
-      print("Decrypted audio loaded into memory");
-
-      final BytesSource bytesSource = BytesSource(decryptedAudioBytes);
-      await _audioPlayer.play(bytesSource);
-      print("Playback started");
-    } catch (e) {
-      print("Error playing audio: $e");
-    }
-  }
-
-
-  void playAudioFromTask() {}
 }
