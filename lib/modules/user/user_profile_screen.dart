@@ -92,7 +92,7 @@ class EvaluationSection extends StatelessWidget {
       color: Colors.blueAccent.shade100,
       child: ExpansionTile(
         title: Text(
-            "Id da Avaliação: ${evaluation.evaluationID} - Participant: $participantName"),
+            "Id da Avaliação: ${evaluation.evaluationID} - Avaliando: $participantName"),
         children: moduleInstanceMap.entries
             .map((moduleEntry) => ModuleInstanceSection(
                   moduleInstance: moduleEntry.key,
@@ -146,7 +146,7 @@ class ModuleInstanceSection extends StatelessWidget {
                       onPressed: () {
                         if (recordingPath != "No recording") {
                           print("Playing audio from path: $recordingPath");
-                          // controller.playRecorded(recordingPath);
+                          controller.playRecorded(recordingPath);
                         } else {
                           print("No recording available for this task.");
                         }

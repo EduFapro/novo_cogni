@@ -187,40 +187,61 @@ class HomeController extends GetxController {
     Get.snackbar(
       "Download",
       "Download sendo realizado...",
-      snackPosition: SnackPosition.TOP,
+      snackPosition: SnackPosition.BOTTOM,
       duration: Duration(seconds: 2),
       backgroundColor: Colors.lightBlueAccent,
     );
 
-    // 1. Fetch all task instances related to the evaluation
-    List<TaskInstanceEntity> taskInstances =
-        await fetchTaskInstancesForEvaluation(evaluationId);
+    try {
+      // 1. Fetch all task instances related to the evaluation
+      List<TaskInstanceEntity> taskInstances =
+      await fetchTaskInstancesForEvaluation(evaluationId);
 
-    // 2. Fetch all recordings for these task instances
-    List<RecordingFileEntity> recordings = [];
-    for (var taskInstance in taskInstances) {
-      List<RecordingFileEntity> taskRecordings = await recordingRepository
-          .getRecordingsByTaskInstanceId(taskInstance.taskInstanceID!);
-      recordings.addAll(taskRecordings);
-    }
+      // 2. Fetch all recordings for these task instances
+      List<RecordingFileEntity> recordings = [];
+      for (var taskInstance in taskInstances) {
+        List<RecordingFileEntity> taskRecordings = await recordingRepository
+            .getRecordingsByTaskInstanceId(taskInstance.taskInstanceID!);
+        recordings.addAll(taskRecordings);
+      }
 
-    // 3. Create the folder in the downloads directory
-    String downloadFolderPath =
-        await createDownloadFolder(evaluatorId, participantId);
+      // 3. Create the folder in the downloads directory
+      String downloadFolderPath =
+      await createDownloadFolder(evaluatorId, participantId);
 
-    // 4. Copy the audio files to the new folder
-    // Decrypt files and rename them back to .aac
-    for (var recording in recordings) {
-      String encryptedFilePath = recording.filePath;
-      String fileNameWithoutExtension =
-          path.basenameWithoutExtension(encryptedFilePath);
-      String decryptedFilePath =
-          path.join(downloadFolderPath, "$fileNameWithoutExtension");
+      // 4. Copy the audio files to the new folder
+      // Decrypt files and rename them back to .aac
+      for (var recording in recordings) {
+        String encryptedFilePath = recording.filePath;
+        String fileNameWithoutExtension =
+        path.basenameWithoutExtension(encryptedFilePath);
+        String decryptedFilePath =
+        path.join(downloadFolderPath, "$fileNameWithoutExtension.aac");
 
-      // Decrypt the file back to its original form
-      await fileEncryptor.decryptFile(encryptedFilePath, decryptedFilePath);
+        // Decrypt the file back to its original form
+        await fileEncryptor.decryptFile(encryptedFilePath, decryptedFilePath);
 
-      print('Decrypted recording saved at path: $decryptedFilePath');
+        print('Decrypted recording saved at path: $decryptedFilePath');
+      }
+
+      Get.snackbar(
+        "Success",
+        "Todos os arquivos foram baixados e descriptografados com sucesso!",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
+    } catch (e) {
+      print('Error during download: $e');
+      Get.snackbar(
+        "Erro de Download",
+        "Falha ao baixar ou descriptografar os arquivos.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 4),
+      );
     }
   }
 

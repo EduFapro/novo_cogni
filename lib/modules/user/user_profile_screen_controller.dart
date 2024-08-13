@@ -37,13 +37,11 @@ class UserProfileScreenController extends GetxController {
   RxMap<int, ParticipantEntity> participants = <int, ParticipantEntity>{}.obs;
   RxMap<int, ModuleEntity> modules = <int, ModuleEntity>{}.obs;
   RxMap<int, TaskEntity> tasks = <int, TaskEntity>{}.obs;
-  RxMap<int, String> taskRecordingPaths =
-      RxMap<int, String>();
+  RxMap<int, String> taskRecordingPaths = RxMap<int, String>();
   RxMap<EvaluationEntity, Map<ModuleInstanceEntity, List<TaskInstanceEntity>>>
       evaluationMap = RxMap({});
 
   var isPlayingPlayback = false.obs;
-
 
   late final AudioPlayer _audioPlayer;
 
@@ -59,51 +57,59 @@ class UserProfileScreenController extends GetxController {
     evaluations.assignAll(userService.evaluations);
     for (var evaluation in evaluations) {
       print("Processing evaluation: ${evaluation.evaluationID}");
-      var moduleInstances = await moduleInstanceRepository.getModuleInstancesByEvaluationId(evaluation.evaluationID!);
+      var moduleInstances = await moduleInstanceRepository
+          .getModuleInstancesByEvaluationId(evaluation.evaluationID!);
 
       if (evaluationMap[evaluation] == null) {
         evaluationMap[evaluation] = {};
       }
 
       for (var moduleInstance in moduleInstances) {
-        print("Adding module: ${moduleInstance.moduleID} to evaluation: ${evaluation.evaluationID}");
-        List<TaskInstanceEntity> taskList = await _processModuleInstance(moduleInstance);
+        print(
+            "Adding module: ${moduleInstance.moduleID} to evaluation: ${evaluation.evaluationID}");
+        List<TaskInstanceEntity> taskList =
+            await _processModuleInstance(moduleInstance);
         evaluationMap[evaluation]![moduleInstance] = taskList;
       }
     }
   }
 
-  Future<List<TaskInstanceEntity>> _processModuleInstance(ModuleInstanceEntity moduleInstance) async {
+  Future<List<TaskInstanceEntity>> _processModuleInstance(
+      ModuleInstanceEntity moduleInstance) async {
     List<TaskInstanceEntity> taskList = [];
-    var taskInstances = await taskInstanceRepository.getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
+    var taskInstances = await taskInstanceRepository
+        .getTaskInstancesByModuleInstanceId(moduleInstance.moduleInstanceID!);
     for (var taskInstance in taskInstances) {
-      tasks[taskInstance.taskID] = (await taskRepository.getTask(taskInstance.taskID))!;
-      taskRecordingPaths[taskInstance.taskInstanceID!] = (await recordingRepository.getRecordingByTaskInstanceId(taskInstance.taskInstanceID!))?.filePath ?? "";
+      tasks[taskInstance.taskID] =
+          (await taskRepository.getTask(taskInstance.taskID))!;
+      taskRecordingPaths[taskInstance.taskInstanceID!] =
+          (await recordingRepository.getRecordingByTaskInstanceId(
+                      taskInstance.taskInstanceID!))
+                  ?.filePath ??
+              "";
       taskList.add(taskInstance);
     }
     return taskList;
   }
 
-
-
   Future<void> playRecorded(String playbackPath) async {
-    print(playbackPath);
-    final String encryptedFilePath = playbackPath;
-
     final FileEncryptor fileEncryptor = Get.find<FileEncryptor>();
+    print("Attempting to play audio from path: $playbackPath");
     try {
-      final Uint8List decryptedAudioBytes =
-      await fileEncryptor.decryptRecordingToMemory(encryptedFilePath);
+      final String encryptedFilePath = playbackPath;
+
+      // Decrypting to memory for playback without file I/O
+      final Uint8List decryptedAudioBytes = await fileEncryptor.decryptRecordingToMemory(encryptedFilePath);
       print("Decrypted audio loaded into memory");
 
       final BytesSource bytesSource = BytesSource(decryptedAudioBytes);
-      isPlayingPlayback.value = true;
-
       await _audioPlayer.play(bytesSource);
+      print("Playback started");
     } catch (e) {
-      print("Error playing test audio: $e");
+      print("Error playing audio: $e");
     }
   }
+
 
   void playAudioFromTask() {}
 }
