@@ -85,7 +85,7 @@ class EdAdminForm extends GetView<AdminRegistrationController>
                               if (value == null || value.isEmpty) {
                                 return 'Insira a data de nascimento';
                               } else {
-                                final date = DateFormat.yMd().parseLoose(value);
+                                final date = DateFormat('dd/MM/yyyy').parseLoose(value);
                                 final currentDate = DateTime.now();
 
                                 if (date.isAfter(currentDate)) {

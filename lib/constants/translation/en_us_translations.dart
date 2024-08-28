@@ -34,7 +34,7 @@ final Map<String, String> enUsTranslations = {
   'cpf': 'CPF',
   'evaluation': 'Evaluation',
   'list_of_activities': 'List of Activities',
-  'click_on_play_to_listen_to_audio': 'Click on play to listen to the audio',
+  'click_on_play_to_listen_to_audio': 'Click on listen',
   'pending_evaluation': 'Pending',
   'in_progress_evaluation': 'In Progress',
   'completed_evaluation': "Completed",

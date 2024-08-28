@@ -34,7 +34,7 @@ final Map<String, String> ptBrTranslations = {
   'cpf': 'CPF',
   'evaluation': 'Avaliação',
   'list_of_activities': 'Lista de Atividades',
-  'click_on_play_to_listen_to_audio': 'Clique no play para ouvir o audio',
+  'click_on_play_to_listen_to_audio': 'Clique em Ouvir',
   'pending_evaluation': 'Pendente',
   'in_progress_evaluation': 'Em Andamento',
   'completed_evaluation': "Concluído",

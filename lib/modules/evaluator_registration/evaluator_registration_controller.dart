@@ -86,40 +86,38 @@ class EvaluatorRegistrationController extends GetxController
     print("Edit mode: ${isEditMode.value}");
   }
 
-  Future<void> _populateFieldsWithEvaluatorData(int evaluatorId) async {
+  void _populateFieldsWithEvaluatorData(int evaluatorId) async {
     try {
       final evaluator = await _repository.getEvaluator(evaluatorId);
       if (evaluator != null) {
         fullNameController.text = '${evaluator.name} ${evaluator.surname}';
-        dateOfBirthController.text =
-            DateFormat.yMd().format(evaluator.birthDate);
+        dateOfBirthController.text = DateFormat('dd/MM/yyyy').format(evaluator.birthDate);
         specialtyController.text = evaluator.specialty ?? '';
         cpfOrNifController.text = evaluator.cpfOrNif ?? '';
         usernameController.text = evaluator.username;
         username.value = evaluator.username;
         selectedDate.value = evaluator.birthDate;
-
-        // Assuming you have methods to set initial values for other fields if needed
       }
     } catch (e) {
       print("Error fetching evaluator data: $e");
     }
   }
 
+
   void selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
-      locale: Get.locale,
       context: context,
-      initialDate: selectedDate.value ?? DateTime.now(),
+      initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-
-    if (pickedDate != null && pickedDate != selectedDate.value) {
+    if (pickedDate != null) {
+      dateOfBirthController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
       selectedDate.value = pickedDate;
-      dateOfBirthController.text = DateFormat.yMd().format(pickedDate);
     }
   }
+
+
 
   Future<bool> createEvaluator() async {
     var cpf = cpfOrNifController.text;

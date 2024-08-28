@@ -193,39 +193,39 @@ String canYouUseTransportAloneTaskTitle =  "Funcionalidade";
 
 int feelingsInPastTwoWeeksTaskId = 47;
 String feelingsInPastTwoWeeksTaskSnakeCaseTranscript = "feelings_in_past_two_weeks";
-String feelingsInPastTwoWeeksTaskTitle =  "Funcionalidade";
+String feelingsInPastTwoWeeksTaskTitle =  "Sintomas de Depressão";
 
 int feelingSadFrequentlyTaskId = 48;
 String feelingSadFrequentlyTaskSnakeCaseTranscript = "feeling_sad_frequently";
-String feelingSadFrequentlyTaskTitle =  "Funcionalidade";
+String feelingSadFrequentlyTaskTitle =  "Sintomas de Depressão";
 
 int feelingTiredOrLackingEnergyTaskId = 49;
 String feelingTiredOrLackingEnergyTaskSnakeCaseTranscript = "feeling_tired_or_lacking_energy";
-String feelingTiredOrLackingEnergyTaskTitle =  "Funcionalidade";
+String feelingTiredOrLackingEnergyTaskTitle =  "Sintomas de Depressão";
 
 int troubleSleepingTaskId = 50;
 String troubleSleepingTaskSnakeCaseTranscript = "trouble_sleeping";
-String troubleSleepingTaskTitle =  "Funcionalidade";
+String troubleSleepingTaskTitle =  "Sintomas de Depressão";
 
 int preferringToStayHomeTaskId = 51;
 String preferringToStayHomeTaskSnakeCaseTranscript = "preferring_to_stay_home";
-String preferringToStayHomeTaskTitle =  "Funcionalidade";
+String preferringToStayHomeTaskTitle =  "Sintomas de Depressão";
 
 int feelingUselessOrGuiltyTaskId = 52;
 String feelingUselessOrGuiltyTaskSnakeCaseTranscript = "feeling_useless_or_guilty";
-String feelingUselessOrGuiltyTaskTitle =  "Funcionalidade";
+String feelingUselessOrGuiltyTaskTitle =  "Sintomas de Depressão";
 
 int lostInterestInActivitiesTaskId = 53;
 String lostInterestInActivitiesTaskSnakeCaseTranscript = "lost_interest_in_activities";
-String lostInterestInActivitiesTaskTitle =  "Funcionalidade";
+String lostInterestInActivitiesTaskTitle =  "Sintomas de Depressão";
 
 int hopefulAboutFutureTaskId = 54;
 String hopefulAboutFutureTaskSnakeCaseTranscript = "hopeful_about_future";
-String hopefulAboutFutureTaskTitle =  "Funcionalidade";
+String hopefulAboutFutureTaskTitle =  "Sintomas de Depressão";
 
 int feelingLifeIsWorthLivingTaskId = 55;
 String feelingLifeIsWorthLivingTaskSnakeCaseTranscript = "feeling_life_is_worth_living";
-String feelingLifeIsWorthLivingTaskTitle =  "Funcionalidade";
+String feelingLifeIsWorthLivingTaskTitle =  "Sintomas de Depressão";
 
 int thankingForParticipationTaskId = 56;
 String thankingForParticipationTaskSnakeCaseTranscript = "thanking_for_participation";

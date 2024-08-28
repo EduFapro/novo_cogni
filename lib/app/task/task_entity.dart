@@ -20,7 +20,7 @@ class TaskEntity {
     required this.taskMode,
     required this.position,
     this.imagePath = "no_image",
-    this.timeForCompletion = 30,
+    this.timeForCompletion = 60,
     this.mayRepeatPrompt = true,
     this.test_only = false,
     this.snakeCaseBriefTranscript,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../constants/enums/language_enums.dart';
+import '../../constants/translation/ui_strings.dart';
 import '../participant_registration/participant_registration_controller.dart';
 
 class EdLanguageFormDropdown extends GetView<ParticipantRegistrationController> {
@@ -11,7 +12,7 @@ class EdLanguageFormDropdown extends GetView<ParticipantRegistrationController> 
       var currentLanguage = controller.selectedLanguage.value ?? Language.portuguese;
       return DropdownButtonFormField<Language>(
         decoration: InputDecoration(
-          labelText: 'Language', // Use your actual label here
+          labelText: UiStrings.language, // Use your actual label here
           filled: true,
           fillColor: Color(0xffededed),
           border: OutlineInputBorder(

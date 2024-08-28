@@ -41,9 +41,17 @@ class ParticipantRegistrationController extends GetxController {
 
     if (pickedDate != null && pickedDate != selectedDate.value) {
       selectedDate.value = pickedDate;
-      birthDateController.text = DateFormat.yMd().format(pickedDate);
+      // Formatar a data para 'dd/MM/yyyy'
+      birthDateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+
+      // Forçar a atualização do campo
+      birthDateController.value = birthDateController.value.copyWith(
+        text: birthDateController.text,
+        selection: TextSelection.collapsed(offset: birthDateController.text.length),
+      );
     }
   }
+
 
   // Method to create a new participant and related modules
 

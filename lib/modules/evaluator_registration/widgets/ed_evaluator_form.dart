@@ -85,7 +85,7 @@ class EdEvaluatorForm extends GetView<EvaluatorRegistrationController>
                                 return 'Insira a data de nascimento';
                               } else {
                                 // Assuming you are using the intl package and the date format 'yMd'
-                                final date = DateFormat.yMd().parseLoose(value);
+                                final date = DateFormat('dd/MM/yyyy').parseLoose(value);
                                 final currentDate = DateTime.now();
 
                                 if (date.isAfter(currentDate)) {

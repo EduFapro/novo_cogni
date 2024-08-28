@@ -120,18 +120,14 @@ class TaskScreen extends GetView<TaskScreenController> {
     return Container(
       child: Column(
         children: [
+
           if (controller.imagePath.value == "no_image") Spacer(),
           if (controller.imagePath.value == "no_image" ||
               !controller.audioPlayed.value)
             SizedBox(
               child: Column(
                 children: [
-                  CountdownTimer(
-                    countdownTrigger: controller.countdownTrigger,
-                    initialDurationInSeconds:
-                        controller.task.value!.timeForCompletion,
-                    onTimerComplete: _onTimeCompleted,
-                  ),
+
                   Card(
                     color: Color(0xFFD7D7D7),
                     elevation: 0,
@@ -193,7 +189,8 @@ class TaskScreen extends GetView<TaskScreenController> {
             ),
           if (mode == TaskMode.play) buildAudioPlayerInterface(context),
           if (controller.imagePath.value != "no_image")
-            Expanded(
+            Container(
+              height: windowSize.height * 0.58,
                 child: Image.asset(
               controller.imagePath.value,
               fit: BoxFit.fill,
@@ -316,11 +313,6 @@ class TaskScreen extends GetView<TaskScreenController> {
       width: 880,
       child: Column(
         children: [
-          CountdownTimer(
-            countdownTrigger: controller.countdownTrigger,
-            initialDurationInSeconds: controller.task.value!.timeForCompletion,
-            onTimerComplete: _onTimeCompleted,
-          ),
           Card(
             color: Color(0xFFD7D7D7),
             elevation: 0,
@@ -416,6 +408,12 @@ class TaskScreen extends GetView<TaskScreenController> {
         child: Center(
           child: Column(
             children: [
+              CountdownTimer(
+                countdownTrigger: controller.countdownTrigger,
+                initialDurationInSeconds:
+                controller.task.value!.timeForCompletion,
+                onTimerComplete: _onTimeCompleted,
+              ),
               if (controller.imagePath.value == 'no_image')
                 SizedBox(
                   height: 20,

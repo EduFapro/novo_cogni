@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../constants/enums/person_enums/person_enums.dart';
 import '../../../constants/translation/ui_strings.dart';
 import '../../home/home_controller.dart';
@@ -76,7 +77,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'This field cannot be empty';
+                                return 'Escreva o nome do participante';
                               }
                               return null;
                             },
@@ -117,12 +118,10 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                                 lastDate: DateTime.now(),
                               );
                               if (pickedDate != null) {
-                                controller.birthDateController.text = pickedDate
-                                    .toLocal()
-                                    .toString()
-                                    .split(' ')[0];
+                                controller.birthDateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
                                 controller.selectedDate.value = pickedDate;
                               }
+
                             },
                           ),
                         ),

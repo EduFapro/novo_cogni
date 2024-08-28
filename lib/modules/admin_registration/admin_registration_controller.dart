@@ -83,16 +83,14 @@ class AdminRegistrationController extends GetxController with ValidationMixin {
 
   void selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
-      locale: Get.locale,
       context: context,
-      initialDate: selectedDate.value ?? DateTime.now(),
+      initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-
-    if (pickedDate != null && pickedDate != selectedDate.value) {
+    if (pickedDate != null) {
+      dateOfBirthController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
       selectedDate.value = pickedDate;
-      dateOfBirthController.text = DateFormat.yMd().format(pickedDate);
     }
   }
 

@@ -17,7 +17,7 @@ TaskEntity helloHowAreYouTask = TaskEntity(
   snakeCaseBriefTranscript: helloHowAreYouTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 1,
 );
@@ -28,7 +28,7 @@ TaskEntity whatsYourNameTask = TaskEntity(
     snakeCaseBriefTranscript: whatsYourNameTaskSnakeCaseTranscript,
     moduleID: sociodemographicInfoId,
     taskMode: TaskMode.record,
-    timeForCompletion: 40,
+    timeForCompletion: 60,
     mayRepeatPrompt: true,
     position: 2);
 // sociodemographicInfo - 3
@@ -38,7 +38,7 @@ TaskEntity whatsYourDOBTask = TaskEntity(
   snakeCaseBriefTranscript: whatsYourDOBTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 3,
 );
@@ -49,7 +49,7 @@ TaskEntity whatsYourEducationLevelTask = TaskEntity(
   snakeCaseBriefTranscript: whatsYourEducationLevelTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 4,
 );
@@ -60,7 +60,7 @@ TaskEntity whatWasYourProfessionTask = TaskEntity(
   snakeCaseBriefTranscript: whatWasYourProfessionTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 5,
 );
@@ -71,7 +71,7 @@ TaskEntity whoDoYouLiveWithTask = TaskEntity(
   snakeCaseBriefTranscript: whoDoYouLiveWithTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 6,
 );
@@ -82,7 +82,7 @@ TaskEntity doYouExerciseFrequentlyTask = TaskEntity(
   snakeCaseBriefTranscript: doYouExerciseFrequentlyTaskSnakeCaseTranscript ,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 7,
 );
@@ -93,7 +93,7 @@ TaskEntity doYouReadFrequentlyTask = TaskEntity(
   snakeCaseBriefTranscript: doYouReadFrequentlyTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 8,
 );
@@ -104,7 +104,7 @@ TaskEntity doYouPlayPuzzlesOrVideoGamesFrequentlyTask = TaskEntity(
   snakeCaseBriefTranscript: doYouPlayPuzzlesOrVideoGamesFrequentlyTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 9,
 );
@@ -115,7 +115,7 @@ TaskEntity doYouHaveAnyDiseasesTask = TaskEntity(
   snakeCaseBriefTranscript: doYouHaveAnyDiseasesTaskSnakeCaseTranscript,
   moduleID: sociodemographicInfoId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 10,
 );
@@ -126,7 +126,7 @@ TaskEntity payCloseAttentionTask = TaskEntity(
   snakeCaseBriefTranscript: payCloseAttentionTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 1,
 );
@@ -137,7 +137,7 @@ TaskEntity subtracting3AndAgainTask = TaskEntity(
   snakeCaseBriefTranscript: subtracting3AndAgainTaskSnakeCaseTranscript ,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: false,
   position: 2,
 );
@@ -148,7 +148,7 @@ TaskEntity whatYearAreWeInTask = TaskEntity(
   snakeCaseBriefTranscript: whatYearAreWeInTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 3,
 );
@@ -159,7 +159,7 @@ TaskEntity whatMonthAreWeInTask = TaskEntity(
   snakeCaseBriefTranscript: whatMonthAreWeInTaskSnakeCaseTranscript ,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 4,
 );
@@ -170,7 +170,7 @@ TaskEntity whatDayOfTheMonthIsItTask = TaskEntity(
   snakeCaseBriefTranscript: whatDayOfTheMonthIsItTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 5,
 );
@@ -181,7 +181,7 @@ TaskEntity whatDayOfTheWeekIsItTask = TaskEntity(
   snakeCaseBriefTranscript: whatDayOfTheWeekIsItTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 6,
 );
@@ -192,7 +192,7 @@ TaskEntity howOldAreYouTask = TaskEntity(
   snakeCaseBriefTranscript: howOldAreYouTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 7,
 );
@@ -203,7 +203,7 @@ TaskEntity whereAreWeNowTask = TaskEntity(
   snakeCaseBriefTranscript: whereAreWeNowTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 8,
 );
@@ -214,7 +214,7 @@ TaskEntity currentPresidentOfBrazilTask = TaskEntity(
   snakeCaseBriefTranscript: currentPresidentOfBrazilTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 9,
 );
@@ -225,7 +225,7 @@ TaskEntity formerPresidentOfBrazilTask = TaskEntity(
   snakeCaseBriefTranscript: formerPresidentOfBrazilTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 10,
 );
@@ -236,7 +236,7 @@ TaskEntity repeatWordsAfterListeningFirstTimeTask = TaskEntity(
   snakeCaseBriefTranscript: repeatWordsAfterListeningFirstTimeTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 11,
 );
@@ -247,7 +247,7 @@ TaskEntity recallWordsFromListFirstTimeTask = TaskEntity(
   snakeCaseBriefTranscript: recallWordsFromListFirstTimeTaskSnakeCaseTranscript ,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: false,
   position: 12,
 );
@@ -258,7 +258,7 @@ TaskEntity repeatWordsAfterListeningSecondTimeTask = TaskEntity(
   snakeCaseBriefTranscript: repeatWordsAfterListeningSecondTimeTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 13,
 );
@@ -269,7 +269,7 @@ TaskEntity recallWordsFromListSecondTimeTask = TaskEntity(
   snakeCaseBriefTranscript: recallWordsFromListSecondTimeTaskSnakeCaseTranscript ,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: false,
   position: 14,
 );
@@ -280,7 +280,7 @@ TaskEntity repeatWordsAfterListeningThirdTimeTask = TaskEntity(
   snakeCaseBriefTranscript: repeatWordsAfterListeningThirdTimeTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 15,
 );
@@ -291,7 +291,7 @@ TaskEntity recallWordsFromListThirdTimeTask = TaskEntity(
   snakeCaseBriefTranscript: recallWordsFromListThirdTimeTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: false,
   position: 16,
 );
@@ -302,7 +302,7 @@ TaskEntity whatDidYouDoYesterdayTask = TaskEntity(
   snakeCaseBriefTranscript: whatDidYouDoYesterdayTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 17,
 );
@@ -313,7 +313,7 @@ TaskEntity favoriteChildhoodGameTask = TaskEntity(
   snakeCaseBriefTranscript: favoriteChildhoodGameTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 18,
 );
@@ -324,7 +324,7 @@ TaskEntity retellWordsHeardBeforeTask = TaskEntity(
   snakeCaseBriefTranscript: retellWordsHeardBeforeTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 19,
 );
@@ -335,7 +335,7 @@ TaskEntity payCloseAttentionToTheStoryTask = TaskEntity(
   snakeCaseBriefTranscript: payCloseAttentionToTheStoryTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 20,
 );
@@ -346,7 +346,7 @@ TaskEntity anasCatStoryTask = TaskEntity(
   snakeCaseBriefTranscript: anasCatStoryTaskSnakeCaseTranscript ,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: false,
   position: 21,
 );
@@ -357,7 +357,7 @@ TaskEntity howManyAnimalsCanYouThinkOfTask = TaskEntity(
   snakeCaseBriefTranscript: howManyAnimalsCanYouThinkOfTaskSnakeCaseTranscript ,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 22,
 );
@@ -368,7 +368,7 @@ TaskEntity wordsStartingWithFTask = TaskEntity(
   snakeCaseBriefTranscript: wordsStartingWithFTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 23,
 );
@@ -379,7 +379,7 @@ TaskEntity wordsStartingWithATask = TaskEntity(
   snakeCaseBriefTranscript: wordsStartingWithATaskSnakeCaseTranscript ,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 24,
 );
@@ -390,7 +390,7 @@ TaskEntity wordsStartingWithSTask = TaskEntity(
   snakeCaseBriefTranscript: wordsStartingWithSTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 25,
 );
@@ -401,7 +401,7 @@ TaskEntity describeWhatYouSeeTask = TaskEntity(
   snakeCaseBriefTranscript: describeWhatYouSeeTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   imagePath: ImageFilePaths.describe_what_you_see_task,
   position: 26,
@@ -413,7 +413,7 @@ TaskEntity retellStoryTask = TaskEntity(
   snakeCaseBriefTranscript: retellStoryTaskSnakeCaseTranscript,
   moduleID: cognitiveFunctionsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 27,
 );
@@ -424,7 +424,7 @@ TaskEntity yesOrNoQuestionsTask = TaskEntity(
   snakeCaseBriefTranscript: yesOrNoQuestionsTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 1,
 );
@@ -435,7 +435,7 @@ TaskEntity canYouBatheAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouBatheAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 2,
 );
@@ -446,7 +446,7 @@ TaskEntity canYouDressAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouDressAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 3,
 );
@@ -457,7 +457,7 @@ TaskEntity canYouUseToiletAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouUseToiletAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 4,
 );
@@ -468,7 +468,7 @@ TaskEntity canYouUsePhoneAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouUsePhoneAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 5,
 );
@@ -479,7 +479,7 @@ TaskEntity canYouShopAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouShopAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 6,
 );
@@ -490,7 +490,7 @@ TaskEntity canYouHandleMoneyAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouHandleMoneyAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 7,
 );
@@ -501,7 +501,7 @@ TaskEntity canYouManageMedicationAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouManageMedicationAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 8,
 );
@@ -512,7 +512,7 @@ TaskEntity canYouUseTransportAloneTask = TaskEntity(
   snakeCaseBriefTranscript: canYouUseTransportAloneTaskSnakeCaseTranscript,
   moduleID: functionalityId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 9,
 );
@@ -522,8 +522,8 @@ TaskEntity feelingsInPastTwoWeeksTask = TaskEntity(
   title: feelingsInPastTwoWeeksTaskTitle,
   snakeCaseBriefTranscript: feelingsInPastTwoWeeksTaskSnakeCaseTranscript,
   moduleID: depressionSymptomsId,
-  taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  taskMode: TaskMode.play,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 1,
 );
@@ -534,7 +534,7 @@ TaskEntity feelingSadFrequentlyTask = TaskEntity(
   snakeCaseBriefTranscript: feelingSadFrequentlyTaskSnakeCaseTranscript ,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 2,
 );
@@ -545,7 +545,7 @@ TaskEntity feelingTiredOrLackingEnergyTask = TaskEntity(
   snakeCaseBriefTranscript: feelingTiredOrLackingEnergyTaskSnakeCaseTranscript,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 3,
 );
@@ -556,7 +556,7 @@ TaskEntity troubleSleepingTask = TaskEntity(
   snakeCaseBriefTranscript:troubleSleepingTaskSnakeCaseTranscript ,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 4,
 );
@@ -567,7 +567,7 @@ TaskEntity preferringToStayHomeTask = TaskEntity(
   snakeCaseBriefTranscript: preferringToStayHomeTaskSnakeCaseTranscript,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 5,
 );
@@ -578,7 +578,7 @@ TaskEntity feelingUselessOrGuiltyTask = TaskEntity(
   snakeCaseBriefTranscript: feelingUselessOrGuiltyTaskSnakeCaseTranscript,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 6,
 );
@@ -589,7 +589,7 @@ TaskEntity lostInterestInActivitiesTask = TaskEntity(
   snakeCaseBriefTranscript: lostInterestInActivitiesTaskSnakeCaseTranscript ,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 7,
 );
@@ -600,7 +600,7 @@ TaskEntity hopefulAboutFutureTask = TaskEntity(
   snakeCaseBriefTranscript: hopefulAboutFutureTaskSnakeCaseTranscript,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 8,
 );
@@ -611,7 +611,7 @@ TaskEntity feelingLifeIsWorthLivingTask = TaskEntity(
   snakeCaseBriefTranscript: feelingLifeIsWorthLivingTaskSnakeCaseTranscript,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.record,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 9,
 );
@@ -622,7 +622,7 @@ TaskEntity thankingForParticipationTask = TaskEntity(
   snakeCaseBriefTranscript: thankingForParticipationTaskSnakeCaseTranscript,
   moduleID: depressionSymptomsId,
   taskMode: TaskMode.play,
-  timeForCompletion: 40,
+  timeForCompletion: 60,
   mayRepeatPrompt: true,
   position: 10,
 );
