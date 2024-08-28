@@ -35,10 +35,10 @@ class NewPasswordScreen extends GetView<NewPasswordController>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        FormTitle(title: 'New Password'),
+                        FormTitle(title: 'Nova Senha'),
                         const SizedBox(height: 10.0),
                         EdInputText(
-                          placeholder: "Password",
+                          placeholder: "Senha",
                           obscureText: true,
                           validator: (value) {
                             return validatePassword(value);
@@ -47,7 +47,7 @@ class NewPasswordScreen extends GetView<NewPasswordController>
                         ),
                         const SizedBox(height: 10.0),
                         EdInputText(
-                          placeholder: "Confirm Password",
+                          placeholder: "Confirmar Senha",
                           obscureText: true,
                           validator: (value) {
                             return validateSecondPassword(value, firstPassword);
@@ -74,7 +74,7 @@ class NewPasswordScreen extends GetView<NewPasswordController>
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text("Confirm"),
+                          child: const Text("Confirmar"),
                         ),
                       ],
                     )

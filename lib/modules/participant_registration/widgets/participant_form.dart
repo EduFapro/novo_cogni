@@ -89,7 +89,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                           child: TextFormField(
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please select a date'; // Return a message to show as an error
+                                return 'Selecione uma data'; // Return a message to show as an error
                               }
                               return null; // Return null if the date is valid
                             },
@@ -160,7 +160,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             value: controller.selectedSex.value,
                             validator: (value) {
                               if (value == null) {
-                                return 'Please select an option'; // Error message
+                                return 'Selecione uma opção'; // Error message
                               }
                               return null;
                             },
@@ -196,7 +196,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                             value: controller.selectedEducationLevel.value,
                             validator: (value) {
                               if (value == null) {
-                                return 'Please select an option'; // Error message
+                                return 'Selecione uma opção'; // Error message
                               }
                               return null;
                             },
@@ -301,7 +301,7 @@ class ParticipantForm extends GetView<ParticipantRegistrationController> {
                                   return Padding(
                                     padding: EdgeInsets.only(left: spacingWidth, top: 8),
                                     child: Text(
-                                      'Please select at least one module.',
+                                      'Selecione ao menos um módulo',
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.red,

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +26,6 @@ class _CountdownTimerState extends State<CountdownTimer> {
   void initState() {
     super.initState();
     remainingTime = widget.initialDurationInSeconds;
-
     // Listen to the countdownTrigger observable
     ever(widget.countdownTrigger, handleCountdownTrigger);
   }
@@ -42,10 +40,15 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   void startTimer() {
     _timer?.cancel(); // Cancel any existing timer
+    if (!mounted) return; // Check if the widget is still in the tree
     setState(() {
       remainingTime = widget.initialDurationInSeconds;
     });
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        _timer?.cancel();
+        return;
+      }
       if (remainingTime > 0) {
         setState(() {
           remainingTime--;
@@ -61,9 +64,11 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   void resetTimer() {
     _timer?.cancel();
-    setState(() {
-      remainingTime = widget.initialDurationInSeconds;
-    });
+    if (mounted) {
+      setState(() {
+        remainingTime = widget.initialDurationInSeconds;
+      });
+    }
   }
 
   @override
@@ -74,13 +79,11 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
       // child: Text(
       //   '$remainingTime',
       //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       // ),
     );
   }
-
-
 }

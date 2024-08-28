@@ -214,7 +214,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: controller.hasPlaybackPath.isTrue
                           ? Container(
-                              color: Colors.orange,
+                              // color: Colors.orange,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -244,7 +244,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                                                       .playRecentlyRecorded()
                                               : null),
                                   Container(
-                                    color: Colors.lightBlue,
+                                    // color: Colors.lightBlue,
                                     width: 350,
                                     child: MusicVisualizer(
                                       isPlaying:
@@ -298,11 +298,13 @@ class TaskScreen extends GetView<TaskScreenController> {
                       isActive: controller.isCheckButtonEnabled,
                       displayMessage: "Atividade Concluída"),
                 )),
-
               ],
             ),
           ),
-          if (controller.imagePath.value == 'no_image') SizedBox(height: 100,),
+          if (controller.imagePath.value == 'no_image')
+            SizedBox(
+              height: 100,
+            ),
         ],
       ),
     );
@@ -440,7 +442,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                                   activeColor: Colors.red,
                                 )
                               : Container(
-                                  color: Colors.orange,
+                                  // color: Colors.orange,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -471,7 +473,7 @@ class TaskScreen extends GetView<TaskScreenController> {
                                                           .playRecentlyRecorded()
                                                   : null),
                                       Container(
-                                        color: Colors.lightBlue,
+                                        // color: Colors.lightBlue,
                                         width: 350,
                                         child: MusicVisualizer(
                                           isPlaying: controller
